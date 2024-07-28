@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: nginx
+    volumes:
+      - djangoserver:/var/www/djangoserver
+    networks:
+      - transcendence
+    depends_on:
+      - djangoserver
+    build:
+      context: requirements/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "443:443"
+    restart: on-failure
+
+  djangoserver:
+    container_name: djangoserver
+    volumes:
+      - djangoserver:/var/www/djangoserver
+    networks:
+      - transcendence
+    build:
+      context: requirements/djangoserver
+      dockerfile: Dockerfile
+    restart: on-failure
+    expose:
+      - "9000"
+
+volumes:
+  djangoserver:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/edbernar/data/djangoserver'
+
+networks:
+  transcendence:
+    driver: bridge
