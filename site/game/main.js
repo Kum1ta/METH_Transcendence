@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.js                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/30 13:50:49 by edbernar          #+#    #+#             */
+/*   Updated: 2024/07/30 13:50:49 by edbernar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 import * as THREE from 'three';
 import Stats from 'stats.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
