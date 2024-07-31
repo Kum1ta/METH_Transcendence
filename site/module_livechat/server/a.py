@@ -4,7 +4,11 @@ import websockets
 async def send_messages(websocket):
     while True:
         message = input("Enter message to send: ")
-        await websocket.send(message)
+        if (websocket.open):
+            await websocket.send(message)
+        else:
+            print("Connection closed")
+            break
         print(f"Sent: {message}")
 
 async def receive_messages(websocket):
@@ -19,5 +23,4 @@ async def main():
         receive_task = asyncio.create_task(receive_messages(websocket))
         await asyncio.gather(send_task, receive_task)
 
-# Démarrer le client
 asyncio.run(main())
