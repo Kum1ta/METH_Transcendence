@@ -6,11 +6,14 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:35 by edbernar          #+#    #+#             */
-/*   Updated: 2024/07/31 00:37:11 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/07/31 22:26:47 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import { mainSocket } from "./websocket.js";
+
 document.addEventListener('DOMContentLoaded', () => {
+	mainSocket();
 	liveChat();
 });
 
