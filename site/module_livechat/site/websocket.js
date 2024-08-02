@@ -6,17 +6,21 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/07/31 23:40:05 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/02 03:00:42 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-const socket = new WebSocket('ws://localhost:8000/');
+import { typeLogin } from "./typeResponse/typeLogin.js";
+import { typePrivateListUser } from "./typeResponse/typePrivateListUser.js";
+
+const token = ['123456'];
+const socket = new WebSocket('ws://localhost:8000/', token);
+
+const typeResponse = ["login", "private_list_user"];
+const functionResponse = [typeLogin, typePrivateListUser];
 
 socket.onopen = () => {
 	console.log('Connected');
-	setInterval(() => {
-		socket.send("Heartbeat");
-	}, 10000);
 };
 
 socket.onmessage = (event) => {
@@ -28,18 +32,20 @@ socket.onmessage = (event) => {
 		return ;
 	}
 	if (response.code >= 9000 && response.code <= 9999)
-	{
 		console.warn(response);
-		return ;
+	else
+	{
+		try {
+			functionResponse[typeResponse.indexOf(response.type)](response.content);
+		}
+		catch {
+			console.warn(response);
+		}
 	}
-	console.log(response)
 };
+
 socket.onclose = () => {
 	console.log('Disconnected');
 };
 
-function mainSocket() {
-	
-}
-
-export { mainSocket };
+export { socket, token};

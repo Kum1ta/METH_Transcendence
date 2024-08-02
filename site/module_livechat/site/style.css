@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:53:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/07/31 00:37:48 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/01 23:25:38 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ body {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	border-bottom: 1px solid #484848;
 	padding-bottom: 10px;
 }
 
@@ -80,7 +79,6 @@ body {
 	display: grid;
 	grid-template-columns: 50% 50%;
 	width: 100%;
-	border-bottom: 1px solid #484848;
 }
 
 #buttonTypeChatHome h2 {

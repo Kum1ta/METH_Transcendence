@@ -1,37 +1,74 @@
+from typeRequets.getPrivateListUser import getPrivateListUser
 import asyncio
 import websockets
 import json
-import time
 
 connected_clients = set()
-validTokens = "123456"
+userList = [
+	{
+		"username": "user1",
+		"token": "123456",
+		"id": 1
+	},
+	{
+		"username": "user2",
+		"token": "789123",
+		"id": 2
+	},
+	{
+		"username": "user3",
+		"token": "456789",
+		"id": 3
+	}
+]
 
-def sendData(websocket):
-	while True:
-		websocket.send("Heartbeat")
-		print("Heartbeat send")
-		time.sleep(5)
+typeRequest = ["get_private_list_user"]
+functionRequest = [getPrivateListUser]
 
-async def handler(websocket, path):
-	print("New client connected to the server")
-	if path != "/":
-		print("client disconnected")
-		await websocket.send(json.dumps({"error": "Invalid path", "code": 9000}))
-		await websocket.close()
+async def	sendError(websocket, message, code):
+	jsonVar = {"type": "error", "content": message, "code": code}
+	await websocket.send(json.dumps(jsonVar))
+
+async def	sendInfoUser(websocket):
+	token = websocket.request_headers.get('Sec-WebSocket-Protocol')
+	user = [user for user in userList if user['token'] == token][0]
+	jsonVar = {"type": "login", "content": user}
+	await websocket.send(json.dumps(jsonVar))
+
+async def	isValidToken(websocket):
+	token = websocket.request_headers.get('Sec-WebSocket-Protocol')
+	# |TOM| Faire une requête à la base de données pour vérifier si le token est valide
+	if (token in [user['token'] for user in userList]):
+		await sendInfoUser(websocket)
+		return True
+	else:
+		return False
+
+async def	handler(websocket, path):
+	if (not await isValidToken(websocket)):
+		await websocket.close(reason="Invalid token")
 		return
-	connected_clients.add(websocket) 
-	try :
-		async for message in websocket:
-			print(f"Message reçu : {message}")
-	except websockets.exceptions.ConnectionClosed as e:
-		print("Client disconnected with error :", e)
-	sendData(websocket)
+	try:
+		async for resquet in websocket:
+			try:
+				jsonRequest = json.loads(resquet)
+			except json.JSONDecodeError:
+				await sendError(websocket, "Invalid JSON", 9002)
+				continue
+			try:
+				if (jsonRequest["token"][0] != websocket.request_headers.get('Sec-WebSocket-Protocol')):
+					await sendError(websocket, "Invalid token", 9000)
+					continue
+			except:
+				await sendError(websocket, "Token not found", 9001)
+				continue
+			if (jsonRequest["type"] in typeRequest):
+				await functionRequest[typeRequest.index(jsonRequest["type"])](websocket)
+			
+	except websockets.ConnectionClosed:
+		print("Client déconnecté")
 
-try:
-	start_server = websockets.serve(handler, "localhost", 8000, reuse_address=True)
-except OSError as e:
-	print(f"Error: {e}")
-	exit(1)
+start_server = websockets.serve(handler, "localhost", 8000, subprotocols=['123456'])
+
 asyncio.get_event_loop().run_until_complete(start_server)
-print("Server started")
 asyncio.get_event_loop().run_forever()
