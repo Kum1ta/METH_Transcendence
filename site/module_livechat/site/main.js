@@ -6,14 +6,15 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:35 by edbernar          #+#    #+#             */
-/*   Updated: 2024/07/31 22:26:47 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/02 03:09:12 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { mainSocket } from "./websocket.js";
+import { socket, token } from "./websocket.js";
+import { userList, waitForUserList } from "./typeResponse/typePrivateListUser.js";
+// Peut etre faire une fonction pour faire les requetes pour ne pas à avoir à ramener token partout
 
 document.addEventListener('DOMContentLoaded', () => {
-	mainSocket();
 	liveChat();
 });
 
@@ -23,51 +24,21 @@ function	liveChat() {
 	const	topChatHomeCross = document.getElementById("topChatCross");
 	const	privateButtonChatHome = document.getElementById("buttonTypeChatHome").getElementsByTagName("h2")[0];
 	const	gameButtonChatHome= document.getElementById("buttonTypeChatHome").getElementsByTagName("h2")[1];
-	let	userList = [
-		{
-			name: "Nessundorma",
-			status: "online",
-			pfp: "https://wallpapers-clan.com/wp-content/uploads/2023/05/cool-pfp-02.jpg"
-		},
-		{
-			name: "Succotash",
-			status: "offline",
-			pfp: "https://i.pinimg.com/200x/28/75/96/287596f98304bf1adc2c411619ae8fef.jpg"
-		},
-		{
-			name: "Astropower",
-			status: "online",
-			pfp: "https://ashisheditz.com/wp-content/uploads/2024/03/cool-anime-pfp-demon-slayer-HD.jpg"
-		},
-		{
-			name: "Assaultive",
-			status: "offline",
-			pfp: "https://i1.sndcdn.com/artworks-1Li0JIJrQGlojD3y-AEiNkw-t500x500.jpg"
-		},
-		{
-			name: "Redshock",
-			status: "offline",
-			pfp: "https://cdn.pfps.gg/pfps/7094-boy-pfp.png"
-		},
-		{
-			name: "Parley",
-			status: "offline",
-			pfp: "https://pbs.twimg.com/media/EscE6ckU0AA-Uhe.png"
-		},
-	]; //Remplace temporairement la requete qui devra être de la meme forme
 
-	chatButton.addEventListener("click", () => {
+	chatButton.addEventListener("click", async () => {
 		chatDiv.style.display = "flex";
+		gameButtonChatHome.removeAttribute("id");
+		privateButtonChatHome.setAttribute("id", "selected");
+		await showListUserMessage(userList);
 	});
 	topChatHomeCross.addEventListener("click", () => {
 		chatDiv.style.display = "none";
 	});
-
-	showListUserMessage(userList);
-	privateButtonChatHome.addEventListener("click", () => {
+	
+	privateButtonChatHome.addEventListener("click", async () => {
 		gameButtonChatHome.removeAttribute("id");
 		privateButtonChatHome.setAttribute("id", "selected");
-		showListUserMessage(userList);
+		await showListUserMessage(userList);
 	});
 	gameButtonChatHome.addEventListener("click", () => {
 		privateButtonChatHome.removeAttribute("id");
@@ -76,10 +47,17 @@ function	liveChat() {
 	});
 }
 
-function	showListUserMessage(userList) {
+async function	showListUserMessage(userList) {
 	const	divMessageListChatHome = document.getElementById("messageListChatHome");
 	let		divUser;
 
+	socket.send(JSON.stringify({
+		type: 'get_private_list_user',
+		token: token,
+	}));
+
+	await waitForUserList();
+	console.log(userList);
 	divMessageListChatHome.style.height = "100%";
 	divMessageListChatHome.style.paddingBottom = "10px";
 	divMessageListChatHome.innerHTML = '';
