@@ -6,12 +6,14 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:35 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/03 14:57:19 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/03 23:44:10 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { socket, sendRequest } from "./websocket.js";
+import { sendRequest } from "./websocket.js";
 import { userList, waitForUserList } from "./typeResponse/typePrivateListUser.js";
+import { messageList, waitForMessageList } from "./typeResponse/typePrivateListMessage.js";
+import { userMeInfo } from "./typeResponse/typeLogin.js";
 
 document.addEventListener('DOMContentLoaded', () => {
 	liveChat();
@@ -72,17 +74,17 @@ async function	showListUserMessage() {
 	divMessageListChatHome.innerHTML += "<p style='text-align: center; margin-top: 20px;'>New conversation +</p>";
 	divUser = document.getElementsByClassName("user");
 	for (let i = 0; i < divUser.length; i++) {
-		divUser[i].addEventListener("click", () => {
-			launchPrivateChat(userList[i]);
+		divUser[i].addEventListener("click", async () => {
+			await launchPrivateChat(userList[i]);
 		});
 	}
 }
 
-function	showActualGameMessage() {
+function	showActualGameMessage(id) {
 	const	divMessageListChatHome = document.getElementById("messageListChatHome");
 	let		me = "Kumita";
 	let		request = {
-		isInGame: true,
+		isInGame: false,
 		opponent: {
 			name: "Astropower",
 			pfp: "https://ashisheditz.com/wp-content/uploads/2024/03/cool-anime-pfp-demon-slayer-HD.jpg"
@@ -147,50 +149,13 @@ function	showActualGameMessage() {
 	`;
 }
 
-function	launchPrivateChat(user) {
+async function	launchPrivateChat(user) {
 	const	divMessageListChatHome = document.getElementById("messageListChatHome");
 	const	divButtonTypeChatHome = document.getElementById("buttonTypeChatHome");
 	let		returnButton;
-	let		me = "Kumita";
-	let		request = {
-		opponent: {
-			name: user.name,
-			pfp: user.pfp
-		},
-		listMessage: [
-			{
-				from: user.name,
-				content: "Salut !",
-				date: "10:05 31/07/2024"
-			},
-			{
-				from: "Kumita",
-				content: "Hey",
-				date: "10:05 31/07/2024"
-			},
-			{
-				from: user.name,
-				content: "Tu veux coder un peu ?",
-				date: "10:06 31/07/2024"
-			},
-			{
-				from: "Kumita",
-				content: "Ouais, je suis partant !",
-				date: "10:06 31/07/2024"
-			},
-			{
-				from: "Kumita",
-				content: "Ce bug était vraiment galère à résoudre, mais on y est arrivé.",
-				date: "10:45 31/07/2024"
-			},
-			{
-				from: user.name,
-				content: "Ouais, mais t'as trouvé la solution. À la prochaine !",
-				date: "10:46 31/07/2024"
-			},
-		]
-	}; //Remplace temporairement la requete qui devra être de la meme forme
-
+	
+	sendRequest("get_private_list_message", {id: user.id});
+	await waitForMessageList();
 	let h2Button = divButtonTypeChatHome.getElementsByTagName("h2");
 	let len = h2Button.length;
 	for (let i = 0; i < len; i++) {
@@ -208,17 +173,16 @@ function	launchPrivateChat(user) {
 			<h2 id="selected">Private</h2>
 			<h2>Game</h2>
 		`;
-		liveChat();
+		showListUserMessage();
 	});
-
 
 
 	divMessageListChatHome.style.height = "230px";
 	divMessageListChatHome.style.paddingBottom = "20px";
 	divMessageListChatHome.innerHTML = '';
-	request.listMessage.forEach(element => {
+	messageList.forEach(element => {
 		divMessageListChatHome.innerHTML += `
-		<div class="${element.from === me ? "meMessage" : "opponentMessage"}">
+		<div class="${element.from === userMeInfo.id ? "meMessage" : "opponentMessage"}">
 		<p class="content">${element.content}</p>
 		<p class="time">${element.date}</p>
 		</div>

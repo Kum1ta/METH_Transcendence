@@ -6,23 +6,27 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/03 15:04:37 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/03 23:23:45 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { typeLogin } from "./typeResponse/typeLogin.js";
 import { typePrivateListUser } from "./typeResponse/typePrivateListUser.js";
+import { typePrivateListMessage } from "./typeResponse/typePrivateListMessage.js";
 
 const socket = new WebSocket('ws://localhost:8000/');
-const token = "123456";
+const token = "IDSNCSDAd465sd13215421";
 
-const typeResponse = ["login", "private_list_user"];
-const functionResponse = [typeLogin, typePrivateListUser];
+const typeResponse = ["login", "private_list_user", "private_list_message"];
+const functionResponse = [typeLogin, typePrivateListUser, typePrivateListMessage];
 
 socket.onopen = () => {
 	console.log('Connected');
 	if (token)
 		sendRequest("login", {"type": "byToken", "token": token});
+	// |Eddy| Requete pour se connecter par mail et password. En attente du front pour le faire (déjà fonctionnel côté back)
+	// sendRequest("login", {type: "byPass", mail: "aa@aa.fr", password: "ABC123"});
+
 };
 
 socket.onmessage = (event) => {
