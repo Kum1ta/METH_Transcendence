@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:35 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/02 03:09:12 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/03 08:31:07 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ function	liveChat() {
 		chatDiv.style.display = "flex";
 		gameButtonChatHome.removeAttribute("id");
 		privateButtonChatHome.setAttribute("id", "selected");
-		await showListUserMessage(userList);
+		await showListUserMessage();
 	});
 	topChatHomeCross.addEventListener("click", () => {
 		chatDiv.style.display = "none";
@@ -38,7 +38,7 @@ function	liveChat() {
 	privateButtonChatHome.addEventListener("click", async () => {
 		gameButtonChatHome.removeAttribute("id");
 		privateButtonChatHome.setAttribute("id", "selected");
-		await showListUserMessage(userList);
+		await showListUserMessage();
 	});
 	gameButtonChatHome.addEventListener("click", () => {
 		privateButtonChatHome.removeAttribute("id");
@@ -47,13 +47,14 @@ function	liveChat() {
 	});
 }
 
-async function	showListUserMessage(userList) {
+async function	showListUserMessage() {
 	const	divMessageListChatHome = document.getElementById("messageListChatHome");
 	let		divUser;
 
 	socket.send(JSON.stringify({
 		type: 'get_private_list_user',
 		token: token,
+		content: {}
 	}));
 
 	await waitForUserList();

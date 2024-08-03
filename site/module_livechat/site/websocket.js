@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   websocket.js                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/02 03:00:42 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/03 08:46:22 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { typeLogin } from "./typeResponse/typeLogin.js";
 import { typePrivateListUser } from "./typeResponse/typePrivateListUser.js";
 
-const token = ['123456'];
-const socket = new WebSocket('ws://localhost:8000/', token);
+const socket = new WebSocket('ws://localhost:8000/');
+const token = "123456";
 
 const typeResponse = ["login", "private_list_user"];
 const functionResponse = [typeLogin, typePrivateListUser];
