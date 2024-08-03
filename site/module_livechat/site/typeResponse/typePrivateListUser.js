@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   typePrivateListUser.js                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 01:56:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/02 11:42:46 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/03 14:36:20 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,18 @@ let userListResolve = null;
 
 function waitForUserList() {
 	return new Promise((resolve) => {
-		if (userListAvailable) {
+		if (userListAvailable)
 			resolve();
-		} else {
+		else
 			userListResolve = resolve;
-		}
 	});
 }
 
 function typePrivateListUser(list) {
 	userList = list;
 	userListAvailable = true;
-	console.log(userListResolve)
-	if (userListResolve) {
+	if (userListResolve)
+	{
 		userListResolve();
 		userListResolve = null;
 	}
