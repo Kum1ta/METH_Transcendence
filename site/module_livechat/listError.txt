@@ -5,3 +5,5 @@
 - 9001 : Token not found
 - 9002 : Invalid json
 - 9003 : Invalid path
+- 9004 : Invalid type
+- 9005 : Invalid request
