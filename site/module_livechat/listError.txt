@@ -7,3 +7,5 @@
 - 9003 : Invalid path
 - 9004 : Invalid type
 - 9005 : Invalid request
+- 9006 : Invalid login type
+- 9007 : Invalid username or password

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   websocket.js                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/03 08:46:22 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/03 15:04:37 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ const functionResponse = [typeLogin, typePrivateListUser];
 
 socket.onopen = () => {
 	console.log('Connected');
+	if (token)
+		sendRequest("login", {"type": "byToken", "token": token});
 };
 
 socket.onmessage = (event) => {
@@ -48,4 +50,18 @@ socket.onclose = () => {
 	console.log('Disconnected');
 };
 
-export { socket, token};
+function	sendRequest(type, content) {
+	let coc = null;
+
+	if (content instanceof Object)
+		coc = JSON.stringify(content);
+	else
+		coc = content;
+	socket.send(JSON.stringify({
+		type: type,
+		token: token,
+		content: content
+	}));
+}
+
+export { socket, token, sendRequest };

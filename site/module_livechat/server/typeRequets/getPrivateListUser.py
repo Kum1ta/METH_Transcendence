@@ -1,5 +1,17 @@
-import asyncio
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    getPrivateListUser.py                              :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/08/03 15:10:23 by edbernar          #+#    #+#              #
+#    Updated: 2024/08/03 17:07:21 by edbernar         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 import websockets
+import asyncio
 import json
 
 data = [
@@ -35,10 +47,8 @@ data = [
 		},
 ]
 
-async def getPrivateListUser(websocket):
+async def getPrivateListUser(userClass):
 	# |TOM| Faire une requête à la base de données pour récupérer la liste des
 	# utilisateurs qui doivent apparaitre dans la liste du chat privé
 	# (ceux qui ont eu conversation avec l'utilisateur)
-	jsonVar = {"type": "private_list_user", "content": data}
-	print(jsonVar)
-	await websocket.send(json.dumps(jsonVar))
+	await userClass.send({"type": "get_private_list_user", "content": data})

@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:35 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/03 08:31:07 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/03 14:57:19 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { socket, token } from "./websocket.js";
+import { socket, sendRequest } from "./websocket.js";
 import { userList, waitForUserList } from "./typeResponse/typePrivateListUser.js";
-// Peut etre faire une fonction pour faire les requetes pour ne pas à avoir à ramener token partout
 
 document.addEventListener('DOMContentLoaded', () => {
 	liveChat();
@@ -51,28 +50,25 @@ async function	showListUserMessage() {
 	const	divMessageListChatHome = document.getElementById("messageListChatHome");
 	let		divUser;
 
-	socket.send(JSON.stringify({
-		type: 'get_private_list_user',
-		token: token,
-		content: {}
-	}));
-
+	sendRequest("get_private_list_user", {});
 	await waitForUserList();
-	console.log(userList);
 	divMessageListChatHome.style.height = "100%";
 	divMessageListChatHome.style.paddingBottom = "10px";
 	divMessageListChatHome.innerHTML = '';
 	divMessageListChatHome.scrollTop = 0;
-	userList.forEach(element => {
-		divMessageListChatHome.innerHTML += `
-			<div class="user">
-				<div class="status ${element.status}">
-					<img src="${element.pfp}">
+	if (JSON.stringify(userList) !== "{}")
+	{
+		userList.forEach(element => {
+			divMessageListChatHome.innerHTML += `
+				<div class="user">
+					<div class="status ${element.status}">
+						<img src="${element.pfp}">
+					</div>
+					<h3>${element.name}</h3>
 				</div>
-				<h3>${element.name}</h3>
-			</div>
-		`;		
-	});
+			`;		
+		});
+	}
 	divMessageListChatHome.innerHTML += "<p style='text-align: center; margin-top: 20px;'>New conversation +</p>";
 	divUser = document.getElementsByClassName("user");
 	for (let i = 0; i < divUser.length; i++) {
