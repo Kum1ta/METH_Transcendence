@@ -1,0 +1,13 @@
+8000 ~ 8999 : Ok code
+
+9000 ~ 9999 : Error code
+- 9000 : Invalid token
+- 9001 : Token not found
+- 9002 : Invalid json
+- 9003 : Invalid path
+- 9004 : Invalid type
+- 9005 : Invalid request
+- 9006 : Invalid login type
+- 9007 : Invalid username or password
+- 9008 : User not found
+- 9009 : Invalid message sent
