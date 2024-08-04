@@ -6,11 +6,11 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:21:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/04 19:49:35 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/04 22:41:07 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { sendRequest } from "../websocket";
+import { sendRequest } from "../websocket.js";
 
 function	showActualGameMessage()
 {
@@ -20,7 +20,7 @@ function	showActualGameMessage()
 		isInGame: false,
 		opponent: {
 			name: "Astropower",
-			pfp: "https://ashisheditz.com/wp-content/uploads/2024/03/cool-anime-pfp-demon-slayer-HD.jpg"
+			id: "301547"
 		},
 		listMessage: [
 			{
@@ -68,8 +68,8 @@ function	showActualGameMessage()
 	request.listMessage.forEach(element => {
 		divMessageListChatHome.innerHTML += `
 		<div class="${element.from === me ? "meMessage" : "opponentMessage"}">
-		<p class="content">${element.content}</p>
-		<p class="time">${element.date}</p>
+			<p class="content">${element.content}</p>
+			<p class="time">${element.date}</p>
 		</div>
 		`;
 	});
