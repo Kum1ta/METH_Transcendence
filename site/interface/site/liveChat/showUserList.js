@@ -6,13 +6,13 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:21:10 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/04 19:29:20 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/04 22:54:30 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { waitForUserList } from "../typeResponse/typePrivateListUser.js";
 import { userList } from "../typeResponse/typePrivateListUser.js";
-import { launchPrivateChat } from "./launchPrivateChat.js";
+import { showPrivateChat } from "./showPrivateChat.js";
 import { sendRequest } from "../websocket.js";
 
 async function	showListUser() {
@@ -42,7 +42,7 @@ async function	showListUser() {
 	divUser = document.getElementsByClassName("user");
 	for (let i = 0; i < divUser.length; i++) {
 		divUser[i].addEventListener("click", async () => {
-			await launchPrivateChat(userList[i]);
+			await showPrivateChat(userList[i]);
 		});
 	}
 }

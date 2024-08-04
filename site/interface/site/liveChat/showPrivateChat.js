@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   launchPrivateChat.js                               :+:      :+:    :+:   */
+/*   showPrivateChat.js                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:17:54 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/04 19:42:49 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/04 23:00:10 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@ import { userMeInfo } from "../typeResponse/typeLogin.js";
 import { showListUser } from "./showUserList.js";
 import { sendRequest } from "../websocket.js";
 
-async function	launchPrivateChat(user)
+let savedButtons = [];
+
+async function	showPrivateChat(user)
 {
 	const	divMessageListChatHome = document.getElementById("messageListChatHome");
 
@@ -29,6 +31,16 @@ async function	launchPrivateChat(user)
 	await displayInputBar(divMessageListChatHome, user);
 }
 
+async function	restoreButton()
+{
+	const	divButtonTypeChatHome = document.getElementById("buttonTypeChatHome");
+
+	divButtonTypeChatHome.innerHTML = '';
+	savedButtons.forEach(element => {
+		divButtonTypeChatHome.appendChild(element);
+	});
+}
+
 async function	changeButton(user)
 {
 	const	divButtonTypeChatHome = document.getElementById("buttonTypeChatHome");
@@ -38,8 +50,10 @@ async function	changeButton(user)
 
 	h2Button = divButtonTypeChatHome.getElementsByTagName("h2");
 	lenh2Button = h2Button.length;
+	savedButtons.splice(0, savedButtons.length);
 	for (let i = 0; i < lenh2Button; i++) {
-		h2Button[i - i].remove();
+		savedButtons.push(h2Button[0]);
+		h2Button[0].remove();
 	}
 	divButtonTypeChatHome.innerHTML += `
 		<h2>${user.name}</h2>
@@ -49,10 +63,7 @@ async function	changeButton(user)
 	returnButton = document.getElementById("returnButton");
 	returnButton.style.cursor = "pointer";
 	returnButton.addEventListener("click", () => {
-		divButtonTypeChatHome.innerHTML = `
-			<h2 id="selected">Private</h2>
-			<h2>Game</h2>
-		`;
+		restoreButton();
 		infoPanel.isOpen = false;
 		showListUser();
 	});
@@ -122,4 +133,4 @@ function	sendMessage(user) {
 	sendRequest("send_private_message", message);
 }
 
-export { launchPrivateChat };
+export { showPrivateChat };
