@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 15:10:23 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/03 22:30:13 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/04 14:00:44 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,4 +57,5 @@ async def getPrivateListUser(userClass, content=None):
 	# |TOM| Faire une requête à la base de données pour récupérer la liste des
 	# utilisateurs qui doivent apparaitre dans la liste du chat privé
 	# (ceux qui ont eu conversation avec l'utilisateur)
+	# Si user existe pas, faire ça : await userClass.sendError("User not found", 9008)
 	await userClass.send({"type": "private_list_user", "content": data})

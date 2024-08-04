@@ -9,3 +9,5 @@
 - 9005 : Invalid request
 - 9006 : Invalid login type
 - 9007 : Invalid username or password
+- 9008 : User not found
+- 9009 : Invalid message sent

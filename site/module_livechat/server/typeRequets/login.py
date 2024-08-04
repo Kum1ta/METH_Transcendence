@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/03 22:35:45 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/04 15:51:04 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ userList = [
 		"token": "IDSNCSDAd465sd13215421",
 		"mail": "eddy@ediwor.fr",
 		"password": "ABC123",
-		"id": 4561268
+		"id": 9999999
 	},
 	{
 		"username": "user2",

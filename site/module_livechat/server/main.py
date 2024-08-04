@@ -6,12 +6,13 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:40 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/03 23:13:58 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/04 14:31:26 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from typeRequets.getPrivateListMessage import getPrivateListMessage
 from typeRequets.getPrivateListUser import getPrivateListUser
+from typeRequets.sendPrivateMessage import sendPrivateMessage
 from typeRequets.login import login
 from Class.User import User
 import websockets
@@ -19,14 +20,10 @@ import asyncio
 import json
 
 # Todo :
-# - verifier que l'utilisateur n'est pas déjà connecté
-# - envoyer des messages avec des caractères spéciaux type ", ', {, }, [, ]
+# - verifier que l'utilisateur n'est pas déjà connecté pour éviter les doublons
 
-
-connected_clients = []
-
-typeRequest = ["login", "get_private_list_user", "get_private_list_message"]
-functionRequest = [login, getPrivateListUser, getPrivateListMessage]
+typeRequest = ["login", "get_private_list_user", "get_private_list_message", "send_private_message"]
+functionRequest = [login, getPrivateListUser, getPrivateListMessage, sendPrivateMessage]
 
 async def	handler(websocket, path):
 	if (path != "/"):
@@ -34,7 +31,6 @@ async def	handler(websocket, path):
 		await websocket.close()
 		return
 	userClass = User(websocket)
-	connected_clients.append(userClass)
 	try:
 		async for resquet in userClass.websocket:
 			try:
@@ -58,7 +54,6 @@ async def	handler(websocket, path):
 	except websockets.ConnectionClosed:
 		pass
 	await userClass.close()
-	connected_clients.remove(userClass)
 start_server = websockets.serve(handler, "localhost", 8000, subprotocols=['123456'])
 
 asyncio.get_event_loop().run_until_complete(start_server)
