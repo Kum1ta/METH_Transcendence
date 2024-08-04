@@ -6,19 +6,20 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/03 23:23:45 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:17:41 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { typeLogin } from "./typeResponse/typeLogin.js";
 import { typePrivateListUser } from "./typeResponse/typePrivateListUser.js";
 import { typePrivateListMessage } from "./typeResponse/typePrivateListMessage.js";
+import { typeNewPrivateMessage } from "./typeResponse/typeNewPrivateMessage.js";
 
 const socket = new WebSocket('ws://localhost:8000/');
 const token = "IDSNCSDAd465sd13215421";
 
-const typeResponse = ["login", "private_list_user", "private_list_message"];
-const functionResponse = [typeLogin, typePrivateListUser, typePrivateListMessage];
+const typeResponse = ["login", "private_list_user", "private_list_message", "new_private_message"];
+const functionResponse = [typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage];
 
 socket.onopen = () => {
 	console.log('Connected');

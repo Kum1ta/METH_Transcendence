@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 15:54:14 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/03 23:30:42 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/04 15:55:15 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ import websockets
 import asyncio
 import json
 
+connected_clients = []
 
 class User():
 	debugMode = True
@@ -26,12 +27,14 @@ class User():
 		if (self.debugMode):
 			print("\033[42m|------ New user Connected ------|\033[1;0m")
 		self.websocket = websocket
+		connected_clients.append(self)
 
 	def __del__(self):
 		if (self.debugMode):
 			print("\033[43m|------ User disconnected -------|\033[1;0m")
 			print("User          :", self.username)
 			print("Id            :", self.id)
+		connected_clients.remove(self)
 
 	async def	sendError(self, message, code, error=None):
 		try:
@@ -79,7 +82,7 @@ class User():
 				except:
 					pass
 				try:
-					print("Content type  :", type(request["content"]))
+					print("Content type  :", request["content"])
 				except:
 					pass
 			elif (self.debugMode and typeRequest == 1):

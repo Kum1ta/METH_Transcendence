@@ -6,14 +6,19 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:35 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/03 23:44:10 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/04 19:03:57 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { sendRequest } from "./websocket.js";
 import { userList, waitForUserList } from "./typeResponse/typePrivateListUser.js";
-import { messageList, waitForMessageList } from "./typeResponse/typePrivateListMessage.js";
+import { messageList, infoPanel, waitForMessageList } from "./typeResponse/typePrivateListMessage.js";
 import { userMeInfo } from "./typeResponse/typeLogin.js";
+
+document.addEventListener('keydown', (event) => {
+	if (event.key === "-")
+		console.log(userList);
+});
 
 document.addEventListener('DOMContentLoaded', () => {
 	liveChat();
@@ -34,6 +39,7 @@ function	liveChat() {
 	});
 	topChatHomeCross.addEventListener("click", () => {
 		chatDiv.style.display = "none";
+		infoPanel.isOpen = false;
 	});
 	
 	privateButtonChatHome.addEventListener("click", async () => {
@@ -80,7 +86,7 @@ async function	showListUserMessage() {
 	}
 }
 
-function	showActualGameMessage(id) {
+function	showActualGameMessage() {
 	const	divMessageListChatHome = document.getElementById("messageListChatHome");
 	let		me = "Kumita";
 	let		request = {
@@ -156,6 +162,9 @@ async function	launchPrivateChat(user) {
 	
 	sendRequest("get_private_list_message", {id: user.id});
 	await waitForMessageList();
+	infoPanel.id = user.id;
+	infoPanel.isOpen = true;
+	infoPanel.divMessage = divMessageListChatHome;
 	let h2Button = divButtonTypeChatHome.getElementsByTagName("h2");
 	let len = h2Button.length;
 	for (let i = 0; i < len; i++) {
@@ -173,6 +182,7 @@ async function	launchPrivateChat(user) {
 			<h2 id="selected">Private</h2>
 			<h2>Game</h2>
 		`;
+		infoPanel.isOpen = false;
 		showListUserMessage();
 	});
 
@@ -192,8 +202,34 @@ async function	launchPrivateChat(user) {
 	divMessageListChatHome.innerHTML += `
 		<div id="inputMessageDiv">
 			<textarea type="text" id="inputMessage" placeholder="Enter your message here"></textarea>
-			<p id="sendButton">\></p>
+			<p id="sendButton"">\></p>
 		</div>
 	`;
+	let sendButton = document.getElementById("sendButton");
+	sendButton.style.cursor = "pointer";
+	sendButton.addEventListener("click", () => {
+		sendMessage();
+		inputMessage.value = "";
+	});
+	let inputMessage = document.getElementById("inputMessage");
+	inputMessage.addEventListener("keyup", (event) => {
+		if (event.key === "Enter" && !event.shiftKey && inputMessage.value.trim() !== "")
+		{
+			event.preventDefault();
+			sendMessage(user);
+			inputMessage.value = "";
+			inputMessage.focus();
+		}
+	});
+	inputMessage.addEventListener("keydown", (event) => {
+		if (event.key === "Enter")
+			event.preventDefault();
+	});
+	inputMessage.focus();
+}
 
+function	sendMessage(user) {
+	const inputMessage = document.getElementById("inputMessage");
+
+	sendRequest("send_private_message", {from: userMeInfo.id, to: user.id, content: inputMessage.value, time: new Date()});
 }
