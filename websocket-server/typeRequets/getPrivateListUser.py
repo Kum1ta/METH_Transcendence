@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    getPrivateListUser.py                              :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
+#    By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 15:10:23 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/04 14:00:44 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/05 16:36:53 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ data = [
 			"status": "offline",
 			"pfp": "https://pbs.twimg.com/media/EscE6ckU0AA-Uhe.png",
 			"id": 654123
-		},
+		}
 ]
 
 async def getPrivateListUser(userClass, content=None):

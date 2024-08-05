@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   showPrivateChat.js                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:17:54 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/04 23:00:10 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/05 16:51:04 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,8 @@ async function	displayInputBar(divMessageListChatHome, user)
 	inputMessage.focus();
 }
 
-function	sendMessage(user) {
+function	sendMessage(user)
+{
 	const	inputMessage = document.getElementById("inputMessage");
 	let 	message;
 
