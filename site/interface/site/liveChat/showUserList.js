@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   showUserList.js                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:21:10 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/04 22:54:30 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/05 14:28:31 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,17 @@ async function	showListUser() {
 	if (JSON.stringify(userList) !== "{}")
 	{
 		userList.forEach(element => {
-			divMessageListChatHome.innerHTML += `
-				<div class="user">
-					<div class="status ${element.status}">
-						<img src="${element.pfp}">
-					</div>
-					<h3>${element.name}</h3>
+			let user = document.createElement("div");
+			user.classList.add("user");
+			user.innerHTML = `
+				<div class="status ${element.status}">
+						<img>
 				</div>
-			`;		
+				<h3></h3>
+			`
+			user.querySelector("img").src = element.pfp;
+			user.querySelector("h3").innerText = element.name;
+			divMessageListChatHome.appendChild(user);
 		});
 	}
 	divMessageListChatHome.innerHTML += "<p style='text-align: center; margin-top: 20px;'>New conversation +</p>";

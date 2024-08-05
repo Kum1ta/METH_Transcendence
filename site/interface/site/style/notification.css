@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   notification.css                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:44:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/05 00:15:17 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/05 18:17:02 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,9 @@
 #divNotification {
 	position: fixed;
 	overflow: hidden;
-	top: 10px;
-	right: 0;
-	width: 300px;
-	height: 100%;
+	font-family: 'Poppins';
+	top: 0px;
+	right: 10px;
 	display: flex;
 	flex-direction: column;
 	z-index: 1000;
@@ -48,10 +47,41 @@
 #divNotification .notification {
 	background-color: #222222;
 	color: white;
-	padding: 10px;
-	margin: 10px;
-	border-radius: 5px;
-	height: 100px;
+	margin-top: 10px;
 	min-height: 100px;
+	min-width: 150px;
+	max-width: 400px;
 	animation: slideIn 0.1s;
+}
+
+#divNotification .header {
+	display: flex;
+	flex-direction: row;
+}
+
+#divNotification .header h1 {
+	font-size: 1.2em;
+	margin: 0;
+}
+
+#divNotification .header img {
+	background-color: #222222;
+	color: white;
+	border: none;
+	margin-right: 6px;
+	margin-top: 4px;
+}
+
+#divNotification .content {
+	margin: 0;
+	width: 95%;
+	padding: 2.5%;
+}
+
+#divNotification .content img {
+	object-fit: cover; object-position: 100% 0;
+}
+
+#divNotification .content p {
+	word-wrap: break-word;
 }
