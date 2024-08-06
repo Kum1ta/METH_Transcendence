@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:35 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/05 18:10:32 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:43:35 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,23 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+function	createRamdomString()
+{
+	const	charset	= "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	let		result	= "";
+	let		length	= Math.floor(Math.random() * 120);
+
+	for (let i = 0; i < length; i++)
+		result += charset.charAt(Math.floor(Math.random() * charset.length));
+	return (result);
+}
 
 document.addEventListener("keydown", (e) => {
 	if (e.key === "+")
-		createNotification.new("Server", "Server dsalj dhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkver dsalj dhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkver dsalj dhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkver dsalj dhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkver dsalj dhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkver dsalj dhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dkasjdl jsahkjd ashkjddhsakj hdsakjh dasjdl jsahkjd ashkjd shakjdh sakjhd askjhd aksjhd kjsahd jsk is slow");
+		createNotification.new("Server", createRamdomString(), createNotification.defaultIcon.info, () => {
+			console.log("Action button");	
+		}, "Send");
+
+	if (e.key === "-")
+		createNotification.new("Server", createRamdomString());
 });
