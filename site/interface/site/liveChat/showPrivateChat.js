@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   showPrivateChat.js                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:17:54 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/05 16:51:04 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:32:35 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,12 @@ async function	restoreButton()
 
 async function	changeButton(user)
 {
-	const	divButtonTypeChatHome = document.getElementById("buttonTypeChatHome");
-	let		returnButton;
-	let		h2Button;
-	let		lenh2Button;
+	const	divButtonTypeChatHome	= document.getElementById("buttonTypeChatHome");
+	const	h2Username				= document.createElement("h2");
+	const	h2UsernameNode			= document.createTextNode(user.name);
+	let		returnButton 			= null;
+	let		h2Button				= null;
+	let		lenh2Button				= 0;
 
 	h2Button = divButtonTypeChatHome.getElementsByTagName("h2");
 	lenh2Button = h2Button.length;
@@ -55,8 +57,9 @@ async function	changeButton(user)
 		savedButtons.push(h2Button[0]);
 		h2Button[0].remove();
 	}
-	divButtonTypeChatHome.innerHTML += `
-		<h2>${user.name}</h2>
+	h2Username.appendChild(h2UsernameNode);
+	divButtonTypeChatHome.appendChild(h2Username);
+	divButtonTypeChatHome	.innerHTML += `
 		<p id="returnButton" style="margin: 8px 10px 0 0; text-align: right;">Return</p>
 	`;
 	h2Button[0].style.cursor = "default";
@@ -71,16 +74,29 @@ async function	changeButton(user)
 
 async function	displayAllMessage(divMessageListChatHome)
 {
+	let		newDiv				= null;
+	let		contentNode			= null;
+	let		dateNode			= null;
+	let		tmp					= null;
+
 	divMessageListChatHome.style.height = "230px";
 	divMessageListChatHome.style.paddingBottom = "20px";
 	divMessageListChatHome.innerHTML = '';
 	messageList.forEach(element => {
-		divMessageListChatHome.innerHTML += `
-		<div class="${element.from === userMeInfo.id ? "meMessage" : "opponentMessage"}">
-		<p class="content">${element.content}</p>
-		<p class="time">${element.date}</p>
-		</div>
-		`;
+		newDiv = document.createElement("div");
+		contentNode = document.createTextNode(element.content);
+		dateNode = document.createTextNode(element.date);
+		console.log(element.from, userMeInfo.id);
+		newDiv.classList.add(element.from === userMeInfo.id ? "meMessage" : "opponentMessage");
+		tmp = document.createElement("p");
+		tmp.classList.add("content");
+		tmp.appendChild(contentNode);
+		newDiv.appendChild(tmp);
+		tmp = document.createElement("p");
+		tmp.classList.add("time");
+		tmp.appendChild(dateNode);
+		newDiv.appendChild(tmp);
+		divMessageListChatHome.appendChild(newDiv);
 	});
 	divMessageListChatHome.scrollTop = divMessageListChatHome.scrollHeight;
 }

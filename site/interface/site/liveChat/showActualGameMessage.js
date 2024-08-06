@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:21:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/04 22:41:07 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:19:51 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@ import { sendRequest } from "../websocket.js";
 
 function	showActualGameMessage()
 {
-	const	divMessageListChatHome = document.getElementById("messageListChatHome");
-	let		me = "Kumita";
+	const	divMessageListChatHome	= document.getElementById("messageListChatHome");
+	let		newDiv					= null;
+	let		contentNode				= null;
+	let		dateNode				= null;
+	let		tmp						= null;
+	let		me 						= "Kumita";
 	let		request = {
-		isInGame: false,
+		isInGame: true,
 		opponent: {
 			name: "Astropower",
 			id: "301547"
@@ -66,12 +70,19 @@ function	showActualGameMessage()
 		return ;	
 	}
 	request.listMessage.forEach(element => {
-		divMessageListChatHome.innerHTML += `
-		<div class="${element.from === me ? "meMessage" : "opponentMessage"}">
-			<p class="content">${element.content}</p>
-			<p class="time">${element.date}</p>
-		</div>
-		`;
+		newDiv = document.createElement("div");
+		contentNode = document.createTextNode(element.content);
+		dateNode = document.createTextNode(element.date);
+		newDiv.classList.add(element.from == me ? "meMessage" : "opponentMessage");
+		tmp = document.createElement("p");
+		tmp.classList.add("content");
+		tmp.appendChild(contentNode);
+		newDiv.appendChild(tmp);
+		tmp = document.createElement("p");
+		tmp.classList.add("time");
+		tmp.appendChild(dateNode);
+		newDiv.appendChild(tmp);
+		divMessageListChatHome.appendChild(newDiv);
 	});
 	divMessageListChatHome.scrollTop = divMessageListChatHome.scrollHeight;
 	divMessageListChatHome.innerHTML += `

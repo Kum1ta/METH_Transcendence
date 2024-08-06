@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 22:53:14 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/04 22:36:29 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/06 23:32:08 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ async def getPrivateListMessage(userClass, content):
 	copyListMessage = listMessage.copy()
 	for message in copyListMessage["content"]:
 		if (random.randint(1, 10) % 2 == 0):
-			message["from"] = 4561268
+			message["from"] = 9999999
 		else:
 			message["from"] = content["id"]
 		message["content"] = generate_random_string()

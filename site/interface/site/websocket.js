@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/04 23:29:58 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:33:28 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ socket.onopen = () => {
 };
 
 socket.onmessage = (event) => {
-	let response;
+	let	response;
 
 	try {
 		response = JSON.parse(event.data);
@@ -51,8 +51,7 @@ socket.onmessage = (event) => {
 	{
 		try {
 			functionResponse[typeResponse.indexOf(response.type)](response.content);
-		}
-		catch {
+		} catch {
 			console.warn(response);
 		}
 	}
