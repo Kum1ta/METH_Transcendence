@@ -6,14 +6,9 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:32:52 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/06 23:00:33 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:34:39 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*
-	Todo (Eddy) : 
-		- pause when hover
-*/
 
 function	createHeader(title, img)
 {
