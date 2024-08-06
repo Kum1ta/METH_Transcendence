@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:32:52 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/06 16:25:21 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:00:33 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
 	Todo (Eddy) : 
-		- Close button
 		- pause when hover
 */
 
 function	createHeader(title, img)
 {
-	const	divHeader	= document.createElement("div");
-	const	icon		= document.createElement("img");
-	const	h1Title		= document.createElement("h1");
-	const	cross		= document.createElement("p");
+	const	divHeader		= document.createElement("div");
+	const	icon			= document.createElement("img");
+	const	h1Title			= document.createElement("h1");
+	const	cross			= document.createElement("p");
+	const	titleTextNode	= document.createTextNode(title);
 
 	divHeader.classList.add("header");
 	if (img)
@@ -31,7 +31,7 @@ function	createHeader(title, img)
 		icon.style.position = 'absolute';
 		icon.src = img;
 	}
-	h1Title.innerHTML = title;
+	h1Title.appendChild(titleTextNode);
 	h1Title.style.textAlign = "center";
 	h1Title.style.width = "100%";
 	h1Title.style.marginTop = "5px";
@@ -43,6 +43,12 @@ function	createHeader(title, img)
 	cross.style.marginTop = '5px';
 	cross.style.fontSize = '20px';
 	cross.style.fontWeight = 'bold';
+	cross.addEventListener("click", () => {
+		divHeader.parentNode.style.animation = "slideOut 0.21s";
+		setTimeout(() => {
+			divHeader.parentNode.remove();
+		}, 199);
+	});
 	if (img)
 		divHeader.appendChild(icon);
 	divHeader.appendChild(h1Title);
@@ -52,20 +58,21 @@ function	createHeader(title, img)
 
 function	createContent(message)
 {
-	const	divContent	= document.createElement("div");
-	const	pMessage	= document.createElement("p");
-	const	limit		= 100;
+	const	divContent		= document.createElement("div");
+	const	pMessage		= document.createElement("p");
+	const	pMessageNode	= document.createTextNode(message);
+	const	limit			= 100;
 
 	divContent.classList.add("content");
 	pMessage.style.textAlign = "center";
 	if (message.length > limit)
 		message = message.substring(0, limit) + "...";
-	pMessage.innerHTML = message;
+	pMessage.appendChild(pMessageNode);
 	divContent.appendChild(pMessage);
 	return (divContent);
 }
 
-function	createLoadBar(timer)
+function	createLoadBar(newNotification, timer)
 {
 	const	divLoadBar		= document.createElement("div");
 	const	progress		= document.createElement("div");
@@ -79,6 +86,10 @@ function	createLoadBar(timer)
 	progress.style.height = '5px';
 	progress.style.width = '0px';
 	progress.style.backgroundColor = 'black';
+	newNotification.addEventListener("mouseover", () => {
+		clearInterval(interval);
+		progress.style.width = "100%";
+	});
 	interval = setInterval(() => {
 		progress.style.width = (intervalTimer * i) * 100 / timer + "%";
 		i++;
@@ -86,19 +97,21 @@ function	createLoadBar(timer)
 	setTimeout(() => {
 		clearInterval(interval);
 	}, timer);
-	return (divLoadBar);
+	newNotification.appendChild(divLoadBar);
+	return (interval);
 }
 
 function	createFooter(action, actionText)
 {
 	const	newButton	= document.createElement("div");
+	const	textNode	= document.createTextNode(actionText);
 
 	if (action == null)
 		return (null);
 	newButton.style.cursor = "pointer";
 	if (actionText.length > 20)
 		actionText = actionText.substring(0, 20) + "...";
-	newButton.innerHTML = actionText;
+	newButton.appendChild(textNode);
 	newButton.setAttribute("onclick", action);
 	newButton.classList.add("footer");
 	if (typeof(action) !== "function")
@@ -114,8 +127,10 @@ function	newNotification(title, message, img, action, timer, actionText)
 	const	header			= createHeader(title, img);
 	const	content			= createContent(message);
 	const	footer			= createFooter(action, actionText);
-	const	loadBar			= createLoadBar(timer);
+	let		intervalLoadBar	= null;
+	let		timeoutInTimout	= null;
 
+	console.log("New notification: " + message);
 	newNotification.classList.add("notification");
 	newNotification.style.width = "100%";
 	newNotification.appendChild(header);
@@ -123,13 +138,18 @@ function	newNotification(title, message, img, action, timer, actionText)
 	newNotification.appendChild(content);
 	if (footer)
 		newNotification.appendChild(footer);
-	newNotification.appendChild(loadBar);
-	setTimeout(() => {
-		setTimeout(() => {
+	intervalLoadBar = createLoadBar(newNotification, timer);
+	const timeout = setTimeout(() => {
+		timeoutInTimout = setTimeout(() => {
 			divNotification.removeChild(newNotification);
 		}, 199);
 		newNotification.style.animation = "slideOut 0.21s";
 	}, timer);
+	newNotification.addEventListener("mouseover", () => {
+		clearTimeout(timeout);
+		clearTimeout(timeoutInTimout);
+		clearInterval(intervalLoadBar);
+	});
 }
 
 class notification
@@ -146,7 +166,6 @@ class notification
 
 	new(title, message, img=null, action=null, actionText="Confirm")
 	{
-		console.log("New notification: " + message);
 		newNotification(title, message, img, action, this.timer, actionText);
 	}
 }
