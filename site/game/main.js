@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 15:29:04 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/07 15:54:56 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { sendRequest } from './websocket.js';
+import { MoveObject } from './controls.js';
 import * as THREE from 'three';
 import Stats from 'stats.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -49,6 +50,8 @@ const ball = new THREE.Mesh(geometryBall, materialBall);
 ball.position.y = 0.1;
 ball.castShadow = true;
 scene.add(ball);
+const controlBall = new MoveObject(ball);
+
 
 
 let spotLight = createSpotLight(0xffffff, ball, scene);
@@ -57,9 +60,10 @@ let lightPoint = createLightPoint(scene);
 createMap(scene);
 
 
-// const controls = new OrbitControls(camera, renderer.domElement);
-// camera.position.set(0, 1, 5);
-// controls.update();
+const controls = new OrbitControls(camera, renderer.domElement);
+camera.position.set(0, 1, 5);
+controls.update();
+
 
 
 function animate() {
