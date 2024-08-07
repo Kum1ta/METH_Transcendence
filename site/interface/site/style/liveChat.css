@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:53:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 12:02:11 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/07 18:20:44 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 	height: 40px;
 	text-align: center;
 	cursor : pointer;
-	z-index: 998;
+	z-index: 10;
 }
 
 #chatButton p {
