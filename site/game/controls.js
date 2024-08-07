@@ -3,24 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   controls.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:20:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/07 15:58:16 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:19:53 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import	{ sendRequest } from "./websocket.js";
 import * as THREE from 'three';
 
 class Moves {
 	wPress = false;
 	sPress = false;
 	constructor() {};
+
+
 }
 
 class MoveObject {
 	#moves = null;
 	#object = null;
+	#speed = 0.1;
+
 	constructor(object)
 	{
 		let			key				= ['w', 's'];
@@ -39,12 +44,6 @@ class MoveObject {
 		document.addEventListener("keydown", (event) => {
 			for (let i = 0; i < key.length; i++)
 			{
-				if (event.key == '-')
-				{
-					console.log(this.moves.wPress);
-					console.log(this.moves.sPress);
-					return ;
-				}
 				if (event.key == key[i])
 				{
 					(movesValueDown[i])();
@@ -64,7 +63,19 @@ class MoveObject {
 		});
 	};
 	
-	update() {};
+	update()
+	{
+		if (this.moves.wPress)
+		{
+			this.object.position.z -= this.#speed;
+			sendRequest("playerMove", {x: this.object.position.x, y: this.object.position.y, z: this.object.position.z});
+		}
+		if (this.moves.sPress)
+		{
+			this.object.position.z += this.#speed;
+			sendRequest("playerMove", {x: this.object.position.x, y: this.object.position.y, z: this.object.position.z});
+		}
+	};
 }
 
 export { MoveObject };

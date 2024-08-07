@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 15:54:56 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:21:01 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ function animate() {
     ball.position.x = Math.sin(Date.now() * 0.001) * 2;
 	ball.position.z = Math.cos(Date.now() * 0.001) * 2;
 	renderer.render(scene, camera);
+	controlBall.update();
     stats.end();
 }
 
