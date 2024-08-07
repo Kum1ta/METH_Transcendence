@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 16:26:11 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:52:45 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,11 @@ const ball = new THREE.Mesh(geometryBall, materialBall);
 ball.position.y = 0.1;
 ball.castShadow = true;
 scene.add(ball);
-const controlBall = new MoveObject(ball);
 
 // --------------- Box Constrols -------------- //
 const boxLeft = createBox(scene, -4.45, 0.1 / 2, 0);
 const boxRight = createBox(scene, 4.45, 0.1 / 2, 0);
 const controlBoxLeft = new MoveObject(boxLeft);
-const controlBoxRight = new MoveObject(boxRight);
 
 let spotLight = createSpotLight(0xffffff, ball, scene);
 let lightAmbient = createLightAmbient(scene);
@@ -80,37 +78,14 @@ function animate() {
 		lightPoint = refreshLightPoint(scene, lightPoint);
 	}
 	// controls.update();
-    ball.position.x = Math.sin(Date.now() * 0.001) * 2;
+	ball.position.x = Math.sin(Date.now() * 0.001) * 2;
 	ball.position.z = Math.cos(Date.now() * 0.001) * 2;
 	renderer.render(scene, camera);
-	controlBall.update();
-    stats.end();
+	controlBoxLeft.update();
+	stats.end();
 }
 
 renderer.setAnimationLoop(animate)
-document.addEventListener("keydown", onDocumentKeyDown, false);
-function onDocumentKeyDown(event) {
-    var keyCode = event.which;
-    if (keyCode == 87) {
-        camera.position.z -= 0.1;
-    } else if (keyCode == 83) {
-        camera.position.z += 0.1;
-    } else if (keyCode == 65) {
-        camera.position.x -= 0.1;
-    } else if (keyCode == 68) {
-        camera.position.x += 0.1;
-    } else if (keyCode == 32) {
-        camera.position.set(0, 0, 0);
-    } else if (keyCode == 37) {
-		camera.rotation.y += 0.1;
-	} else if (keyCode == 39) {
-		camera.rotation.y -= 0.1;
-	} else if (keyCode == 38) {
-		camera.position.y += 0.1;
-	} else if (keyCode == 40) {
-		camera.position.y -= 0.1;
-	}
-};
 
 document.addEventListener("wheel", onDocumentWheel, false);
 function onDocumentWheel(event) {

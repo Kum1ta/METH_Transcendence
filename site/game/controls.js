@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   controls.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:20:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/07 16:19:53 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:53:34 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class Moves {
 class MoveObject {
 	#moves = null;
 	#object = null;
-	#speed = 0.1;
+	#speed = 0.05;
 
 	constructor(object)
 	{
