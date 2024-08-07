@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   websocket.js                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 19:00:30 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/07 22:14:03 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { typeLogin } from "./typeResponse/typeLogin.js";
-import { typePrivateListUser } from "./typeResponse/typePrivateListUser.js";
+import { typeErrorInvalidPassword } from "./typeErrorResponse/typeErrorInvalidPassword.js";
 import { typePrivateListMessage } from "./typeResponse/typePrivateListMessage.js";
 import { typeNewPrivateMessage } from "./typeResponse/typeNewPrivateMessage.js";
+import { typePrivateListUser } from "./typeResponse/typePrivateListUser.js";
+import { typeLogin } from "./typeResponse/typeLogin.js";
 
 /*
 	Todo (Eddy) :
 		- Request to connect by email and password. Waiting for the front to do it (already functional on the back side)
-		  sendRequest("login", {type: "byPass", mail: "aa@aa.fr", password: "ABC123"});
+		sendRequest("login", {type: "byPass", mail: "aa@aa.fr", password: "ABC123"});
 		- Information: the 'token' variable is only used until the connection is fully implemented
 */
 
@@ -27,11 +28,36 @@ const	socket = new WebSocket('ws://localhost:8000/');
 const	typeResponse = ["login", "private_list_user", "private_list_message", "new_private_message"];
 const	functionResponse = [typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage];
 
+const	errorCode = [9007]
+const	errorFunction = [typeErrorInvalidPassword];
+
 let		status = 0;
 
+function getCookie(name) {
+	const	value = `; ${document.cookie}`;
+	const	parts = value.split(`; ${name}=`);
+	let		token = null;
+
+	if (parts.length === 2)
+	{
+		token = parts.pop().split(';').shift();
+		token = token.substring(1, token.length - 1);
+	}
+	return (token);
+}
+
 socket.onopen = () => {
+	let	token = getCookie("token");
+
 	status = 1;
 	console.log('Connected');
+	if (token)
+	{
+		console.log("token :" + token);
+		sendRequest("login", {type: "byToken", token: token});
+	}
+	else
+		typeLogin(null);
 };
 
 socket.onmessage = (event) => {
@@ -43,7 +69,13 @@ socket.onmessage = (event) => {
 		return ;
 	}
 	if (response.code >= 9000 && response.code <= 9999)
-		console.warn(response);
+	{
+		try {
+			errorFunction[errorCode.indexOf(response.code)]();
+		} catch {
+			console.warn(response);
+		}
+	}
 	else
 	{
 		try {
@@ -68,6 +100,7 @@ function	sendRequest(type, content) {
 		coc = JSON.stringify(content);
 	else
 		coc = content;
+
 	socket.send(JSON.stringify({
 		type: type,
 		// token: token,
