@@ -6,10 +6,11 @@
 /*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/07/30 13:50:49 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/07 15:29:04 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import { sendRequest } from './websocket.js';
 import * as THREE from 'three';
 import Stats from 'stats.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -40,7 +41,6 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 camera.position.z = 4;
 camera.position.y = 3;
 camera.rotation.x = -(Math.PI / 4);
-
 
 // ------------------- Ball ------------------- //
 const geometryBall = new THREE.SphereGeometry(0.1, 32, 32);
