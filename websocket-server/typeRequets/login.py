@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/04 15:51:04 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/07 22:21:58 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,18 +28,32 @@ userList = [
 		"id": 9999999
 	},
 	{
-		"username": "user2",
-		"token": "789123",
-		"mail": "bb@bb.fr",
-		"password": "DEF456",
-		"id": 2
+		"username": "Eddy",
+		"token": "54dsadw8f4a6w5f4a62s4f984fa62f4as65",
+		"mail": "aaaaa",
+		"password": "aaaaa",
+		"id": 2135421
 	},
 	{
-		"username": "user3",
-		"token": "456789",
-		"mail": "cc@cc,fr",
-		"password": "GHI789",
-		"id": 3
+		"username": "Hugo",
+		"token": "dsa4d6sa4sa1hfd1jhgk6g4k21bn65m4nb4",
+		"mail": "bbbbb",
+		"password": "bbbbb",
+		"id": 9892154
+	},
+	{
+		"username": "Mathis",
+		"token": "8cb1qjlfndc12mn2l1mn654xzkkhad54cxz",
+		"mail": "ccccc",
+		"password": "ccccc",
+		"id": 2371234
+	},
+	{
+		"username": "Tom",
+		"token": "poiuygfvbdsv5c21vcxvcxhgbjqnkmds546",
+		"mail": "ddddd",
+		"password": "ddddd",
+		"id": 2371234
 	}
 ]
 

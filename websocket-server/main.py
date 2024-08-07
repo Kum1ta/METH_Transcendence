@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:40 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/04 14:31:26 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/07 21:22:18 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ from typeRequets.getPrivateListMessage import getPrivateListMessage
 from typeRequets.getPrivateListUser import getPrivateListUser
 from typeRequets.sendPrivateMessage import sendPrivateMessage
 from typeRequets.login import login
-from Class.User import User
+from Class.User import User, connected_clients
 import websockets
 import asyncio
 import json
@@ -54,6 +54,9 @@ async def	handler(websocket, path):
 	except websockets.ConnectionClosed:
 		pass
 	await userClass.close()
+	connected_clients.remove(userClass)
+
+
 start_server = websockets.serve(handler, "localhost", 8000, subprotocols=['123456'])
 
 asyncio.get_event_loop().run_until_complete(start_server)

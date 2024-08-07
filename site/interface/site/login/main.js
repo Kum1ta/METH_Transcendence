@@ -3,22 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 18:38:29 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/07 22:31:31 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { createNotification as CN } from "../notification/main.js";
+import { userMeInfo, waitForLogin } from "../typeResponse/typeLogin.js";
 import { createConnectDiv } from "./createConnectDiv.js";
 import { createThreeDiv } from "./createThreeDiv.js";
 
 function	login()
 {
-	const	loginButton	= document.getElementById('loginButton');
+	const	loginButton		= document.getElementById('loginButton');
+	const	pLoginButton	= loginButton.getElementsByTagName('p')[0];
+	let		nodeText		= null;
 
-	loginButton.addEventListener('click', showLoginDiv);
+	waitForLogin().then(() => {
+		nodeText = document.createTextNode(userMeInfo.username);
+
+		if (userMeInfo.id !== -1)
+			loginButton.replaceChild(nodeText, pLoginButton);
+		else
+			loginButton.addEventListener('click', showLoginDiv);
+	});
 }
 
 function	showLoginDiv()
