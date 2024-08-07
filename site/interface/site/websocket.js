@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   websocket.js                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/06 23:33:28 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/07 19:00:30 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ import { typeNewPrivateMessage } from "./typeResponse/typeNewPrivateMessage.js";
 */
 
 const	socket = new WebSocket('ws://localhost:8000/');
-const	token = "IDSNCSDAd465sd13215421";
 
 const	typeResponse = ["login", "private_list_user", "private_list_message", "new_private_message"];
 const	functionResponse = [typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage];
@@ -33,8 +32,6 @@ let		status = 0;
 socket.onopen = () => {
 	status = 1;
 	console.log('Connected');
-	if (token)
-		sendRequest("login", {"type": "byToken", "token": token});
 };
 
 socket.onmessage = (event) => {
@@ -73,9 +70,9 @@ function	sendRequest(type, content) {
 		coc = content;
 	socket.send(JSON.stringify({
 		type: type,
-		token: token,
+		// token: token,
 		content: content
 	}));
 }
 
-export { socket, token, sendRequest };
+export { socket, sendRequest };

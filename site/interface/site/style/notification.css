@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:44:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/06 15:40:38 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/07 18:04:17 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@
 
 #divNotification .notification {
 	background-color: #222222;
+	display: flex;
+	flex-direction: column;
 	color: white;
 	margin-top: 10px;
 	min-height: 100px;
@@ -71,7 +73,6 @@
 	margin-top: 9px;
 	object-fit: cover;
 	object-position: 50% 0;
-
 }
 
 #divNotification .content {
@@ -89,6 +90,13 @@
 	text-align: center;
 	background-color: #333333;
 	margin: 10px;
+}
+
+#divNotification .loadBar {
+	margin-top: auto;
+	margin-bottom: 0;
+	padding: 0;
+	/* position: fixed; */
 }
 
 .progress {

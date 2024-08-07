@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 12:10:04 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/07 17:31:35 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,12 @@ body {
 }
 
 #topBar {
-	margin: 0;
+	margin: 10px;
 	padding: 0;
-	width: 100%;
 	display: flex;
 	flex-direction: row;
+	justify-content: space-between;
+	background-color: black;
 }
 
 #topBar h1 {
@@ -40,10 +41,19 @@ body {
 	font-family: 'Poppins';
 }
 
-#topBar p {
-	margin: 0;
-	padding: 0;
+#topBar #loginButton {
 	font-size: 20px;
-	color: white;
+	background-color: white;
+	height: 40px;
+	width: 100px;	
+	color: black;
 	font-family: 'Poppins';
+	text-align: center;
+	line-height: 40px;
+	margin: 10px 10px;
+}
+
+#topBar #loginButton:hover {
+	background-color: #f0f0f0;
+	cursor: pointer;
 }
