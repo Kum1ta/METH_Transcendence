@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 16:21:01 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:26:11 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { sendRequest } from './websocket.js';
 import { MoveObject } from './controls.js';
+import { createBox } from './elements.js';
 import * as THREE from 'three';
 import Stats from 'stats.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -52,7 +53,11 @@ ball.castShadow = true;
 scene.add(ball);
 const controlBall = new MoveObject(ball);
 
-
+// --------------- Box Constrols -------------- //
+const boxLeft = createBox(scene, -4.45, 0.1 / 2, 0);
+const boxRight = createBox(scene, 4.45, 0.1 / 2, 0);
+const controlBoxLeft = new MoveObject(boxLeft);
+const controlBoxRight = new MoveObject(boxRight);
 
 let spotLight = createSpotLight(0xffffff, ball, scene);
 let lightAmbient = createLightAmbient(scene);

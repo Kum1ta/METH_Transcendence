@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:51 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 16:20:08 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:26:17 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ function createMap(scene) {
 	
 	wallUp = createWall(scene, 0, 0.25, -2.3, 0.1);
 	wallDown = createWall(scene, 0, 0.25, 2.3, 0.1);
-	boxLeft = createBox(scene, 0, 0.25, 0);
-	// boxRight = createBox(scene, 0, 0.25, 0);
 	ground = createGround(scene);
 }
 
@@ -48,20 +46,6 @@ function createGround(scene) {
 	plane.receiveShadow = true;
 	scene.add(plane);
 	return plane;
-}
-
-function createBox(scene, x, y, z)
-{
-	const geometryBox = new THREE.BoxGeometry(1, 0.5, 0.1);
-	const materialBox = new THREE.MeshLambertMaterial({
-		color: 0xff0000,
-	});
-	const box = new THREE.Mesh(geometryBox, materialBox);
-	box.position.set(x, y, z);
-	box.rotateY(Math.PI / 2);
-	box.receiveShadow = true;
-	scene.add(box);
-	return box;
 }
 
 export { createMap };
