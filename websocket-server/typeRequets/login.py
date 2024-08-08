@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    login.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
+#    By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/07 22:21:58 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/08 16:42:43 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,13 +25,14 @@ userList = [
 		"token": "IDSNCSDAd465sd13215421",
 		"mail": "eddy@ediwor.fr",
 		"password": "ABC123",
-		"id": 9999999
+		"id": 9999999,
+		'id42': 123456
 	},
 	{
 		"username": "Eddy",
 		"token": "54dsadw8f4a6w5f4a62s4f984fa62f4as65",
 		"mail": "aaaaa",
-		"password": "aaaaa",
+		"password": "ed968e840d10d2d313a870bc131a4e2c311d7ad09bdf32b3418147221f51a6e2", # not hashed : aaaaa
 		"id": 2135421
 	},
 	{
@@ -45,7 +46,7 @@ userList = [
 		"username": "Mathis",
 		"token": "8cb1qjlfndc12mn2l1mn654xzkkhad54cxz",
 		"mail": "ccccc",
-		"password": "ccccc",
+		"password": "6304fbfe2b22557c34c42a70056616786a733b3d09fb326308c813d6ab712ec0", # not hashed : ccccc
 		"id": 2371234
 	},
 	{
