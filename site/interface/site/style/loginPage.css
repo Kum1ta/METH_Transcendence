@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loginPage.css                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:15:28 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 18:53:06 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/08 23:22:32 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,22 @@
 	background-color: #616161;
 	display: flex;
 	flex-direction: column;
+}
+
+#connectDiv form {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#connectDiv #button {
+	width: 20%;
+	height: 20px;
+	margin: 10px;
+	cursor: pointer;
+	background-color: white;
+	text-align: center;
 }
