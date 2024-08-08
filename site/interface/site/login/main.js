@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 22:31:31 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/08 17:07:12 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ function	showLoginDiv()
 {
 	const	divLogin	= document.createElement("div");
 	const	threeDiv	= createThreeDiv();
-	const	connectDiv	= createConnectDiv();
+	const	connectDiv	= createConnectDiv(divLogin);
 
 	divLogin.setAttribute("id", "loginDiv");
 	divLogin.appendChild(threeDiv);
