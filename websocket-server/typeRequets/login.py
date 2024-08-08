@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    login.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+         #
+#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/08 16:42:43 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/08 22:31:18 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
