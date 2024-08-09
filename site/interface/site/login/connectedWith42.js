@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   connectedWith42.js                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 09:15:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/09 09:18:26 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/09 23:23:46 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ function	connectedWith42Func()
 {
 	const	token42 = window.location.search.split('code=')[1];
 
-	console.log("connectedWith42Func");
+	if (!token42)
+		return ;
 	sendRequest("login", {type: "by42", token: token42});
-	console.log(token42);
 }
 
 export { connectedWith42Func };
