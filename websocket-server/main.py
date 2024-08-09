@@ -3,27 +3,32 @@
 #                                                         :::      ::::::::    #
 #    main.py                                            :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
+#    By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:40 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/07 21:22:18 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/09 09:03:31 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from typeRequets.getPrivateListMessage import getPrivateListMessage
 from typeRequets.getPrivateListUser import getPrivateListUser
 from typeRequets.sendPrivateMessage import sendPrivateMessage
+from typeRequets.createAccount import createAccount
 from typeRequets.login import login
 from Class.User import User, connected_clients
 import websockets
 import asyncio
 import json
 
-# Todo :
+# Todo (Eddy):
 # - verifier que l'utilisateur n'est pas déjà connecté pour éviter les doublons
+# Todo (Tom) :
+# - Mettre des pages temporaires accesibles qu'on envoie par mail pour confirmer le compte
 
-typeRequest = ["login", "get_private_list_user", "get_private_list_message", "send_private_message"]
-functionRequest = [login, getPrivateListUser, getPrivateListMessage, sendPrivateMessage]
+typeRequest = ["login", "get_private_list_user", "get_private_list_message",
+			   "send_private_message", "create_account"]
+functionRequest = [login, getPrivateListUser, getPrivateListMessage,
+				sendPrivateMessage, createAccount]
 
 async def	handler(websocket, path):
 	if (path != "/"):
@@ -41,7 +46,7 @@ async def	handler(websocket, path):
 			try:
 				userClass.printDebug(jsonRequest, 0)
 				if (jsonRequest["type"] in typeRequest):
-					if jsonRequest["type"] == "login":
+					if (jsonRequest["type"] == "login" or jsonRequest["type"] == "create_account"):
 						await functionRequest[typeRequest.index(jsonRequest["type"])](userClass, jsonRequest["content"])
 					else:
 						if (await userClass.verifyToken(jsonRequest["token"]) == False):
