@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loginPage.css                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:15:28 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/08 23:22:32 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/10 01:18:47 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,104 @@
 	}
 }
 
+#mainText{
+	color: white;
+	font-size: 50px;
+	font-family: "Poppins", sans-serif;
+	font-weight: 500;
+	font-style: normal;
+	margin-top: 125px;
+	margin-bottom: 50px;
+	align-content: center;
+	text-align: center;
+}
+
+#inputLogin{
+	margin-top: 2px;
+	margin-bottom: 15px;
+	padding-left: 3%;
+	padding-right: 3%;
+	font-family: "Poppins", sans-serif;
+	font-weight: 500;
+	font-style: normal;
+	border: none;
+	text-decoration: none;
+	height: 45px;
+	width: 94%;
+}
+
+#inputPassword{
+	margin-top: 2px;
+	margin-bottom: 25px;
+	padding-left: 3%;
+	padding-right: 3%;
+	font-family: "Poppins", sans-serif;
+	font-weight: 500;
+	font-style: normal;
+	border: none;
+	text-decoration: none;
+	height: 45px;
+	width: 94%;
+}
+
+#styleButton{
+	font-family: "Poppins", sans-serif;
+	font-weight: 600;
+	font-style: normal;
+	height: 45px;
+	width: 100%;
+	border: none;
+	text-decoration: none;
+	transition: background-color 0.3s ease;
+}
+
+#styleButton:hover{
+	background-color: #b4b4b4;
+}
+
+#styleButton42{
+	font-family: "Poppins", sans-serif;
+	font-weight: 600;
+	font-style: normal;
+	height: 45px;
+	width: 100%;
+	border: none;
+	text-decoration: none;
+	transition: background-color 0.3s ease;
+}
+
+#styleButton42:hover{
+	background-color: #b4b4b4;
+}
+
+#createAccText{
+	margin-left: 10px;
+	cursor: pointer;
+	/* text-decoration: underline 2px; */
+	border-bottom: white 1px solid;
+}
+
+#newAccDiv{
+	display: flex;
+	flex-direction: row;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	justify-content: center;
+}
+
 #loginDiv {
 	width: 80%;
 	height: 80%;
 	display: flex;
 	position: absolute;
-	background-color: #990707;
 	z-index: 500;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	animation: anim1 0.2s;
-	border: 2px solid black;
+	font-family: "Poppins", sans-serif;
+	font-weight: 500;
+	font-style: normal;
 }
 
 #globalBg {
@@ -60,10 +146,9 @@
 
 
 #threeDiv {
-	border-right: 2px solid black;
-	width: 40%;
+	width: 30%;
 	height: 100%;
-	background-color: #747474;
+	background-color: #e0e0e0;
 }
 
 
@@ -72,9 +157,15 @@
 #connectDiv {
 	width: 60%;
 	height: 100%;
-	background-color: #616161;
+	background-color: #020202;
 	display: flex;
 	flex-direction: column;
+}
+
+#connectDiv #divCenter {
+	width: 45%;
+	height: 50%;
+	margin-left: 27.5%;
 }
 
 #connectDiv form {
@@ -82,8 +173,10 @@
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+}
+
+#connectDiv form p{
+	color: white;
 }
 
 #connectDiv #button {
