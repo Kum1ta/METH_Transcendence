@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   createConnectDiv.js                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:14:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/09 09:06:59 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/10 01:10:03 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,56 @@ function	createConnectDiv(divLogin)
 	const	inputLogin		= document.createElement("input");
 	const	inputPass		= document.createElement("input");
 	const	buttonLogin		= createButton(inputLogin, inputPass);
-	const	buttonNewAcc	= createButtonNewAcc(divConnect, divLogin);
 	const	buttonConnect42	= document.createElement("button");
 	
+	const	mailText 		= document.createElement("p");
+	const	passText 		= document.createElement("p");
+	const	MainText 		= document.createElement("h1");
+	const	newPlayerText	= document.createElement("p");
+	const	createAccText	= document.createElement("p");
+	const	newAccDiv		= document.createElement("div");
+	const	divCenter		= document.createElement("div");
+	
 	addGlobalBg();
+	MainText.innerText = "Acces to a new WORLD";
+	MainText.setAttribute("id", "mainText");
+	mailText.innerText = "Email";
+	passText.innerText = "Password";
+	newPlayerText.innerText = "New Player ?";
+	newPlayerText.setAttribute("id", "newPlayerText")
+	createAccText.innerText = "Create an account";
+	createAccText.setAttribute("id", "createAccText")
+	createAccText.addEventListener("mousedown", () => {
+		console.log("YO LES BG");
+		createButtonNewAcc(divConnect, divLogin);
+	});
+	newAccDiv.setAttribute("id", "newAccDiv");
 	divConnect.setAttribute("id", "connectDiv");
 	inputLogin.setAttribute("type", "text");
+	inputLogin.setAttribute("id", "inputLogin");
 	inputLogin.setAttribute("placeholder", "login");
 	inputLogin.setAttribute("autocomplete", "username");
 	inputPass.setAttribute("type", "password");
+	inputPass.setAttribute("id", "inputPassword");
 	inputPass.setAttribute("autocomplete", "current-password");
 	inputPass.setAttribute("placeholder", "password");
-	buttonLogin.innerHTML = "Connect";
-	buttonConnect42.innerHTML = "Connect with 42";
+	buttonLogin.innerHTML = "Login";
+	buttonLogin.setAttribute("id", "styleButton");
+	buttonConnect42.innerHTML = "Log with 42";
+	buttonConnect42.setAttribute("id", "styleButton42")
+	divConnect.appendChild(MainText);
+	form.appendChild(mailText);
 	form.appendChild(inputLogin);
+	form.appendChild(passText);
 	form.appendChild(inputPass);
 	form.appendChild(buttonLogin);
-	form.appendChild(buttonNewAcc);
+	newAccDiv.appendChild(newPlayerText);
+	newAccDiv.appendChild(createAccText);
+	form.appendChild(newAccDiv);
 	form.appendChild(buttonConnect42);
-	divConnect.appendChild(form);
+	divCenter.appendChild(form);
+	divCenter.setAttribute("id", "divCenter");
+	divConnect.appendChild(divCenter);
 	form.addEventListener('submit', (e) => {
 		e.preventDefault();
 		buttonLogin.click();
@@ -112,7 +143,6 @@ function	createButton(inputLogin, inputPass)
 
 function	createButtonNewAcc(divConnect, divLogin)
 {
-	const	button			= document.createElement("button");
 	const	newDiv			= document.createElement("div");
 	const	inputUsername	= document.createElement("input");
 	const	inputMail		= document.createElement("input");
@@ -121,38 +151,33 @@ function	createButtonNewAcc(divConnect, divLogin)
 	const	buttonCreate	= document.createElement("button");
 	const	form			= document.createElement("form");
 
-	button.innerHTML = "Create a new account";
 	newDiv.setAttribute("id", "connectDiv");
-	button.addEventListener('click', (e) => {
+	inputUsername.setAttribute("type", "text");
+	inputUsername.setAttribute("placeholder", "username");
+	inputUsername.setAttribute("autocomplete", "username");
+	inputMail.setAttribute("type", "text");
+	inputMail.setAttribute("placeholder", "mail");
+	inputMail.setAttribute("autocomplete", "email");
+	inputPass.setAttribute("type", "password");
+	inputPass.setAttribute("placeholder", "password");
+	inputPass.setAttribute("autocomplete", "new-password");
+	inputPass2.setAttribute("type", "password");
+	inputPass2.setAttribute("placeholder", "confirm password");
+	inputPass2.setAttribute("autocomplete", "new-password");
+	buttonCreate.innerHTML = "Create";
+	form.appendChild(inputMail);
+	form.appendChild(inputUsername);
+	form.appendChild(inputPass);
+	form.appendChild(inputPass2);
+	form.appendChild(buttonCreate);
+	newDiv.appendChild(form);
+	buttonCreate.addEventListener('click', createNewAccount);
+	form.addEventListener('submit', (e) => {
 		e.preventDefault();
-		inputUsername.setAttribute("type", "text");
-		inputUsername.setAttribute("placeholder", "username");
-		inputUsername.setAttribute("autocomplete", "username");
-		inputMail.setAttribute("type", "text");
-		inputMail.setAttribute("placeholder", "mail");
-		inputMail.setAttribute("autocomplete", "email");
-		inputPass.setAttribute("type", "password");
-		inputPass.setAttribute("placeholder", "password");
-		inputPass.setAttribute("autocomplete", "new-password");
-		inputPass2.setAttribute("type", "password");
-		inputPass2.setAttribute("placeholder", "confirm password");
-		inputPass2.setAttribute("autocomplete", "new-password");
-		buttonCreate.innerHTML = "Create";
-		form.appendChild(inputMail);
-		form.appendChild(inputUsername);
-		form.appendChild(inputPass);
-		form.appendChild(inputPass2);
-		form.appendChild(buttonCreate);
-		newDiv.appendChild(form);
-		buttonCreate.addEventListener('click', createNewAccount);
-		form.addEventListener('submit', (e) => {
-			e.preventDefault();
-			buttonCreate.click();
-		});
-		divConnect.remove();
-		divLogin.appendChild(newDiv);
+		buttonCreate.click();
 	});
-	return (button);
+	divConnect.remove();
+	divLogin.appendChild(newDiv);
 }
 
 function	createNewAccount(e)
