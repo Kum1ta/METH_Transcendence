@@ -3,15 +3,17 @@
 #                                                         :::      ::::::::    #
 #    login.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
+#    By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/08 22:31:18 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/09 09:41:55 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+from typeRequets.login42.login42 import main42login
 import requests
 import json
+import os
 
 # Les requêtes de login peuvent être de 3 types:
 # <-- {"type" : "login", "content" : {"type": "byToken", "token": "123456"}}
@@ -54,7 +56,7 @@ userList = [
 		"token": "poiuygfvbdsv5c21vcxvcxhgbjqnkmds546",
 		"mail": "ddddd",
 		"password": "ddddd",
-		"id": 2371234
+		"id": 6423457
 	}
 ]
 
@@ -84,26 +86,15 @@ async def loginByPass(userClass, content):
 			return
 	await userClass.send({"type": "error", "content": "Invalid username or password", "code": 9007})
 
-async def verifyToken42(token42):
-	url = "https://api.intra.42.fr/v2/me"
-	headers = {
-		"Authorization": f"Bearer {token42}"
-	}
-	response = requests.get(url, headers=headers)
-	# |Eddy| Regarder ce que renvoie la requete quand elle est valide pour savoir qui rechercher
-	# dans la base de données
-	return (response.status_code == 200)
+
 
 async def loginBy42(userClass, content):
 	# |TOM| Requete pour récuperer les informations de l'utilisateur selon l'intra de la personne
 	# et créer un token si celui-ci n'existe pas
-	for user in userList:
-		if (await verifyToken42(content["token42"])):
-			jsonVar = {"type": "login", "content": {"username": user["username"], "token": user["token"], "id": user["id"]}}
-			await userClass.send(json.dumps(jsonVar))
-			return
-	jsonVar = {"type": "error", "content": "Invalid 42 token", "code": 9008}
-	await userClass.send(json.dumps(jsonVar))
+	try:
+		main42login(content)
+	except Exception as e:
+		await userClass.sendError("Invalid 42 token", 9008, e)
 
 async def login(userClass, content):
 	# |TOM| Faire 3 types de requêtes:

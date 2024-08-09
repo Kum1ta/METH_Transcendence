@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   websocket.js                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 22:14:03 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/09 09:21:28 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@ import { typeErrorInvalidPassword } from "./typeErrorResponse/typeErrorInvalidPa
 import { typePrivateListMessage } from "./typeResponse/typePrivateListMessage.js";
 import { typeNewPrivateMessage } from "./typeResponse/typeNewPrivateMessage.js";
 import { typePrivateListUser } from "./typeResponse/typePrivateListUser.js";
+import { connectedWith42Func } from "./login/connectedWith42.js";
 import { typeLogin } from "./typeResponse/typeLogin.js";
 
 /*
@@ -33,7 +34,8 @@ const	errorFunction = [typeErrorInvalidPassword];
 
 let		status = 0;
 
-function getCookie(name) {
+function getCookie(name)
+{
 	const	value = `; ${document.cookie}`;
 	const	parts = value.split(`; ${name}=`);
 	let		token = null;
@@ -47,7 +49,7 @@ function getCookie(name) {
 }
 
 socket.onopen = () => {
-	let	token = getCookie("token");
+	let		token			= getCookie("token");
 
 	status = 1;
 	console.log('Connected');
@@ -57,7 +59,10 @@ socket.onopen = () => {
 		sendRequest("login", {type: "byToken", token: token});
 	}
 	else
+	{
+		connectedWith42Func();
 		typeLogin(null);
+	}
 };
 
 socket.onmessage = (event) => {
@@ -95,17 +100,29 @@ function	sendRequest(type, content) {
 	let coc = null;
 
 	if (status === 0)
+	{
+		console.warn('Not connected');
 		return ;
+	}
 	if (content instanceof Object)
 		coc = JSON.stringify(content);
 	else
 		coc = content;
-
-	socket.send(JSON.stringify({
-		type: type,
-		// token: token,
-		content: content
-	}));
+	if (getCookie("token"))
+	{
+		socket.send(JSON.stringify({
+			type: type,
+			token: getCookie("token"),
+			content: content
+		}));
+	}
+	else
+	{
+		socket.send(JSON.stringify({
+			type: type,
+			content: content
+		}));
+	}
 }
 
 export { socket, sendRequest };

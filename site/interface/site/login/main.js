@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/08 17:07:12 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/09 09:20:03 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@ import { createNotification as CN } from "../notification/main.js";
 import { userMeInfo, waitForLogin } from "../typeResponse/typeLogin.js";
 import { createConnectDiv } from "./createConnectDiv.js";
 import { createThreeDiv } from "./createThreeDiv.js";
+import { connectedWith42Func } from "./connectedWith42.js";
 
 function	login()
 {
@@ -42,5 +43,6 @@ function	showLoginDiv()
 	divLogin.appendChild(connectDiv);
 	document.body.appendChild(divLogin);
 }
+
 
 export { login };

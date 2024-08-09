@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   createConnectDiv.js                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:14:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/08 23:49:20 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/09 09:06:59 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ import { sendRequest } from "../websocket.js";
 
 /*
 	Todo (Eddy) :
-		- Gerer coté serveur le type "createAccount"
 		- ajouter un message de confirmation de création de compte et un message d'erreur
 		- une fleche pour revenir en arriere
 		- remettre sur l'ecran de login quand le compte est créé
@@ -24,9 +23,6 @@ import { sendRequest } from "../websocket.js";
 		- Empecher les requetes de connexion si un champ est vide
 		- Ajouter un message d'erreur si le mail est invalide
 		- Connexion par 42
-
-	Todo (Tom) :
-		- Mettre des pages temporaires accesibles qu'on envoie par mail pour confirmer le compte
 
 */
 
@@ -38,6 +34,7 @@ function	createConnectDiv(divLogin)
 	const	inputPass		= document.createElement("input");
 	const	buttonLogin		= createButton(inputLogin, inputPass);
 	const	buttonNewAcc	= createButtonNewAcc(divConnect, divLogin);
+	const	buttonConnect42	= document.createElement("button");
 	
 	addGlobalBg();
 	divConnect.setAttribute("id", "connectDiv");
@@ -48,14 +45,20 @@ function	createConnectDiv(divLogin)
 	inputPass.setAttribute("autocomplete", "current-password");
 	inputPass.setAttribute("placeholder", "password");
 	buttonLogin.innerHTML = "Connect";
+	buttonConnect42.innerHTML = "Connect with 42";
 	form.appendChild(inputLogin);
 	form.appendChild(inputPass);
 	form.appendChild(buttonLogin);
 	form.appendChild(buttonNewAcc);
+	form.appendChild(buttonConnect42);
 	divConnect.appendChild(form);
 	form.addEventListener('submit', (e) => {
 		e.preventDefault();
 		buttonLogin.click();
+	});
+	buttonConnect42.addEventListener('click', (e) => {
+		e.preventDefault();
+		window.location.replace("https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-d9d6d46bd0be36dc13718981df4bfcf37e574ea364a07fcb5c39658be0f5706c&redirect_uri=http%3A%2F%2F127.0.0.1%3A5500%2Fsite%2F&response_type=code");
 	});
 	return (divConnect);
 }
@@ -167,6 +170,10 @@ function	createNewAccount(e)
 	}
 	else if (inputUsername.value.length < 3)
 		CN.new("Error", "Username must be at least 3 characters long", CN.defaultIcon.error);
+	else if (inputUsername.value.length > 20)
+		CN.new("Error", "Username must be at most 20 characters long", CN.defaultIcon.error);
+	else if (inputUsername.value.search(' ') !== -1)
+		CN.new("Error", "Username must not contain spaces", CN.defaultIcon.error);
 	else if (inputUsername.value.search(/[^a-zA-Z0-9]/) !== -1)
 		CN.new("Error", "Username must contain only letters and numbers", CN.defaultIcon.error);
 	else if (inputPass.value.length < 8)
@@ -180,7 +187,7 @@ function	createNewAccount(e)
 	else
 	{
 		hashPassword(inputPass.value).then((hash) => {
-			sendRequest("createAccount", {username: inputUsername.value, mail: inputMail.value, password: hash});
+			sendRequest("create_account", {username: inputUsername.value, mail: inputMail.value, password: hash});
 		}).catch((err) => {
 			CN.new("Error", "An error occured while trying to create a new account", CN.defaultIcon.error);
 		});

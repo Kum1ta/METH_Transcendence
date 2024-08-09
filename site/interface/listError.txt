@@ -11,3 +11,4 @@
 - 9007 : Invalid username or password
 - 9008 : User not found
 - 9009 : Invalid message sent
+- 9010 : Invalid token 42
