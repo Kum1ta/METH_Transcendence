@@ -1,5 +1,13 @@
 {
+  "scripts": {
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "three": "^0.167.0",
+    "vite": "^5.3.5"
+  },
   "dependencies": {
-    "three": "^0.167.1"
+    "stats": "^1.0.0",
+    "stats.js": "^0.17.0"
   }
 }
