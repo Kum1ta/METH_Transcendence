@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   websocket.js                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/09 09:21:28 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/10 16:05:26 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import { typeErrorUnknown42Account } from "./typeErrorResponse/typeErrorUnknown42Account.js";
 import { typeErrorInvalidPassword } from "./typeErrorResponse/typeErrorInvalidPassword.js";
+import { typeErrorInvalidToken42 } from "./typeErrorResponse/typeErrorInvalidToken42.js";
 import { typePrivateListMessage } from "./typeResponse/typePrivateListMessage.js";
 import { typeNewPrivateMessage } from "./typeResponse/typeNewPrivateMessage.js";
 import { typePrivateListUser } from "./typeResponse/typePrivateListUser.js";
@@ -29,8 +31,8 @@ const	socket = new WebSocket('ws://localhost:8000/');
 const	typeResponse = ["login", "private_list_user", "private_list_message", "new_private_message"];
 const	functionResponse = [typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage];
 
-const	errorCode = [9007]
-const	errorFunction = [typeErrorInvalidPassword];
+const	errorCode = [9007, 9010, 9011];
+const	errorFunction = [typeErrorInvalidPassword, typeErrorInvalidToken42, typeErrorUnknown42Account];
 
 let		status = 0;
 
@@ -49,7 +51,7 @@ function getCookie(name)
 }
 
 socket.onopen = () => {
-	let		token			= getCookie("token");
+	let	token	= getCookie("token");
 
 	status = 1;
 	console.log('Connected');
@@ -61,7 +63,6 @@ socket.onopen = () => {
 	else
 	{
 		connectedWith42Func();
-		typeLogin(null);
 	}
 };
 

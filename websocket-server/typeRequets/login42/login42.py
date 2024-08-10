@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 09:32:17 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/10 00:42:38 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/10 16:06:09 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,9 @@ import os
 UID42 = os.environ.get("uid")
 SECRET42 = os.environ.get("secret")
 TOKENURL = 'https://api.intra.42.fr/oauth/token'
-
 INFOURL = 'https://api.intra.42.fr/v2/me'
+REDIRECT = 'http://127.0.0.1:5500/site/'
+# |Eddy| Changer le redirect quand il y aura un vrai serveur
 
 access_token = ""
 
@@ -26,27 +27,46 @@ if (UID42 == None or SECRET42 == None):
 	print("Please set the environment variables uid and secret")
 	exit()
 
-def main42login(content):
+async def main42login(userClass, content, userList):
 	global access_token
 
+	print(content['token'])
+	data = {
+		'grant_type': 'authorization_code',
+		'client_id': UID42,
+		'client_secret': SECRET42,
+		'code': content['token'],
+		'redirect_uri': REDIRECT
+	}
+	response = requests.post(TOKENURL, data=data)
+	if (response.status_code != 200):
+		raise Exception(f"Problem with the request (access_token {response.status_code})")
+	response = response.json()
+	headers = {
+		'Authorization': f'Bearer {response["access_token"]}',
+	}
+	response = requests.get(INFOURL, headers=headers)
+	if (response.status_code != 200):
+		raise Exception(f"Problem with the request (user info {response.status_code})")
+	response = response.json()
+	# |Tom| Au lieu d'utiliser userList, faire une requête à la base de donnée pour savoir si on a un utilisateur avec cet id42
+	i = 0
+	while (i < len(userList)):
+		if (userList[i]['id42'] == response['id']):
+			break
+		i += 1
+	if (i == len(userList)):
+		await userClass.sendError("Not user registered with this 42 account", 9011)
+		return
+	else:
+		await userClass.send({
+			"type": "login",
+			"content": {
+				"username": userList[i]['username'],
+				"token": userList[i]['token'],
+				"id": userList[i]['id']
+			}
+		})
+	
 
-	try:
-		data = {
-			'grant_type': 'client_credentials',
-			'client_id': UID42,
-			'client_secret': SECRET42,
-		}
-		response = requests.post(TOKENURL, data=data)
-		access_token = response.json()["access_token"]
-		print("Access Token: ", access_token)
-		headers = {
-			'Authorization': 'Bearer ' + access_token,
-		}
-		response = requests.get(INFOURL, headers=headers)
-		print("Code: ", response.status_code)
-		response = response.json()
-		print(response)
-	except Exception as e:
-		print("Error in main42login")
-		print(e)
 	
