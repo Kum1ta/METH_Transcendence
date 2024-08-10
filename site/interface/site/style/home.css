@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 17:31:35 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/10 16:56:50 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,40 +20,66 @@ body {
 	padding: 0;
 	width: 100%;
 	height: 100%;
-	background-color: #616161;
+	background-color: #020202;
 	user-select: none;
 }
 
+
 #topBar {
 	margin: 10px;
+	margin-top: 25px;
 	padding: 0;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	background-color: black;
+	background-color: #020202;
+}
+
+#topButton{
+	margin: 0;
+	padding: 0;
+	color: white;
+	display: flex;
+	font-size: 25px;
+	padding-right: 45%;
+	padding-top: 12px;
+	font-family: "Poppins", sans-serif;
+	font-weight: 500;
+	font-style: normal;
+	gap: 25%;
 }
 
 #topBar h1 {
 	margin: 0;
 	padding: 0;
-	font-size: 40px;
+	padding-top: 4px;
+	font-size: 35px;
+	margin-left: 50px;
+	margin-right: 15px;
 	color: white;
 	font-family: 'Poppins';
+	font-style: italic;
+    font-weight: bold;
 }
 
 #topBar #loginButton {
 	font-size: 20px;
 	background-color: white;
 	height: 40px;
-	width: 100px;	
+	width: 130px;	
 	color: black;
-	font-family: 'Poppins';
+	font-family: "Poppins", sans-serif;
+	font-weight: 500;
+	font-style: normal;
 	text-align: center;
 	line-height: 40px;
 	margin: 10px 10px;
+	margin-right: 50px;
+	transition: background-color 0.3s ease;
 }
 
 #topBar #loginButton:hover {
-	background-color: #f0f0f0;
+	background-color: #020202;
+	color: white;
 	cursor: pointer;
 }

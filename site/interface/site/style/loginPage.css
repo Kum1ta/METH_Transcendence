@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:15:28 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/10 01:18:47 by marvin           ###   ########.fr       */
+/*   Updated: 2024/08/10 14:12:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,20 @@
 #createAccText{
 	margin-left: 10px;
 	cursor: pointer;
-	/* text-decoration: underline 2px; */
 	border-bottom: white 1px solid;
+	transition: color 0.3s ease;
+
+}
+
+#createAccText:hover{
+	color: rgb(165, 165, 165);
+}
+
+#orText{
+	align-content: center;
+	text-align: center;
+	margin-top: 15px;
+	margin-bottom: 15px;
 }
 
 #newAccDiv{
@@ -124,7 +136,7 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	animation: anim1 0.2s;
+	animation: anim1 0.4s;
 	font-family: "Poppins", sans-serif;
 	font-weight: 500;
 	font-style: normal;

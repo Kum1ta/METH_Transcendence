@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   liveChat.css                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:53:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 18:20:44 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/10 16:47:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,6 @@
 	color: white;
 	display: flex;
 	flex-direction: row;
-	border: 1px solid #000000;
 }
 
 #inputMessageDiv p {
