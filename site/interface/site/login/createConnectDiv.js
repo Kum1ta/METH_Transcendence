@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:14:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/10 01:10:03 by marvin           ###   ########.fr       */
+/*   Updated: 2024/08/10 17:00:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,10 @@ function	createConnectDiv(divLogin)
 	const	createAccText	= document.createElement("p");
 	const	newAccDiv		= document.createElement("div");
 	const	divCenter		= document.createElement("div");
+	const	orText			= document.createElement("p");
 	
 	addGlobalBg();
-	MainText.innerText = "Acces to a new WORLD";
+	MainText.innerText = "Access to a new WORLD";
 	MainText.setAttribute("id", "mainText");
 	mailText.innerText = "Email";
 	passText.innerText = "Password";
@@ -53,7 +54,6 @@ function	createConnectDiv(divLogin)
 	createAccText.innerText = "Create an account";
 	createAccText.setAttribute("id", "createAccText")
 	createAccText.addEventListener("mousedown", () => {
-		console.log("YO LES BG");
 		createButtonNewAcc(divConnect, divLogin);
 	});
 	newAccDiv.setAttribute("id", "newAccDiv");
@@ -68,6 +68,8 @@ function	createConnectDiv(divLogin)
 	inputPass.setAttribute("placeholder", "password");
 	buttonLogin.innerHTML = "Login";
 	buttonLogin.setAttribute("id", "styleButton");
+	orText.innerText = "▬▬▬▬▬▬▬▬▬▬ ㅤ Or ㅤ ▬▬▬▬▬▬▬▬▬▬";
+	orText.setAttribute("id", "orText");
 	buttonConnect42.innerHTML = "Log with 42";
 	buttonConnect42.setAttribute("id", "styleButton42")
 	divConnect.appendChild(MainText);
@@ -79,6 +81,7 @@ function	createConnectDiv(divLogin)
 	newAccDiv.appendChild(newPlayerText);
 	newAccDiv.appendChild(createAccText);
 	form.appendChild(newAccDiv);
+	form.appendChild(orText);
 	form.appendChild(buttonConnect42);
 	divCenter.appendChild(form);
 	divCenter.setAttribute("id", "divCenter");
