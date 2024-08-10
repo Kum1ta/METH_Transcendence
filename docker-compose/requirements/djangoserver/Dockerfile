@@ -14,5 +14,6 @@ RUN chmod 755 /var/www/djangoserver/
 RUN chown -R www-data:www-data /var/www/djangoserver/
 
 WORKDIR /var/www/djangoserver
+STOPSIGNAL SIGKILL
 
 ENTRYPOINT [ "python", "/var/www/djangoserver/server/main.py" ]

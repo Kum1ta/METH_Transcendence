@@ -2,38 +2,34 @@ services:
   nginx:
     container_name: nginx
     volumes:
-      - djangoserver:/var/www/djangoserver
+      - website_data:/var/www/djangoserver
     networks:
       - transcendence
     depends_on:
       - djangoserver
-    build:
-      context: requirements/nginx
-      dockerfile: Dockerfile
+    build: requirements/nginx
     ports:
       - "443:443"
-    restart: on-failure
+    restart: always 
 
   djangoserver:
     container_name: djangoserver
     volumes:
-      - djangoserver:/var/www/djangoserver
+      - website_data:/var/www/djangoserver
     networks:
       - transcendence
-    build:
-      context: requirements/djangoserver
-      dockerfile: Dockerfile
-    restart: on-failure
-    expose:
-      - "9000"
+    build: requirements/djangoserver
+    restart: always 
+    ports:
+      - "9000:9000"
 
 volumes:
-  djangoserver:
+  website_data:
     driver: local
     driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: '/home/edbernar/data/djangoserver'
+      type: none
+      o: bind
+      device: '~/PTME_data'
 
 networks:
   transcendence:
