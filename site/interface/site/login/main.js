@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/09 09:20:03 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/10 15:08:44 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@ import { createNotification as CN } from "../notification/main.js";
 import { userMeInfo, waitForLogin } from "../typeResponse/typeLogin.js";
 import { createConnectDiv } from "./createConnectDiv.js";
 import { createThreeDiv } from "./createThreeDiv.js";
-import { connectedWith42Func } from "./connectedWith42.js";
 
 function	login()
 {
@@ -22,9 +21,13 @@ function	login()
 	const	pLoginButton	= loginButton.getElementsByTagName('p')[0];
 	let		nodeText		= null;
 
-	waitForLogin().then(() => {
+	waitForLogin().then((token) => {
 		nodeText = document.createTextNode(userMeInfo.username);
 
+		if (token !== undefined)
+		{
+			document.cookie = "token={" + token + "}; path=/; Secure; SameSite=Strict; max-age=3600";
+		}
 		if (userMeInfo.id !== -1)
 			loginButton.replaceChild(nodeText, pLoginButton);
 		else

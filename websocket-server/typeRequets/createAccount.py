@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    createAccount.py                                   :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+         #
+#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 08:08:00 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/09 08:52:38 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/10 12:37:49 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ async def createAccount(userClass, content):
 		if (content["password"].find(content["username"]) != -1):
 			await userClass.sendError("Password must not contain the username", 9015)
 			return
+		# |Tom| Au lieu d'utiliser userList, faire une requête à la base de donnée pour savoir si on a un utilisateur avec cet email ou cet username
 		if (content["mail"] in userList):
 			await userClass.sendError("Mail already used", 9016)
 			return

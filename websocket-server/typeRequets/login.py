@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    login.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+         #
+#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/09 09:41:55 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/10 15:59:54 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,40 +23,36 @@ import os
 
 userList = [
 	{
-		"username": "Nexalith",
-		"token": "IDSNCSDAd465sd13215421",
-		"mail": "eddy@ediwor.fr",
-		"password": "ABC123",
-		"id": 9999999,
-		'id42': 123456
-	},
-	{
 		"username": "Eddy",
 		"token": "54dsadw8f4a6w5f4a62s4f984fa62f4as65",
 		"mail": "aaaaa",
 		"password": "ed968e840d10d2d313a870bc131a4e2c311d7ad09bdf32b3418147221f51a6e2", # not hashed : aaaaa
-		"id": 2135421
+		"id": 2135421,
+		"id42": -1
 	},
 	{
 		"username": "Hugo",
 		"token": "dsa4d6sa4sa1hfd1jhgk6g4k21bn65m4nb4",
 		"mail": "bbbbb",
 		"password": "bbbbb",
-		"id": 9892154
+		"id": 9892154,
+		"id42": -1
 	},
 	{
 		"username": "Mathis",
 		"token": "8cb1qjlfndc12mn2l1mn654xzkkhad54cxz",
 		"mail": "ccccc",
 		"password": "6304fbfe2b22557c34c42a70056616786a733b3d09fb326308c813d6ab712ec0", # not hashed : ccccc
-		"id": 2371234
+		"id": 2371234,
+		"id42": -1
 	},
 	{
 		"username": "Tom",
 		"token": "poiuygfvbdsv5c21vcxvcxhgbjqnkmds546",
 		"mail": "ddddd",
 		"password": "ddddd",
-		"id": 6423457
+		"id": 6423457,
+		"id42": -1
 	}
 ]
 
@@ -92,9 +88,9 @@ async def loginBy42(userClass, content):
 	# |TOM| Requete pour récuperer les informations de l'utilisateur selon l'intra de la personne
 	# et créer un token si celui-ci n'existe pas
 	try:
-		main42login(content)
+		await main42login(userClass, content, userList)
 	except Exception as e:
-		await userClass.sendError("Invalid 42 token", 9008, e)
+		await userClass.sendError("Invalid 42 token", 9010, e)
 
 async def login(userClass, content):
 	# |TOM| Faire 3 types de requêtes:
