@@ -23,6 +23,23 @@ services:
     ports:
       - "9000:9000"
 
+  postgresql:
+    container_name: postgresql
+    env_file: .env
+    build: 
+      context: requirements/postgresql
+      args:
+        DB_NAME: ${DB_NAME}
+        DB_USERNAME: ${DB_USERNAME}
+        DB_PASSWORD: ${DB_PASSWORD}
+#    volumes:
+#      - website_data:/var/www/djangoserver
+    networks:
+      - transcendence
+    restart: always 
+    ports:
+      - "5432:5432"
+
 volumes:
   website_data:
     driver: local

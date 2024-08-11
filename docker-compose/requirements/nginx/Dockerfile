@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM nginx:bullseye
 
 RUN mkdir -p /etc/nginx/ssl
 RUN apt install -y openssl
