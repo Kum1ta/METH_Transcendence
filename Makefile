@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/13 16:18:56 by tomoron           #+#    #+#              #
-#    Updated: 2024/08/10 15:24:25 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/11 16:54:45 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,15 +20,20 @@ build:
 	$(COMPOSE) build
 
 up: build
+	mkdir -p ~/PTME_data
 	$(COMPOSE) up -d
 up_att: build
+	mkdir -p ~/PTME_data
 	$(COMPOSE) up
 down:
 	$(COMPOSE) down -v
 
-fclean:
+clean:
 	$(COMPOSE) down -v
 	docker system prune -af --volumes
+
+fclean:clean
+	sudo rm -rf ~/PTME_data
 
 re: fclean all
 
