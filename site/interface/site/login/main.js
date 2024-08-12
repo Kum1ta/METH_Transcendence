@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/10 17:57:45 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/10 18:40:40 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ function	login()
 	let		nodeText		= null;
 
 	waitForLogin().then((token) => {
-		console.log("login.js: userMeInfo.id = " + userMeInfo.id);
 		nodeText = document.createTextNode(userMeInfo.username);
 
 		if (token !== undefined)
