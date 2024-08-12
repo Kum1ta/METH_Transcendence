@@ -3,12 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/12 18:26:31 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/08/13 00:03:27 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+@keyframes animShowMenuDiv {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes animHideMenuDiv {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
 
 * {
 	margin: 0;
@@ -102,4 +120,25 @@ body {
 	background-color: #020202;
 	color: white;
 	cursor: pointer;
+}
+
+#menuDiv {
+	display: flex;
+	flex-direction: column;
+	align-items: right;
+	font-family: "Poppins", sans-serif;
+	background-color: #ffffff;
+	animation: animShowMenuDiv 0.5s;
+}
+
+#menuDiv li {
+	list-style-type: none;
+	text-align: center;
+	font-size: 16px;
+	padding: 10px;
+	cursor: pointer;
+}
+
+#menuDiv li:hover {
+	background-color: #f0f0f0;
 }
