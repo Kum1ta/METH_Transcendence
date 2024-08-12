@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/10 16:56:50 by marvin           ###   ########.fr       */
+/*   Updated: 2024/08/12 18:26:31 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,26 @@ body {
 	font-weight: 500;
 	font-style: normal;
 	gap: 25%;
+}
+
+#topButton p {
+	position: relative;
+}
+
+#topButton p:after {
+	content: "";
+	position: absolute;
+	background-color: white;
+	height: 3px;
+	width: 0%;
+	left: 0;
+	bottom: 1px;
+	transition: 0.3s;
+}
+
+#topButton p:hover:after {
+	/* color: blue; */
+	width: 100%;
 }
 
 #topBar h1 {
