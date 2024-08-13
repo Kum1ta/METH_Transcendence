@@ -6,16 +6,16 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:15:28 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/10 18:32:08 by marvin           ###   ########.fr       */
+/*   Updated: 2024/08/13 13:30:43 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 @keyframes anim1 {
 	0% {
-		transform: translate(-50%, -150%);
+		transform: translate(0, -150%);
 	}
 	100% {
-		transform: translateY(-50%, -50%);
+		transform: translateY(0, 0);
 	}
 }
 
@@ -128,18 +128,16 @@
 }
 
 #loginDiv {
-	width: 80%;
-	height: 80%;
+	inset: 0;
+	padding-block: 7rem;
 	display: flex;
 	position: absolute;
 	z-index: 500;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
 	animation: anim1 0.4s;
 	font-family: "Poppins", sans-serif;
 	font-weight: 500;
 	font-style: normal;
+	justify-content: center;
 }
 
 #globalBg {
@@ -158,16 +156,16 @@
 
 
 #threeDiv {
-	width: 30%;
+	width: 20%;
 	height: 100%;
-	background-color: #020202;
+	background-color: white;
 }
 
 
 
 
 #connectDiv {
-	width: 60%;
+	width: 45%;
 	height: 100%;
 	background-color: #020202;
 	display: flex;
