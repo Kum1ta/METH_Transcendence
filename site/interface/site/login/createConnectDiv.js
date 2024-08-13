@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   createConnectDiv.js                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:14:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/13 00:21:02 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/13 17:19:04 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ function	createConnectDiv(divLogin)
 	inputPass.setAttribute("placeholder", "password");
 	buttonLogin.innerHTML = "Login";
 	buttonLogin.setAttribute("id", "styleButton");
-	orText.innerText = "▬▬▬▬▬▬▬▬▬▬ ㅤ Or ㅤ ▬▬▬▬▬▬▬▬▬▬";
+	orText.innerText = "▬▬▬▬▬▬▬▬ ㅤ Or ㅤ ▬▬▬▬▬▬▬▬";
 	orText.setAttribute("id", "orText");
 	buttonConnect42.innerHTML = "Log with 42";
 	buttonConnect42.setAttribute("id", "styleButton42")

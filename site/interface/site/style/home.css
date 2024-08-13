@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/13 13:11:42 by marvin           ###   ########.fr       */
-=======
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/13 00:03:27 by edbernar         ###   ########.fr       */
->>>>>>> 298711bf505242792e7b73b7a42271903a979d1f
+/*   Updated: 2024/08/13 19:02:42 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +27,14 @@
 		opacity: 0;
 	}
 }
+
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: white;
+  }
 
 * {
 	margin: 0;
@@ -56,7 +57,7 @@ body {
 	padding-inline: 50px;
 	display: flex;
 	background-color: #020202;
-	gap: 4rem;
+	gap: 2rem;
 	align-items: center;
 	position: absolute;
 	inset-inline: 0;
@@ -71,7 +72,8 @@ body {
 	font-family: "Poppins", sans-serif;
 	font-weight: 500;
 	font-style: normal;
-	gap: 3rem;
+	padding-left: 60px;
+	gap: 6rem;
 }
 
 #topButton p {
@@ -125,11 +127,35 @@ body {
 	cursor: pointer;
 }
 
-<<<<<<< HEAD
 .homeSection{
-	color: white;
 	min-height: 100svh;
-=======
+}
+
+.homeSection p{
+	color: white;
+	font-family: "Poppins", sans-serif;
+	font-weight: 500;
+	font-style: normal;
+}
+
+#firstText{
+	font-size: 45px;
+	padding-inline: 50px;
+	padding-top: 70px;
+}
+
+#secondText{
+	font-size: 45px;
+	padding-inline: 50px;
+	padding-top: 90px;
+	text-align: right;
+}
+
+#firstBall{
+	width: 25%;
+	position: relative;
+}
+
 #menuDiv {
 	display: flex;
 	flex-direction: column;
@@ -149,5 +175,4 @@ body {
 
 #menuDiv li:hover {
 	background-color: #f0f0f0;
->>>>>>> 298711bf505242792e7b73b7a42271903a979d1f
 }
