@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/10 16:05:26 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/13 00:12:26 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,9 @@ socket.onopen = () => {
 	status = 1;
 	console.log('Connected');
 	if (token)
-	{
-		console.log("token :" + token);
 		sendRequest("login", {type: "byToken", token: token});
-	}
 	else
-	{
 		connectedWith42Func();
-	}
 };
 
 socket.onmessage = (event) => {

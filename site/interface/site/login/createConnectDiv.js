@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   createConnectDiv.js                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 18:14:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/10 17:00:39 by marvin           ###   ########.fr       */
+/*   Updated: 2024/08/13 00:21:02 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { userMeInfo, waitForLogin } from "../typeResponse/typeLogin.js";
 import { createNotification as CN } from "../notification/main.js";
 import { sendRequest } from "../websocket.js";
+import { showLoginDiv, showMenu } from "./main.js";
 
 /*
 	Todo (Eddy) :
@@ -23,8 +24,9 @@ import { sendRequest } from "../websocket.js";
 		- Empecher les requetes de connexion si un champ est vide
 		- Ajouter un message d'erreur si le mail est invalide
 		- Connexion par 42
-
 */
+
+let		url42 = "https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-d9d6d46bd0be36dc13718981df4bfcf37e574ea364a07fcb5c39658be0f5706c&redirect_uri=http%3A%2F%2F127.0.0.1%3A5500%2Fsite%2F&response_type=code";
 
 function	createConnectDiv(divLogin)
 {
@@ -92,7 +94,7 @@ function	createConnectDiv(divLogin)
 	});
 	buttonConnect42.addEventListener('click', (e) => {
 		e.preventDefault();
-		window.location.replace("https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-d9d6d46bd0be36dc13718981df4bfcf37e574ea364a07fcb5c39658be0f5706c&redirect_uri=http%3A%2F%2F127.0.0.1%3A5500%2Fsite%2F&response_type=code");
+		window.location.replace(url42);
 	});
 	return (divConnect);
 }
@@ -136,6 +138,8 @@ function	createButton(inputLogin, inputPass)
 				document.getElementById("loginDiv").remove();
 				document.getElementById("globalBg").remove();
 				document.cookie = "token={" + token + "}; path=/; Secure; SameSite=Strict; max-age=3600";
+				document.getElementById('loginButton').removeEventListener('click', showLoginDiv);
+				document.getElementById('loginButton').addEventListener('click', showMenu);
 			});
 		}).catch((err) => {
 			CN.new("Error", "An error occured while trying to connect", CN.defaultIcon.error);
