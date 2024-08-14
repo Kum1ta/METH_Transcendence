@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/13 19:02:42 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:39:25 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ body {
 
 .homeSection{
 	min-height: 100svh;
+	overflow: hidden;
 }
 
 .homeSection p{
@@ -147,12 +148,28 @@ body {
 #secondText{
 	font-size: 45px;
 	padding-inline: 50px;
-	padding-top: 90px;
+	padding-top: 140px;
 	text-align: right;
 }
 
 #firstBall{
-	width: 25%;
+	position: absolute;
+	width: 340px;
+	transform-origin: center;
+	transform: translateX(-50%);
+	left: 0;
+}
+
+#secondBall{
+	position: absolute;
+	width: 340px;
+	transform-origin: center;
+	transform: translateX(50%);
+	top: 250px;
+	right: 0;
+}
+
+.relative{
 	position: relative;
 }
 
@@ -176,3 +193,12 @@ body {
 #menuDiv li:hover {
 	background-color: #f0f0f0;
 }
+
+footer {
+	padding: 15px;
+	display: flex;
+	overflow: hidden;
+	height: 200px;
+	background-color: white;
+	color: #020202;
+  }
