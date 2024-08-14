@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:35 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/14 11:32:50 by marvin           ###   ########.fr       */
+/*   Updated: 2024/08/14 18:25:04 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ window.addEventListener('scroll', function() {
 	const rotationAngle = scrollPosition * 0.1; // Ajustez ce facteur pour contrôler l'angle de rotation
 	const parallaxElement = document.querySelector('#firstBall');
 	const parallaxElement2 = document.querySelector('#secondBall');
-	const parallaxSpeed = scrollPosition * -0.15; // Ajustez ce facteur pour ralentir le défilement
+	const parallaxSpeed = scrollPosition * -0.17; // Ajustez ce facteur pour ralentir le défilement
 
 	// Appliquer la rotation en fonction de la position de défilement
 	parallaxElement.style.transform = `translateX(-50%) translateY(${-parallaxSpeed}px) rotate(${rotationAngle}deg)`;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/14 12:39:25 by marvin           ###   ########.fr       */
+/*   Updated: 2024/08/14 18:55:27 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,11 +194,86 @@ body {
 	background-color: #f0f0f0;
 }
 
+.team {
+    display: flex;
+    gap: 40px;
+	padding-inline: 200px;
+	padding-block: 200px;
+	justify-content: center;
+}
+
+.team h2 {
+	color: white;
+	font-family: "Poppins", sans-serif;
+	font-weight: 500;
+	font-style: normal;
+	font-size: 30px;
+}
+
+.team-member {
+    max-width: 350px;
+	transition: transform 0.3s ease;
+}
+
+.team-member:hover {
+    transform: scale(1.2);
+}
+
+
+.team-member:not(:hover) {
+    transform: scale(0.8);
+}
+
+.team-photo {
+    width: 100%;
+    height: auto;
+}
+
+.info {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background-color: rgba(0, 0, 0);
+    padding: 10px;
+    width: 100%;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.team-member:hover .info {
+    transform: translateX(-50%) translateY(25%);
+    opacity: 1;
+}
+
 footer {
-	padding: 15px;
-	display: flex;
+	padding: 25px;
 	overflow: hidden;
-	height: 200px;
+	height: 150px;
 	background-color: white;
+	font-family: "Poppins", sans-serif;
+	font-weight: 500;
+	font-style: normal;
 	color: #020202;
-  }
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-left h1 {
+    font-size: 1.5em;
+	font-style: italic;
+    font-weight: bold;
+    margin: 0;
+}
+
+.footer-left p {
+    color: #afafaf;
+}
+
+.footer-right p {
+    font-weight: bold;
+}
