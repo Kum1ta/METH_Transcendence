@@ -18,7 +18,13 @@ services:
       - website_data:/var/www/djangoserver
     networks:
       - transcendence
-    build: requirements/djangoserver
+    build:
+      context: requirements/djangoserver
+      args:
+        DB_NAME: ${DB_NAME}
+        DB_USERNAME: ${DB_USERNAME}
+        DB_PASSWORD: ${DB_PASSWORD}
+        DB_HOST: ${DB_HOST}
     restart: always 
     ports:
       - "9000:9000"
