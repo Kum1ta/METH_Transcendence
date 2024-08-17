@@ -1,8 +1,8 @@
 services:
   nginx:
     container_name: nginx
-    volumes:
-      - website_data:/var/www/djangoserver
+#    volumes:
+#      - website_data:/var/www/djangoserver
     networks:
       - transcendence
     depends_on:
@@ -14,8 +14,8 @@ services:
 
   djangoserver:
     container_name: djangoserver
-    volumes:
-      - website_data:/var/www/djangoserver
+#    volumes:
+#      - website_data:/var/www/djangoserver
     networks:
       - transcendence
     build:
@@ -25,9 +25,9 @@ services:
         DB_USERNAME: ${DB_USERNAME}
         DB_PASSWORD: ${DB_PASSWORD}
         DB_HOST: ${DB_HOST}
+    depends_on:
+      - postgresql
     restart: always 
-    ports:
-      - "9000:9000"
 
   postgresql:
     container_name: postgresql
@@ -38,13 +38,16 @@ services:
         DB_NAME: ${DB_NAME}
         DB_USERNAME: ${DB_USERNAME}
         DB_PASSWORD: ${DB_PASSWORD}
-#    volumes:
-#      - website_data:/var/www/djangoserver
     networks:
       - transcendence
     restart: always 
-    ports:
-      - "5432:5432"
+  
+  adminer: 
+    container_name: adminer 
+    image: adminer:latest
+    restart: always
+    networks:
+      - transcendence 
 
 volumes:
   website_data:
