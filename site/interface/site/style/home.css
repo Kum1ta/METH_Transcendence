@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/14 18:55:27 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/08/17 23:27:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,7 +234,7 @@ body {
     bottom: 0;
     left: 50%;
     transform: translateX(-50%) translateY(10px);
-    background-color: rgba(0, 0, 0);
+    background-color: #020202;
     padding: 10px;
     width: 100%;
     opacity: 0;
