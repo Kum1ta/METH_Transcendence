@@ -3,6 +3,7 @@
     "dev": "vite"
   },
   "dependencies": {
+    "rollup": "^4.21.0",
     "three": "^0.167.1",
     "vite": "^5.4.1"
   }
