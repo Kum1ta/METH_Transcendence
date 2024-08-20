@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/20 17:36:47 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/20 17:55:31 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,27 +32,18 @@ function loop()
 	renderer.render(scene, player.camera);
 	
 	// ===== test ball =====
-	updateBall();
 }
-
-function createMap()
-{
-	const geometry	= new THREE.PlaneGeometry(10, 10);
-	const material	= new THREE.MeshPhysicalMaterial();
-	const mesh		= new THREE.Mesh(geometry, material);
-
-	mesh.rotateX(-(Math.PI / 2));
-	return (mesh);
-}
-
 
 const scene			= new THREE.Scene();
 const map			= new Map(scene, 13);
 const bar			= createBarPlayer(0xed56ea);
 const renderer		= new THREE.WebGLRenderer({antialias: true});
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 const player		= new Player(bar);
-const spotLight		= new THREE.SpotLight(0xffffff, 10000, 0, Math.PI / 4);
-const ambiantLight	= new THREE.AmbientLight(0xffffff, 1);
+const spotLight		= new THREE.SpotLight(0xffffff, 10000, 0, 0.2);
+
+const ambiantLight	= new THREE.AmbientLight(0xffffff, 0.5);
 
 // ===== test ball =====
 const geometryBall = new THREE.SphereGeometry(0.15, 32, 32);
@@ -65,27 +56,23 @@ ball.receiveShadow = true;
 ball.castShadow = true;
 scene.add(ball);
 
-function updateBall()
-{
-	// pressedButton	= [];
-	let i 				= 0;
-	let interval		= null;
-	let speed			= 0.01;
-	const limits = {
-		up : 3,
-		down: 0.2,
-		left: -3,
-		right: 3,
-	}
+spotLight.castShadow = true;
 
-	document.addEventListener('keypress', (e) => {
-		if (e.key == '9')
-		{
-				ball.position.z += speed;
-				console.log(e.key);
-		}
-	});
+let speed			= 0.1;
+const limits = {
+	up : 3,
+	down: 0.2,
+	left: -3,
+	right: 3,
 }
+
+document.addEventListener('keypress', (e) => {
+	if (e.key == '9')
+	{
+			ball.position.z += speed;
+			console.log(e.key);
+	}
+});
 // =====================
 
 scene.add(player.object);
