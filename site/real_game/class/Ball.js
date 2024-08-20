@@ -6,26 +6,31 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/20 17:23:41 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/21 00:57:42 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from 'three';
 
-const centerPos = {
-	x: 0,
-	y: 0.3,
-	z: -0.1
-}
+/*
+	Todo (Eddy) :
+		- Ajouter fonction pour changer la gravité de la balle
+*/
 
 class Ball
 {
-	object = null;
+	object		= null;
+	centerPos	= {};
+	limits		= {};
+	interval	= null;
 
-	constructor(scene)
+	constructor(scene, map)
 	{
 		this.object = this.#createBall();
-
+		this.centerPos = map.centerPos;
+		this.centerPos.y += this.object.geometry.parameters.radius;
+		this.limits = map.playerLimits;
+		this.resetPosBall();
 		scene.add(this.object);
 	}
 
@@ -37,9 +42,66 @@ class Ball
 
 		mesh.receiveShadow = true;
 		mesh.castShadow = true;
-		mesh.position.set(centerPos.x, centerPos.y, centerPos.z);
+		mesh.position.set(this.centerPos.x, this.centerPos.y, this.centerPos.z);
 		return (mesh);
 	}
+
+	resetPosBall()
+	{
+		this.setPosition(this.centerPos.x, this.centerPos.y, this.centerPos.z);
+	}
+
+	setPosition(x, y, z)
+	{
+		this.object.position.set(x, y, z);
+	}
+
+	changeGravity()
+	{
+		let	diffTop	= this.limits.up - this.object.position.y;
+		let	diffBot	= this.object.position.y - this.limits.down;
+		let	speed	= 0.1; 
+
+		if (diffBot > diffTop)
+			speed *= -1;
+		if (this.interval)
+			clearInterval(this.interval);
+		this.interval = setInterval(() => {
+			this.object.position.y += speed;
+			if ((speed > 0 && this.object.position.y >= this.limits.up)
+				|| (speed < 0 && this.object.position.y <= this.limits.down))
+			{
+				clearInterval(this.interval);
+				this.interval = null;
+				if (speed > 0)
+					this.setPosition(this.object.position.x, this.limits.up, this.object.position.z);
+				else
+					this.setPosition(this.object.position.x, this.limits.down, this.object.position.z);
+			}
+		}, 10);
+	}
+
+	/*---------------- FUNCTION FOR TEST ----------------*/
+	initMoveBallTmp()
+	{
+		console.warn("Don't forget to remove function initMoveBallTmp");
+		const	speedBallTmp	=	0.1;
+		
+		document.addEventListener('keypress', (e) => {
+			if (e.key == '4')
+				this.object.position.x -= speedBallTmp;
+			if (e.key == '6')
+				this.object.position.x += speedBallTmp;
+			if (e.key == '8')
+				this.object.position.z -= speedBallTmp;
+			if (e.key == '2')
+				this.object.position.z += speedBallTmp;
+			if (e.key == '9')
+				this.changeGravity();
+		});
+	}
+	/*---------------------------------------------------*/
 }
+
 
 export { Ball };
