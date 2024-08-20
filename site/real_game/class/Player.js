@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/20 17:01:01 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/21 00:27:01 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,6 @@ import * as THREE from 'three';
 */
 
 /*
-	Information :
-		- La map devra faire maximum 8 largueur car ça pose des problèmes avec la caméra fixe
-
-
-/*
 	Todo (Eddy) :
 		- Ajouter une camera sur l'object (OK)
 		- Faire une fonction pour changer le mode de la camera (fix ou accrochée) (OK)
@@ -48,12 +43,6 @@ import * as THREE from 'three';
 */
 
 let playerExist = false;
-const limits = {
-	up : 3,
-	down: 0.2,
-	left: -3,
-	right: 3,
-}
 
 class Player
 {
@@ -64,19 +53,22 @@ class Player
 	cameraFixed		= false;
 	interval		= null;
 	isOnPointAnim	= false;
+	limits			= {};
 
-	constructor (object)
+	constructor (object, map)
 	{
 		if (playerExist)
 			throw Error("Player is already init.");
 		playerExist = true;
 		this.object = object;
-		this.camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 10000);
+		this.limits = map.playerLimits;
+		this.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 10000);
 		this.setCameraPosition(
 			this.object.position.x,
 			this.object.position.y + 0.7,
-			this.object.position.z + 1
+			this.object.position.z + 2
 		);
+		this.object.position.set(this.object.position.x, this.limits.down, this.object.position.z);
 		this.cleanup = new FinalizationRegistry((heldValue) => {
 			playerExist = false;
 		})
@@ -110,20 +102,20 @@ class Player
 				{
 					this.setCameraPosition(
 						this.object.position.x,
-						this.object.position.y - (this.object.position.y >= limits.up ? 0.7 : -0.7),
-						this.object.position.z + 1
+						this.object.position.y - (this.object.position.y >= this.limits.up ? 0.7 : -0.7),
+						this.object.position.z + 2
 					);
 					this.camera.rotation.set(0, 0, 0);
 				}
 				else
-					this.setCameraPosition(0, 1.5, 2.6);
+					this.setCameraPosition(0, 1.5, 4);
 			}				
 		});
 	}
 
 	pointAnimation(scene)
 	{
-		const	tmpCamera	= new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 10000);
+		const	tmpCamera	= new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10000);
 		const	tmp			= this.camera;
 		let		interval	= null;
 		const	startColor	= this.object.material.color.clone();
@@ -136,7 +128,7 @@ class Player
 			document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
 		}, 300)
 		setTimeout(() => {
-			tmpCamera.position.set(-3, 3, -3);
+			tmpCamera.position.set(-3, this.limits.up / 2 + 0.5, -3);
 			this.isOnPointAnim = true;
 			this.camera = tmpCamera;
 			interval = setInterval(() => {
@@ -161,17 +153,13 @@ class Player
 					{
 						this.setCameraPosition(
 							this.object.position.x,
-							this.object.position.y - (this.object.position.y >= limits.up ? 0.7 : -0.7),
-							this.object.position.z + 1
+							this.object.position.y - (this.object.position.y >= this.limits.up ? 0.7 : -0.7),
+							this.object.position.z + 2
 						);
 					}
 					document.getElementsByTagName('canvas')[0].style.animation = 'fadeOut 0.199s';
 					document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
 				}, 200);
-				// document.getElementsByTagName('canvas')[0].style.filter = 'brightness(0)';
-				// setTimeout(() => {
-				// 	document.getElementsByTagName('canvas')[0].style.animation = 'fadeOut 0.199s';
-				// }, 300)
 			}, 4000);
 		}, 200)
 	}
@@ -183,7 +171,7 @@ class Player
 		i = 0;
 		while (i < this.pressedButton.length)
 		{
-			if (this.pressedButton[i] == 'w' && this.object.position.y < limits.up)
+			if (this.pressedButton[i] == 'w' && this.object.position.y < this.limits.up)
 			{
 				if (this.interval)
 					clearInterval(this.interval);
@@ -191,14 +179,14 @@ class Player
 					this.object.position.y += this.speed;
 					if (!this.cameraFixed && !this.isOnPointAnim)
 						this.camera.position.y += (this.speed / 2);
-					if (this.object.position.y >= limits.up)
+					if (this.object.position.y >= this.limits.up)
 					{
 						clearInterval(this.interval);
 						this.interval = null;
 					}
 				}, 5);
 			}
-			if (this.pressedButton[i] == 's' && this.object.position.y > limits.down)
+			if (this.pressedButton[i] == 's' && this.object.position.y > this.limits.down)
 			{
 				if (this.interval)
 					clearInterval(this.interval);
@@ -206,20 +194,20 @@ class Player
 					this.object.position.y -= this.speed;
 					if (!this.cameraFixed && !this.isOnPointAnim)
 						this.camera.position.y -= (this.speed / 2);
-					if (this.object.position.y <= limits.down)
+					if (this.object.position.y <= this.limits.down)
 					{
 						clearInterval(this.interval);
 						this.interval = null;
 					}
 				}, 5);
 			}
-			if (this.pressedButton[i] == 'd' && this.object.position.x < limits.right)
+			if (this.pressedButton[i] == 'd' && this.object.position.x < this.limits.right)
 			{
 				this.object.position.x += this.speed;
 				if (!this.cameraFixed && !this.isOnPointAnim)
 					this.camera.position.x += this.speed;
 			}
-			if (this.pressedButton[i] == 'a' && this.object.position.x > limits.left)
+			if (this.pressedButton[i] == 'a' && this.object.position.x > this.limits.left)
 			{
 				this.object.position.x -= this.speed;
 				if (!this.cameraFixed && !this.isOnPointAnim)
