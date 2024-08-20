@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/20 17:24:15 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:29:17 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,19 @@ class Map
 	scene = null;
 	arrObject = [];
 	centerPos = {x:-1,y:-1,z:-1}
+	mapLength = 0;
 
 	constructor(scene, length)
 	{
 		this.scene = scene;
 		scene.add(this.#createPlanes(7.5, length, -(Math.PI / 2), "planeBottom", true));
 		scene.add(this.#createPlanes(7.5, length, (Math.PI / 2), "planeTop", false));
-		scene.add(this.#createWall(-3.5, 0.15, -length/2, "wallLeft"));
-		scene.add(this.#createWall(3.5, 0.15, -length/2, "wallRight"));
+		scene.add(this.#createWall(-3.5, 0.4, -length/2, "wallLeft"));
+		scene.add(this.#createWall(3.5, 0.4, -length/2, "wallRight"));
 		this.centerPos.x = 0;
 		this.centerPos.y = 0.15;
 		this.centerPos.z = -length/2;
+		this.mapLength = length;
 	};
 
 	#createPlanes(x, y, rot, name, isBottom) // passer un materiel
@@ -60,7 +62,7 @@ class Map
 			if (this.arrObject[i].name == name)
 				throw Error("Name already exist.");
 		}
-		const geometry	= new THREE.BoxGeometry(0.05, 1, 1.25);
+		const geometry	= new THREE.BoxGeometry(0.05, 0.5, 0.75);
 		const material	= new THREE.MeshPhysicalMaterial();
 		const mesh		= new THREE.Mesh(geometry, material);
 
@@ -68,6 +70,25 @@ class Map
 		this.arrObject.push({mesh: mesh, name: name});
 		return (mesh);
 	};
+
+	update(ball)
+	{
+		for (let i = 0; i < this.arrObject.length; i++)
+		{
+			if (this.arrObject[i].name == "wallLeft")
+			{
+				if (ball.position.z < 0.1 && ball.position.z > -this.mapLength + 1)
+					this.arrObject[i].mesh.position.z = ball.position.z;
+				this.arrObject[i].mesh.position.y = ball.position.y;
+			}
+			if (this.arrObject[i].name == "wallRight")
+			{
+				if (ball.position.z < 0.1 && ball.position.z > -this.mapLength + 1)
+					this.arrObject[i].mesh.position.z = ball.position.z;
+				this.arrObject[i].mesh.position.y = ball.position.y;
+			}
+		}
+	}
 };
 
 export { Map };
