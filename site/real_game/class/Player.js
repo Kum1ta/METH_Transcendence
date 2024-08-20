@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/19 23:55:40 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/20 14:33:51 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ let playerExist = false;
 const limits = {
 	up : 3,
 	down: 0.2,
-	left: -3,
-	right: 3,
+	left: -4,
+	right: 4,
 }
 
 class Player
@@ -121,7 +121,7 @@ class Player
 		});
 	}
 
-	pointAnimation(scene, ...lights)
+	pointAnimation(scene)
 	{
 		const	tmpCamera	= new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 10000);
 		const	tmp			= this.camera;
@@ -129,32 +129,44 @@ class Player
 		const	startColor	= this.object.material.color.clone();
 		let		hue			= 0;
 
-		tmpCamera.position.set(3, 3, 3);
-		this.isOnPointAnim = true;
-		this.camera = tmpCamera;
-		interval = setInterval(() => {
-			tmpCamera.lookAt(this.object.position);
-			hue += 0.01;
-			if (hue > 1)
-				hue = 0;
-			this.object.material.color.setHSL(hue, 1, 0.5);
-			tmpCamera.fov -= 0.05;
-			tmpCamera.updateProjectionMatrix();
-		}, 10);
+		document.getElementsByTagName('canvas')[0].style.animation = 'fadeIn 0.199s';
+		document.getElementsByTagName('canvas')[0].style.filter = 'brightness(0)';
 		setTimeout(() => {
-			clearInterval(interval);
-			this.camera = tmp;
-			this.object.material.color.copy(startColor);
-			this.isOnPointAnim = false;
-			if (!this.cameraFixed)
-			{
-				this.setCameraPosition(
-					this.object.position.x,
-					this.object.position.y - (this.object.position.y >= limits.up ? 0.7 : -0.7),
-					this.object.position.z + 1
-				);
-			}
-		}, 4000);
+			document.getElementsByTagName('canvas')[0].style.animation = 'fadeOut 0.199s';
+			document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
+		}, 300)
+		setTimeout(() => {
+			tmpCamera.position.set(3, 3, 3);
+			this.isOnPointAnim = true;
+			this.camera = tmpCamera;
+			interval = setInterval(() => {
+				tmpCamera.lookAt(this.object.position);
+				hue += 0.01;
+				if (hue > 1)
+					hue = 0;
+				this.object.material.color.setHSL(hue, 1, 0.5);
+				tmpCamera.fov -= 0.05;
+				tmpCamera.updateProjectionMatrix();
+			}, 10);
+			setTimeout(() => {
+				clearInterval(interval);
+				this.camera = tmp;
+				this.object.material.color.copy(startColor);
+				this.isOnPointAnim = false;
+				if (!this.cameraFixed)
+				{
+					this.setCameraPosition(
+						this.object.position.x,
+						this.object.position.y - (this.object.position.y >= limits.up ? 0.7 : -0.7),
+						this.object.position.z + 1
+					);
+				}
+				document.getElementsByTagName('canvas')[0].style.animation = 'fadeIn 0.199s';
+				setTimeout(() => {
+					document.getElementsByTagName('canvas')[0].style.animation = 'fadeOut 0.199s';
+				}, 300)
+			}, 4000);
+		}, 200)
 	}
 
 	update()
