@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/20 16:00:24 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/20 17:01:01 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ import * as THREE from 'three';
 		  barre est en haut). Mais peut etre faire ça quand la barre aura des mouvements
 		  définis sur la hauteur. (OK)
 		- Ajouter les mouvements définis sur l'axe y (OK)
-		- Faire une fonction qui change de camera quand il y a un but avec un fondu en noir
+		- Faire une fonction qui change de camera quand il y a un but avec un fondu en noir (OK)
 		- Ajouter un zoom sur la camera de la fonction pointAnimation (OK)
 */
 
@@ -136,7 +136,7 @@ class Player
 			document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
 		}, 300)
 		setTimeout(() => {
-			tmpCamera.position.set(3, 3, 3);
+			tmpCamera.position.set(-3, 3, -3);
 			this.isOnPointAnim = true;
 			this.camera = tmpCamera;
 			interval = setInterval(() => {
@@ -150,21 +150,28 @@ class Player
 			}, 10);
 			setTimeout(() => {
 				clearInterval(interval);
-				this.camera = tmp;
-				this.object.material.color.copy(startColor);
-				this.isOnPointAnim = false;
-				if (!this.cameraFixed)
-				{
-					this.setCameraPosition(
-						this.object.position.x,
-						this.object.position.y - (this.object.position.y >= limits.up ? 0.7 : -0.7),
-						this.object.position.z + 1
-					);
-				}
-				document.getElementsByTagName('canvas')[0].style.animation = 'fadeIn 0.199s';
+				document.getElementsByTagName('canvas')[0].style.animation = null;
+				document.getElementsByTagName('canvas')[0].style.animation = 'fadeIn 0.19s';
+				document.getElementsByTagName('canvas')[0].style.filter = 'brightness(0)';
 				setTimeout(() => {
+					this.camera = tmp;
+					this.object.material.color.copy(startColor);
+					this.isOnPointAnim = false;
+					if (!this.cameraFixed)
+					{
+						this.setCameraPosition(
+							this.object.position.x,
+							this.object.position.y - (this.object.position.y >= limits.up ? 0.7 : -0.7),
+							this.object.position.z + 1
+						);
+					}
 					document.getElementsByTagName('canvas')[0].style.animation = 'fadeOut 0.199s';
-				}, 300)
+					document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
+				}, 200);
+				// document.getElementsByTagName('canvas')[0].style.filter = 'brightness(0)';
+				// setTimeout(() => {
+				// 	document.getElementsByTagName('canvas')[0].style.animation = 'fadeOut 0.199s';
+				// }, 300)
 			}, 4000);
 		}, 200)
 	}
