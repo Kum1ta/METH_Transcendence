@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/21 17:03:56 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/21 18:59:08 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,19 @@ class Map
 	};
 	mapLength = 0;
 
-	constructor(scene, length)
+	constructor(scene, length, obstacles)
 	{
 		this.scene = scene;
 		this.centerPos.x = 0;
 		this.centerPos.y = 0.15;
 		this.centerPos.z = -length / 2 + length / 2;
 		this.mapLength = length;
-		scene.add(this.#createPlanes(7.5, length, -(Math.PI / 2), "planeBottom", true, 0xaaffff));
-		scene.add(this.#createPlanes(7.5, length, (Math.PI / 2), "planeTop", false, '/textures/testTmp.jpg'));
+		scene.add(this.#createPlanes(7.5, length, -(Math.PI / 2), "planeBottom", true, '/textures/pastel.jpg'));
+		scene.add(this.#createPlanes(7.5, length, (Math.PI / 2), "planeTop", false, '/textures/pastel.jpg'));
 		scene.add(this.#createWall(-3.5, 0.4, -length/2, "wallLeft"));
 		scene.add(this.#createWall(3.5, 0.4, -length/2, "wallRight"));
-		this.#createGravityChanger(0, 0.2, 4, "gravityChangerGroup1");
+		if (obstacles)
+			this.#generateObstacle();
 	};
 
 	#createPlanes(x, y, rot, name, isBottom, visual)
@@ -104,7 +105,7 @@ class Map
 		return (mesh);
 	};
 
-	#createGravityChanger(x, y, z, name)
+	#createGravityChanger(x, y, z, name, onTop)
 	{
 		for (let i = 0; i < this.arrObject.length; i++)
 		{
@@ -113,69 +114,104 @@ class Map
 		}
 		const geometry0	= new THREE.CircleGeometry(0.2, 24);
 		const material0	= new THREE.MeshPhysicalMaterial({color: 0xaaffaa});
-		const mesh0		= new THREE.Mesh(geometry0, material0);
-		mesh0.rotateX(-Math.PI / 2);
-		mesh0.position.set(x, y - 0.048, z);
+		const circle1		= new THREE.Mesh(geometry0, material0);
+		circle1.rotateX(-Math.PI / 2);
+		circle1.position.set(x, y - 0.048, z);
 		
 		const geometry	= new THREE.CircleGeometry(0.24, 24);
 		const material	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
-		const mesh		= new THREE.Mesh(geometry, material);
-		mesh.rotateX(-Math.PI / 2);
-		mesh.position.set(x, y - 0.049, z);
+		const circle2		= new THREE.Mesh(geometry, material);
+		circle2.rotateX(-Math.PI / 2);
+		circle2.position.set(x, y - 0.049, z);
 		
 		const geometry1	= new THREE.TorusGeometry(1, 0.1, 12, 24);
 		const material1	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
-		const mesh1		= new THREE.Mesh(geometry1, material1);
-		mesh1.rotateX(-Math.PI / 2);
-		mesh1.position.set(x, y, z);
-		mesh1.scale.set(0.2, 0.2, 0.2);
+		const ring1		= new THREE.Mesh(geometry1, material1);
+		ring1.rotateX(-Math.PI / 2);
+		ring1.position.set(x, y, z);
+		ring1.scale.set(0.2, 0.2, 0.2);
 		material1.transparent = true;
 		material1.opacity = 0.75;
 		
 		const geometry2	= new THREE.TorusGeometry(1, 0.1, 12, 24);
 		const material2	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
-		const mesh2		= new THREE.Mesh(geometry2, material2);
-		mesh2.rotateX(-Math.PI / 2);
-		mesh2.position.set(x, y + 0.1, z);
-		mesh2.scale.set(0.18, 0.18, 0.18);
+		const ring2		= new THREE.Mesh(geometry2, material2);
+		ring2.rotateX(-Math.PI / 2);
+		ring2.position.set(x, y + 0.1, z);
+		ring2.scale.set(0.18, 0.18, 0.18);
 		material2.transparent = true;
 		material2.opacity = 0.65;
 
 		const geometry3	= new THREE.TorusGeometry(1, 0.1, 12, 24);
 		const material3	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
-		const mesh3		= new THREE.Mesh(geometry3, material3);
-		mesh3.rotateX(-Math.PI / 2);
-		mesh3.position.set(x, y + 0.2, z);
-		mesh3.scale.set(0.16, 0.16, 0.16);
+		const ring3		= new THREE.Mesh(geometry3, material3);
+		ring3.rotateX(-Math.PI / 2);
+		ring3.position.set(x, y + 0.2, z);
+		ring3.scale.set(0.16, 0.16, 0.16);
 		material3.transparent = true;
 		material3.opacity = 0.35;
 	
-		// collider
-		const geometry4	= new THREE.CylinderGeometry(0.15, 0.15, 0.5);
+		const geometry4	= new THREE.CylinderGeometry(0.15, 0.15, 0.4);
 		const material4	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
-		const mesh4		= new THREE.Mesh(geometry4, material4);
-		mesh4.position.set(x, y + 0.2, z);
+		const collider		= new THREE.Mesh(geometry4, material4);
+		collider.position.set(x, y + 0.1, z);
 		material4.transparent = true;
 		material4.opacity = 0.1;
-		
+
 		const group = new THREE.Group();
-		group.add(mesh0);
-		group.add(mesh);
-		group.add(mesh1);
-		group.add(mesh2);
-		group.add(mesh3);
-		group.add(mesh4);
+		group.add(circle1);
+		group.add(circle2);
+		group.add(ring1);
+		group.add(ring2);
+		group.add(ring3);
+		group.add(collider);
+
+		if (onTop)
+		{
+			group.rotateX(Math.PI);
+			group.translateY(-6.3);
+		}
 		this.arrObject.push({mesh: group, name: name});
 
 		this.scene.add(group);
 	};
 
-	// createGravityChanger(ball, x, z, onTop)
-	// {
-	// 	if (this.ballObject == null)
-	// 		throw Error("Ball is not init");
-		
-	// }
+	#generateObstacle()
+	{
+		let randomNumber;
+		if (Math.random() < 0.5)
+		{
+			randomNumber = Math.random();
+			if (randomNumber < 0.5)
+				this.#createGravityChanger(-1.5, 0.2, this.mapLength / 4, "gravityChangerGroupBottom1", 0);
+			else
+				this.#createGravityChanger(1.5, 0.2, this.mapLength / 4, "gravityChangerGroupBottom2", 0);
+		}
+		if (Math.random() < 0.5)
+		{
+			randomNumber = Math.random();
+			if (randomNumber < 0.5)
+				this.#createGravityChanger(-1.5, 0.2, -this.mapLength / 4, "gravityChangerGroupBottom3", 0);
+			else
+				this.#createGravityChanger(1.5, 0.2, -this.mapLength / 4, "gravityChangerGroupBottom4", 0);
+		}
+		if (Math.random() < 0.5)
+		{
+			randomNumber = Math.random();
+			if (randomNumber < 0.5)
+				this.#createGravityChanger(-1.5, 3.2, this.mapLength / 4, "gravityChangerGroupTop1", 1);
+			else
+				this.#createGravityChanger(1.5, 3.2, this.mapLength / 4, "gravityChangerGroupTop2", 1);
+		}
+		if (Math.random() < 0.5)
+		{
+			randomNumber = Math.random();
+			if (randomNumber < 0.5)
+				this.#createGravityChanger(-1.5, 3.2, -this.mapLength / 4, "gravityChangerGroupTop3", 1);
+			else
+				this.#createGravityChanger(1.5, 3.2, -this.mapLength / 4, "gravityChangerGroupTop4", 1);
+		}
+	};
 
 	update(ball)
 	{
@@ -211,7 +247,7 @@ class Map
 				else
 					this.arrObject[i].mesh.material.opacity = 1 - (diff / 2);
 			}
-			if (this.arrObject[i].name == "gravityChangerGroup1")
+			if (this.arrObject[i].name == "gravityChangerGroupBottom1")
 			{
 				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
 				{
@@ -219,6 +255,72 @@ class Map
 					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
 					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
 					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 0.25;
+				}
+			}
+			if (this.arrObject[i].name == "gravityChangerGroupBottom2")
+			{
+				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
+				{
+					
+					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
+					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
+					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 0.25;
+				}
+			}
+			if (this.arrObject[i].name == "gravityChangerGroupBottom3")
+			{
+				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
+				{
+					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
+					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
+					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 0.25;
+				}
+			}
+			if (this.arrObject[i].name == "gravityChangerGroupBottom4")
+			{
+				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
+				{
+					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
+					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
+					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 0.25;
+				}
+			}
+			if (this.arrObject[i].name == "gravityChangerGroupTop1")
+			{
+				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
+				{
+					
+					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
+					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
+					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 3.25;
+				}
+			}
+			if (this.arrObject[i].name == "gravityChangerGroupTop2")
+			{
+				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
+				{
+					
+					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
+					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
+					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 3.25;;
+				}
+			}
+			if (this.arrObject[i].name == "gravityChangerGroupTop3")
+			{
+				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
+				{
+					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
+					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
+					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 3.25;
+				}
+			}
+			if (this.arrObject[i].name == "gravityChangerGroupTop4")
+			{
+				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
+				{
+					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
+					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
+					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 3.25;;
 				}
 			}
 		}
