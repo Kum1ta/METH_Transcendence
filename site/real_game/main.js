@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/21 16:39:17 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/21 18:46:41 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ function loop()
 }
 
 const scene			= new THREE.Scene();
-const map			= new Map(scene, 13);
+const map			= new Map(scene, 13, true);
 const bar1			= createBarPlayer(0xed56ea);
 const renderer		= new THREE.WebGLRenderer({antialias: true});
 renderer.shadowMap.enabled = true;
