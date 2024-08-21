@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/21 14:51:31 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:39:17 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,25 @@ import { Ball } from './class/Ball'
 import { Opponent } from './class/Opponent'
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
-let	debug = false;
+/*
+Controls :
+	- w : monter
+	- s : descendre
+	- a : gauche
+	- d : droite
+
+	- g : animation de point
+	- h : animation de point pour l'adversaire
+	- c : switch entre la vue du joueur et la vue de la caméra
+
+	- 8 : avance la balle
+	- 2 : recule la balle
+	- 4 : balle vers la gauche
+	- 6 : balle vers ladroite
+	- 9 : inversion gravite
+*/
+
+let	debug = true;
 
 function createBarPlayer(color)
 {
@@ -72,14 +90,14 @@ ball.initMoveBallTmp();
 map.ballObject = ball.object;
 
 // map.addDecor('blender/exported/map1.glb')
-map.createGravityChanger(1, 1, false);
+// map.createGravityChanger(1, 1, false);
 
 
 
 /*---------------DEBUG----------------*/
 const cameraTmp = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight);
 const controls = new OrbitControls(cameraTmp, renderer.domElement);
-cameraTmp.position.set(15, 0, 15);
+cameraTmp.position.set(5, 3, 5);
 controls.target = new THREE.Vector3(map.centerPos.x, 0, map.centerPos.z);
 
 /*------------------------------------*/
