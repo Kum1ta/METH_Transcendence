@@ -4,7 +4,7 @@ RUN apt update
 RUN apt upgrade -y
 
 RUN apt install -y python3 python3-pip postgresql-client
-RUN pip3 install django psycopg
+RUN pip3 install django psycopg "channels[daphne]"
 
 ARG DB_HOST=;
 ARG DB_NAME=;
