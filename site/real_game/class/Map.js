@@ -6,22 +6,27 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/21 00:59:01 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/21 14:56:10 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 /*
 	Todo (Eddy) :
 		- Ajouter la transparence sur les murs sur la distance de la balle (OK)
 		- Ajouter des textures selon le type : number pour couleur, string pour img (OK)
+		- Ajouter une fonctione pour modifier la gravité
 */
+
+const loader = new GLTFLoader();
 
 class Map
 {
 	scene = null;
 	arrObject = [];
+	ballObject = null;
 	centerPos = {
 		x: -1,
 		y: -1,
@@ -44,11 +49,11 @@ class Map
 		scene.add(this.#createWall(3.5, 0.4, -length/2, "wallRight"));
 		this.centerPos.x = 0;
 		this.centerPos.y = 0.15;
-		this.centerPos.z = -length/2;
+		this.centerPos.z = -length / 2 + length / 2;
 		this.mapLength = length;
 	};
 
-	#createPlanes(x, y, rot, name, isBottom, visual) // passer un materiel
+	#createPlanes(x, y, rot, name, isBottom, visual)
 	{
 		for (let i = 0; i < this.arrObject.length; i++)
 		{
@@ -68,16 +73,13 @@ class Map
 		else if (typeof(visual) == 'number')
 			material = new THREE.MeshPhysicalMaterial({ color: visual });
 		else
-		{
-			console.log("kjdsjksd");
 			material = new THREE.MeshPhysicalMaterial();
-		}
 		mesh = new THREE.Mesh(geometry, material);
 		mesh.rotateX(rot);
 		if (isBottom)
-			mesh.position.set(0, 0.15, -6);
+			mesh.position.set(0, 0.15, 0);
 		else
-			mesh.position.set(0, 3.15, -6);
+			mesh.position.set(0, 3.15, 0);
 		this.arrObject.push({mesh: mesh, name: name});
 		mesh.receiveShadow = true;
 		return (mesh);
@@ -100,6 +102,13 @@ class Map
 		this.arrObject.push({mesh: mesh, name: name});
 		return (mesh);
 	};
+
+	createGravityChanger(ball, x, z, onTop)
+	{
+		if (this.ballObject == null)
+			throw Error("Ball is not init");
+		
+	}
 
 	update(ball)
 	{
@@ -136,7 +145,7 @@ class Map
 						this.arrObject[i].mesh.material.opacity = 1 - (diff / 2);
 				}
 		}
-	}
+	};
 };
 
 export { Map };

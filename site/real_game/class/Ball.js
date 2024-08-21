@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/21 00:57:42 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/21 10:33:58 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@ import * as THREE from 'three';
 
 /*
 	Todo (Eddy) :
-		- Ajouter fonction pour changer la gravité de la balle
+		- Ajouter fonction pour changer la gravité de la balle (OK)
+		- Ajouter un effet plus naturel pour le déplacement de la balle (OK)
+		
 */
 
 class Ball
@@ -58,9 +60,10 @@ class Ball
 
 	changeGravity()
 	{
-		let	diffTop	= this.limits.up - this.object.position.y;
-		let	diffBot	= this.object.position.y - this.limits.down;
-		let	speed	= 0.1; 
+		let		diffTop	= this.limits.up - this.object.position.y;
+		let		diffBot	= this.object.position.y - this.limits.down;
+		let		speed	= 0.25;
+		const	slower	= speed / 3;
 
 		if (diffBot > diffTop)
 			speed *= -1;
@@ -78,6 +81,7 @@ class Ball
 				else
 					this.setPosition(this.object.position.x, this.limits.down, this.object.position.z);
 			}
+			speed -= speed * slower;
 		}, 10);
 	}
 

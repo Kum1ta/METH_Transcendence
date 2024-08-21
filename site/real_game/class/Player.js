@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/21 00:27:01 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/21 14:42:20 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ import * as THREE from 'three';
 		- Ajouter les mouvements définis sur l'axe y (OK)
 		- Faire une fonction qui change de camera quand il y a un but avec un fondu en noir (OK)
 		- Ajouter un zoom sur la camera de la fonction pointAnimation (OK)
+		- Ajouter une fonction pour l'animation de point marqué (OK)
 */
 
 let playerExist = false;
@@ -63,12 +64,12 @@ class Player
 		this.object = object;
 		this.limits = map.playerLimits;
 		this.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 10000);
+		this.object.position.set(0, 0.32, map.mapLength / 2 - 0.2);
 		this.setCameraPosition(
 			this.object.position.x,
 			this.object.position.y + 0.7,
 			this.object.position.z + 2
 		);
-		this.object.position.set(this.object.position.x, this.limits.down, this.object.position.z);
 		this.cleanup = new FinalizationRegistry((heldValue) => {
 			playerExist = false;
 		})
@@ -103,7 +104,7 @@ class Player
 					this.setCameraPosition(
 						this.object.position.x,
 						this.object.position.y - (this.object.position.y >= this.limits.up ? 0.7 : -0.7),
-						this.object.position.z + 2
+						this.object.position.z + 5
 					);
 					this.camera.rotation.set(0, 0, 0);
 				}
@@ -113,7 +114,7 @@ class Player
 		});
 	}
 
-	pointAnimation(scene)
+	pointAnimation(map)
 	{
 		const	tmpCamera	= new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10000);
 		const	tmp			= this.camera;
@@ -128,7 +129,7 @@ class Player
 			document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
 		}, 300)
 		setTimeout(() => {
-			tmpCamera.position.set(-3, this.limits.up / 2 + 0.5, -3);
+			tmpCamera.position.set(this.limits.left, this.limits.up / 2 + 0.5, map.centerPos.z);
 			this.isOnPointAnim = true;
 			this.camera = tmpCamera;
 			interval = setInterval(() => {
@@ -148,6 +149,58 @@ class Player
 				setTimeout(() => {
 					this.camera = tmp;
 					this.object.material.color.copy(startColor);
+					this.isOnPointAnim = false;
+					if (!this.cameraFixed)
+					{
+						this.setCameraPosition(
+							this.object.position.x,
+							this.object.position.y - (this.object.position.y >= this.limits.up ? 0.7 : -0.7),
+							this.object.position.z + 2
+						);
+					}
+					document.getElementsByTagName('canvas')[0].style.animation = 'fadeOut 0.199s';
+					document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
+				}, 200);
+			}, 4000);
+		}, 200)
+	}
+
+	pointOpponentAnimation(map, oppponentObject)
+	{
+		const	tmpCamera	= new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10000);
+		const	tmp			= this.camera;
+		let		interval	= null;
+		const	startColor	= oppponentObject.material.color.clone();
+		let		hue			= 0;
+
+		document.getElementsByTagName('canvas')[0].style.animation = 'fadeIn 0.199s';
+		document.getElementsByTagName('canvas')[0].style.filter = 'brightness(0)';
+		setTimeout(() => {
+			document.getElementsByTagName('canvas')[0].style.animation = 'fadeOut 0.199s';
+			document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
+		}, 300)
+		setTimeout(() => {
+			tmpCamera.position.set(this.limits.left, this.limits.up / 2 + 0.5, map.centerPos.z);
+			this.isOnPointAnim = true;
+			this.camera = tmpCamera;
+			interval = setInterval(() => {
+				tmpCamera.lookAt(oppponentObject.position);
+				console.log(tmpCamera.position)
+				hue += 0.01;
+				if (hue > 1)
+					hue = 0;
+				oppponentObject.material.color.setHSL(hue, 1, 0.5);
+				tmpCamera.fov -= 0.05;
+				tmpCamera.updateProjectionMatrix();
+			}, 10);
+			setTimeout(() => {
+				clearInterval(interval);
+				document.getElementsByTagName('canvas')[0].style.animation = null;
+				document.getElementsByTagName('canvas')[0].style.animation = 'fadeIn 0.19s';
+				document.getElementsByTagName('canvas')[0].style.filter = 'brightness(0)';
+				setTimeout(() => {
+					this.camera = tmp;
+					oppponentObject.material.color.copy(startColor);
 					this.isOnPointAnim = false;
 					if (!this.cameraFixed)
 					{
@@ -223,4 +276,4 @@ class Player
 	}
 };
 
-export { Player };
+export { Player, playerExist };
