@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/21 14:42:20 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:54:36 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ class Player
 		this.object = object;
 		this.limits = map.playerLimits;
 		this.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 10000);
-		this.object.position.set(0, 0.32, map.mapLength / 2 - 0.2);
+		this.object.position.set(0, this.limits.down, map.mapLength / 2 - 0.2);
 		this.setCameraPosition(
 			this.object.position.x,
 			this.object.position.y + 0.7,
@@ -251,6 +251,7 @@ class Player
 					{
 						clearInterval(this.interval);
 						this.interval = null;
+						this.object.position.y = this.limits.down;
 					}
 				}, 5);
 			}
