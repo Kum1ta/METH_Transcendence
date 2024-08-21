@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/21 10:33:58 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/22 00:04:30 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ class Ball
 		this.object.position.set(x, y, z);
 	}
 
-	changeGravity()
+	changeGravity(ballIsOnJumper)
 	{
 		let		diffTop	= this.limits.up - this.object.position.y;
 		let		diffBot	= this.object.position.y - this.limits.down;
@@ -80,6 +80,7 @@ class Ball
 					this.setPosition(this.object.position.x, this.limits.up, this.object.position.z);
 				else
 					this.setPosition(this.object.position.x, this.limits.down, this.object.position.z);
+				ballIsOnJumper.can = true;
 			}
 			speed -= speed * slower;
 		}, 10);

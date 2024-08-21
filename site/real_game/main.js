@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/21 18:46:41 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/22 00:53:14 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ Controls :
 	- 9 : inversion gravite
 */
 
-let	debug = true;
+let	debug = false;
 
 function createBarPlayer(color)
 {
@@ -50,7 +50,7 @@ function createBarPlayer(color)
 function loop()
 {
 	player.update();
-	map.update(ball.object);
+	map.update(ball);
 	if (debug)
 	{
 		controls.update();
@@ -78,8 +78,6 @@ const opponent		= new Opponent(bar2, map);
 
 scene.add(player.object);
 scene.add(opponent.object);
-console.log(player.object.position);
-console.log(opponent.object.position);
 scene.add(ambiantLight);
 spotLight.position.set(0, 100, 0);
 scene.add(spotLight);
@@ -89,17 +87,11 @@ document.body.appendChild(renderer.domElement);
 ball.initMoveBallTmp();
 map.ballObject = ball.object;
 
-// map.addDecor('blender/exported/map1.glb')
-// map.createGravityChanger(1, 1, false);
-
-
-
 /*---------------DEBUG----------------*/
 const cameraTmp = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight);
 const controls = new OrbitControls(cameraTmp, renderer.domElement);
 cameraTmp.position.set(5, 3, 5);
 controls.target = new THREE.Vector3(map.centerPos.x, 0, map.centerPos.z);
-
 /*------------------------------------*/
 
 document.addEventListener('keypress', (e) => {

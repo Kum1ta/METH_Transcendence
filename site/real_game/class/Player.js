@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/21 16:54:36 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/22 00:52:14 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,12 @@ class Player
 		playerExist = true;
 		this.object = object;
 		this.limits = map.playerLimits;
-		this.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 10000);
+		this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 10000);
 		this.object.position.set(0, this.limits.down, map.mapLength / 2 - 0.2);
 		this.setCameraPosition(
 			this.object.position.x,
 			this.object.position.y + 0.7,
-			this.object.position.z + 2
+			this.object.position.z + 1.5
 		);
 		this.cleanup = new FinalizationRegistry((heldValue) => {
 			playerExist = false;
@@ -104,12 +104,12 @@ class Player
 					this.setCameraPosition(
 						this.object.position.x,
 						this.object.position.y - (this.object.position.y >= this.limits.up ? 0.7 : -0.7),
-						this.object.position.z + 5
+						this.object.position.z + 1.5
 					);
 					this.camera.rotation.set(0, 0, 0);
 				}
 				else
-					this.setCameraPosition(0, 1.5, 4);
+					this.setCameraPosition(0, 1.5, this.object.position.z + 3);
 			}				
 		});
 	}
