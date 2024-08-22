@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/22 14:32:54 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:35:14 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ class Map
 	ballIsOnJumper = {
 		can: true
 	};
+	previousTime = Date.now();	
+	deltaTime = 1;
 
 	constructor(scene, length, obstacles)
 	{
@@ -55,8 +57,6 @@ class Map
 		scene.add(this.#createPlanes(7.5, length, (Math.PI / 2), "planeTop", false, '/textures/pastel.jpg'));
 		scene.add(this.#createWall(-3.5, 0.4, -length/2, "wallLeft"));
 		scene.add(this.#createWall(3.5, 0.4, -length/2, "wallRight"));
-		scene.add(this.#createWallObstacle(1, 1, 1, false));
-		scene.add(this.#createWallObstacle(-1, 1, 1, true));
 		this.#createBanner(10, 1);
 		if (obstacles)
 			this.#generateObstacle();
@@ -127,11 +127,11 @@ class Map
 		return (mesh);
 	};
 
-	#createGravityChanger(x, y, z, name, onTop)
+	#createGravityChanger(x, y, z, name, typeName, onTop)
 	{
 		for (let i = 0; i < this.arrObject.length; i++)
 		{
-			if (this.arrObject[i].name == name + "1")
+			if (this.arrObject[i].name == name)
 				throw Error("Name already exist.");
 		}
 		const geometry0	= new THREE.CircleGeometry(0.2, 24);
@@ -193,7 +193,7 @@ class Map
 			group.rotateX(Math.PI);
 			group.translateY(-6.3);
 		}
-		this.arrObject.push({mesh: group, name: name, type: 'jumper'});
+		this.arrObject.push({mesh: group, name: name, type: typeName});
 
 		this.scene.add(group);
 	};
@@ -288,63 +288,58 @@ class Map
 
 	#generateObstacle()
 	{
-		this.#createGravityChanger(-1.5, 0.2, this.mapLength / 4, "gravityChangerGroupBottom1", 0);
+		const wallPos = [
+			{ x: 1, y: 0, z: 1, onTop: false},
+			{ x: 1, y: 0, z: 1, onTop: true},
+			{ x: -1, y: 0, z: 1, onTop: false},
+			{ x: -1, y: 0, z: 1, onTop: true}
+		];
+		for (let i = 0; i < wallPos.length; i++)
+		{
+			if (Math.random() < 0.5)
+				this.scene.add(this.#createWallObstacle(wallPos[i].x, wallPos[i].y, wallPos[i].z, wallPos[i].onTop));
+		}
 
-		// let randomNumber;
-		// if (Math.random() < 0.5)
-		// {
-		// 	randomNumber = Math.random();
-		// 	if (randomNumber < 0.5)
-		// 		this.#createGravityChanger(-1.5, 0.2, this.mapLength / 4, "gravityChangerGroupBottom1", 0);
-		// 	else
-		// 		this.#createGravityChanger(1.5, 0.2, this.mapLength / 4, "gravityChangerGroupBottom2", 0);
-		// }
-		// if (Math.random() < 0.5)
-		// {
-		// 	randomNumber = Math.random();
-		// 	if (randomNumber < 0.5)
-		// 		this.#createGravityChanger(-1.5, 0.2, -this.mapLength / 4, "gravityChangerGroupBottom3", 0);
-		// 	else
-		// 		this.#createGravityChanger(1.5, 0.2, -this.mapLength / 4, "gravityChangerGroupBottom4", 0);
-		// }
-		// if (Math.random() < 0.5)
-		// {
-		// 	randomNumber = Math.random();
-		// 	if (randomNumber < 0.5)
-		// 		this.#createGravityChanger(-1.5, 3.2, this.mapLength / 4, "gravityChangerGroupTop1", 1);
-		// 	else
-		// 		this.#createGravityChanger(1.5, 3.2, this.mapLength / 4, "gravityChangerGroupTop2", 1);
-		// }
-		// if (Math.random() < 0.5)
-		// {
-		// 	randomNumber = Math.random();
-		// 	if (randomNumber < 0.5)
-		// 		this.#createGravityChanger(-1.5, 3.2, -this.mapLength / 4, "gravityChangerGroupTop3", 1);
-		// 	else
-		// 		this.#createGravityChanger(1.5, 3.2, -this.mapLength / 4, "gravityChangerGroupTop4", 1);
-		// }
+		const jumperPos = [
+			{ x: -1.5, y: 0.2, z: this.mapLength / 4, type: "gravityChanger", typeName: "jumperBottom", onTop: false},
+			{ x: -1.5, y: 3.2, z: -this.mapLength / 4, type: "gravityChanger", typeName: "jumperTop", onTop: true},
+			{ x: 1.5, y: 0.2, z: this.mapLength / 4, type: "gravityChanger", typeName: "jumperBottom", onTop: false},
+			{ x: 1.5, y: 3.2, z: -this.mapLength / 4, type: "gravityChanger", typeName: "jumperTop", onTop: true},
+			{ x: -1.5, y: 0.2, z: -this.mapLength / 4, type: "gravityChanger", typeName: "jumperBottom", onTop: false},
+			{ x: -1.5, y: 3.2, z: this.mapLength / 4, type: "gravityChanger", typeName: "jumperTop", onTop: true},
+			{ x: 1.5, y: 0.2, z: -this.mapLength / 4, type: "gravityChanger", typeName: "jumperBottom", onTop: false},
+			{ x: 1.5, y: 3.2, z: this.mapLength / 4, type: "gravityChanger", typeName: "jumperTop", onTop: true}
+		];
+		for (let i = 0; i < jumperPos.length; i++)
+		{
+			if (Math.random() < 0.5)
+			{
+				this.#createGravityChanger(jumperPos[i].x, jumperPos[i].y, jumperPos[i].z, jumperPos[i].type + i, jumperPos[i].typeName, jumperPos[i].onTop);
+				if (i % 2 == 0)
+					i++;
+			}
+		}
 	};
 
 	update(ball)
 	{
+		// const currentTime = Date.now();
+		// this.deltaTime = (((currentTime - this.previousTime) / 10) + this.deltaTime) / 2;
+		// this.previousTime = currentTime;
+		// console.log(deltaTime);
+		
 		for (let i = 0; i < this.arrObject.length; i++)
 		{
 			if (this.arrObject[i].name == "wallLeft")
 			{
-				if (ball.object.position.z < 0.1 && ball.object.position.z > -this.mapLength + 1)
+				// Move the wall with the ball position
+				if (ball.object.position.z < this.mapLength / 2 - 0.35 && ball.object.position.z > -this.mapLength / 2 + 0.35)
 					this.arrObject[i].mesh.position.z = ball.object.position.z;
-				this.arrObject[i].mesh.position.y = ball.object.position.y;
-			}
-			if (this.arrObject[i].name == "wallRight")
-			{
-				if (ball.object.position.z < 0.1 && ball.object.position.z > -this.mapLength + 1)
-					this.arrObject[i].mesh.position.z = ball.object.position.z;
-				this.arrObject[i].mesh.position.y = ball.object.position.y;
-			}
-			if (this.arrObject[i].name == "wallLeft")
-			{
+				if (ball.object.position.y > 0.4 + 0.1 && ball.object.position.y < 3.2)
+					this.arrObject[i].mesh.position.y = ball.object.position.y - 0.1;
+				
+				// Change the opacity of the wall
 				let	diff = ball.object.position.x - this.arrObject[i].mesh.position.x - 0.1;
-
 				if (diff > 2)
 					this.arrObject[i].mesh.material.opacity = 0;
 				else
@@ -352,14 +347,20 @@ class Map
 			}
 			if (this.arrObject[i].name == "wallRight")
 			{
-				let	diff = this.arrObject[i].mesh.position.x - ball.object.position.x - 0.1;
+				// Move the wall with the ball position
+				if (ball.object.position.z < this.mapLength / 2 - 0.35 && ball.object.position.z > -this.mapLength / 2 + 0.35)
+					this.arrObject[i].mesh.position.z = ball.object.position.z;
+				if (ball.object.position.y > 0.4 + 0.1 && ball.object.position.y < 3.2)
+					this.arrObject[i].mesh.position.y = ball.object.position.y - 0.1;
 
+				// Change the opacity of the wall
+				let	diff = this.arrObject[i].mesh.position.x - ball.object.position.x - 0.1;
 				if (diff > 2)
 					this.arrObject[i].mesh.material.opacity = 0;
 				else
 					this.arrObject[i].mesh.material.opacity = 1 - (diff / 2);
 			}
-			if (this.arrObject[i].type == 'jumper')
+			if (this.arrObject[i].type == 'jumperBottom')
 			{
 				const cylinder	= this.arrObject[i].mesh.children[5];
 				const distance	= ball.object.position.distanceTo(cylinder.position);
@@ -372,80 +373,22 @@ class Map
 					this.#animationGravityChanger(this.arrObject[i].mesh);
 				}
 			}
-			if (this.arrObject[i].name == "gravityChangerGroupBottom1")
+			if (this.arrObject[i].type == "jumperBottom")
 			{
 				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
 				{
-					
-					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
-					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
-					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 0.25;
+					this.arrObject[i].mesh.children[j].rotation.x = this.deltaTime * Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
+					this.arrObject[i].mesh.children[j].rotation.y = this.deltaTime * Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
+					this.arrObject[i].mesh.children[j].position.y = this.deltaTime * Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 0.25;
 				}
 			}
-			if (this.arrObject[i].name == "gravityChangerGroupBottom2")
+			if (this.arrObject[i].type == "jumperTop")
 			{
 				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
 				{
-					
-					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
-					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
-					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 0.25;
-				}
-			}
-			if (this.arrObject[i].name == "gravityChangerGroupBottom3")
-			{
-				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
-				{
-					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
-					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
-					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 0.25;
-				}
-			}
-			if (this.arrObject[i].name == "gravityChangerGroupBottom4")
-			{
-				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
-				{
-					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
-					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
-					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 0.25;
-				}
-			}
-			if (this.arrObject[i].name == "gravityChangerGroupTop1")
-			{
-				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
-				{
-					
-					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
-					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
-					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 3.25;
-				}
-			}
-			if (this.arrObject[i].name == "gravityChangerGroupTop2")
-			{
-				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
-				{
-					
-					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
-					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
-					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 3.25;;
-				}
-			}
-			if (this.arrObject[i].name == "gravityChangerGroupTop3")
-			{
-				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
-				{
-					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
-					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
-					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 3.25;
-				}
-			}
-			if (this.arrObject[i].name == "gravityChangerGroupTop4")
-			{
-				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
-				{
-					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
-					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
-					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 3.25;;
+					this.arrObject[i].mesh.children[j].rotation.x = this.deltaTime * Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
+					this.arrObject[i].mesh.children[j].rotation.y = this.deltaTime * Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
+					this.arrObject[i].mesh.children[j].position.y = this.deltaTime * Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 3.25;
 				}
 			}
 		}
