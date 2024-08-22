@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/22 16:35:14 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:59:54 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ class Map
 	ballIsOnJumper = {
 		can: true
 	};
-	previousTime = Date.now();	
-	deltaTime = 1;
-
+	
 	constructor(scene, length, obstacles)
 	{
 		this.scene = scene;
@@ -262,7 +260,7 @@ class Map
 		} );
 	}
 
-	#animationGravityChanger(group)
+	#animationGravityChanger(group, onTop)
 	{
 		const geometry1		= new THREE.TorusGeometry(1.5, 0.05, 12, 24);
 		const material1		= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
@@ -278,7 +276,10 @@ class Map
 		this.scene.add(ring1);
 
 		interval = setInterval(() => {
-			ring1.position.y += speed;
+			if (onTop)
+				ring1.position.y -= speed;
+			else
+				ring1.position.y += speed;
 			ring1.material.opacity -= 0.02;
 			speed *= 0.90;
 			if (ring1.material.opacity == 0)
@@ -323,11 +324,6 @@ class Map
 
 	update(ball)
 	{
-		// const currentTime = Date.now();
-		// this.deltaTime = (((currentTime - this.previousTime) / 10) + this.deltaTime) / 2;
-		// this.previousTime = currentTime;
-		// console.log(deltaTime);
-		
 		for (let i = 0; i < this.arrObject.length; i++)
 		{
 			if (this.arrObject[i].name == "wallLeft")
@@ -366,29 +362,42 @@ class Map
 				const distance	= ball.object.position.distanceTo(cylinder.position);
 				const speed		= 0.1;
 
+				// Detect if the ball is on the jumper
 				if (distance < 0.25 && this.ballIsOnJumper.can)
 				{
 					this.ballIsOnJumper.can = false;
 					ball.changeGravity(this.ballIsOnJumper);
-					this.#animationGravityChanger(this.arrObject[i].mesh);
+					this.#animationGravityChanger(this.arrObject[i].mesh, false);
 				}
-			}
-			if (this.arrObject[i].type == "jumperBottom")
-			{
+
+				// Gravity changer animation
 				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
 				{
-					this.arrObject[i].mesh.children[j].rotation.x = this.deltaTime * Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
-					this.arrObject[i].mesh.children[j].rotation.y = this.deltaTime * Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
-					this.arrObject[i].mesh.children[j].position.y = this.deltaTime * Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 0.25;
+					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
+					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
+					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 0.25;
 				}
 			}
-			if (this.arrObject[i].type == "jumperTop")
+			if (this.arrObject[i].type == 'jumperTop')
 			{
+				const cylinder	= this.arrObject[i].mesh.children[5];
+				const distance	= ball.object.position.distanceTo(cylinder.position);
+				const speed		= 0.1;
+				
+				// Detect if the ball is on the jumper
+				if (distance < 0.4 && this.ballIsOnJumper.can)
+				{
+					this.ballIsOnJumper.can = false;
+					ball.changeGravity(this.ballIsOnJumper);
+					this.#animationGravityChanger(this.arrObject[i].mesh, true);
+				}
+
+				// Gravity changer animation
 				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
 				{
-					this.arrObject[i].mesh.children[j].rotation.x = this.deltaTime * Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
-					this.arrObject[i].mesh.children[j].rotation.y = this.deltaTime * Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
-					this.arrObject[i].mesh.children[j].position.y = this.deltaTime * Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 3.25;
+					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
+					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
+					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 3.25;
 				}
 			}
 		}

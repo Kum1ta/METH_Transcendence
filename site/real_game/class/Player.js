@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/22 00:52:14 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/22 17:06:28 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,13 @@ class Player
 	pressedButton	= [];
 	object			= null;
 	camera			= null;
-	speed			= 0.1;
+	speed			= 4;
 	cameraFixed		= false;
 	interval		= null;
 	isOnPointAnim	= false;
 	limits			= {};
+	previousTime = Date.now();	
+	deltaTime = 1;
 
 	constructor (object, map)
 	{
@@ -219,6 +221,10 @@ class Player
 
 	update()
 	{
+		const currentTime = Date.now();
+		this.deltaTime = (currentTime - this.previousTime) / 1000;
+		this.previousTime = currentTime;
+		
 		let i;
 
 		i = 0;
@@ -229,9 +235,9 @@ class Player
 				if (this.interval)
 					clearInterval(this.interval);
 				this.interval = setInterval(() => {
-					this.object.position.y += this.speed;
+					this.object.position.y += this.speed / 40;
 					if (!this.cameraFixed && !this.isOnPointAnim)
-						this.camera.position.y += (this.speed / 2);
+						this.camera.position.y += (this.speed / 80);
 					if (this.object.position.y >= this.limits.up)
 					{
 						clearInterval(this.interval);
@@ -244,9 +250,9 @@ class Player
 				if (this.interval)
 					clearInterval(this.interval);
 				this.interval = setInterval(() => {
-					this.object.position.y -= this.speed;
+					this.object.position.y -= this.speed / 40;
 					if (!this.cameraFixed && !this.isOnPointAnim)
-						this.camera.position.y -= (this.speed / 2);
+						this.camera.position.y -= (this.speed / 80);
 					if (this.object.position.y <= this.limits.down)
 					{
 						clearInterval(this.interval);
@@ -257,15 +263,15 @@ class Player
 			}
 			if (this.pressedButton[i] == 'd' && this.object.position.x < this.limits.right)
 			{
-				this.object.position.x += this.speed;
+				this.object.position.x += this.speed * this.deltaTime;
 				if (!this.cameraFixed && !this.isOnPointAnim)
-					this.camera.position.x += this.speed;
+					this.camera.position.x += this.speed * this.deltaTime;
 			}
 			if (this.pressedButton[i] == 'a' && this.object.position.x > this.limits.left)
 			{
-				this.object.position.x -= this.speed;
+				this.object.position.x -= this.speed * this.deltaTime;
 				if (!this.cameraFixed && !this.isOnPointAnim)
-					this.camera.position.x -= this.speed;
+					this.camera.position.x -= this.speed * this.deltaTime;
 			}
 			i++;
 		}
