@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:34:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/21 14:38:44 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/22 10:46:18 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ class Opponent
 
 	constructor (object, map)
 	{
-		if (!playerExist)
-			throw Error('Player need to be init before opponent.')
 		if (opponentExist)
 			throw Error("Opponent is already init.");
 		opponentExist = true;
@@ -34,7 +32,7 @@ class Opponent
 		this.limits = map.limits;
 		this.object.position.set(0, 0.3, -map.mapLength / 2 + 0.2);
 		this.cleanup = new FinalizationRegistry((heldValue) => {
-			playerExist = false;
+			opponentExist = false;
 		})
 		this.cleanup.register(this, null);
 	}

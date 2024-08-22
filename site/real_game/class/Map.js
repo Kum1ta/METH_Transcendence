@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/22 01:02:41 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/22 14:32:54 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ class Map
 	arrObject = [];
 	ballObject = null;
 	mapLength = 0;
+	banner = null;
 	centerPos = {
 		x: -1,
 		y: -1,
@@ -56,7 +57,7 @@ class Map
 		scene.add(this.#createWall(3.5, 0.4, -length/2, "wallRight"));
 		scene.add(this.#createWallObstacle(1, 1, 1, false));
 		scene.add(this.#createWallObstacle(-1, 1, 1, true));
-		scene.add(this.#createBanner(10, 1))
+		this.#createBanner(10, 1);
 		if (obstacles)
 			this.#generateObstacle();
 
@@ -211,9 +212,54 @@ class Map
 		return (mesh);
 	}
 
-	#createBanner(radius, height)
+	#createBanner(radius1, height1)
 	{
-		return (null);
+		const	scene	= this.scene;
+		const	canvas	= document.createElement('canvas');
+		const	context	= canvas.getContext('2d');
+
+		canvas.width = 512;
+		canvas.height = 512;
+
+		const centerX = canvas.width / 2;
+		const centerY = canvas.height / 2;
+		const radius = 150;  // Rayon du cercle
+
+		// Définir le style du texte
+		context.font = '100px Arial';
+		context.fillStyle = 'white';
+		context.textAlign = 'center';
+		context.textBaseline = 'middle';
+		const text = "Hello, Three.js!";
+
+		for (let i = 0; i < text.length; i++) {
+			const angle = (i / text.length) * (2 * Math.PI);
+			context.save();
+			context.fillText(text[i], i * 100, 200);
+			context.restore();
+		}
+
+		const texture = new THREE.CanvasTexture(canvas);
+
+		texture.wrapS = THREE.RepeatWrapping;
+		texture.wrapT = THREE.RepeatWrapping;
+
+		texture.repeat.set(45, 1); 
+
+		const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+
+		canvas.innerHTML = 'Test';
+		loader.load( '../blender/exported/banner.glb', (gltf) => {
+			this.banner = gltf.scene.children[0];
+			this.banner.material = material;
+			this.banner.position.y += 1.7;
+			scene.add(gltf.scene);
+			setInterval(() => {
+				this.banner.rotation.y += 0.001;
+			}, 10);
+		}, undefined, function ( error ) {
+			console.error( error );
+		} );
 	}
 
 	#animationGravityChanger(group)
@@ -317,7 +363,7 @@ class Map
 			{
 				const cylinder	= this.arrObject[i].mesh.children[5];
 				const distance	= ball.object.position.distanceTo(cylinder.position);
-				const speed		= 0.1
+				const speed		= 0.1;
 
 				if (distance < 0.25 && this.ballIsOnJumper.can)
 				{
