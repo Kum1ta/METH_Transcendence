@@ -12,6 +12,7 @@ import os
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.urls import path
 from django.core.asgi import get_asgi_application
+from channels.sessions import SessionMiddlewareStack 
 
 from .websocket import WebsocketHandler
 
@@ -21,5 +22,5 @@ django = get_asgi_application()
 
 application = ProtocolTypeRouter({
     "http": django,
-	"websocket":URLRouter({path("ws",WebsocketHandler.as_asgi())})
+	"websocket":SessionMiddlewareStack(URLRouter({path("ws",WebsocketHandler.as_asgi())}))
 })

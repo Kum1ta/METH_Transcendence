@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 15:54:14 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/07 21:20:17 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/22 19:12:27 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ class User():
 				print("\033[0;31m|------ Error in sendError ------|\033[0;0m")
 
 
-	async def	send(self, content):
+
 		try:
 			if (type(content) == dict):
 				self.printDebug(content, 1)

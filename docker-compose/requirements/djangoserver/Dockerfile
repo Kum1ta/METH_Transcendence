@@ -4,14 +4,19 @@ RUN apt update
 RUN apt upgrade -y
 
 RUN apt install -y python3 python3-pip postgresql-client
-RUN pip3 install django psycopg "channels[daphne]"
+RUN pip3 install requests django psycopg "channels[daphne]"
 
 ARG DB_HOST=;
 ARG DB_NAME=;
 ARG DB_USERNAME=;
 ARG DB_PASSWORD=;
+ARG SECRET_42=;
+ARG SECRET_42=;
 
 ENV DB_HOST=${DB_HOST}
+ENV PYTHONUNBUFFERED=1
+ENV UID_42=${UID_42}
+ENV SECRET_42=${SECRET_42}
 
 RUN mkdir -p /var/www/djangoserver/
 RUN mkdir -p /var/www/djangoserver/static/

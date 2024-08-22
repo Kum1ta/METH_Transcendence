@@ -1,4 +1,4 @@
-# **************************************************************************** #
+ **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    main.py                                            :+:      :+:    :+:    #
@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:40 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/09 09:03:31 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/22 15:54:03 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,10 +31,6 @@ functionRequest = [login, getPrivateListUser, getPrivateListMessage,
 				sendPrivateMessage, createAccount]
 
 async def	handler(websocket, path):
-	if (path != "/"):
-		await websocket.sendError("Invalid path", 9003)
-		await websocket.close()
-		return
 	userClass = User(websocket)
 	try:
 		async for resquet in userClass.websocket:
