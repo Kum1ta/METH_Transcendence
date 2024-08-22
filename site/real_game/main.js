@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/22 00:53:14 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/22 10:48:29 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ Controls :
 	- g : animation de point
 	- h : animation de point pour l'adversaire
 	- c : switch entre la vue du joueur et la vue de la caméra
+	- q : lancer animation sur les jumpers
 
 	- 8 : avance la balle
 	- 2 : recule la balle

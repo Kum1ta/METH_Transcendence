@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/22 00:04:30 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/22 14:28:34 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ class Ball
 	{
 		let		diffTop	= this.limits.up - this.object.position.y;
 		let		diffBot	= this.object.position.y - this.limits.down;
-		let		speed	= 0.25;
+		let		speed	= 0.15;
 		const	slower	= speed / 3;
 
 		if (diffBot > diffTop)
