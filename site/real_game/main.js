@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/22 10:48:29 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/22 17:11:54 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ import { Map } from './class/Map'
 import { Ball } from './class/Ball'
 import { Opponent } from './class/Opponent'
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
+import Stats from 'stats.js';
 
 /*
 Controls :
@@ -38,6 +39,11 @@ Controls :
 
 let	debug = false;
 
+// ------------------- Stats -------------------- //
+const stats = new Stats();
+stats.showPanel(0); // 0: fps, 1: ms, 2: mémoire
+document.body.appendChild(stats.dom);
+
 function createBarPlayer(color)
 {
 	const geometry	= new THREE.BoxGeometry(1, 0.1, 0.1);
@@ -48,8 +54,17 @@ function createBarPlayer(color)
 	return (mesh);
 }
 
+let previousTime = Date.now();
 function loop()
 {
+	stats.begin();
+	// ===== FPS locker ===== //
+	const currentTime = Date.now();
+	if (currentTime - previousTime < 1000 / 60)
+		return ;
+	previousTime = currentTime;
+	// ====================== //
+
 	player.update();
 	map.update(ball);
 	if (debug)
@@ -59,7 +74,8 @@ function loop()
 	}
 	else
 		renderer.render(scene, player.camera);
-	
+
+	stats.end();
 }
 
 const scene			= new THREE.Scene();
