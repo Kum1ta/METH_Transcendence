@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/23 15:39:58 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:01:35 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ class Map
 		for (let i = 0; i < group.children.length && !onTop; i++)
 			group.children[i].position.set(x, y, z);
 		
-		let distanceY = [0, -0.1, -0.2, 0.048, 0.049, -0.125];
+		let distanceY = [-0.02, -0.104, -0.204, 0.048, 0.049, -0.125];
 		let rotate = [0, 0, 0, 1, 1, 0];
 		
 		// Set distance between each object
@@ -226,51 +226,68 @@ class Map
 		return (mesh);
 	}
 
+	/* Todo (Hugo) :
+		- Faire une zone Player banner (importer un model blender)
+		- Faire une zone pour les pub (s'inspirer de theFinals)
+		
+		- Effet gros pixel (ok)
+		- Effet de lumière en 2d
+		- Preparer une animation pour le but
+	*/
 	#createBanner(radius1, height1)
 	{
 		const	scene	= this.scene;
 		const	canvas	= document.createElement('canvas');
 		const	context	= canvas.getContext('2d');
 
-		canvas.width = 512;
-		canvas.height = 512;
+		canvas.width = 10000 / 10;
+		canvas.height = 512 / 10;
 
 		const centerX = canvas.width / 2;
 		const centerY = canvas.height / 2;
-		const radius = 150;  // Rayon du cercle
 
-		// Définir le style du texte
-		context.font = '100px Arial';
+		context.font = '25px Arial';
 		context.fillStyle = 'white';
 		context.textAlign = 'center';
 		context.textBaseline = 'middle';
-		const text = "Hello, Three.js!";
+		
+		// Geberate player banner content
+		let playerName = '1234567890123456';
+		let text = '0   ';
+		for (let i = 0; i < -(playerName.length - 16); i++)
+			text += ' ';
+		text += playerName;
+		for (let i = 0; i < -(playerName.length - 16); i++)
+			text += ' ';
+		text += '   0';
+		context.fillText(text, centerX, centerY);
 
-		for (let i = 0; i < text.length; i++) {
-			const angle = (i / text.length) * (2 * Math.PI);
-			context.save();
-			context.fillText(text[i], i * 100, 200);
-			context.restore();
-		}
-
+		// Generate texture
 		const texture = new THREE.CanvasTexture(canvas);
-
 		texture.wrapS = THREE.RepeatWrapping;
 		texture.wrapT = THREE.RepeatWrapping;
-
-		texture.repeat.set(45, 1); 
-
-		const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+		texture.repeat.set(-2, 1);
+		
+		// let video = document.getElementById('video');
+		// video.src = "video.webm";
+		// let videoTexture = new THREE.VideoTexture(video);
+		// videoTexture.wrapS = THREE.RepeatWrapping;
+		// videoTexture.wrapT = THREE.RepeatWrapping;
+		// videoTexture.repeat.set(-2, 1);
+		
+		const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
 
 		canvas.innerHTML = 'Test';
 		loader.load( '../blender/exported/banner.glb', (gltf) => {
 			this.banner = gltf.scene.children[0];
 			this.banner.material = material;
 			this.banner.position.y += 1.7;
+			this.banner.rotation.x = (Math.PI);
+			this.banner.rotation.y += 4.7;
 			scene.add(gltf.scene);
-			setInterval(() => {
-				this.banner.rotation.y += 0.001;
-			}, 10);
+			// setInterval(() => {
+			// 	this.banner.rotation.y += 0.001;
+			// }, 10);
 		}, undefined, function ( error ) {
 			console.error( error );
 		} );
