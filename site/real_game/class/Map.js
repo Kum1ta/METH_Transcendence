@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/22 18:59:54 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/23 15:39:58 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,23 +132,11 @@ class Map
 			if (this.arrObject[i].name == name)
 				throw Error("Name already exist.");
 		}
-		const geometry0	= new THREE.CircleGeometry(0.2, 24);
-		const material0	= new THREE.MeshPhysicalMaterial({color: 0xaaffaa});
-		const circle1		= new THREE.Mesh(geometry0, material0);
-		circle1.rotateX(-Math.PI / 2);
-		circle1.position.set(x, y - 0.048, z);
-		
-		const geometry	= new THREE.CircleGeometry(0.24, 24);
-		const material	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
-		const circle2		= new THREE.Mesh(geometry, material);
-		circle2.rotateX(-Math.PI / 2);
-		circle2.position.set(x, y - 0.049, z);
-		
 		const geometry1	= new THREE.TorusGeometry(1, 0.1, 12, 24);
 		const material1	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
 		const ring1		= new THREE.Mesh(geometry1, material1);
 		ring1.rotateX(-Math.PI / 2);
-		ring1.position.set(x, y, z);
+		ring1.position.set(0, 0, 0);
 		ring1.scale.set(0.2, 0.2, 0.2);
 		material1.transparent = true;
 		material1.opacity = 0.75;
@@ -157,7 +145,7 @@ class Map
 		const material2	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
 		const ring2		= new THREE.Mesh(geometry2, material2);
 		ring2.rotateX(-Math.PI / 2);
-		ring2.position.set(x, y + 0.1, z);
+		ring2.position.set(0, 0 + 0.1, 0);
 		ring2.scale.set(0.18, 0.18, 0.18);
 		material2.transparent = true;
 		material2.opacity = 0.65;
@@ -166,33 +154,61 @@ class Map
 		const material3	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
 		const ring3		= new THREE.Mesh(geometry3, material3);
 		ring3.rotateX(-Math.PI / 2);
-		ring3.position.set(x, y + 0.2, z);
+		ring3.position.set(0, 0 + 0.2, 0);
 		ring3.scale.set(0.16, 0.16, 0.16);
 		material3.transparent = true;
 		material3.opacity = 0.35;
+		
+		const geometry0	= new THREE.CircleGeometry(0.2, 24);
+		const material0	= new THREE.MeshPhysicalMaterial({color: 0xaaffaa});
+		const circle1		= new THREE.Mesh(geometry0, material0);
+		circle1.rotateX(-Math.PI / 2);
+		circle1.position.set(0, 0 - 0.048, 0);
+		
+		const geometry	= new THREE.CircleGeometry(0.24, 24);
+		const material	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
+		const circle2		= new THREE.Mesh(geometry, material);
+		circle2.rotateX(-Math.PI / 2);
+		circle2.position.set(0, 0 - 0.049, 0);
 	
-		const geometry4	= new THREE.CylinderGeometry(0.15, 0.15, 0.4);
+		const geometry4	= new THREE.CylinderGeometry(0.15, 0.15, 0.35);
 		const material4	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
 		const collider		= new THREE.Mesh(geometry4, material4);
-		collider.position.set(x, y + 0.1, z);
+		collider.position.set(0, 0 + 0.1, 0);
 		material4.transparent = true;
 		material4.opacity = 0.1;
-
+		
 		const group = new THREE.Group();
-		group.add(circle1);
-		group.add(circle2);
 		group.add(ring1);
 		group.add(ring2);
 		group.add(ring3);
+		group.add(circle1);
+		group.add(circle2);
 		group.add(collider);
-
-		if (onTop)
+		
+		// Set group position groud / top
+		for (let i = 0; i < group.children.length && onTop; i++)
+			group.children[i].position.set(x, y - 0.1, z);
+		for (let i = 0; i < group.children.length && !onTop; i++)
+			group.children[i].position.set(x, y, z);
+		
+		let distanceY = [0, -0.1, -0.2, 0.048, 0.049, -0.125];
+		let rotate = [0, 0, 0, 1, 1, 0];
+		
+		// Set distance between each object
+		for (let i = 0; i < group.children.length; i++)
 		{
-			group.rotateX(Math.PI);
-			group.translateY(-6.3);
+			if (onTop)
+			{
+				if (rotate[i])
+					group.children[i].rotateX(Math.PI);
+				group.children[i].position.set(group.children[i].position.x, group.children[i].position.y + distanceY[i], group.children[i].position.z);
+			}
+			else
+				group.children[i].position.set(group.children[i].position.x, group.children[i].position.y - distanceY[i], group.children[i].position.z);
 		}
+		
 		this.arrObject.push({mesh: group, name: name, type: typeName});
-
 		this.scene.add(group);
 	};
 
@@ -301,15 +317,18 @@ class Map
 				this.scene.add(this.#createWallObstacle(wallPos[i].x, wallPos[i].y, wallPos[i].z, wallPos[i].onTop));
 		}
 
+		const type = "gravityChanger";
+		const typeNameBottom = "jumperBottom";
+		const typeNameTop = "jumperTop";
 		const jumperPos = [
-			{ x: -1.5, y: 0.2, z: this.mapLength / 4, type: "gravityChanger", typeName: "jumperBottom", onTop: false},
-			{ x: -1.5, y: 3.2, z: -this.mapLength / 4, type: "gravityChanger", typeName: "jumperTop", onTop: true},
-			{ x: 1.5, y: 0.2, z: this.mapLength / 4, type: "gravityChanger", typeName: "jumperBottom", onTop: false},
-			{ x: 1.5, y: 3.2, z: -this.mapLength / 4, type: "gravityChanger", typeName: "jumperTop", onTop: true},
-			{ x: -1.5, y: 0.2, z: -this.mapLength / 4, type: "gravityChanger", typeName: "jumperBottom", onTop: false},
-			{ x: -1.5, y: 3.2, z: this.mapLength / 4, type: "gravityChanger", typeName: "jumperTop", onTop: true},
-			{ x: 1.5, y: 0.2, z: -this.mapLength / 4, type: "gravityChanger", typeName: "jumperBottom", onTop: false},
-			{ x: 1.5, y: 3.2, z: this.mapLength / 4, type: "gravityChanger", typeName: "jumperTop", onTop: true}
+			{ x: -1.5, y: 0.2, z: this.mapLength / 4, type: type, typeName: typeNameBottom, onTop: false},
+			{ x: -1.5, y: 3.2, z: this.mapLength / 4, type: type, typeName: typeNameTop, onTop: true},
+			{ x: 1.5, y: 0.2, z: this.mapLength / 4, type: type, typeName: typeNameBottom, onTop: false},
+			{ x: 1.5, y: 3.2, z: this.mapLength / 4, type: type, typeName: typeNameTop, onTop: true},
+			{ x: -1.5, y: 0.2, z: -this.mapLength / 4, type: type, typeName: typeNameBottom, onTop: false},
+			{ x: -1.5, y: 3.2, z: -this.mapLength / 4, type: type, typeName: typeNameTop, onTop: true},
+			{ x: 1.5, y: 0.2, z: -this.mapLength / 4, type: type, typeName: typeNameBottom, onTop: false},
+			{ x: 1.5, y: 3.2, z: -this.mapLength / 4, type: type, typeName: typeNameTop, onTop: true}
 		];
 		for (let i = 0; i < jumperPos.length; i++)
 		{
@@ -371,11 +390,10 @@ class Map
 				}
 
 				// Gravity changer animation
-				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
+				for (let j = 0; j < 3; j++)
 				{
 					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
 					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
-					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 0.25;
 				}
 			}
 			if (this.arrObject[i].type == 'jumperTop')
@@ -393,11 +411,10 @@ class Map
 				}
 
 				// Gravity changer animation
-				for (let j = 2; j < this.arrObject[i].mesh.children.length - 1; j++)
+				for (let j = 0; j < 3; j++)
 				{
 					this.arrObject[i].mesh.children[j].rotation.x = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.PI / 2;
 					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
-					this.arrObject[i].mesh.children[j].position.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.03 + ( 0.25 * (j - 2) / 2) + 3.25;
 				}
 			}
 		}
