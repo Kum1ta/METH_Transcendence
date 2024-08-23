@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/17 23:27:37 by marvin           ###   ########.fr       */
+/*   Updated: 2024/08/23 18:32:53 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ body {
 	height: 100%;
 	background-color: #020202;
 	user-select: none;
+	font-family: "Poppins", sans-serif;
+	font-weight: 500;
+	font-style: normal;
 }
 
 
@@ -69,9 +72,6 @@ body {
 	color: white;
 	display: flex;
 	font-size: 25px;
-	font-family: "Poppins", sans-serif;
-	font-weight: 500;
-	font-style: normal;
 	padding-left: 60px;
 	gap: 6rem;
 }
@@ -112,9 +112,6 @@ body {
 	height: 40px;
 	width: 130px;	
 	color: black;
-	font-family: "Poppins", sans-serif;
-	font-weight: 500;
-	font-style: normal;
 	text-align: center;
 	line-height: 40px;
 	margin-left: auto;
@@ -127,6 +124,148 @@ body {
 	cursor: pointer;
 }
 
+.popup {
+    display: none; /* La popup est masquée par défaut */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.container {
+    display: flex;
+    width: 70%;
+    height: 80%;
+    background-color: #020202;
+}
+
+.left-side {
+    background-color: #D3D3D3;
+    flex: 1;
+}
+
+.right-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0;
+	padding-inline: 180px;
+    color: white;
+}
+
+.right-side h1 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+	align-items: center;
+	justify-content: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    font-size: 1rem;
+}
+
+input {
+    border: none;
+    padding: 20px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+	font-family: "Poppins", sans-serif;
+	font-weight: 500;
+	font-style: normal;
+}
+
+button {
+    padding: 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+	font-family: "Poppins", sans-serif;
+	font-weight: 500;
+	font-style: normal;
+}
+
+
+.login-btn {
+    background-color: #fff;
+    margin-bottom: 20px;
+	transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+	background-color: #f0f0f0e1;
+}
+
+.new-player {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.new-player a {
+    color: white;
+    text-decoration: underline;
+	transition: color 0.3s ease;
+}
+
+.new-player a:hover {
+	color: #f0f0f0e1;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.divider span {
+    flex: 1;
+    height: 1px;
+    background-color: #fff;
+}
+
+.divider p {
+    margin: 0 10px;
+    font-size: 1rem;
+}
+
+.login-42-btn {
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	transition: background-color 0.3s ease;
+}
+
+.login-42-btn span {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.login-42-btn:hover {
+	background-color: #f0f0f0e1;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
 .homeSection{
 	min-height: 100svh;
 	overflow: hidden;
@@ -134,9 +273,6 @@ body {
 
 .homeSection p{
 	color: white;
-	font-family: "Poppins", sans-serif;
-	font-weight: 500;
-	font-style: normal;
 }
 
 #firstText{
@@ -204,9 +340,6 @@ body {
 
 .team h2 {
 	color: white;
-	font-family: "Poppins", sans-serif;
-	font-weight: 500;
-	font-style: normal;
 	font-size: 30px;
 }
 
@@ -251,9 +384,6 @@ footer {
 	overflow: hidden;
 	height: 150px;
 	background-color: white;
-	font-family: "Poppins", sans-serif;
-	font-weight: 500;
-	font-style: normal;
 	color: #020202;
 }
 

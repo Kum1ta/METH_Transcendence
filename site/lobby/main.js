@@ -6,7 +6,7 @@
 /*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/08/22 19:15:25 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/08/23 18:34:42 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ let gameMode = 0;
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementsByClassName('game-mode')[0].addEventListener('click', function() {
         document.getElementById('loginPopup').style.display = 'flex';
-        console.log('Popup opened');
     });
     
     document.getElementById('closePopupBtn').addEventListener('click', function() {
