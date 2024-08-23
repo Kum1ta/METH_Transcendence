@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:35 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/22 18:01:38 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/23 17:47:37 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { liveChat } from "/liveChat/main.js";
+import { liveChat } from "./liveChat/main.js";
 import { login } from "./login/main.js";
 import { home3D } from "./home3D/home3D.js"
 
@@ -23,6 +23,10 @@ window.addEventListener('scroll', () => {
 
 	parallaxElement.style.transform = `translateX(-50%) translateY(${-parallaxSpeed}px) rotate(${rotationAngle}deg)`;
 	parallaxElement2.style.transform = `translateX(50%) translateY(${-parallaxSpeed}px) rotate(${rotationAngle}deg)`;
+});
+
+document.getElementById('closePopupBtn').addEventListener('click', function() {
+	document.getElementById('loginPopup').style.display = 'none';
 });
 
 document.addEventListener('DOMContentLoaded', () => {
