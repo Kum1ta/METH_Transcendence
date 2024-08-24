@@ -6,11 +6,11 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/24 20:36:07 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/24 23:47:26 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import * as THREE from '/static/three/build/three.module.js';
+import * as THREE from '/static/javascript/three/build/three.module.js';
 
 /*
 	Todo (Eddy) :
