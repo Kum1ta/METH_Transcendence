@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Screen.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:13:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/24 02:36:42 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/24 11:39:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ class Screen
 			vertices[i + 2] = height;
 		}
 		positionAttribute.needsUpdate = true;
-		mesh.scale.set(0.4, 0.4);
+		mesh.scale.set(0.41, 0.42);
 		mesh.position.set(-0.155, 1.2, 1.15);
 		mesh.rotation.x = Math.PI + 0.05;
 		mesh.rotation.z = Math.PI;

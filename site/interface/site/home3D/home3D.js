@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home3D.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/24 02:46:49 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/24 11:41:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass.js';
 const	scene			= new THREE.Scene();
 const	renderer		= new THREE.WebGLRenderer({antialias: true});
 const	camera			= new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight);
-const	ambiantLight	= new THREE.AmbientLight(0xffffff, 3);
+const	ambiantLight	= new THREE.AmbientLight(0xffffff, 35);
 const	screen			= new Screen(scene);
 const	cube			= createCube();
 

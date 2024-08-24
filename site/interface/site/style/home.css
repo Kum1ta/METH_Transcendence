@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/24 02:10:59 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/24 11:26:27 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ body {
 	padding: 0;
 	padding-inline: 50px;
 	display: flex;
-	background-color: #020202;
 	gap: 2rem;
 	align-items: center;
 	position: absolute;
