@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/23 19:01:35 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/24 19:55:26 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,9 @@ class Map
 		scene.add(this.#createPlanes(7.5, length, (Math.PI / 2), "planeTop", false, '/textures/pastel.jpg'));
 		scene.add(this.#createWall(-3.5, 0.4, -length/2, "wallLeft"));
 		scene.add(this.#createWall(3.5, 0.4, -length/2, "wallRight"));
-		this.#createBanner(10, 1);
+		this.#createBanner();
 		if (obstacles)
 			this.#generateObstacle();
-
 
 		/***** JUST FOR TEST *****/
 		document.addEventListener('keypress', (e) => {
@@ -192,7 +191,7 @@ class Map
 		for (let i = 0; i < group.children.length && !onTop; i++)
 			group.children[i].position.set(x, y, z);
 		
-		let distanceY = [-0.02, -0.104, -0.204, 0.048, 0.049, -0.125];
+		let distanceY = [-0.04, -0.14, -0.24, 0.048, 0.049, -0.125];
 		let rotate = [0, 0, 0, 1, 1, 0];
 		
 		// Set distance between each object
@@ -228,71 +227,107 @@ class Map
 
 	/* Todo (Hugo) :
 		- Faire une zone Player banner (importer un model blender)
-		- Faire une zone pour les pub (s'inspirer de theFinals)
+		- Faire une zone pour les pub (s'inspirer de theFinals) (ok)
 		
 		- Effet gros pixel (ok)
 		- Effet de lumière en 2d
 		- Preparer une animation pour le but
 	*/
-	#createBanner(radius1, height1)
+	#createBanner()
 	{
-		const	scene	= this.scene;
-		const	canvas	= document.createElement('canvas');
-		const	context	= canvas.getContext('2d');
-
-		canvas.width = 10000 / 10;
-		canvas.height = 512 / 10;
-
-		const centerX = canvas.width / 2;
-		const centerY = canvas.height / 2;
-
-		context.font = '25px Arial';
-		context.fillStyle = 'white';
-		context.textAlign = 'center';
-		context.textBaseline = 'middle';
+		// Create canvas
+		const videoCanvas = document.createElement('canvas');
+		const ctx = videoCanvas.getContext('2d');
+		videoCanvas.width = 100 * 2.33 * 20;
+		videoCanvas.height = 100;
 		
-		// Geberate player banner content
-		let playerName = '1234567890123456';
-		let text = '0   ';
-		for (let i = 0; i < -(playerName.length - 16); i++)
-			text += ' ';
-		text += playerName;
-		for (let i = 0; i < -(playerName.length - 16); i++)
-			text += ' ';
-		text += '   0';
-		context.fillText(text, centerX, centerY);
+		// Load videos
+		const video1 = document.createElement('video');
+		video1.src = '../textures/video/catch.mp4';
+		video1.muted = true;
+		video1.autoplay = true;
+		video1.loop = true;
+		video1.addEventListener('loadeddata', () => {
+			video1.play();
+			drawVideoOnCanvas();
+		});
 
-		// Generate texture
-		const texture = new THREE.CanvasTexture(canvas);
-		texture.wrapS = THREE.RepeatWrapping;
-		texture.wrapT = THREE.RepeatWrapping;
-		texture.repeat.set(-2, 1);
-		
-		// let video = document.getElementById('video');
-		// video.src = "video.webm";
-		// let videoTexture = new THREE.VideoTexture(video);
-		// videoTexture.wrapS = THREE.RepeatWrapping;
-		// videoTexture.wrapT = THREE.RepeatWrapping;
-		// videoTexture.repeat.set(-2, 1);
-		
-		const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
+		const video2 = document.createElement('video');
+		video2.src = '../textures/video/pingpong.mp4';
+		video2.muted = true;
+		video2.autoplay = true;
+		video2.loop = true;
+		video2.addEventListener('loadeddata', () => {
+			video2.play();
+			drawVideoOnCanvas();
+		});
 
-		canvas.innerHTML = 'Test';
+		const nbVideos = 2; // 1, 2
+		const nbImages = 2; // 0 = 2 img, 1 = 4 img, 2 = 8 img, 3 = 16 img
+
+		let vSettings = [
+			{video: video1, imageWidth: 100 * 2.33, imageHeight: 100},	// 2 images
+			{video: video2, imageWidth: 100 * 2.33, imageHeight: 100},	// 4 images
+			{video: video1, imageWidth: 100 * 2.33, imageHeight: 100},	// 8 images
+			{video: video2, imageWidth: 100 * 2.33, imageHeight: 100},	// 16 images
+		];
+
+		let spacingImages = [
+			100 * 2.33 * 10 - (100 * 2.33),
+			100 * 2.33 * 5 - (100 * 2.33),
+			100 * 2.33 * 2.5 - (100 * 2.33),
+			100 * 2.33 * 1.25 - (100 * 2.33),
+		];
+
+		function drawVideoOnCanvas() {
+			ctx.clearRect(0, 0, videoCanvas.width, videoCanvas.height);
+
+			let nbDraw = 0;
+			let vIndex = 0;
+			let y = 0;
+			for (let x = 0; x < videoCanvas.width; x += (vSettings[vIndex].imageWidth + spacingImages[nbImages]))
+			{
+				ctx.drawImage(vSettings[vIndex].video, x, y, vSettings[vIndex].imageWidth, vSettings[vIndex].imageHeight);
+				nbDraw++;
+				if (nbVideos > 1)
+					vIndex++;
+				if (vIndex >= nbVideos)
+					vIndex = 0;
+			}
+			
+			videoCanvasTexture.needsUpdate = true;
+			requestAnimationFrame(drawVideoOnCanvas);
+		}
+
+		// Create texture
+		const videoCanvasTexture = new THREE.CanvasTexture(videoCanvas);
+		videoCanvasTexture.wrapS = THREE.RepeatWrapping;
+		videoCanvasTexture.wrapT = THREE.RepeatWrapping;
+		videoCanvasTexture.repeat.set(-1, 1);
+
+		const material = new THREE.MeshBasicMaterial({ map: videoCanvasTexture, side: THREE.BackSide });
+
+		// videoCanvas.innerHTML = 'Test';																	 // ca sert ca eddy ?
 		loader.load( '../blender/exported/banner.glb', (gltf) => {
 			this.banner = gltf.scene.children[0];
 			this.banner.material = material;
 			this.banner.position.y += 1.7;
 			this.banner.rotation.x = (Math.PI);
-			this.banner.rotation.y += 4.7;
-			scene.add(gltf.scene);
-			// setInterval(() => {
-			// 	this.banner.rotation.y += 0.001;
-			// }, 10);
+			this.banner.rotation.y += -0.15;
+			this.scene.add(gltf.scene);
+			setInterval(() => {
+				this.banner.rotation.y += 0.001;
+			}, 10);
 		}, undefined, function ( error ) {
 			console.error( error );
 		} );
-	}
 
+        function animate() {
+            requestAnimationFrame(animate);
+        }
+        animate();
+	}
+	
 	#animationGravityChanger(group, onTop)
 	{
 		const geometry1		= new THREE.TorusGeometry(1.5, 0.05, 12, 24);
