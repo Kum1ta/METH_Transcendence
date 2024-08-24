@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   controls.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:20:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/07 16:53:34 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/24 20:36:07 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import	{ sendRequest } from "./websocket.js";
-import * as THREE from 'three';
+import * as THREE from '/static/three/build/three.module.js';
 
 class Moves {
 	wPress = false;

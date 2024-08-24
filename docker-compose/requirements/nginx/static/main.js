@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:35 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/24 11:57:47 by marvin           ###   ########.fr       */
+/*   Updated: 2024/08/24 20:40:04 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { liveChat } from "./liveChat/main.js";
-import { login } from "./login/main.js";
-import { home3D } from "./home3D/home3D.js"
+import { liveChat } from "/static/liveChat/main.js";
+import { login } from "/static/login/main.js";
+import { home3D } from "/static/home3D/home3D.js"
 
 window.addEventListener('scroll', () => {
 	const scrollPosition = window.scrollY;

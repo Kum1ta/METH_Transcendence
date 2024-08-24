@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Screen.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:13:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/24 11:39:09 by marvin           ###   ########.fr       */
+/*   Updated: 2024/08/24 20:44:14 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import * as THREE from 'three'
+import * as THREE from '/static/three/build/three.module.js'
+import { GLTFLoader } from '/static/three/examples/jsm/loaders/GLTFLoader.js';
 
 const loader = new GLTFLoader();
 
@@ -26,7 +26,7 @@ class Screen
 	{
 
 		this.screen = this.#createScreen(scene);
-		loader.load( './modeles/tv.glb', (gltf) => {
+		loader.load( '/static/modeles/tv.glb', (gltf) => {
 			const tv = gltf.scene.children[0];
 			const boundingBox = new THREE.Box3().setFromObject(tv);
 			const center = boundingBox.getCenter(new THREE.Vector3());
@@ -44,7 +44,7 @@ class Screen
 			console.error( error );
 			throw Error("Can't open file 'tv.glb'");
 		} );
-		this.#showVideo('/modeles/pong.mp4')
+		this.#showVideo('/static/modeles/pong.mp4')
 	}
 
 	#createScreen(scene)

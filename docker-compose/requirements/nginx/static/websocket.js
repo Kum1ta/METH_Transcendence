@@ -6,18 +6,18 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/13 00:12:26 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/24 20:20:12 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { typeErrorUnknown42Account } from "./typeErrorResponse/typeErrorUnknown42Account.js";
-import { typeErrorInvalidPassword } from "./typeErrorResponse/typeErrorInvalidPassword.js";
-import { typeErrorInvalidToken42 } from "./typeErrorResponse/typeErrorInvalidToken42.js";
-import { typePrivateListMessage } from "./typeResponse/typePrivateListMessage.js";
-import { typeNewPrivateMessage } from "./typeResponse/typeNewPrivateMessage.js";
-import { typePrivateListUser } from "./typeResponse/typePrivateListUser.js";
-import { connectedWith42Func } from "./login/connectedWith42.js";
-import { typeLogin } from "./typeResponse/typeLogin.js";
+import { typeErrorUnknown42Account } from "/static/typeErrorResponse/typeErrorUnknown42Account.js";
+import { typeErrorInvalidPassword } from "/static/typeErrorResponse/typeErrorInvalidPassword.js";
+import { typeErrorInvalidToken42 } from "/static/typeErrorResponse/typeErrorInvalidToken42.js";
+import { typePrivateListMessage } from "/static/typeResponse/typePrivateListMessage.js";
+import { typeNewPrivateMessage } from "/static/typeResponse/typeNewPrivateMessage.js";
+import { typePrivateListUser } from "/static/typeResponse/typePrivateListUser.js";
+import { connectedWith42Func } from "/static/login/connectedWith42.js";
+import { typeLogin } from "/static/typeResponse/typeLogin.js";
 
 /*
 	Todo (Eddy) :

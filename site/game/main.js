@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/08 16:33:16 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/24 20:36:07 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { sendRequest } from './websocket.js';
 import { MoveObject } from './controls.js';
-import * as THREE from 'three';
+import * as THREE from '/static/three/build/three.module.js';
 import Stats from 'stats.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { createSpotLight, refreshSpotLight, createLightAmbient, createLightPoint, refreshLightPoint } from './light.js';
