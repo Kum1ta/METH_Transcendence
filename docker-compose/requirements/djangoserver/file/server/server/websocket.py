@@ -17,25 +17,21 @@ from random import randint
 class WebsocketHandler(WebsocketConsumer):
 	debugMode = True
 
-	session = None
-
 	def connect(self):
-		print("new client")
 		self.accept()
-		print(self.scope["session"].get("number"))
-		if(self.scope["session"].get("number") == None):
-			self.scope["session"]["number"] = randint(0,2147483647)
-			self.scope["session"].save()
-			print("new number : ", self.scope["session"].get("number"))
-		else:
-			print("remembered number : ", self.scope["session"].get("number"))
+		self.send(text_data=json.dumps({"type":"is_logged_in", "content":self.scope["session"].get("logged_in",False)}))
+		print("new client")
 	
 	def disconnect(self, close_code):
-		print("you can go, we never wanted you anyway")
+		print("you can go, i am not mad, we never wanted you anyway")
 	
 	def receive(self, text_data):
-		print(self.scope["session"].get("number"))
 		print("someone is talking")
+		print("username is ", self.scope["session"].get("username"))
+		if(self.scope["session"].get("logged_in", False)):
+			print("user is logged in")
+		else:
+			print("user is not logged in")
 		try:
 			jsonRequest = json.loads(text_data)
 		except json.JSONDecodeError:
@@ -47,13 +43,14 @@ class WebsocketHandler(WebsocketConsumer):
 				if (jsonRequest["type"] == "login" or jsonRequest["type"] == "create_account"):
 					functionRequest[typeRequest.index(jsonRequest["type"])](self, jsonRequest["content"])
 				else:
-					if (self.verifyToken(jsonRequest["token"]) == False):
-						return
+					if (not self.scope["session"].get("logged_in", False)):
+						return;
 					functionRequest[typeRequest.index(jsonRequest["type"])](self, jsonRequest["content"])
 			else:
 				self.sendError("Invalid type", 9004)
 		except Exception as e:
 			self.sendError("Invalid request", 9005, e)
+			print(e)
 
 	def	sendError(self, message, code, error=None):
 		try:

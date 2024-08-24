@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   home3D.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/24 11:41:18 by marvin           ###   ########.fr       */
+/*   Updated: 2024/08/24 16:47:41 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from 'three'
-import { Screen } from './Screen.js'
+import { Screen, light } from './Screen.js'
 
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass.js';
+import Stats from 'stats.js';
 
 const	scene			= new THREE.Scene();
 const	renderer		= new THREE.WebGLRenderer({antialias: true});
@@ -23,6 +24,10 @@ const	camera			= new THREE.PerspectiveCamera(60, window.innerWidth / window.inne
 const	ambiantLight	= new THREE.AmbientLight(0xffffff, 35);
 const	screen			= new Screen(scene);
 const	cube			= createCube();
+
+const stats = new Stats();
+stats.showPanel(0); // 0: fps, 1: ms, 2: mémoire
+document.body.appendChild(stats.dom);
 
 renderer.toneMapping = THREE.LinearToneMapping;
 renderer.shadowMap.enabled = true;
@@ -41,7 +46,7 @@ composer.addPass(new RenderPass(scene, camera));
 
 const dofPass = new BokehPass(scene, camera, {
     focus: 10.0,
-    aperture: 0.020,
+    aperture: 0.02,
     maxblur: 0.01,
 });
 composer.addPass(dofPass);
@@ -102,18 +107,23 @@ function fadeInOut()
 	let interval = null;
 	isInFade = true;
 	interval = setInterval(() => {
-		screen.pointLightIntensity -= 0.2;
+		light.point -= 0.2;
 		screen.screen.material.opacity -= 0.05;
 		if (screen.screen.material.opacity <= 0)
 		{
 			clearInterval(interval);
 			setTimeout(() => {
 				interval = setInterval(() => {
-					screen.pointLightIntensity += 0.2;
+					light.point += 0.2;
 					screen.screen.material.opacity += 0.05;
 					if (screen.screen.material.opacity >= 1)
 					{
 						clearInterval(interval);
+						interval = setInterval(() => {
+							light.point += 0.2;
+							if (light.point >= 1)
+								clearInterval(interval);
+						}, 10);
 						isInFade = false;
 					}
 				}, 20);
@@ -131,6 +141,15 @@ function createCube()
 	mesh.position.set(8, 1, -5);
 	scene.add(mesh);
 }
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+document.addEventListener( 'mousemove', (event) => {
+	event.preventDefault();
+	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+});
 
 
 function home3D()
@@ -151,11 +170,57 @@ function createPlane()
 	scene.add(mesh);
 }
 
+const video = {
+	pong: '/modeles/pong.mp4',
+	login: '/modeles/notLogin.webm'
+}
+let	actualVideo = -1;
+if (Math.random() % 100 > 0.97)
+	video.pong = './modeles/easteregg.webm'
+
+setTimeout(() => {
+	screen.changeVideo(video.pong);
+	actualVideo = 0;
+}, 100);
 
 function loop()
 {
+	stats.begin()
+	raycaster.setFromCamera( mouse, camera );
+	const intersects = raycaster.intersectObjects( scene.children, false );
+	
+	if (!screen.canvasVideo)
+	{
+		composer.render();
+		stats.end();
+		return ;
+	}
+	if (intersects.length === 0)
+	{
+		if (actualVideo != 0)
+		{
+			console.log("change 1");
+			screen.changeVideo(video.pong);
+			actualVideo = 0;
+		}
+	}
+	else if (intersects[0].object == screen.screen)
+	{
+		if (actualVideo != 1)
+		{
+			console.log("change 2");
+			screen.changeVideo(video.login);
+			actualVideo = 1;
+		}
+	}
+	else if (actualVideo != 0)
+	{
+		console.log("change 3");
+		screen.changeVideo(video.pong);
+		actualVideo = 0;
+	}
 	composer.render();
-	// renderer.render(scene, camera);
+	stats.end();
 }
 
 

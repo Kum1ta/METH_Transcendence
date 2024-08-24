@@ -1,9 +1,6 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 from .models import User 
 
 def index(request):
-	if(request.session.get("visited", False)):
-		print("already visited")
-	request.session["visited"] = True
-
-	return HttpResponse("AAAAAAAAAAAAAAAAAAAAAAA")
+	return render(request, "index.html", {})

@@ -6,15 +6,15 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/04 13:44:11 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/22 19:13:31 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/23 23:54:32 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from datetime import datetime
 
-async def sendPrivateMessage(socket, content):
+def sendPrivateMessage(socket, content):
 	# |Tom| Requete pour vérifier si l'user existe 
-	# Si user existe pas, faire ça : await socket.sendError("User not found", 9008)
+	# Si user existe pas, faire ça : socket.sendError("User not found", 9008)
 	# Sinon l'ajouter à la base de données
 	# |Eddy| Si user existe, envoyer le message privé aux deux personnes concernées
 	# sachant que le receveur doit être connecté. Dans le cas contraire, uniquement
@@ -30,6 +30,6 @@ async def sendPrivateMessage(socket, content):
 			"content": content["content"],
 			"date": time
 		}}
-		await socket.send(jsonVar)
+		socket.send(text_data=json.dumps(jsonVar))
 	except Exception as e:
-		await socket.sendError("Invalid message sent", 9009, e)
+		socket.sendError("Invalid message sent", 9009, e)

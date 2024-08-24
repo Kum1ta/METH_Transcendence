@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 15:10:23 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/22 19:13:09 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/23 23:55:50 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,9 +52,9 @@ data = [
 		}
 ]
 
-async def getPrivateListUser(socket, content=None):
+def getPrivateListUser(socket, content=None):
 	# |TOM| Faire une requête à la base de données pour récupérer la liste des
 	# utilisateurs qui doivent apparaitre dans la liste du chat privé
 	# (ceux qui ont eu conversation avec l'utilisateur)
-	# Si user existe pas, faire ça : await socket.sendError("User not found", 9008)
-	await socket.send({"type": "private_list_user", "content": data})
+	# Si user existe pas, faire ça : socket.sendError("User not found", 9008)
+	socket.send(text_data=json.dumps({"type": "private_list_user", "content": data}))
