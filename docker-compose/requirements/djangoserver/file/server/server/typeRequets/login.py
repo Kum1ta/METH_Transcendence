@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/22 19:12:23 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/24 01:11:15 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,55 +56,44 @@ userList = [
 	}
 ]
 
-async def loginByToken(socket, content):
-	# |TOM| Requete pour savoir si le token est valide
-	for user in userList:
-		if (user["token"] == content["token"]):
-			jsonVar = {"type": "login", "content": {"username": user["username"], "token": user["token"], "id": user["id"]}}
-			socket.username = jsonVar["content"]["username"]
-			socket.token = jsonVar["content"]["token"]
-			socket.id = jsonVar["content"]["id"]
-			await socket.send(jsonVar)
-			return
-	jsonVar = {"type": "error", "content": "Invalid token", "code": 9001}
-	await socket.send(json.dumps(jsonVar))
-
-async def loginByPass(socket, content):
+def loginByPass(socket, content):
 	# |TOM| Requete pour savoir si le mail et le mot de passe sont valides
 	# et créer un token si celui-ci n'existe pas
 	for user in userList:
 		if (user["mail"] == content["mail"] and user["password"] == content["password"]):
-			jsonVar = {"type": "login", "content": {"username": user["username"], "token": user["token"], "id": user["id"]}}
-			socket.username = jsonVar["content"]["username"]
-			socket.token = jsonVar["content"]["token"]
-			socket.id = jsonVar["content"]["id"]
-			await socket.send(jsonVar)
+			jsonVar = {"type": "login", "content": {"username": user["username"]}}
+			socket.scope["session"]["logged_in"] = True
+			socket.scope["session"]["username"] = jsonVar["content"]["username"]
+			socket.scope["session"].save()
+			socket.send(text_data=json.dumps(jsonVar))
 			return
-	await socket.send({"type": "error", "content": "Invalid username or password", "code": 9007})
+	socket.send(text_data=json.dumps({"type": "error", "content": "Invalid username or password", "code": 9007}))
 
 
 
-async def loginBy42(socket, content):
+def loginBy42(socket, content):
 	# |TOM| Requete pour récuperer les informations de l'utilisateur selon l'intra de la personne
 	# et créer un token si celui-ci n'existe pas
 	try:
-		await main42login(socket, content, userList)
+		main42login(socket, content, userList)
 	except Exception as e:
-		await socket.sendError("Invalid 42 token", 9010, e)
+		socket.sendError("Invalid 42 token", 9010, e)
 
-async def login(socket, content):
+def login(socket, content):
 	# |TOM| Faire 3 types de requêtes:
 	# - byToken: Récupérer les informations de l'utilisateur en fonction de son token
+	# 	- nope
 	# - byPass: Récupérer les informations de l'utilisateur en fonction de mail et de son mot de passe
 	# - by42: Récupérer les informations de l'utilisateur en fonction de son token42 (qui sera different du token)
+	print(json.dumps(content))
 	try:
-		if (content["type"] == "byToken"):
-			await loginByToken(socket, content)
-		elif (content["type"] == "byPass"):
-			await loginByPass(socket, content)
+#		if (content["type"] == "byToken"):
+#			loginByToken(socket, content)
+		if (content["type"] == "byPass"):
+			loginByPass(socket, content)
 		elif (content["type"] == "by42"):
-			await loginBy42(socket, content)
+			loginBy42(socket, content)
 		else:
-			await socket.sendError("Invalid login type", 9006)
+			socket.sendError("Invalid login type", 9006)
 	except Exception as e:
-		await socket.sendError("Invalid request", 9005, e)
+		socket.sendError("Invalid request", 9005, e)

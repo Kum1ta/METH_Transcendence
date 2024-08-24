@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 22:53:14 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/22 19:13:09 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/23 23:56:06 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,7 @@ def generate_random_string():
 		string += char[random.randint(0, len(char) - 1)]
 	return string
 
-async def getPrivateListMessage(socket, content):
+def getPrivateListMessage(socket, content):
 	# |TOM| Requete pour avoir la liste des messages privés grace à l'id de l'utilisateur
 	copyListMessage = listMessage.copy()
 	for message in copyListMessage["content"]:
@@ -65,5 +65,5 @@ async def getPrivateListMessage(socket, content):
 		else:
 			message["from"] = content["id"]
 		message["content"] = generate_random_string()
-	await socket.send(copyListMessage)
+	socket.send(text_data=json.dumps(copyListMessage))
 		
