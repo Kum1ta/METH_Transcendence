@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 09:32:17 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/22 19:13:31 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/24 01:12:08 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ if (UID42 == None or SECRET42 == None):
 	print("Please set the environment variables uid and secret")
 	exit()
 
-async def main42login(socket, content, userList):
+def main42login(socket, content, userList):
 	global access_token
 
 	print(content['token'])
@@ -56,17 +56,13 @@ async def main42login(socket, content, userList):
 			break
 		i += 1
 	if (i == len(userList)):
-		await socket.sendError("Not user registered with this 42 account", 9011)
+		socket.sendError("Not user registered with this 42 account", 9011)
 		return
 	else:
-		await socket.send({
+		socket.scope["session"]["logged_in"] = True
+		socket.scope["session"]["username"] = userList[i]['username']
+		socket.scope["session"].save()
+		socket.send(text_data=json.dumps({
 			"type": "login",
-			"content": {
-				"username": userList[i]['username'],
-				"token": userList[i]['token'],
-				"id": userList[i]['id']
-			}
-		})
-	
-
-	
+			"content": {"username": userList[i]['username']}
+		}))
