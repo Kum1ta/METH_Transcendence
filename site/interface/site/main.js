@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:35 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/23 17:47:37 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/08/23 23:36:33 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ window.addEventListener('scroll', () => {
 	parallaxElement2.style.transform = `translateX(50%) translateY(${-parallaxSpeed}px) rotate(${rotationAngle}deg)`;
 });
 
-document.getElementById('closePopupBtn').addEventListener('click', function() {
-	document.getElementById('loginPopup').style.display = 'none';
-});
+// document.getElementById('closePopupBtn').addEventListener('click', function() {
+// 	document.getElementById('loginPopup').style.display = 'none';
+// });
 
 document.addEventListener('DOMContentLoaded', () => {
 	liveChat();
