@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   home3D.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/24 11:41:18 by marvin           ###   ########.fr       */
+/*   Updated: 2024/08/24 20:44:31 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import * as THREE from 'three'
-import { Screen } from './Screen.js'
+import * as THREE from '/static/three/build/three.module.js'
+import { Screen } from '/static/home3D/Screen.js'
 
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass.js';
+import { EffectComposer } from '/static/three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from '/static/three/examples/jsm/postprocessing/RenderPass.js';
+import { BokehPass } from '/static/three/examples/jsm/postprocessing/BokehPass.js';
 
 const	scene			= new THREE.Scene();
 const	renderer		= new THREE.WebGLRenderer({antialias: true});

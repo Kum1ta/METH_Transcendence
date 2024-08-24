@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Ball.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/22 16:21:59 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/24 20:36:07 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import * as THREE from 'three';
+import * as THREE from '/static/three/build/three.module.js';
 
 /*
 	Todo (Eddy) :

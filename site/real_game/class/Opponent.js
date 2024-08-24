@@ -6,12 +6,12 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:34:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/22 10:46:18 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/24 20:36:07 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { playerExist } from './Player'
-import * as THREE from 'three';
+import * as THREE from '/static/three/build/three.module.js';
 
 let opponentExist = false;
 

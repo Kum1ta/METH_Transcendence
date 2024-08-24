@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   light.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:50:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 16:20:11 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/24 20:36:07 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import * as THREE from 'three';
+import * as THREE from '/static/three/build/three.module.js';
 
 // ------------------- Spot Light ------------------- //
 function createSpotLight(color, target, scene) {
