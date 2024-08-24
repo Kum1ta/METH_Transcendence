@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:13:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/23 02:24:09 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/24 02:36:42 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ class Screen
 {
 	screen = null;
 	tv = null;
+	pointLightIntensity = 1;
+	screenMaterial = null;
 
 	constructor(scene)
 	{
@@ -31,7 +33,9 @@ class Screen
 			tv.geometry.center();
 			this.tv = tv;
 			tv.position.set(0, 0.99, 2);
-			// tv.material = new THREE.MeshPhysicalMaterial({color: 0x222222});
+			tv.material = new THREE.MeshPhysicalMaterial({color: 0xaaaaaa});
+			tv.material.roughness = 10;
+			tv.material.metalness = 1;
 			tv.scale.set(0.05, 0.05, 0.05);
 			tv.castShadow = true;
 			tv.receiveShadow = true;
@@ -50,7 +54,7 @@ class Screen
 		const	vertices 			= positionAttribute.array;
 		const	material			= new THREE.MeshStandardMaterial({color: 0xbbbbbb});
 		const	mesh				= new THREE.Mesh(geometry, material);
-		const	pointLight			= new THREE.PointLight( 0xffffff, 5, 0, 2);
+		const	pointLight			= new THREE.PointLight( 0xffffff, 10 * this.pointLightIntensity, 0, 2);
 
 		for (let i = 0; i < vertices.length; i += 3)
 		{
@@ -62,20 +66,20 @@ class Screen
 		}
 		positionAttribute.needsUpdate = true;
 		mesh.scale.set(0.4, 0.4);
-		mesh.position.set(-0.155, 1.2, 1.3);
+		mesh.position.set(-0.155, 1.2, 1.15);
 		mesh.rotation.x = Math.PI + 0.05;
 		mesh.rotation.z = Math.PI;
 		scene.add(mesh);
-		pointLight.position.set(-0.155, 1.2, 0.8);
+		pointLight.position.set(-0.05, 1.2, 0.95);
 		pointLight.castShadow = true;
 		pointLight.shadow.mapSize.width = 2048;
 		pointLight.shadow.mapSize.height = 2048;
-		pointLight.shadow.radius = 20;
+		console.log(pointLight.shadow)
 		scene.add(pointLight);
 		setInterval(() => {
-			const	intensity = Math.random() * 2 + 5;
+			const	intensity = Math.random() * 2 + 10;
 			
-			pointLight.intensity = intensity < 5 ? 5 : (intensity > 7 ? 7 : intensity);
+			pointLight.intensity = intensity * this.pointLightIntensity > 13 * this.pointLightIntensity ? 13 * this.pointLightIntensity : intensity * this.pointLightIntensity;
 		}, 100);
 		return (mesh);
 	}
@@ -86,7 +90,7 @@ class Screen
 		const	context		= canvas.getContext('2d', { willReadFrequently: true });
 		const	video		= document.createElement('video');
 		const	texture		= new THREE.CanvasTexture(canvas);
-		const	material	= new THREE.MeshBasicMaterial({ map: texture,color: 0xffffff });
+		const	material	= new THREE.MeshBasicMaterial({ map: texture,color: 0xffffff, transparent: true, opacity: 1 });
 		
 		canvas.width = 534;
 		canvas.height = 360;
@@ -102,7 +106,7 @@ class Screen
 				updateCanvas();
 			}).catch(err => console.error("Error playing video: ", err));
 		});
-		
+
 		function addNoiseOnImage(context)
 		{
 			const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -113,7 +117,7 @@ class Screen
 				const g = data[i + 1];
 				const b = data[i + 2];
 				const brightness = (3 * r + 4 * g + b) >>> 3;
-				const noise = Math.random() * 32 - 16;
+				const noise = Math.random() * 128 - 32;
 				data[i] = data[i + 1] = data[i + 2] = brightness + noise;
 			}
 			context.putImageData(imageData, 0, 0);
@@ -127,10 +131,9 @@ class Screen
 				context.drawImage(video, 0, 0, canvas.width, canvas.height);
 				addNoiseOnImage(context);
 				texture.needsUpdate = true;
-				requestAnimationFrame(updateCanvas);
 			}
+			requestAnimationFrame(updateCanvas);
 		}
-
 		texture.offset.set(0.02, 0);
 		this.screen.material = material;
 		video.load();
