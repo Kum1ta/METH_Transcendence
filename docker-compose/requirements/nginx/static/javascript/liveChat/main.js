@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:19:10 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/25 18:17:13 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/25 18:26:52 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ class LiveChat
 {
 	static create()
 	{
-		const	chatDiv = document.getElementById("chatDiv");
-
 		chatButton = document.getElementById("chatButton");
 		topChatHomeCross = document.getElementById("topChatCross");
 		

@@ -6,13 +6,13 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:02:19 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/25 18:18:09 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/25 18:26:17 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import { LiveChat } from "/static/javascript/liveChat/main.js";
 import { Home3D } from "/static/javascript/home3D/home3D.js"
 import { Login } from "/static/javascript/login/main.js";
-import { LiveChat } from "/static/javascript/liveChat/main.js";
 
 class HomePage
 {

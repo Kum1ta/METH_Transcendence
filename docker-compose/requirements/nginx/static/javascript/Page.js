@@ -6,17 +6,19 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/25 15:22:15 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/25 21:09:33 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { HomePage } from "/static/javascript/homePage/main.js";
+import { LobbyPage } from "/static/javascript/lobbyPage/main.js";
 
 class Page
 {
 	actualPage = null;
 	availablePages = [
 		{url:'/', servUrl: '/homePage', class: HomePage, name: 'homePage', title: 'PTME - Home'},
+		{url:'/lobby', servUrl: '/lobbyPage', class: LobbyPage, name: 'lobbyPage', title: 'PTME - Lobby'},
 	]
 
 	constructor()
@@ -48,12 +50,13 @@ class Page
 				})
 				.then(data => {
 					data.text().then(text => {
+						console.log("Page updated !");
 						document.body.innerHTML = text;
-						this.availablePages[i].class.create();
+						this.actualPage = this.availablePages[i].class;
 						document.title = this.availablePages[i].title;
-						this.actualPage = this.availablePages[i].name;
 						history.pushState({}, this.availablePages[i].title, this.availablePages[i].url);
-					});
+						this.actualPage.create();
+					})
 				})
 				.catch(error => {
 					throw Error(error);

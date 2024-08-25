@@ -20,4 +20,5 @@ from . import views
 urlpatterns = [
 	path("",views.index, name='patate'),
 	path("homePage",views.homePage, name='homePage'),
+	path("lobbyPage", views.lobbyPage, name='lobbyPage')
 ]
