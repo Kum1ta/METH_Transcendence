@@ -6,13 +6,16 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 08:08:00 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/24 01:11:45 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/25 14:49:14 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from .login import userList
+from ..models import User
 import random
 import re
+import json
+import hashlib
 
 pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).+$'
 
@@ -49,30 +52,18 @@ def createAccount(socket, content):
 		if (content["password"].find(content["username"]) != -1):
 			socket.sendError("Password must not contain the username", 9015)
 			return
-		# |Tom| Au lieu d'utiliser userList, faire une requête à la base de donnée pour savoir si on a un utilisateur avec cet email ou cet username
-		if (content["mail"] in userList):
+		if (len(User.objects.filter(mail=content["mail"]))):
 			socket.sendError("Mail already used", 9016)
 			return
-		if (content["username"] in userList):
+		if (len(User.objects.filter(username=content["username"]))):
 			socket.sendError("Username already used", 9017)
 			return
-		content["token"] = generateToken()
-		while (True):
-			content["id"] = random.randint(1000000, 9999999)
-			if (content["id"] not in userList):
-				break
-		userList.append(content)
-		socket.send(text_data=json.dumps({"type": "create_account", "content": "Account created"}))
 		socket.scope["session"]["logged_in"] = True
 		socket.scope["session"]["username"] = content["username"]
 		socket.scope["session"].save()
+		password = hashlib.md5((content["mail"] + content["password"]).encode()).hexdigest()
+		new_user = User.objects.create(username=content["username"], mail=content["mail"], password=password)
+		new_user.save()
+		socket.send(text_data=json.dumps({"type": "create_account", "content": "Account created"}))
 	except Exception as e:
 		socket.sendError("Error create account", 9005, e)
-
-def generateToken():
-	list = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-	token = ""
-
-	for i in range(0, 35):
-		token += list[random.randint(0, len(list) - 1)]
-	return token

@@ -14,9 +14,9 @@ from django.urls import path
 from django.core.asgi import get_asgi_application
 from channels.sessions import SessionMiddlewareStack 
 
-from .websocket import WebsocketHandler
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
+
+from .websocket import WebsocketHandler
 
 django = get_asgi_application()
 
