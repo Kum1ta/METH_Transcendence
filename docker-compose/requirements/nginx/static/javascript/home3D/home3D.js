@@ -6,15 +6,17 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/25 15:03:42 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/25 21:10:59 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { EffectComposer } from '/static/javascript/three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from '/static/javascript/three/examples/jsm/postprocessing/RenderPass.js';
 import { BokehPass } from '/static/javascript/three/examples/jsm/postprocessing/BokehPass.js';
+import { userMeInfo } from "/static/javascript/typeResponse/typeLogin.js";
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { Screen, light } from '/static/javascript/home3D/Screen.js'
+import { pageRenderer } from '/static/javascript/main.js'
 
 let		scene			= null;
 let		renderer		= null;
@@ -40,6 +42,7 @@ class Home3D
 	{
 		document.removeEventListener('resize', windowUpdater);
 		document.removeEventListener('mousemove', mouseTracker);
+		document.removeEventListener('click', redirection);
 
 		if (interval)
 			clearInterval(interval);
@@ -190,6 +193,8 @@ function home3D()
 		actualVideo = 0;
 	}, 100);
 
+	let	clickDetect = false;
+
 	function loop()
 	{
 		raycaster.setFromCamera( mouse, camera );
@@ -208,18 +213,37 @@ function home3D()
 				actualVideo = 0;
 			}
 		}
-		else if (intersects[0].object == screen.screen)
+		else
 		{
-			if (actualVideo != 1)
+			if (clickDetect)
 			{
-				screen.changeVideo(video.login);
-				actualVideo = 1;
+				document.removeEventListener('click', redirection);
+				clickDetect = false;
 			}
-		}
-		else if (actualVideo != 0)
-		{
-			screen.changeVideo(video.pong);
-			actualVideo = 0;
+			if (intersects[0].object == screen.screen)
+			{
+				if (userMeInfo.id == -1)
+				{
+					if (actualVideo != 1)
+					{
+						screen.changeVideo(video.login);
+						actualVideo = 1;
+					}
+				}
+				else
+				{
+					if (!clickDetect)
+					{
+						document.addEventListener('click', redirection);
+						clickDetect = true;
+					}
+				}
+			}
+			else if (actualVideo != 0)
+			{
+				screen.changeVideo(video.pong);
+				actualVideo = 0;
+			}
 		}
 		composer.render();
 	}
@@ -315,5 +339,10 @@ function mouseTracker (event)
 	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
 	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 };
+
+function redirection()
+{
+	pageRenderer.changePage('lobbyPage');
+}
 
 export { Home3D };

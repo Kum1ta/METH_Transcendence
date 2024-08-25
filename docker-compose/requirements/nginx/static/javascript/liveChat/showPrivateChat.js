@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:17:54 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/24 23:49:04 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/25 21:24:06 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,10 +142,8 @@ function	sendMessage(user)
 	let 	message;
 
 	message = {
-		from: userMeInfo.id,
 		to: user.id,
 		content: inputMessage.value,
-		time: new Date()
 	};
 	sendRequest("send_private_message", message);
 }

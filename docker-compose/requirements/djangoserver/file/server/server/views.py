@@ -9,3 +9,7 @@ def index(request):
 def homePage(request):
 	request.session.save()
 	return render(request, "homePage.html", {})
+
+def lobbyPage(request):
+	request.session.save()
+	return render(request, "lobbyPage.html", {})

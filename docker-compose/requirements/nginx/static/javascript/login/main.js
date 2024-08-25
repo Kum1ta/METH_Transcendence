@@ -6,13 +6,14 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/25 17:14:01 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/25 18:54:51 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { createNotification as CN } from "/static/javascript/notification/main.js";
 import { userMeInfo, waitForLogin } from "/static/javascript/typeResponse/typeLogin.js";
 import { sendRequest } from "/static/javascript/websocket.js";
+
 class Login
 {
 	static create()
