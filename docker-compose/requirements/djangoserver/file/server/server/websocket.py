@@ -1,11 +1,14 @@
 from channels.generic.websocket import WebsocketConsumer
 import json
 
-from .typeRequets.getPrivateListMessage import getPrivateListMessage
-from .typeRequets.getPrivateListUser import getPrivateListUser
-from .typeRequets.sendPrivateMessage import sendPrivateMessage
-from .typeRequets.createAccount import createAccount
-from .typeRequets.login import login
+import django
+django.setup()
+
+from .typeRequests.getPrivateListMessage import getPrivateListMessage
+from .typeRequests.getPrivateListUser import getPrivateListUser
+from .typeRequests.sendPrivateMessage import sendPrivateMessage
+from .typeRequests.createAccount import createAccount
+from .typeRequests.login import login
 
 typeRequest = ["login", "get_private_list_user", "get_private_list_message",
 			   "send_private_message", "create_account"]
@@ -19,7 +22,10 @@ class WebsocketHandler(WebsocketConsumer):
 
 	def connect(self):
 		self.accept()
-		self.send(text_data=json.dumps({"type":"is_logged_in", "content":self.scope["session"].get("logged_in",False)}))
+		self.send(text_data=json.dumps({"type":"logged_in", "content":{
+			"status":self.scope["session"].get("logged_in",False),
+			"username":self.scope["session"].get("username",None)
+		}}))
 		print("new client")
 	
 	def disconnect(self, close_code):

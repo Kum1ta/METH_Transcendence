@@ -2,9 +2,10 @@ from django.db import models
 
 class User(models.Model):
 	id = models.AutoField(primary_key=True)
-	nickname = models.CharField(max_length=20)
-	mail = models.EmailField()
+	username = models.CharField(max_length=20, unique=True)
+	mail = models.EmailField(unique=True)
 	password = models.CharField(max_length=100)
+	id42 = models.DecimalField(decimal_places=0, unique=True, default=0)
 
 class Message(models.Model):
 	id = models.AutoField(primary_key=True)

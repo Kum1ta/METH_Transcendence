@@ -6,11 +6,13 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/24 01:11:15 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/25 15:20:21 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from .login42.login42 import main42login
+from ..models import User
+import hashlib
 import requests
 import json
 import os
@@ -57,17 +59,16 @@ userList = [
 ]
 
 def loginByPass(socket, content):
-	# |TOM| Requete pour savoir si le mail et le mot de passe sont valides
-	# et créer un token si celui-ci n'existe pas
-	for user in userList:
-		if (user["mail"] == content["mail"] and user["password"] == content["password"]):
-			jsonVar = {"type": "login", "content": {"username": user["username"]}}
-			socket.scope["session"]["logged_in"] = True
-			socket.scope["session"]["username"] = jsonVar["content"]["username"]
-			socket.scope["session"].save()
-			socket.send(text_data=json.dumps(jsonVar))
-			return
-	socket.send(text_data=json.dumps({"type": "error", "content": "Invalid username or password", "code": 9007}))
+	password_hash = hashlib.md5((content["mail"] + content["password"]).encode()).hexdigest()
+	user = User.objects.filter(mail=content["mail"], password=password_hash)
+	if(len(user)):
+		jsonVar = {"type": "login", "content": {"username": user[0].username}}
+		socket.scope["session"]["logged_in"] = True
+		socket.scope["session"]["username"] = jsonVar["content"]["username"]
+		socket.scope["session"].save()
+		socket.send(text_data=json.dumps(jsonVar))
+		return
+	socket.send(text_data=json.dumps({"type": "error", "content": "Invalid email or password", "code": 9007}))
 
 
 
@@ -81,14 +82,11 @@ def loginBy42(socket, content):
 
 def login(socket, content):
 	# |TOM| Faire 3 types de requêtes:
-	# - byToken: Récupérer les informations de l'utilisateur en fonction de son token
-	# 	- nope
 	# - byPass: Récupérer les informations de l'utilisateur en fonction de mail et de son mot de passe
 	# - by42: Récupérer les informations de l'utilisateur en fonction de son token42 (qui sera different du token)
+	#	- will probably change
 	print(json.dumps(content))
 	try:
-#		if (content["type"] == "byToken"):
-#			loginByToken(socket, content)
 		if (content["type"] == "byPass"):
 			loginByPass(socket, content)
 		elif (content["type"] == "by42"):
