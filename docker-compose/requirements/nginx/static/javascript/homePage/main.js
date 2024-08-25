@@ -6,13 +6,13 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:02:19 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/25 15:29:51 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/25 18:18:09 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { Home3D } from "/static/javascript/home3D/home3D.js"
 import { Login } from "/static/javascript/login/main.js";
-// import { liveChat } from "/static/javascript/liveChat/main.js";
+import { LiveChat } from "/static/javascript/liveChat/main.js";
 
 class HomePage
 {
@@ -20,6 +20,7 @@ class HomePage
 	{
 		Home3D.create();
 		Login.create();
+		LiveChat.create();
 		window.addEventListener('scroll', scrool);
 	}
 
@@ -27,7 +28,8 @@ class HomePage
 	{
 		Home3D.dispose();
 		Login.dispose();
-		window.addEventListener('scroll', scrool);
+		LiveChat.dispose();
+		window.removeEventListener('scroll', scrool);
 	}
 };
 
