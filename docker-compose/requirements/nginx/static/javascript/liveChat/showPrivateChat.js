@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:17:54 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/25 21:24:06 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/26 00:40:11 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ async function	displayAllMessage(divMessageListChatHome)
 		newDiv = document.createElement("div");
 		contentNode = document.createTextNode(element.content);
 		dateNode = document.createTextNode(element.date);
-		console.log(element.from, userMeInfo.id);
 		newDiv.classList.add(element.from === userMeInfo.id ? "meMessage" : "opponentMessage");
 		tmp = document.createElement("p");
 		tmp.classList.add("content");
