@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/25 17:06:42 by edbernar         ###   ########.fr        #
+#    Updated: 2024/08/25 17:32:37 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,14 +62,15 @@ def loginByPass(socket, content):
 	password_hash = hashlib.md5((content["mail"] + content["password"]).encode()).hexdigest()
 	user = User.objects.filter(mail=content["mail"], password=password_hash)
 	if(len(user)):
-		jsonVar = {"type": "login", "content": {"username": user[0].username}}
+		jsonVar = {"type": "login", "content": {"username": user[0].username, "id": user[0].id}}
 		socket.scope["session"]["logged_in"] = True
 		socket.scope["session"]["username"] = jsonVar["content"]["username"]
+		socket.scope["session"]["id"] = user[0].id 
 		socket.scope["session"].save()
 		socket.send(text_data=json.dumps({"type":"logged_in", "content":{
 			"status":True,
 			"username":jsonVar["content"]["username"],
-			"id": 9999999,
+			"id": user[0].id,
 		}}))
 		return
 	socket.send(text_data=json.dumps({"type": "error", "content": "Invalid email or password", "code": 9007}))
@@ -89,7 +90,6 @@ def login(socket, content):
 	# - byPass: Récupérer les informations de l'utilisateur en fonction de mail et de son mot de passe
 	# - by42: Récupérer les informations de l'utilisateur en fonction de son token42 (qui sera different du token)
 	#	- will probably change
-	print(json.dumps(content))
 	try:
 		if (content["type"] == "byPass"):
 			loginByPass(socket, content)
