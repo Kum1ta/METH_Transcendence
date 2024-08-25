@@ -24,7 +24,8 @@ class WebsocketHandler(WebsocketConsumer):
 		self.accept()
 		self.send(text_data=json.dumps({"type":"logged_in", "content":{
 			"status":self.scope["session"].get("logged_in",False),
-			"username":self.scope["session"].get("username",None)
+			"username":self.scope["session"].get("username",None),
+			"id":self.scope["session"].get("id",0)
 		}}))
 		print("new client")
 	

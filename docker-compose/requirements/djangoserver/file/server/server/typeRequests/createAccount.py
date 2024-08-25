@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 08:08:00 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/25 14:49:14 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/25 16:42:26 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,12 +58,13 @@ def createAccount(socket, content):
 		if (len(User.objects.filter(username=content["username"]))):
 			socket.sendError("Username already used", 9017)
 			return
-		socket.scope["session"]["logged_in"] = True
-		socket.scope["session"]["username"] = content["username"]
-		socket.scope["session"].save()
 		password = hashlib.md5((content["mail"] + content["password"]).encode()).hexdigest()
 		new_user = User.objects.create(username=content["username"], mail=content["mail"], password=password)
 		new_user.save()
+		socket.scope["session"]["logged_in"] = True
+		socket.scope["session"]["username"] = content["username"]
+		socket.scope["session"]["id"] = new_user.id
+		socket.scope["session"].save()
 		socket.send(text_data=json.dumps({"type": "create_account", "content": "Account created"}))
 	except Exception as e:
 		socket.sendError("Error create account", 9005, e)
