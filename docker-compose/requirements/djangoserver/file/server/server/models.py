@@ -6,12 +6,14 @@ class User(models.Model):
 	mail = models.EmailField(unique=True)
 	password = models.CharField(max_length=100)
 	id42 = models.DecimalField(max_digits=15, decimal_places=0, null=True, unique=True)
+	pfp = models.CharField(max_length=1024)
 
 class Message(models.Model):
 	id = models.AutoField(primary_key=True)
 	date = models.DateTimeField(auto_now_add=True)
 	sender = models.ForeignKey("User",on_delete=models.SET_NULL, null=True, related_name="sender")
 	to = models.ForeignKey("User", on_delete=models.CASCADE, related_name="to")
+	content = models.TextField() 
 
 class Game(models.Model):
 	id = models.AutoField(primary_key=True)
