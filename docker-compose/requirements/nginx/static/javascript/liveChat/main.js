@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:19:10 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/24 23:22:20 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/25 18:17:13 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,32 @@ import { showListUser } from "/static/javascript/liveChat/showUserList.js";
 		- add a function to "New conversation +"
 		- game message when game will be implemented
 */
+
+let		chatButton = null;
+let		topChatHomeCross = null;
+
+class LiveChat
+{
+	static create()
+	{
+		const	chatDiv = document.getElementById("chatDiv");
+
+		chatButton = document.getElementById("chatButton");
+		topChatHomeCross = document.getElementById("topChatCross");
+		
+		chatButton.addEventListener("click", showChatMenu);
+		topChatHomeCross.addEventListener("click", hideChatMenu);
+	}
+
+	static dispose()
+	{
+		chatButton.removeEventListener("click", showChatMenu);
+		topChatHomeCross.removeEventListener("click", hideChatMenu);
+		chatButton = null;
+		topChatHomeCross = null;
+	}
+	
+}
 
 function	addDefaultButton()
 {
@@ -60,22 +86,18 @@ function	removeButtonIfExist()
 	}
 }
 
-function	liveChat()
+async function showChatMenu()
 {
-	const	chatButton = document.getElementById("chatButton");
-	const	chatDiv = document.getElementById("chatDiv");
-	const	topChatHomeCross = document.getElementById("topChatCross");
-	
-	chatButton.addEventListener("click", async () => {
-		chatDiv.style.display = "flex";
-		removeButtonIfExist();
-		addDefaultButton();
-		await showListUser();
-	});
-	topChatHomeCross.addEventListener("click", () => {
-		chatDiv.style.display = "none";
-		infoPanel.isOpen = false;
-	});
+	chatDiv.style.display = "flex";
+	removeButtonIfExist();
+	addDefaultButton();
+	await showListUser();
 }
 
-export { liveChat };
+function hideChatMenu()
+{
+	chatDiv.style.display = "none";
+	infoPanel.isOpen = false;
+}
+
+export { LiveChat };

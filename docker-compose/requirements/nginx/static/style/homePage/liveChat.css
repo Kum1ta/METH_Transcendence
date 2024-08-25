@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   liveChat.css                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:53:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/10 16:47:10 by marvin           ###   ########.fr       */
+/*   Updated: 2024/08/25 18:20:50 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #chatButton {
-	position: absolute;
+	position: fixed;
 	bottom: 10px;
 	left: 30px;
 	background-color: white;
@@ -36,7 +36,7 @@
 	width: 350px;
 	height: 400px;
 	background-color: #131313;
-	position: absolute;
+	position: fixed;
 	left: 20px;
 	bottom: 0px;
 	z-index: 999;
