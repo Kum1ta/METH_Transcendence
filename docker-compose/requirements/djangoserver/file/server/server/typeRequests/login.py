@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/25 15:20:21 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/25 17:06:42 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,7 +66,11 @@ def loginByPass(socket, content):
 		socket.scope["session"]["logged_in"] = True
 		socket.scope["session"]["username"] = jsonVar["content"]["username"]
 		socket.scope["session"].save()
-		socket.send(text_data=json.dumps(jsonVar))
+		socket.send(text_data=json.dumps({"type":"logged_in", "content":{
+			"status":True,
+			"username":jsonVar["content"]["username"],
+			"id": 9999999,
+		}}))
 		return
 	socket.send(text_data=json.dumps({"type": "error", "content": "Invalid email or password", "code": 9007}))
 

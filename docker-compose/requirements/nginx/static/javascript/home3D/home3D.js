@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/25 02:19:56 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/25 15:03:42 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,53 +246,59 @@ function home3D()
 		scene.add(mesh);
 	}
 
-	function fadeInOut()
-	{
+	function fadeInOut() {
 		if (isInFade)
 			return;
+		if (intervalFade)
+			clearInterval(intervalFade);
 		intervalFade = null;
 		isInFade = true;
-		intervalFade = setInterval(() => {
+	
+		const fadeOut = setInterval(() => {
 			if (screen == null)
 			{
-				clearInterval(intervalFade);
-				return ;
+				clearInterval(fadeOut);
+				return;
 			}
 			light.point -= 0.2;
 			screen.screen.material.opacity -= 0.05;
 			if (screen.screen.material.opacity <= 0)
 			{
-				clearInterval(intervalFade);
-				setTimeout(() => {
-					if (screen == null)
-					{
-						clearInterval(intervalFade);
-						return ;
-					}
-					interval = setInterval(() => {
-						light.point += 0.2;
-						screen.screen.material.opacity += 0.05;
-						if (screen.screen.material.opacity >= 1)
-						{
-							if (screen == null)
-							{
-								clearInterval(intervalFade);
-								return ;
-							}
-							clearInterval(intervalFade);
-							intervalFade = setInterval(() => {
-								light.point += 0.2;
-								if (light.point >= 1)
-									clearInterval(intervalFade);
-							}, 10);
-							isInFade = false;
-						}
-					}, 20);
-				}, 500);
+				clearInterval(fadeOut);
+				setTimeout(fadeIn, 500);
 			}
 		}, 20);
+	
+		function fadeIn()
+		{
+			const fadeInInterval = setInterval(() => {
+				if (screen == null)
+				{
+					clearInterval(fadeInInterval);
+					return;
+				}
+				light.point += 0.2;
+				screen.screen.material.opacity += 0.05;
+	
+				if (screen.screen.material.opacity >= 1)
+				{
+					clearInterval(fadeInInterval);
+					completeFade();
+				}
+			}, 20);
+		}
+	
+		function completeFade() {
+			intervalFade = setInterval(() => {
+				light.point += 0.2;
+				if (light.point >= 1)
+				{
+					clearInterval(intervalFade);
+					isInFade = false;
+				}
+			}, 10);
+		}
 	}
-
 	renderer.setAnimationLoop(loop)
 }
 

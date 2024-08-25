@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 00:39:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 22:14:49 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/25 17:09:22 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,17 @@ function waitForLogin() {
 
 function	typeLogin(content)
 {
-	if (content != null)
+	if (content && typeof(content) != 'boolean' && content.status == true)
 	{
 		console.log("Welcome " + content.username + "\nYou're id is " + content.id);
 		userMeInfo.username = content.username;
 		userMeInfo.id = content.id;
+		console.warn("L'ID a été ajouté manuellement dans le serv: " + userMeInfo.id);
 	}
 	loginAvailable = true;
 	if (loginResolve)
 	{
-		if (content != null)
-			loginResolve(content.token);
-		else
-			loginResolve();
+		loginResolve(content);
 		loginResolve = null;
 		loginAvailable = false;
 	}

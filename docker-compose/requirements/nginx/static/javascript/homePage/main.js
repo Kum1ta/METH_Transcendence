@@ -6,23 +6,27 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:02:19 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/25 02:06:24 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/25 15:29:51 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { Home3D } from "/static/javascript/home3D/home3D.js"
+import { Login } from "/static/javascript/login/main.js";
+// import { liveChat } from "/static/javascript/liveChat/main.js";
 
 class HomePage
 {
 	static create()
 	{
 		Home3D.create();
+		Login.create();
 		window.addEventListener('scroll', scrool);
 	}
 
 	static dispose()
 	{
 		Home3D.dispose();
+		Login.dispose();
 		window.addEventListener('scroll', scrool);
 	}
 };
