@@ -1,0 +1,43 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.js                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/25 00:02:19 by edbernar          #+#    #+#             */
+/*   Updated: 2024/08/25 02:06:24 by edbernar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+import { Home3D } from "/static/javascript/home3D/home3D.js"
+
+class HomePage
+{
+	static create()
+	{
+		Home3D.create();
+		window.addEventListener('scroll', scrool);
+	}
+
+	static dispose()
+	{
+		Home3D.dispose();
+		window.addEventListener('scroll', scrool);
+	}
+};
+
+
+function scrool()
+{
+	const scrollPosition = window.scrollY;
+	const rotationAngle = scrollPosition * 0.1;
+	const parallaxElement = document.querySelector('#firstBall');
+	const parallaxElement2 = document.querySelector('#secondBall');
+	const parallaxSpeed = scrollPosition * -0.17;
+
+	parallaxElement.style.transform = `translateX(-50%) translateY(${-parallaxSpeed}px) rotate(${rotationAngle}deg)`;
+	parallaxElement2.style.transform = `translateX(50%) translateY(${-parallaxSpeed}px) rotate(${rotationAngle}deg)`;
+}
+
+export { HomePage };
