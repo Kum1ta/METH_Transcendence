@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/24 23:45:49 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/25 17:17:57 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,10 @@ import { typeNewPrivateMessage } from "/static/javascript/typeResponse/typeNewPr
 import { typePrivateListUser } from "/static/javascript/typeResponse/typePrivateListUser.js";
 import { typeLogin } from "/static/javascript/typeResponse/typeLogin.js";
 
-/*
-	Todo (Eddy) :
-		- Request to connect by email and password. Waiting for the front to do it (already functional on the back side)
-		sendRequest("login", {type: "byPass", mail: "aa@aa.fr", password: "ABC123"});
-		- Information: the 'token' variable is only used until the connection is fully implemented
-*/
+const	socket = new WebSocket('/ws');
 
-const	socket = new WebSocket('ws://localhost:8000/');
-
-const	typeResponse = ["login", "private_list_user", "private_list_message", "new_private_message"];
-const	functionResponse = [typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage];
+const	typeResponse = ["logged_in", "login", "private_list_user", "private_list_message", "new_private_message"];
+const	functionResponse = [typeLogin, typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage];
 
 const	errorCode = [9007, 9010, 9011];
 const	errorFunction = [typeErrorInvalidPassword, typeErrorInvalidToken42, typeErrorUnknown42Account];
@@ -54,10 +47,6 @@ socket.onopen = () => {
 
 	status = 1;
 	console.log('Connected');
-	if (token)
-		sendRequest("login", {type: "byToken", token: token});
-	else
-		typeLogin(null);
 };
 
 socket.onmessage = (event) => {
@@ -78,6 +67,7 @@ socket.onmessage = (event) => {
 	}
 	else
 	{
+		console.log(response);
 		try {
 			functionResponse[typeResponse.indexOf(response.type)](response.content);
 		} catch {
