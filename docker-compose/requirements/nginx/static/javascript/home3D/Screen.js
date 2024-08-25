@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:13:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/24 23:27:42 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/25 02:16:17 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,17 @@ let	light = {
 
 class Screen
 {
+	scene = null;
 	screen = null;
 	tv = null;
 	screenMaterial = null;
 	canvasVideo = null;
 	interval = null;
+	intervalLight = null;
 
 	constructor(scene)
 	{
-
+		this.scene = scene;
 		this.screen = this.#createScreen(scene);
 		loader.load(tvModel, (gltf) => {
 			const tv = gltf.scene.children[0];
@@ -89,7 +91,7 @@ class Screen
 		pointLight.target = targetObject;
 		pointLight.target.updateMatrixWorld();
 		scene.add(pointLight);
-		setInterval(() => {
+		this.intervalLight = setInterval(() => {
 			const	intensity = Math.random() * 2 + 10;
 			
 			pointLight.intensity = intensity * light.point > 13 * light.point ? 13 * light.point : intensity * light.point;
@@ -173,6 +175,13 @@ class Screen
 			}
 			this.canvasVideo = null;
 		}
+	}
+
+	dispose()
+	{
+		this.#disposeVideo();
+		if (this.intervalLight)
+			clearInterval(this.intervalLight);
 	}
 	
 
