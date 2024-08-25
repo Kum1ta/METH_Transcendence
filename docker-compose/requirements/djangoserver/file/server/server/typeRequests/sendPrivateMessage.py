@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/04 13:44:11 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/25 21:49:02 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/26 00:37:41 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ def sendPrivateMessage(socket, content):
 		new_msg = Message.objects.create(sender=user[0], to=dest[0], content=content["content"])
 		new_msg.save()
 		jsonVar = {"type": "new_private_message", "content": {
-			"from": content["from"],
+			"from": new_msg.sender.id,
 			"channel": content["to"],
 			"content": content["content"],
 			"date": new_msg.date.strftime("%H:%M:%S %d/%m/%Y")
