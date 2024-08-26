@@ -3,6 +3,11 @@ services:
     container_name: nginx
 #    volumes:
 #      - website_data:/var/www/djangoserver
+    develop:
+      watch:
+        - action: sync
+          path: ./requirements/nginx/static
+          target: /var/www/static
     networks:
       - transcendence
     depends_on:
@@ -18,6 +23,11 @@ services:
 #      - website_data:/var/www/djangoserver
     networks:
       - transcendence
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./requirements/djangoserver/file/server
+          target: /var/www/djangoserver/server
     build:
       context: requirements/djangoserver
       args:

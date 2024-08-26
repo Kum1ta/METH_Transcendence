@@ -20,11 +20,12 @@ build:
 	$(COMPOSE) build
 
 up: build
-	mkdir -p ~/PTME_data
 	$(COMPOSE) up -d
 up_att: build
-	mkdir -p ~/PTME_data
 	$(COMPOSE) up
+
+watch: build
+	$(COMPOSE) watch
 down:
 	$(COMPOSE) down -v
 
