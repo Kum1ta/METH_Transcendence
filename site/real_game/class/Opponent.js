@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Opponent.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:34:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/24 23:47:26 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:19:16 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { playerExist } from './Player'
-import * as THREE from '/static/javascript/three/build/three.module.js';
+// import * as THREE from '/static/javascript/three/build/three.module.js';
+import * as THREE from '/node_modules/three/build/three.module.js';
+
 
 let opponentExist = false;
 
