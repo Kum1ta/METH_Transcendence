@@ -9,11 +9,12 @@ from .typeRequests.getPrivateListUser import getPrivateListUser
 from .typeRequests.sendPrivateMessage import sendPrivateMessage
 from .typeRequests.createAccount import createAccount
 from .typeRequests.login import login
+from .typeRequests.getAllListUser import getAllListUser
 
 typeRequest = ["login", "get_private_list_user", "get_private_list_message",
-			   "send_private_message", "create_account"]
+			   "send_private_message", "create_account", "get_all_list_user"]
 functionRequest = [login, getPrivateListUser, getPrivateListMessage,
-				sendPrivateMessage, createAccount]
+				sendPrivateMessage, createAccount, getAllListUser]
 
 from random import randint
 
