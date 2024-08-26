@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 01:00:35 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/26 01:11:49 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/26 14:57:58 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@ let allListUserAvailable = false;
 let allListUserResolve = null;
 
 
-function waitForallListUser() {
+function waitForallListUser()
+{
 	return new Promise((resolve) => {
 
 		if (allListUserAvailable)
@@ -25,7 +26,8 @@ function waitForallListUser() {
 	});
 }
 
-function typePrivateListMessage(list) {
+function typeAllListUser(list)
+{
 	allListUser = list;
 	allListUserAvailable = true;
 	if (allListUserResolve)
@@ -36,4 +38,4 @@ function typePrivateListMessage(list) {
 	}
 }
 
-export { waitForallListUser, typePrivateListMessage, allListUser };
+export { waitForallListUser, typeAllListUser, allListUser };

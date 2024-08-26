@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:21:10 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/26 01:24:28 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:57:20 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ async function	showListUser() {
 		divMessageListChatHome.innerText = 'Loading...';
 		sendRequest("get_all_list_user", {});
 		waitForallListUser().then((listUser) => {
-		divMessageListChatHome.innerText = '';
+		divMessageListChatHome.innerText = 'User list :\n';
 			listUser.forEach(element => {
 				let user = document.createElement("div");
 				user.classList.add("user");
@@ -63,6 +63,7 @@ async function	showListUser() {
 					</div>
 					<h3></h3>
 				`
+				
 				user.querySelector("img").src = element.pfp;
 				user.querySelector("h3").innerText = element.name;
 				divMessageListChatHome.appendChild(user);
