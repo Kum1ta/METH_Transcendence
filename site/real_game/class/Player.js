@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Player.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/24 23:47:26 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:19:30 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import * as THREE from '/static/javascript/three/build/three.module.js';
+import * as THREE from '/node_modules/three/build/three.module.js';
+// import * as THREE from '/static/javascript/three/build/three.module.js';
 
 /*
 	Explication du code :
