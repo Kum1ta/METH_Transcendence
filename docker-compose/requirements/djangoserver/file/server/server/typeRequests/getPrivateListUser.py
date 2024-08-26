@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 15:10:23 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/25 21:23:08 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/26 20:07:57 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,14 @@ def getPrivateListUser(socket, content=None):
 	# (ceux qui ont eu conversation avec l'utilisateur)
 	# Si user existe pas, faire ça : socket.sendError("User not found", 9008)
 	id = socket.scope["session"].get("id", 0)
-	res = User.objects.raw("SELECT DISTINCT server_user.id AS id,'online' AS status, username, pfp FROM server_user RIGHT JOIN server_message ON server_message.to_id=server_user.id WHERE sender_id=%s;", [id])
+	request = """
+		SELECT DISTINCT server_user.id AS id,'online' AS status, username, pfp
+		FROM server_user
+		LEFT JOIN server_message AS sended ON sended.to_id=server_user.id
+		LEFT JOIN server_message AS received ON received.sender_id=server_user.id
+		WHERE sended.sender_id=%s OR received.to_id=%s;
+	"""
+	res = User.objects.raw(request,[id,id])
 	data = []
 	for x in res:
 		data.append({"name":x.username, "status":x.status, "pfp":x.pfp, "id":x.id})
