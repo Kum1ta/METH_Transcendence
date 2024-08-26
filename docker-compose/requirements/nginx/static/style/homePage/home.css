@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/26 11:09:03 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/26 18:21:45 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,32 @@ body {
     color: white;
 }
 
+.right-side-register{
+	flex: 1;
+	display: none;
+	flex-direction: column;
+	justify-content: center;
+	padding: 0;
+	padding-inline: 180px;
+	color: white;
+}
+
+.right-side-register h1 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+	align-items: center;
+	justify-content: center;
+}
+
+.close {
+    position: absolute;
+    top: 110px;
+    right: 250px;
+	font-size: 2rem;
+    cursor: pointer;
+	color: white;
+}
+
 .right-side h1 {
     font-size: 2rem;
     margin-bottom: 30px;
@@ -223,6 +249,21 @@ button {
 	color: #f0f0f0e1;
 }
 
+.old-player {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.old-player a {
+    color: white;
+    text-decoration: underline;
+	transition: color 0.3s ease;
+}
+
+.old-player a:hover {
+	color: #f0f0f0e1;
+}
+
 .divider {
     display: flex;
     align-items: center;
@@ -256,14 +297,6 @@ button {
 
 .login-42-btn:hover {
 	background-color: #f0f0f0e1;
-}
-
-.close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
-    cursor: pointer;
 }
 
 .homeSection{
