@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/25 18:54:51 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/26 18:10:12 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ class Login
 		const	pLoginButton	= loginButton.getElementsByTagName('p')[0];
 		const	form			= document.getElementById('loginForm');
 		let		nodeText		= null;
+		const	registerButton  = document.getElementsByClassName('new-player')[0];
 
+		registerButton.addEventListener('click', changeWindowLogin);
 		waitForLogin().then(() => {
 			if (userMeInfo.id !== -1)
 			{
@@ -40,13 +42,34 @@ class Login
 
 	static dispose()
 	{
-		const	loginButton	= document.getElementById('loginButton');
+		const	loginButton		= document.getElementById('loginButton');
 		const	form			= document.getElementById('loginForm');
+		const   registerButton  = document.getElementById('new-player');
+		const   loginBackButton = document.getElementById('old-player');
 
 		loginButton.removeEventListener('click', showLoginDiv);
 		form.removeEventListener('submit', connect);
-
+		registerButton.removeEventListener('click', changeWindowLogin);
+		loginBackButton.removeEventListener('click', changeWindowLoginBack);
 	}
+}
+
+function	changeWindowLogin(e)
+{
+	const	registerWindow	= document.getElementsByClassName('right-side-register')[0];
+	const	loginWindow		= document.getElementsByClassName('right-side')[0];
+	e.preventDefault();
+	loginWindow.style.display = 'none';
+	registerWindow.style.display = 'flex';
+}
+
+function   changeWindowLoginBack(e)
+{
+	const	registerWindow	= document.getElementsByClassName('right-side-register')[0];
+	const	loginWindow		= document.getElementsByClassName('right-side')[0];
+	e.preventDefault();
+	loginWindow.style.display = 'flex';
+	registerWindow.style.display = 'none';
 }
 
 function	showLoginDiv()

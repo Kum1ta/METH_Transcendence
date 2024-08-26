@@ -14,13 +14,13 @@ services:
       - djangoserver
     build: requirements/nginx
     ports:
-      - "443:443"
+      - "8000:8000"
     restart: always 
 
   djangoserver:
     container_name: djangoserver
-#    volumes:
-#      - website_data:/var/www/djangoserver
+    # volumes:
+    #   - website_data:/var/www/djangoserver
     networks:
       - transcendence
     develop:
