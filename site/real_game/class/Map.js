@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/26 20:21:15 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/26 23:47:10 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,8 +306,9 @@ class Map
 			'../textures/video/catch.mp4',
 			'../textures/video/easteregg.webm',
 			'../textures/video/fortnite.mp4',
+			'../textures/video/Composition 1_1.webm',
 		]
-		path.sort(() => Math.random() - 0.5);
+		// path.sort(() => Math.random() - 0.5);
 
 		let vSettings = [];
 
@@ -318,11 +319,12 @@ class Map
 			100 * 2.33 * 1.25 - (100 * 2.33), // 16 images
 		];
 		
-		const nbVideos = 5; // 1, 2, 3, 4, 5
+		const nbVideos = 1; // 1, 2, 3, 4, 5
 		const nbImages = 3; // 0 = 2 img, 1 = 4 img, 2 = 8 img, 3 = 16 img
-		const startIndex = ((Math.random() * (path.length - nbVideos)).toFixed(0)) % path.length;
-		
-		for (let i = startIndex; i < nbVideos + startIndex; i++)
+		// const startIndex = ((Math.random() * (path.length - nbVideos)).toFixed(0)) % path.length;
+		const startIndex = 5;
+
+		for (let i = startIndex; i < (nbVideos + startIndex); i++)
 		{
 			let videoTmp = new Video(path[i]).video;
 			videoTmp.addEventListener('loadeddata', () => {
