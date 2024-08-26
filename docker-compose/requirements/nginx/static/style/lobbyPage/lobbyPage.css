@@ -71,7 +71,7 @@ body {
     backdrop-filter: blur(5px);
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 503;
 }
 
 .popup-content {
