@@ -21,6 +21,33 @@ from random import randint
 class WebsocketHandler(WebsocketConsumer):
 	debugMode = True
 
+	# format : {id : [socket,...], ...}
+	onlinePlayers = {}
+
+	def send_to_all(self, uid, text_data):
+		print("\033[32msending", text_data, " to all socket of", uid)
+		for x in self.onlinePlayers[uid]:
+			x.send(text_data=text_data)
+
+	def add_to_online(self, uid):
+		if(not uid):
+			return
+		if(uid not in self.onlinePlayers):
+			self.onlinePlayers[uid] = [self] 
+		else:
+			self.onlinePlayers[uid].append(self)
+		print("online : ", self.onlinePlayers)
+
+	def login(self, uid: int, username: str) -> int:
+		if(self.scope["session"].get("logged_in", False)):
+			return(0)
+		self.scope["session"]["logged_in"] = True
+		self.scope["session"]["id"] = uid
+		self.scope["session"]["username"] = username 
+		self.scope["session"].save()
+		self.add_to_online(uid)
+		return(1)
+
 	def connect(self):
 		self.accept()
 		self.send(text_data=json.dumps({"type":"logged_in", "content":{
@@ -28,10 +55,17 @@ class WebsocketHandler(WebsocketConsumer):
 			"username":self.scope["session"].get("username",None),
 			"id":self.scope["session"].get("id",0)
 		}}))
+		if(self.scope["session"].get("logged_in", False)):
+			self.add_to_online(self.scope["session"].get("id", 0))
 		print("new client")
 	
 	def disconnect(self, close_code):
 		print("you can go, i am not mad, we never wanted you anyway")
+		uid = self.scope["session"].get("id", 0)
+		if(uid in self.onlinePlayers):
+			self.onlinePlayers[uid].remove(self)
+			if(not len(self.onlinePlayers[uid])):
+				del self.onlinePlayers[uid]
 	
 	def receive(self, text_data):
 		print("someone is talking")
@@ -58,7 +92,6 @@ class WebsocketHandler(WebsocketConsumer):
 				self.sendError("Invalid type", 9004)
 		except Exception as e:
 			self.sendError("Invalid request", 9005, e)
-			print(e)
 
 	def	sendError(self, message, code, error=None):
 		try:

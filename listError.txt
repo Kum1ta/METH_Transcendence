@@ -13,3 +13,4 @@
 - 9009 : Invalid message sent
 - 9010 : Invalid token 42
 - 9011 : Not user registered with this 42 account
+- 9012 : Already logged in
