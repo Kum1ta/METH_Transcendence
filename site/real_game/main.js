@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/27 15:21:49 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/27 19:18:17 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,11 @@ const fpsLocker = {
 let previousTime		= 0;
 let scene				= null;
 let map					= null;
-let bar1				= null;
+let ball				= null;
 let renderer			= null;
 let player				= null;
 let spotLight			= null;
 let ambiantLight		= null; 
-let ball				= null;
-let bar2				= null;
 let opponent			= null;
 
 // ------------------- (need to be remove) -------------------- //
@@ -68,21 +66,22 @@ class Game
 {
 	static create()
 	{
-		previousTime = Date.now();
-		scene	= new THREE.Scene()
-		map		= new Map(scene, 13, true);
-		bar1	= createBarPlayer(0xed56ea);
-		renderer = new THREE.WebGLRenderer({antialias: true});
+		const bar1		= createBarPlayer(0xed56ea);
+		const bar2		= createBarPlayer(0xf3e11e);
+
+		previousTime	= Date.now();
+		scene			= new THREE.Scene()
+		map				= new Map(scene, 13, true);
+		renderer		= new THREE.WebGLRenderer({antialias: true});
 		renderer.shadowMap.enabled = true;
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-		player = new Player(bar1, map);
-		spotLight = new THREE.SpotLight(0xffffff, 10000, 0, 0.2);
-		spotLight.castShadow	= true;
-		ambiantLight = new THREE.AmbientLight(0xffffff, 0.5);
-		ball = new Ball(scene, map);
-		bar2 = createBarPlayer(0xf3e11e);
-		opponent = new Opponent(bar2, map);
-		debug = false;
+		player			= new Player(bar1, map);
+		spotLight		= new THREE.SpotLight(0xffffff, 10000, 0, 0.2);
+		spotLight.castShadow = true;
+		ambiantLight	= new THREE.AmbientLight(0xffffff, 0.5);
+		ball			= new Ball(scene, map);
+		opponent		= new Opponent(bar2, map);
+		debug			= false;
 
 		scene.add(player.object);
 		scene.add(opponent.object);
@@ -99,6 +98,7 @@ class Game
 		cameraTmp.position.set(5, 3, 5);
 		controls.target = new THREE.Vector3(map.centerPos.x, 0, map.centerPos.z);
 
+		
 		document.addEventListener('keypress', (e) => {
 			if (e.key == 'g')
 				player.pointAnimation(map);
@@ -113,8 +113,26 @@ class Game
 
 	static dispose()
 	{
-		scene = null;
 		debug = false;
+
+		if (renderer)
+			renderer.dispose();
+		renderer = null;
+		if (map)
+			map.dispose();
+		if (scene)
+		{
+			scene.children.forEach(child => {
+				if (child.geometry)
+					child.geometry.dispose();
+				if (child.material)
+					child.material.dispose();
+				if (child.texture)
+					child.texture.dispose();
+				scene.remove(child);
+			});
+		}
+		scene = null;
 	}
 }
 
@@ -156,3 +174,7 @@ function loop()
 }
 
 Game.create();
+
+setTimeout(() => {
+	Game.dispose();
+}, 5000);

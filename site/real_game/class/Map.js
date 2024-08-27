@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/27 14:29:36 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/27 19:33:00 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,59 +15,29 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { Video } from './Video.js';
 
-const loader = new GLTFLoader();
-
+let loader				= null;
 let	scene				= null;
+let videoList			= [];
+let interval2			= null;
+let videoCanvas			= null;
+let videoCanvasTexture	= null;
+let materialCanvas		= null;
+
+
 // Plane
-let	geometryPlane		= null;
-let	materialPlane		= null;
-let	meshPlane			= null;
+
 let textureLoaderPlane	= null;
 let texturePlane		= null;
 // Border wall
-let geometryWall		= null;
-let materialWall		= null;
-let meshWall			= null;
 // Gravity changer
-let geometry1			= null;
-let material1			= null;
-let ring1				= null;
-let geometry2			= null;
-let material2			= null;
-let ring2				= null;
-let geometry3			= null;
-let material3			= null;
-let ring3				= null;
-let geometry4			= null;
-let material4			= null;
-let circle1				= null;
-let geometry5			= null;
-let material5			= null;
-let circle2 			= null;
-let geometry6			= null;
-let material6			= null;
-let collider			= null;
-let groupJumper			= null;
-// Wall obstacle
-let geometryWallObs		= null;
-let materialWallObs 	= null;
-let meshWallObs			= null;
-// Banner
-let videoCanvas			= null;
-let video1				= null;
-let video2				= null;
-let video3				= null;
-let video4				= null;
-let video5				= null;
-let videoCanvasTexture	= null;
-let materialCanvas		= null;
-// Gravity changer animation
-let geometryGC			= null;
-let materialGC			= null;
-let ringGC				= null;
-let landmarkGC			= null;
-let interval			= null;
 
+
+
+// Wall obstacle
+
+// Banner
+
+// Gravity changer animation
 
 class Map
 {
@@ -90,23 +60,59 @@ class Map
 		can: true
 	};
 
-	static create()
+	dispose()
 	{
 		
+		videoList.forEach(elem => {
+			elem.video.pause();
+			elem.video.src = '';
+			elem.video.removeAttribute('src');
+			elem.video.load();
+		})
+		videoList = null;
+		videoCanvas.remove();
+		if (videoCanvasTexture)
+			videoCanvasTexture.dispose();
+		if (materialCanvas)
+			materialCanvas.dispose();
+		videoCanvas = null;
+		textureLoaderPlane = null;
+		loader = null;
+		if (texturePlane)
+			texturePlane.dispose();
+		this.arrObject.forEach(elem => {
+			if (elem.mesh instanceof THREE.Group)
+			{
+				elem.mesh.children.forEach(child => {
+					if (child.geometry)
+						child.geometry.dispose();
+					if (child.material)
+						child.material.dispose();
+					if (child.texture)
+						child.texture.dispose();
+				});
+			}
+			else
+			{
+				if (elem.mesh.geometry)
+					elem.mesh.geometry.dispose();
+				if (elem.mesh.material)
+					elem.mesh.material.dispose();
+				if (elem.mesh.texture)
+					elem.mesh.texture.dispose();
+			}
+			scene.remove(elem.mesh);
+		});
+		if (interval2)
+			clearInterval(interval2);
+		scene = null;
 	}
-
-	static dispose()
-	{
-		// Plane
-		// Border wall
-		// Gravity changer
-		// Wall obstacle
-		// Banner
-		// Gravity changer animation
-	}	
+	
 	constructor(sceneToSet, length, obstacles)
 	{
-		scene = sceneToSet;
+		loader	= new GLTFLoader();
+		scene	= sceneToSet;
+
 		this.centerPos.x = 0;
 		this.centerPos.y = 0.15;
 		this.centerPos.z = -length / 2 + length / 2;
@@ -118,33 +124,20 @@ class Map
 		this.#createBanner();
 		if (obstacles)
 			this.#generateObstacle();
-
-		/***** JUST FOR TEST *****/
-		document.addEventListener('keypress', (e) => {
-			if (e.key == 'q')
-			{
-				for (let i = 0; i < this.arrObject.length; i++)
-				{
-					if (this.arrObject[i].type == 'jumperTop')
-						this.#animationGravityChanger(this.arrObject[i].mesh, true)
-					if (this.arrObject[i].type == 'jumperBottom')
-						this.#animationGravityChanger(this.arrObject[i].mesh, false)
-				}
-			}
-		})
-		/*************************/
 	};
 
 	#createPlanes(x, y, rot, name, isBottom, visual)
 	{
+		let	geometryPlane		= null;
+		let	materialPlane		= null;
+		let	meshPlane			= null;
+
 		for (let i = 0; i < this.arrObject.length; i++)
 		{
 			if (this.arrObject[i].name == name)
 				throw Error("Name already exist.");
 		}
-
-		geometryPlane	= new THREE.PlaneGeometry(x, y);
-
+		geometryPlane = new THREE.PlaneGeometry(x, y);
 		if (typeof(visual) == 'string')
 		{
 			textureLoaderPlane = new THREE.TextureLoader();
@@ -168,15 +161,19 @@ class Map
 
 	#createWall(x, y, z, name)
 	{
+		let geometryWall		= null;
+		let materialWall		= null;
+		let meshWall			= null;
+
 		for (let i = 0; i < this.arrObject.length; i++)
 		{
 			if (this.arrObject[i].name == name)
 				throw Error("Name already exist.");
 		}
+
 		geometryWall	= new THREE.BoxGeometry(0.05, 0.5, 0.75);
 		materialWall	= new THREE.MeshPhysicalMaterial();
 		meshWall		= new THREE.Mesh(geometryWall, materialWall);
-
 		meshWall.position.set(x, y, z);
 		materialWall.transparent = true;
 		materialWall.opacity = 0.5;
@@ -186,11 +183,32 @@ class Map
 
 	#createGravityChanger(x, y, z, name, typeName, onTop)
 	{
+		let geometry1			= null;
+		let material1			= null;
+		let ring1				= null;
+		let geometry2			= null;
+		let material2			= null;
+		let ring2				= null;
+		let geometry3			= null;
+		let material3			= null;
+		let ring3				= null;
+		let geometry4			= null;
+		let material4			= null;
+		let circle1				= null;
+		let geometry5			= null;
+		let material5			= null;
+		let circle2 			= null;
+		let geometry6			= null;
+		let material6			= null;
+		let collider			= null;
+		let groupJumper			= null;
+
 		for (let i = 0; i < this.arrObject.length; i++)
 		{
 			if (this.arrObject[i].name == name)
 				throw Error("Name already exist.");
 		}
+
 		geometry1	= new THREE.TorusGeometry(1, 0.1, 12, 24);
 		material1	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
 		ring1		= new THREE.Mesh(geometry1, material1);
@@ -273,10 +291,13 @@ class Map
 
 	#createWallObstacle(x, y, size, onTop)
 	{
+		let geometryWallObs		= null;
+		let materialWallObs 	= null;
+		let meshWallObs			= null;
+
 		geometryWallObs	= new THREE.BoxGeometry(size, 0.5, 0.1);
 		materialWallObs = new THREE.MeshPhysicalMaterial({color: 0xaaaafe});
 		meshWallObs		= new THREE.Mesh(geometryWallObs, materialWallObs);
-
 		if (onTop)
 			meshWallObs.position.set(x, this.playerLimits.up - 0.1, y);
 		else
@@ -300,7 +321,7 @@ class Map
 		videoCanvas.width = 100 * 2.33 * 20;
 		videoCanvas.height = 100;
 		
-		let path = [
+		const path = [
 			'../textures/video/goal2.webm',
 			'../textures/video/pingpong.mp4',
 			'../textures/video/catch.mp4',
@@ -308,9 +329,7 @@ class Map
 			'../textures/video/fortnite.mp4',
 			'../textures/video/Composition 1_1.webm',
 		]
-		// path.sort(() => Math.random() - 0.5);
-
-		let vSettings = [];
+		path.sort(() => Math.random() - 0.5);
 
 		let spacingImages = [
 			100 * 2.33 * 10 - (100 * 2.33),   // 2 images 
@@ -319,10 +338,10 @@ class Map
 			100 * 2.33 * 1.25 - (100 * 2.33), // 16 images
 		];
 		
-		const nbVideos = 1; // 1, 2, 3, 4, 5
+		const nbVideos = 5; // 1, 2, 3, 4, 5
 		const nbImages = 3; // 0 = 2 img, 1 = 4 img, 2 = 8 img, 3 = 16 img
-		// const startIndex = ((Math.random() * (path.length - nbVideos)).toFixed(0)) % path.length;
-		const startIndex = 5;
+		const startIndex = ((Math.random() * (path.length - nbVideos)).toFixed(0)) % path.length;
+		// const startIndex = 5;
 
 		for (let i = startIndex; i < (nbVideos + startIndex); i++)
 		{
@@ -331,29 +350,33 @@ class Map
 				videoTmp.play();
 				drawVideoOnCanvas();
 			});
-			vSettings.push({video: videoTmp, imageWidth: 100 * 2.33, imageHeight: 100});
+			videoList.push({video: videoTmp, imageWidth: 100 * 2.33, imageHeight: 100});
 		}
 
-		function drawVideoOnCanvas() {
-			ctx.clearRect(0, 0, videoCanvas.width, videoCanvas.height);
-	
-			if (nbVideos == 0)
-				return ;
-			let nbDraw = 0;
-			let vIndex = 0;
-			let y = 0;
-			for (let x = 0; x < videoCanvas.width; x += (vSettings[vIndex].imageWidth + spacingImages[nbImages]))
+		function drawVideoOnCanvas()
+		{
+			if (videoCanvas)
 			{
-				ctx.drawImage(vSettings[vIndex].video, x, y, vSettings[vIndex].imageWidth, vSettings[vIndex].imageHeight);
-				nbDraw++;
-				if (nbVideos > 1)
-					vIndex++;
-				if (vIndex >= nbVideos)
-					vIndex = 0;
+				ctx.clearRect(0, 0, videoCanvas.width, videoCanvas.height);
+		
+				if (nbVideos == 0)
+					return ;
+				let nbDraw = 0;
+				let vIndex = 0;
+				let y = 0;
+				for (let x = 0; x < videoCanvas.width; x += (videoList[vIndex].imageWidth + spacingImages[nbImages]))
+				{
+					ctx.drawImage(videoList[vIndex].video, x, y, videoList[vIndex].imageWidth, videoList[vIndex].imageHeight);
+					nbDraw++;
+					if (nbVideos > 1)
+						vIndex++;
+					if (vIndex >= nbVideos)
+						vIndex = 0;
+				}
+				
+				videoCanvasTexture.needsUpdate = true;
+				requestAnimationFrame(drawVideoOnCanvas);
 			}
-			
-			videoCanvasTexture.needsUpdate = true;
-			requestAnimationFrame(drawVideoOnCanvas);
 		}
 
 		// Create texture
@@ -364,34 +387,30 @@ class Map
 
 		materialCanvas = new THREE.MeshBasicMaterial({ map: videoCanvasTexture, side: THREE.BackSide , transparent: true});
 
-		// videoCanvas.innerHTML = 'Test';																	 // ca sert ca eddy ? Repond stp ?
 		loader.load( '../blender/exported/banner.glb', (gltf) => {
 			this.banner = gltf.scene.children[0];
+			gltf = null;
 			this.banner.material = materialCanvas;
 			this.banner.position.y += 1.7;
 			this.banner.rotation.x = (Math.PI);
 			this.banner.rotation.y += -0.15;
-			scene.add(gltf.scene);
-			setInterval(() => {
+			scene.add(this.banner);
+			interval2 = setInterval(() => {
 				this.banner.rotation.y += 0.001;
 			}, 10);
 		}, undefined, function ( error ) {
 			console.error( error );
 		} );
-
-        function animate() {
-            requestAnimationFrame(animate);
-        }
-        animate();
 	}
 	
 	#animationGravityChanger(group, onTop)
 	{
-		geometryGC		= new THREE.TorusGeometry(1.5, 0.05, 12, 24);
-		materialGC		= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
-		ringGC			= new THREE.Mesh(geometryGC, materialGC);
-		landmarkGC		= group.children[0];
-		let	speed		= 0.1;
+		let geometryGC			= new THREE.TorusGeometry(1.5, 0.05, 12, 24);
+		let materialGC			= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
+		let ringGC				= new THREE.Mesh(geometryGC, materialGC);
+		let landmarkGC			= group.children[0];
+		let	speed				= 0.1;
+		let interval			= null;
 
 		ringGC.rotateX(-Math.PI / 2);
 		ringGC.position.set(landmarkGC.position.x, landmarkGC.position.y, landmarkGC.position.z);
