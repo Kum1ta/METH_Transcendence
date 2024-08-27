@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/04 13:44:11 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/27 17:09:39 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/28 00:09:41 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,8 @@ def sendPrivateMessage(socket, content):
 			"content": content["content"],
 			"date": new_msg.date.strftime("%H:%M:%S %d/%m/%Y")
 		}}
+		if(content["to"] in socket.onlinePlayers):
+			socket.send_to_all(content["to"], json.dumps(jsonVar))
 		socket.send(text_data=json.dumps(jsonVar))
 	except Exception as e:
 		socket.sendError("Invalid message sent", 9009, e)

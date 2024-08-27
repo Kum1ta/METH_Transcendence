@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 15:10:23 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/26 20:07:57 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/27 23:57:44 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,7 @@ def getPrivateListUser(socket, content=None):
 	# Si user existe pas, faire ça : socket.sendError("User not found", 9008)
 	id = socket.scope["session"].get("id", 0)
 	request = """
-		SELECT DISTINCT server_user.id AS id,'online' AS status, username, pfp
+		SELECT DISTINCT server_user.id AS id, username, pfp
 		FROM server_user
 		LEFT JOIN server_message AS sended ON sended.to_id=server_user.id
 		LEFT JOIN server_message AS received ON received.sender_id=server_user.id
@@ -69,5 +69,6 @@ def getPrivateListUser(socket, content=None):
 	res = User.objects.raw(request,[id,id])
 	data = []
 	for x in res:
-		data.append({"name":x.username, "status":x.status, "pfp":x.pfp, "id":x.id})
+		status = "online" if x.id in socket.onlinePlayers else "offline"
+		data.append({"name":x.username, "status": status, "pfp":x.pfp, "id":x.id})
 	socket.send(text_data=json.dumps({"type": "private_list_user", "content": data}))
