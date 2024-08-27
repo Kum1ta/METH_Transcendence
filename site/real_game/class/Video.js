@@ -3,15 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   Video.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:57:00 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/26 19:20:32 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/27 14:27:27 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// import * as THREE from '/static/javascript/three/build/three.module.js';
-import * as THREE from '/node_modules/three/build/three.module.js';
 
 class Video
 {

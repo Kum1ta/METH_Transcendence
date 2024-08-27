@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Ball.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/26 17:19:01 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/27 14:31:15 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import * as THREE from '/node_modules/three/build/three.module.js';
-// import * as THREE from '/static/javascript/three/build/three.module.js';
-
-/*
-	Todo (Eddy) :
-		- Ajouter fonction pour changer la gravité de la balle (OK)
-		- Ajouter un effet plus naturel pour le déplacement de la balle (OK)
-		
-*/
+import * as THREE from 'three';
 
 class Ball
 {
@@ -107,6 +99,11 @@ class Ball
 		});
 	}
 	/*---------------------------------------------------*/
+
+	dispose()
+	{
+		
+	}
 }
 
 
