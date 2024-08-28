@@ -1,17 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.js                                            :+:      :+:    :+:   */
+/*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/28 12:05:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/28 12:20:25 by edbernar         ###   ########.fr       */
+/*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
+/*   Updated: 2024/08/28 14:01:24 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { MultiGame } from "./class/MultiGame";
-import { SoloGame } from "./class/SoloGame";
+import * as THREE from 'three';
 
-// MultiGame.create();
-SoloGame.create();
+class Map
+{
+	constructor(scene)
+	{
+		createGround(scene);
+	}
+
+	dispose()
+	{
+		
+	}
+}
+
+function createGround(scene)
+{
+	const	geometry	=	new THREE.PlaneGeometry(window.innerWidth / 100, window.innerHeight / 100);
+	const	material	=	new THREE.MeshPhysicalMaterial();
+	const	mesh		=	new THREE.Mesh(geometry, material);
+
+	scene.add(mesh);
+}
+
+export { Map };
