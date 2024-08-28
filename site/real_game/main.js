@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/27 19:18:17 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/28 11:46:06 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,16 @@ class Game
 		renderer = null;
 		if (map)
 			map.dispose();
+		map = null;
+		if (ball)
+			ball.dispose();
+		ball = null;
+		if (player)
+			player.dispose();
+		player = null;
+		if (opponent)
+			opponent.dispose();
+		opponent = null;
 		if (scene)
 		{
 			scene.children.forEach(child => {
@@ -174,7 +184,3 @@ function loop()
 }
 
 Game.create();
-
-setTimeout(() => {
-	Game.dispose();
-}, 5000);

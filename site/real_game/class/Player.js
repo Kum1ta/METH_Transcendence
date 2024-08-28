@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/27 14:27:39 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/28 11:38:45 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,26 +44,28 @@ import * as THREE from 'three';
 		- Ajouter une fonction pour l'animation de point marqué (OK)
 */
 
-let playerExist = false;
+let	playerExist			= false;
+let	isOnPointAnim		= false;
+let	pressedButton		= [];
 
 class Player
 {
-	pressedButton	= [];
 	object			= null;
 	camera			= null;
 	speed			= 4;
 	cameraFixed		= false;
 	interval		= null;
-	isOnPointAnim	= false;
 	limits			= {};
-	previousTime = Date.now();	
-	deltaTime = 1;
+	previousTime	= Date.now();	
+	deltaTime		= 1;
 
 	constructor (object, map)
 	{
 		if (playerExist)
 			throw Error("Player is already init.");
 		playerExist = true;
+		isOnPointAnim = false;
+		pressedButton = [];
 		this.object = object;
 		this.limits = map.playerLimits;
 		this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 10000);
@@ -73,48 +75,21 @@ class Player
 			this.object.position.y + 0.7,
 			this.object.position.z + 1.5
 		);
-		this.cleanup = new FinalizationRegistry((heldValue) => {
-			playerExist = false;
-		})
-		this.cleanup.register(this, null);
+		document.addEventListener('keydown', addKeyInArr);
+		document.addEventListener('keyup', remKeyInArr);
+		document.addEventListener('keypress', simplePressKey);
+	}
 
-		document.addEventListener('keydown', (e) => {
-			let i;
-
-			i = 0;
-			while (i < this.pressedButton.length && e.key != this.pressedButton[i])
-				i++;
-			if (i == this.pressedButton.length)
-				this.pressedButton.push(e.key);
-		});
-
-		document.addEventListener('keyup', (e) => {
-			let i;
-
-			i = 0;
-			while (i < this.pressedButton.length && e.key != this.pressedButton[i])
-				i++;
-			if (i != this.pressedButton.length)
-				this.pressedButton.splice(i, 1);
-		});
-
-		document.addEventListener('keypress', (e) => {
-			if (e.key == 'm' && !this.isOnPointAnim)
-			{
-				this.cameraFixed = !this.cameraFixed;
-				if (!this.cameraFixed)
-				{
-					this.setCameraPosition(
-						this.object.position.x,
-						this.object.position.y - (this.object.position.y >= this.limits.up ? 0.7 : -0.7),
-						this.object.position.z + 1.5
-					);
-					this.camera.rotation.set(0, 0, 0);
-				}
-				else
-					this.setCameraPosition(0, 1.5, this.object.position.z + 3);
-			}				
-		});
+	dispose()
+	{
+		playerExist = false;
+		isOnPointAnim = false;
+		document.removeEventListener('keydown', addKeyInArr);
+		document.removeEventListener('keyup', remKeyInArr);
+		document.removeEventListener('keypress', simplePressKey);
+		pressedButton = [];
+		if (this.interval)
+			clearInterval(interval);
 	}
 
 	pointAnimation(map)
@@ -133,7 +108,7 @@ class Player
 		}, 300)
 		setTimeout(() => {
 			tmpCamera.position.set(this.limits.left, this.limits.up / 2 + 0.5, map.centerPos.z);
-			this.isOnPointAnim = true;
+			isOnPointAnim = true;
 			this.camera = tmpCamera;
 			interval = setInterval(() => {
 				tmpCamera.lookAt(this.object.position);
@@ -152,7 +127,7 @@ class Player
 				setTimeout(() => {
 					this.camera = tmp;
 					this.object.material.color.copy(startColor);
-					this.isOnPointAnim = false;
+					isOnPointAnim = false;
 					if (!this.cameraFixed)
 					{
 						this.setCameraPosition(
@@ -184,7 +159,7 @@ class Player
 		}, 300)
 		setTimeout(() => {
 			tmpCamera.position.set(this.limits.left, this.limits.up / 2 + 0.5, map.centerPos.z);
-			this.isOnPointAnim = true;
+			isOnPointAnim = true;
 			this.camera = tmpCamera;
 			interval = setInterval(() => {
 				tmpCamera.lookAt(oppponentObject.position);
@@ -204,7 +179,7 @@ class Player
 				setTimeout(() => {
 					this.camera = tmp;
 					oppponentObject.material.color.copy(startColor);
-					this.isOnPointAnim = false;
+					isOnPointAnim = false;
 					if (!this.cameraFixed)
 					{
 						this.setCameraPosition(
@@ -229,15 +204,15 @@ class Player
 		let i;
 
 		i = 0;
-		while (i < this.pressedButton.length)
+		while (i < pressedButton.length)
 		{
-			if (this.pressedButton[i] == 'w' && this.object.position.y < this.limits.up)
+			if (pressedButton[i] == 'w' && this.object.position.y < this.limits.up)
 			{
 				if (this.interval)
 					clearInterval(this.interval);
 				this.interval = setInterval(() => {
 					this.object.position.y += this.speed / 40;
-					if (!this.cameraFixed && !this.isOnPointAnim)
+					if (!this.cameraFixed && !isOnPointAnim)
 						this.camera.position.y += (this.speed / 80);
 					if (this.object.position.y >= this.limits.up)
 					{
@@ -246,13 +221,13 @@ class Player
 					}
 				}, 5);
 			}
-			if (this.pressedButton[i] == 's' && this.object.position.y > this.limits.down)
+			if (pressedButton[i] == 's' && this.object.position.y > this.limits.down)
 			{
 				if (this.interval)
 					clearInterval(this.interval);
 				this.interval = setInterval(() => {
 					this.object.position.y -= this.speed / 40;
-					if (!this.cameraFixed && !this.isOnPointAnim)
+					if (!this.cameraFixed && !isOnPointAnim)
 						this.camera.position.y -= (this.speed / 80);
 					if (this.object.position.y <= this.limits.down)
 					{
@@ -262,16 +237,16 @@ class Player
 					}
 				}, 5);
 			}
-			if (this.pressedButton[i] == 'd' && this.object.position.x < this.limits.right)
+			if (pressedButton[i] == 'd' && this.object.position.x < this.limits.right)
 			{
 				this.object.position.x += this.speed * this.deltaTime;
-				if (!this.cameraFixed && !this.isOnPointAnim)
+				if (!this.cameraFixed && !isOnPointAnim)
 					this.camera.position.x += this.speed * this.deltaTime;
 			}
-			if (this.pressedButton[i] == 'a' && this.object.position.x > this.limits.left)
+			if (pressedButton[i] == 'a' && this.object.position.x > this.limits.left)
 			{
 				this.object.position.x -= this.speed * this.deltaTime;
-				if (!this.cameraFixed && !this.isOnPointAnim)
+				if (!this.cameraFixed && !isOnPointAnim)
 					this.camera.position.x -= this.speed * this.deltaTime;
 			}
 			i++;
@@ -283,5 +258,46 @@ class Player
 		this.camera.position.set(x, y, z);
 	}
 };
+
+function addKeyInArr(e)
+{
+	let i;
+
+	i = 0;
+	while (i < pressedButton.length && e.key != pressedButton[i])
+		i++;
+	if (i == pressedButton.length)
+		pressedButton.push(e.key);
+}
+
+function remKeyInArr(e)
+{
+	let i;
+
+	i = 0;
+	while (i < pressedButton.length && e.key != pressedButton[i])
+		i++;
+	if (i != pressedButton.length)
+		pressedButton.splice(i, 1);
+}
+
+function simplePressKey(e)
+{
+	if (e.key == 'm' && !isOnPointAnim)
+	{
+		this.cameraFixed = !this.cameraFixed;
+		if (!this.cameraFixed)
+		{
+			this.setCameraPosition(
+				this.object.position.x,
+				this.object.position.y - (this.object.position.y >= this.limits.up ? 0.7 : -0.7),
+				this.object.position.z + 1.5
+			);
+			this.camera.rotation.set(0, 0, 0);
+		}
+		else
+			this.setCameraPosition(0, 1.5, this.object.position.z + 3);
+	}				
+}
 
 export { Player, playerExist };

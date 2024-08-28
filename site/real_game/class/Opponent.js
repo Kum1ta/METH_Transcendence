@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:34:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/27 14:27:49 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/28 11:39:59 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,11 @@ class Opponent
 		this.object = object;
 		this.limits = map.limits;
 		this.object.position.set(0, 0.3, -map.mapLength / 2 + 0.2);
-		this.cleanup = new FinalizationRegistry((heldValue) => {
-			opponentExist = false;
-		})
-		this.cleanup.register(this, null);
+	}
+
+	dispose()
+	{
+		opponentExist = false;
 	}
 
 	update()
