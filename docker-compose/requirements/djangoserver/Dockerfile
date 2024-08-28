@@ -14,12 +14,12 @@ RUN python3.12 /root/get-pip.py
 
 RUN pip3 install requests django psycopg "channels[daphne]" bcrypt
 
-ARG DB_HOST=;
-ARG DB_NAME=;
-ARG DB_USERNAME=;
-ARG DB_PASSWORD=;
-ARG SECRET_42=;
-ARG SECRET_42=;
+ARG DB_HOST
+ARG DB_NAME
+ARG DB_USERNAME
+ARG DB_PASSWORD
+ARG UID_42
+ARG SECRET_42
 
 ENV DB_HOST=${DB_HOST}
 ENV PYTHONUNBUFFERED=1
@@ -40,5 +40,7 @@ RUN sed -i "s/VAR_DB_HOST/$DB_HOST/" /var/www/djangoserver/server/server/setting
 sed -i "s/VAR_DB_NAME/$DB_NAME/" /var/www/djangoserver/server/server/settings.py && \
 sed -i "s/VAR_DB_USERNAME/$DB_USERNAME/" /var/www/djangoserver/server/server/settings.py && \
 sed -i "s/VAR_DB_PASSWORD/$DB_PASSWORD/" /var/www/djangoserver/server/server/settings.py
+
+RUN echo -n $UID_42:$SECRET_42 > /var/www/djangoserver/42_credentials
 
 ENTRYPOINT ["sh", "/root/start.sh"]

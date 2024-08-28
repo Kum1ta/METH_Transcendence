@@ -6,11 +6,10 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/27 23:40:35 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/28 16:45:14 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-from .login42.login42 import main42login
 from ..models import User
 import hashlib
 import requests
@@ -73,16 +72,6 @@ def loginByPass(socket, content):
 	else:
 		socket.send(text_data=json.dumps({"type": "error", "content": "Invalid email or password", "code": 9007}))
 
-
-
-def loginBy42(socket, content):
-	# |TOM| Requete pour récuperer les informations de l'utilisateur selon l'intra de la personne
-	# et créer un token si celui-ci n'existe pas
-	try:
-		main42login(socket, content, userList)
-	except Exception as e:
-		socket.sendError("Invalid 42 token", 9010, e)
-
 def login(socket, content):
 	# |TOM| Faire 3 types de requêtes:
 	# - byPass: Récupérer les informations de l'utilisateur en fonction de mail et de son mot de passe
@@ -91,8 +80,6 @@ def login(socket, content):
 	try:
 		if (content["type"] == "byPass"):
 			loginByPass(socket, content)
-		elif (content["type"] == "by42"):
-			loginBy42(socket, content)
 		else:
 			socket.sendError("Invalid login type", 9006)
 	except Exception as e:

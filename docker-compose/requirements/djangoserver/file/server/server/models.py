@@ -3,8 +3,8 @@ from django.db import models
 class User(models.Model):
 	id = models.AutoField(primary_key=True)
 	username = models.CharField(max_length=20, unique=True)
-	mail = models.EmailField(unique=True)
-	password = models.CharField(max_length=100)
+	mail = models.EmailField(unique=True, null=True, blank=True)
+	password = models.CharField(max_length=100, null=True, blank=True)
 	id42 = models.DecimalField(max_digits=15, decimal_places=0, null=True, unique=True)
 	pfp = models.CharField(max_length=1024, default="/static/img/default_pfp.jpg")
 
