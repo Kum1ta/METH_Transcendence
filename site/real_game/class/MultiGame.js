@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   MultiGame.js                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/28 14:07:25 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/28 16:34:39 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ let ball				= null;
 let renderer			= null;
 let player				= null;
 let spotLight			= null;
-let ambiantLight		= null; 
+let ambiantLight		= null;
 let opponent			= null;
 
 // ------------------- (need to be remove) -------------------- //
@@ -98,7 +98,7 @@ class MultiGame
 		cameraTmp.position.set(5, 3, 5);
 		controls.target = new THREE.Vector3(map.centerPos.x, 0, map.centerPos.z);
 
-		
+
 		document.addEventListener('keypress', (e) => {
 			if (e.key == 'g')
 				player.pointAnimation(map);
@@ -106,6 +106,15 @@ class MultiGame
 				player.pointOpponentAnimation(map, opponent.object);
 			if (e.key == 'c')
 				debug = !debug;
+			if (e.key == 'p')
+			{
+				map.clearVideoCanvas();
+			}
+			if (e.key == 'o')
+			{
+				// map.clearVideoCanvas();
+				map.putVideoOnCanvas(3, 'catch');
+			}
 		})
 
 		renderer.setAnimationLoop(loop)
