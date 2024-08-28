@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/27 14:31:15 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/28 11:17:08 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,15 @@ class Ball
 	{
 		console.warn("Don't forget to remove function initMoveBallTmp");
 		const	speedBallTmp	=	0.1;
+		let		warn = false;
 		
 		document.addEventListener('keypress', (e) => {
+			if (!this.object && !warn)
+			{
+				console.warn("EventListener in initMoveBallTmp() is still here");
+				warn = true;
+				return ;
+			}
 			if (e.key == '4')
 				this.object.position.x -= speedBallTmp;
 			if (e.key == '6')
@@ -102,7 +109,19 @@ class Ball
 
 	dispose()
 	{
-		
+		if (this.interval)
+			clearInterval(this.interval);
+		this.interval = null;
+		if (this.object)
+		{
+			if (this.object.geometry)
+				this.object.geometry.dispose();
+			if (this.object.material)
+				this.object.material.dispose();
+			if (this.object.texture)
+				this.object.texture.dispose();
+		}
+		this.object = null;
 	}
 }
 

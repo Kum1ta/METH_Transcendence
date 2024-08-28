@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/27 19:33:00 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/28 11:04:41 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ class Map
 			}
 			scene.remove(elem.mesh);
 		});
+		this.arrObject = null;
 		if (interval2)
 			clearInterval(interval2);
 		scene = null;
