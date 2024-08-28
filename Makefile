@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/13 16:18:56 by tomoron           #+#    #+#              #
-#    Updated: 2024/08/11 16:54:45 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/28 18:27:14 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ up: build
 up_att: build
 	$(COMPOSE) up
 
-watch: build
+watch:
 	$(COMPOSE) watch
 down:
 	$(COMPOSE) down -v
