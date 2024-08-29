@@ -21,51 +21,54 @@ from random import randint
 class WebsocketHandler(WebsocketConsumer):
 	debugMode = True
 
-	# format : {id : [socket,...], ...}
+	# format : {id : socket, ...}
 	onlinePlayers = {}
-
-	def send_to_all(self, uid, text_data):
-		print("\033[32msending", text_data, " to all socket of", uid)
-		for x in self.onlinePlayers[uid]:
-			x.send(text_data=text_data)
 
 	def add_to_online(self, uid):
 		if(not uid):
 			return
 		if(uid not in self.onlinePlayers):
-			self.onlinePlayers[uid] = [self] 
-		else:
-			self.onlinePlayers[uid].append(self)
-		print("online : ", self.onlinePlayers)
+			self.onlinePlayers[uid] = self
+			return(1)
+		print("\033[32monline : ", self.onlinePlayers)
+		return(0)
 
 	def login(self, uid: int, username: str) -> int:
 		if(self.scope["session"].get("logged_in", False)):
+			return(0)
+		if(not self.add_to_online(uid)):
+			socket.sendError("Already logged in", 9012)
 			return(0)
 		self.scope["session"]["logged_in"] = True
 		self.scope["session"]["id"] = uid
 		self.scope["session"]["username"] = username 
 		self.scope["session"].save()
-		self.add_to_online(uid)
+		self.logged_in = True
 		return(1)
 
 	def connect(self):
+		self.logged_in = False
 		self.accept()
+		if(self.scope["session"].get("logged_in", False)):
+			if(not self.add_to_online(self.scope["session"].get("id", 0))):
+				self.sendError("User already connected", 9013)
+				self.close()
+				return;
 		self.send(text_data=json.dumps({"type":"logged_in", "content":{
 			"status":self.scope["session"].get("logged_in",False),
 			"username":self.scope["session"].get("username",None),
 			"id":self.scope["session"].get("id",0)
 		}}))
-		if(self.scope["session"].get("logged_in", False)):
-			self.add_to_online(self.scope["session"].get("id", 0))
+		self.logged_in = self.scope["session"].get("logged_in", False)
 		print("new client")
 	
 	def disconnect(self, close_code):
 		print("you can go, i am not mad, we never wanted you anyway")
+		if(not self.logged_in):
+			return ;
 		uid = self.scope["session"].get("id", 0)
 		if(uid in self.onlinePlayers):
-			self.onlinePlayers[uid].remove(self)
-			if(not len(self.onlinePlayers[uid])):
-				del self.onlinePlayers[uid]
+			del self.onlinePlayers[uid]
 	
 	def receive(self, text_data):
 		print("someone is talking")

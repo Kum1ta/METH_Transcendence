@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 22:53:14 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/25 21:36:42 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/29 20:56:36 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 import random
@@ -63,6 +63,5 @@ def getPrivateListMessage(socket, content):
 	result = []
 	for x in messages:
 		result.append({"from":x.sender.id, "content": x.content, "date" : x.date.strftime("%H:%M:%S %d/%m/%Y")})
-	print(result)
 	socket.send(text_data=json.dumps({"type":"private_list_message","content":result}))
 		
