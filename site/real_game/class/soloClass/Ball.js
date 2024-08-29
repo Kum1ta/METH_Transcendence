@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:58:03 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/29 00:44:26 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:45:02 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,10 @@ class Ball
 {
 	static create(scene)
 	{
-
 		ball = createBall();
 
 		scene.add(ball);
-		ball.rotateY(0.8);
-		
+		ball.rotateY(2.39);	
 	}
 
 	static dispose()
@@ -36,36 +34,10 @@ class Ball
 		ball = null;
 	}
 
-	static moveBall()
+	static update()
 	{
-		createInterval();
 	}
 
-
-	static stopBall()
-	{
-		if (interval)
-			clearInterval(interval);
-	}
-}
-
-function createInterval()
-{
-	interval = setInterval(() => {
-		console.log(ball.position);
-		moveForward();
-		bounceWallTop();
-		bounceWallTBottom();
-		bouncePlayer1();
-	}, 16);
-}
-
-function moveForward()
-{
-	const direction = new THREE.Vector3(0, 0, dir);
-	direction.applyQuaternion(ball.quaternion);
-	
-	ball.position.add(direction.multiplyScalar(speed));
 }
 
 function createBall()
@@ -81,55 +53,4 @@ function createBall()
 	return (mesh);
 }
 
-function bounceWallTop()
-{
-	const origin = new THREE.Vector3(ball.position.x, ball.position.y, ball.position.z);
-	const direction = new THREE.Vector3(ball.position.x, ball.position.y, ball.position.z - 1);
-
-	direction.normalize();
-	const raycaster = new THREE.Raycaster(origin, direction);
-	const objects = [ wallTop ];
-	const intersects = raycaster.intersectObjects(objects);
-
-	if (intersects.length > 0)
-	{
-		if (intersects[0].distance <= 0.5)
-			ball.rotation.y = Math.PI - ball.rotation.y
-	}
-}
-
-function bounceWallTBottom()
-{
-	const origin = new THREE.Vector3(ball.position.x, ball.position.y, ball.position.z);
-	const direction = new THREE.Vector3(ball.position.x, ball.position.y, ball.position.z + 1);
-
-	direction.normalize();
-	const raycaster = new THREE.Raycaster(origin, direction);
-	const objects = [ wallBottom ];
-	const intersects = raycaster.intersectObjects(objects);
-
-	if (intersects.length > 0)
-	{
-		if (intersects[0].distance <= 0.4)
-			ball.rotation.y = Math.PI - ball.rotation.y;
-	}
-}
-
-function bouncePlayer1()
-{
-	const origin = new THREE.Vector3(ball.position.x, ball.position.y, ball.position.z);
-	const direction = new THREE.Vector3(ball.position.x - 1, ball.position.y, ball.position.z);
-
-	direction.normalize();
-	const raycaster = new THREE.Raycaster(origin, direction);
-	const objects = [ player1 ];
-	const intersects = raycaster.intersectObjects(objects);
-
-	if (intersects.length > 0)
-	{
-		if (intersects[0].distance <= 0.4)
-			ball.rotation.y = Math.PI - ball.rotation.y;
-	}
-}
-
-export { Ball };
+export { Ball, ball };
