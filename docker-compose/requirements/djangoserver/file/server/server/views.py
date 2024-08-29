@@ -25,14 +25,14 @@ def index(request):
 
 def homePage(request):
 	request.session.save()
-	return render(request, "homePage.html", {})
+	link42 = f"https://api.intra.42.fr/oauth/authorize?client_id={UID42}&redirect_uri={REDIRECT}&response_type=code&scope=public"
+	return render(request, "homePage.html", {"link42" : link42})
 
 def lobbyPage(request):
 	request.session.save()
 	return render(request, "lobbyPage.html", {})
 
 def login42(request):
-	#url = https://api.intra.42.fr/oauth/authorize?client_id=<CLIENT_ID>&redirect_uri=https://localhost:8000/login42&response_type=code&scope=public'
 	if(request.session.get("logged_in", False)):
 		return HttpResponse("you're already logged in")
 	code = request.GET.get('code', None)
