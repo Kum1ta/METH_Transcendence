@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:07:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/29 00:19:01 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:58:06 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ class SoloGame
 		renderer = new THREE.WebGLRenderer({antialias: true});
 		renderer.shadowMap.enabled = true;
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+		Ball.create(scene);
 		Map.create(scene);
 		camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight);
 		camera.rotation.x = -Math.PI / 2;
@@ -39,15 +40,11 @@ class SoloGame
 		scene.background = new THREE.Color(0x252525);
 		document.body.appendChild(renderer.domElement);
 		Players.create(scene);
-		Ball.create(scene);
 
 		controls = new OrbitControls(camera, renderer.domElement);
 		camera.position.set(0, 20, 0);
+		// camera.position.set(20, 5, 20);
 		renderer.setAnimationLoop(loop);
-
-		setTimeout(() => {
-			Ball.moveBall();
-		}, 1000);
 	}
 
 	static dispose()
@@ -78,6 +75,8 @@ function loop()
 {
 	stats.begin();
 	controls.update();
+	Ball.update();
+	Map.update();
 	Players.update();
 	renderer.render(scene, camera);
 	stats.end();
