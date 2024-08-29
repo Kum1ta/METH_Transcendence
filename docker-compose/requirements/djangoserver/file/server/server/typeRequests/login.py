@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/28 16:45:14 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/29 21:26:10 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,8 +67,6 @@ def loginByPass(socket, content):
 				"username":user[0].username,
 				"id": user[0].id,
 			}}))
-		else:
-			socket.sendError("Already logged in", 9012)
 	else:
 		socket.send(text_data=json.dumps({"type": "error", "content": "Invalid email or password", "code": 9007}))
 

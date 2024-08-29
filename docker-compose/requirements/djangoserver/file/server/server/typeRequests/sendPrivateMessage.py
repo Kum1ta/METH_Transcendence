@@ -6,11 +6,12 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/04 13:44:11 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/28 00:09:41 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/29 21:33:48 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from ..models import User, Message
+from django.db.models import Q
 import json
 
 def sendPrivateMessage(socket, content):
@@ -31,6 +32,9 @@ def sendPrivateMessage(socket, content):
 			socket.sendError("Invalid message sent", 9009)
 		new_msg = Message.objects.create(sender=user[0], to=dest[0], content=content["content"])
 		new_msg.save()
+		if(Message.objects.filter((Q(sender=user[0]) & Q(to=dest[0])) | (Q(sender=dest[0]) & Q(to=user[0]))).count() > 100):
+			Message.objects.order_by('date').first().delete()
+
 		jsonVar = {"type": "new_private_message", "content": {
 			"from": new_msg.sender.id,
 			"channel": content["to"],
@@ -38,7 +42,7 @@ def sendPrivateMessage(socket, content):
 			"date": new_msg.date.strftime("%H:%M:%S %d/%m/%Y")
 		}}
 		if(content["to"] in socket.onlinePlayers):
-			socket.send_to_all(content["to"], json.dumps(jsonVar))
+			socket.onlinePlayers[content["to"]].send(text_data=json.dumps(jsonVar))
 		socket.send(text_data=json.dumps(jsonVar))
 	except Exception as e:
 		socket.sendError("Invalid message sent", 9009, e)
