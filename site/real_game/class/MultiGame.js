@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/28 16:34:39 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/29 17:54:30 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,13 @@ Controls :
 	- 4 : balle vers la gauche
 	- 6 : balle vers ladroite
 	- 9 : inversion gravite
+	
+	- p : clear video
+	- o : goal video
+	- i : outstanding video
+	- u : 16 video
+	- y : 8 video
+	- t : 4 video
 */
 
 let	debug = false;
@@ -107,19 +114,22 @@ class MultiGame
 			if (e.key == 'c')
 				debug = !debug;
 			if (e.key == 'p')
-			{
-				map.clearVideoCanvas();
-			}
+				map.putVideoOnCanvas(0, null);
 			if (e.key == 'o')
-			{
-				// map.clearVideoCanvas();
-				map.putVideoOnCanvas(3, 'catch');
-			}
+				map.putVideoOnCanvas(3, 'goal');
+			if (e.key == 'i') 
+				map.putVideoOnCanvas(3, 'outstanding');
+			if (e.key == 'u')
+				map.putVideoOnCanvas(3, 3);
+			if (e.key == 'y')
+				map.putVideoOnCanvas(2, 3);
+			if (e.key == 't')
+				map.putVideoOnCanvas(1, 3);
 		})
 
 		renderer.setAnimationLoop(loop)
 	}
-
+	
 	static dispose()
 	{
 		debug = false;

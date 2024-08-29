@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/28 19:07:03 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/29 17:52:41 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,21 @@ let materialCanvas		= null;
 let textureLoaderPlane	= null;
 let texturePlane		= null;
 let ctx					= null;
-let path				= [];
-let spacingImages		= [];
-let clearVideo			= false;
+
+let path = [
+	{name: 'goal', 			onChoice: true, src:'../textures/video/goal2.webm'},
+	{name: 'easteregg',		onChoice: true, src:'../textures/video/easteregg.webm'},
+	{name: 'outstanding', 	onChoice: true, src:'../textures/video/outstanding.webm'},
+	{name: 'ping', 			onChoice: false, src:'../textures/video/pingpong.mp4'},
+	{name: 'catch', 		onChoice: false, src:'../textures/video/catch.mp4'},
+	{name: 'fortnite', 		onChoice: false, src:'../textures/video/fortnite.mp4'},
+]
+let spacingImages = [
+	100 * 2.33 * 10 - (100 * 2.33),   // 2 images
+	100 * 2.33 * 5 - (100 * 2.33),    // 4 images
+	100 * 2.33 * 2.5 - (100 * 2.33),  // 8 images
+	100 * 2.33 * 1.25 - (100 * 2.33), // 16 images
+];
 
 class Map
 {
@@ -112,7 +124,6 @@ class Map
 		scene.add(this.#createPlanes(7.5, length, (Math.PI / 2), "planeTop", false, '/textures/pastel.jpg'));
 		scene.add(this.#createWall(-3.5, 0.4, -length/2, "wallLeft"));
 		scene.add(this.#createWall(3.5, 0.4, -length/2, "wallRight"));
-		this.#createBanner();
 		if (obstacles)
 			this.#generateObstacle();
 	};
@@ -298,90 +309,56 @@ class Map
 
 	/* Todo (Hugo) :
 		- Faire une zone Player banner (importer un model blender)
-		- Faire une zone pour les pub (s'inspirer de theFinals) (ok)
-
-		- Effet gros pixel (ok)
-		- Effet de lumière en 2d (direct dans les videos)
-		- Preparer differents events
+		- Faire une zone pour les pub 							 		(ok)
+		- Effet gros pixel 												(ok)
+		- Effet de lumière en 2d (essayer shader ou filtre)
+		- Preparer differents events 									(ok)
 	*/
-	#createBanner()
+	putVideoOnCanvas(nbImage, vNameNb)
 	{
-		// Create canvas
+		this.#clearVideoCanvas();
+		if (nbImage <= 0)
+			return ;
+		
+		let startIndex = 0;
+		let nbVideos = 1;
+		path.sort(() => Math.random() - 0.5);
+		
+		// Create the canvas for the video
 		videoCanvas = document.createElement('canvas');
 		ctx = videoCanvas.getContext('2d');
 		videoCanvas.width = 100 * 2.33 * 20;
 		videoCanvas.height = 100;
+		
+		// Get the number of videos to display
+		if (vNameNb && typeof(vNameNb) == 'number')
+			nbVideos = vNameNb;
+		if (vNameNb && typeof(vNameNb) == 'string')
+			startIndex = getIndex(vNameNb);
 
-		path = [
-			{name: 'goal', src:'../textures/video/goal2.webm'},
-			{name: 'ping', src:'../textures/video/pingpong.mp4'},
-			{name: 'catch', src:'../textures/video/catch.mp4'},
-			{name: 'easteregg', src:'../textures/video/easteregg.webm'},
-			{name: 'fortnite', src:'../textures/video/fortnite.mp4'},
-			{name: 'outstanding', src:'../textures/video/outstanding.webm'},
-		]
-		path.sort(() => Math.random() - 0.5);
-
-		spacingImages = [
-			100 * 2.33 * 10 - (100 * 2.33),   // 2 images
-			100 * 2.33 * 5 - (100 * 2.33),    // 4 images
-			100 * 2.33 * 2.5 - (100 * 2.33),  // 8 images
-			100 * 2.33 * 1.25 - (100 * 2.33), // 16 images
-		];
-
-		// const nbImages = 3; // 0 = 2 img, 1 = 4 img, 2 = 8 img, 3 = 16 img
-
-		// // Create texture
-		// videoCanvasTexture = new THREE.CanvasTexture(videoCanvas);
-		// videoCanvasTexture.wrapS = THREE.RepeatWrapping;
-		// videoCanvasTexture.wrapT = THREE.RepeatWrapping;
-		// videoCanvasTexture.repeat.set(-1, 1);
-
-		// materialCanvas = new THREE.MeshBasicMaterial({ map: videoCanvasTexture, side: THREE.BackSide , transparent: false});
-
-		// loader.load( '../blender/exported/banner.glb', (gltf) => {
-		// 	this.banner = gltf.scene.children[0];
-		// 	gltf = null;
-		// 	this.banner.material = materialCanvas;
-		// 	this.banner.position.y += 1.7;
-		// 	this.banner.rotation.x = (Math.PI);
-		// 	this.banner.rotation.y += -0.15;
-		// 	scene.add(this.banner);
-		// 	interval2 = setInterval(() => {
-		// 		this.banner.rotation.y += 0.001;
-		// 	}, 10);
-		// }, undefined, function ( error ) {
-		// 	console.error( error );
-		// } );
-	}
-
-	putVideoOnCanvas(nbImage, name)
-	{
-		console.log('put video canvas');
-
-		let startIndex;
-		let nbVideos = 1;
-
-		if (name && typeof(name) == 'number')
-			nbVideos = name;
-		if (name && typeof(name) == 'string')
+		function getIndex(vNameNb)
 		{
-			for (let index = 0; index < path.length; index++)
+			for (let i = 0; i < path.length; i++)
 			{
-				if (path[index].name == name)
-				{
-					startIndex = index;
-					break ;
-				}
-				startIndex = 0;
+				if (path[i].name == vNameNb)
+					return (i);
 			}
+			return (0);
 		}
-		else
-			startIndex = ((Math.random() * (path.length - nbVideos)).toFixed(0)) % path.length;
 
+		// Fill the videoList with the videos
 		for (let i = startIndex; i < (nbVideos + startIndex); i++)
 		{
-			let videoTmp = new Video(path[i].src).video;
+			if (path[i].onChoice == true && !(vNameNb && typeof(vNameNb) == 'string'))
+			{
+				startIndex++;
+				continue ;
+			}
+			let videoTmp = null;
+			if (Math.random() < 0.99)
+				videoTmp = new Video(path[i].src).video;
+			else
+				videoTmp = new Video(path[getIndex('easteregg')].src).video;
 			videoTmp.addEventListener('loadeddata', () => {
 				videoTmp.play();
 				drawVideoOnCanvas();
@@ -389,17 +366,12 @@ class Map
 			videoList.push({video: videoTmp, imageWidth: 100 * 2.33, imageHeight: 100});
 		}
 
-		console.log('videoList', videoList);
-
+		// Draw the video on the canvas
 		function drawVideoOnCanvas()
 		{
 			if (videoCanvas)
 			{
 				ctx.clearRect(0, 0, videoCanvas.width, videoCanvas.height);
-				if (clearVideo)
-				{
-					return ;
-				}
 				if (nbVideos == 0)
 					return ;
 				let nbDraw = 0;
@@ -413,20 +385,23 @@ class Map
 						vIndex++;
 					if (vIndex >= nbVideos)
 						vIndex = 0;
+					if (!(videoList && videoList[vIndex]))
+						break ;
 				}
 				if (videoCanvasTexture)
 					videoCanvasTexture.needsUpdate = true;
 				requestAnimationFrame(drawVideoOnCanvas);
 			}
 		}
-		// Create texture
+		
+		// Create the material and the banner
 		videoCanvasTexture = new THREE.CanvasTexture(videoCanvas);
 		videoCanvasTexture.wrapS = THREE.RepeatWrapping;
 		videoCanvasTexture.wrapT = THREE.RepeatWrapping;
 		videoCanvasTexture.repeat.set(-1, 1);
-
-		materialCanvas = new THREE.MeshBasicMaterial({ map: videoCanvasTexture, side: THREE.BackSide , transparent: false});
-
+		materialCanvas	= new THREE.MeshBasicMaterial({ map: videoCanvasTexture, side: THREE.BackSide , transparent: true});
+		
+		// Load the banner
 		loader.load( '../blender/exported/banner.glb', (gltf) => {
 			this.banner = gltf.scene.children[0];
 			gltf = null;
@@ -443,15 +418,13 @@ class Map
 		} );
 	}
 
-	clearVideoCanvas()
+	#clearVideoCanvas()
 	{
-		console.log('clear video canvas');
 		if (videoCanvas)
 		{
 			videoCanvas.remove();
 			videoCanvas = null;
 		}
-
 		if (videoList)
 		{
 			videoList.forEach(elem => {
@@ -460,41 +433,26 @@ class Map
 				elem.video.removeAttribute('src');
 				elem.video.load();
 			})
-			videoList = null;
-			videoList = [];
 		}
-		// if (videoCanvasTexture)
-		// 	videoCanvasTexture.dispose();
-
-		// videoCanvas = null;
-		// videoCanvasTexture = new THREE.CanvasTexture(videoCanvas);
-		// videoCanvasTexture.wrapS = THREE.RepeatWrapping;
-		// videoCanvasTexture.wrapT = THREE.RepeatWrapping;
-		// videoCanvasTexture.repeat.set(-1, 1);
-
-		// if (materialCanvas)
-		// 	materialCanvas.dispose();
-
-		// materialCanvas = new THREE.MeshBasicMaterial({ map: videoCanvasTexture, side: THREE.BackSide , transparent: false});
-
-		// loader.load( '../blender/exported/banner.glb', (gltf) => {
-		// 	this.banner = gltf.scene.children[0];
-		// 	gltf = null;
-		// 	this.banner.material = materialCanvas;
-		// 	this.banner.position.y += 1.7;
-		// 	this.banner.rotation.x = (Math.PI);
-		// 	this.banner.rotation.y += -0.15;
-		// 	scene.add(this.banner);
-		// 	interval2 = setInterval(() => {
-		// 		this.banner.rotation.y += 0.001;
-		// 	}, 10);
-		// }, undefined, function ( error ) {
-		// 	console.error( error );
-		// } );
-
-		console.log('videoList', videoList);
+		videoList = [];
+		if (videoCanvasTexture)
+		{
+			videoCanvasTexture.dispose();
+			videoCanvasTexture = null;
+		}
+		if (materialCanvas)
+		{
+			materialCanvas.dispose();
+			materialCanvas		= null;
+		}
+		if (interval2)
+		{
+			clearInterval(interval2);
+			interval2 = null;
+		}
+		scene.remove(this.banner);
 	}
-
+		
 	#animationGravityChanger(group, onTop)
 	{
 		let geometryGC			= new THREE.TorusGeometry(1.5, 0.05, 12, 24);
@@ -562,7 +520,7 @@ class Map
 
 	update(ball)
 	{
-		for (let i = 0; i < this.arrObject.length; i++)
+		for (let i = 0; this.arrObject && i < this.arrObject.length; i++)
 		{
 			if (this.arrObject[i].name == "wallLeft")
 			{
