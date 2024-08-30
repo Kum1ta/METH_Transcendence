@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/26 18:10:12 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/08/30 11:59:13 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ class Login
 		const	form			= document.getElementById('loginForm');
 		let		nodeText		= null;
 		const	registerButton  = document.getElementsByClassName('new-player')[0];
+		const	button42		= document.getElementsByClassName('login-42-btn')[0];
 
 		registerButton.addEventListener('click', changeWindowLogin);
+		button42.addEventListener('click', redirection);
 		waitForLogin().then(() => {
 			if (userMeInfo.id !== -1)
 			{
@@ -46,12 +48,20 @@ class Login
 		const	form			= document.getElementById('loginForm');
 		const   registerButton  = document.getElementById('new-player');
 		const   loginBackButton = document.getElementById('old-player');
+		const	button42		= document.getElementsByClassName('login-42-btn')[0];
 
+		registerButton.removeEventListener('click', redirection);
 		loginButton.removeEventListener('click', showLoginDiv);
 		form.removeEventListener('submit', connect);
 		registerButton.removeEventListener('click', changeWindowLogin);
 		loginBackButton.removeEventListener('click', changeWindowLoginBack);
 	}
+}
+
+function	redirection(e)
+{
+	e.preventDefault();
+	window.location.replace('https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-d9d6d46bd0be36dc13718981df4bfcf37e574ea364a07fcb5c39658be0f5706c&redirect_uri=https://localhost:8000/login42&response_type=code&scope=public');
 }
 
 function	changeWindowLogin(e)
