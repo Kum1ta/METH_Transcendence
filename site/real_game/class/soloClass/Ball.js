@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Ball.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:58:03 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/29 13:45:02 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:01:52 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from 'three';
 import { wallTop, wallBottom } from './Map.js';
-import { player1, player2 } from './Players.js';
 
 let		ball		=	null;
 let		speed		=	0.15;
@@ -26,7 +25,7 @@ class Ball
 		ball = createBall();
 
 		scene.add(ball);
-		ball.rotateY(2.39);	
+		ball.rotateY(2.39);
 	}
 
 	static dispose()

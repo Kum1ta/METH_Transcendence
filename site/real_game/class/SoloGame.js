@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   SoloGame.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:07:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/29 13:58:06 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/30 15:52:41 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ class SoloGame
 		Players.create(scene);
 
 		controls = new OrbitControls(camera, renderer.domElement);
-		camera.position.set(0, 20, 0);
+		camera.position.set(0, 30, 0);
 		// camera.position.set(20, 5, 20);
 		renderer.setAnimationLoop(loop);
 	}
