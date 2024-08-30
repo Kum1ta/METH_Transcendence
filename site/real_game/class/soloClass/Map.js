@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/30 16:49:53 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/30 19:43:15 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ let		groundBody		=	null;
 let		wallTopBody		=	null;
 let		wallBottomBody	=	null;
 let		ballBody		=	null;
-let		vec3 = {x:0.1, y:0, z:3};
+let		vec3 = {x:0, y:0, z:0};
 let		player1Body		=	null;
 let		player2Body		=	null;
-let		wallBottomId = -1;
-let		wallTopId = -1;
+let		needUpdate		=	false;
+
 class Map
 {
 
@@ -57,8 +57,8 @@ class Map
 		})
 		wallTopBody.position.z = -6.15;
 		wallTopBody.position.y += 0.35;
+		wallTopBody.name = "wall";
 		world.addBody(wallTopBody);
-		wallTopId = wallTopBody.id;
 
 		wallBottomBody = new CANNON.Body({
 			shape: new CANNON.Box(new CANNON.Vec3(width, 0.7, 0.2)),
@@ -66,8 +66,8 @@ class Map
 		})
 		wallBottomBody.position.z = 6.15;
 		wallBottomBody.position.y += 0.35;
+		wallBottomBody.name = "wall";
 		world.addBody(wallBottomBody);
-		wallBottomId = wallBottomBody.id;
 
 		groundBody = new CANNON.Body({
 			shape: new CANNON.Plane(),
@@ -77,17 +77,19 @@ class Map
 		world.addBody(groundBody);
 
 		player1Body = new CANNON.Body({
-			shape: new CANNON.Box(new CANNON.Vec3(0.3, 0.4, 2.5)),
+			shape: new CANNON.Box(new CANNON.Vec3(0.3, 0.4, 1.25)),
 			type: CANNON.Body.STATIC,
 		});
 		player1Body.position.set(-12, 0.4, 0);
+		player1Body.name = "player";
 		world.addBody(player1Body);
 
 		player2Body = new CANNON.Body({
-			shape: new CANNON.Box(new CANNON.Vec3(0.3, 0.4, 2.5)),
+			shape: new CANNON.Box(new CANNON.Vec3(0.3, 0.4, 1.25)),
 			type: CANNON.Body.STATIC,
 		});
 		player2Body.position.set(12, 0.4, 0);
+		player2Body.name = "player";
 		world.addBody(player2Body);
 
 		ballBody = new CANNON.Body({
@@ -98,16 +100,49 @@ class Map
 		ballBody.velocity.set(vec3.x, vec3.y, vec3.z);
 		world.addBody(ballBody);
 
-		ballBody.addEventListener("collide",function(e){
-		var relativeVelocity = e.contact.getImpactVelocityAlongNormal();
-			console.log("e.contact : ", e.contact);
-			console.log("id: ", e.contact.id );
-			console.log("player1Body.id: ", player1Body.id );
-			if (e.contact.id == player1Body.id || e.contact.id == player2Body.id)
-				vec3.x = -vec3.x;
-			if (e.contact.id == wallBottomId || e.contact.id == wallTopId)
-				vec3.z = -vec3.z;
+		ballBody.addEventListener("collide", function(e) {
+			let relativeVelocity = e.contact.getImpactVelocityAlongNormal();
+	
+			let bodyA = e.contact.bi;
+			let bodyB = e.contact.bj;
+			let collided = (bodyA === ballBody) ? bodyB : bodyA;
+			
+			switch(collided.name) {
+				case "wall":
+					console.log("Collision avec un mur", relativeVelocity);
+					needUpdate = true;
+					vec3.z = -vec3.z;
+					break;
+				case "player":
+					console.log("Collision avec un joueur", relativeVelocity);
+					needUpdate = true;
+					vec3.x = -vec3.x;
+					break;
+			}
 		});
+
+		ground.position.copy(groundBody.position);
+		ground.quaternion.copy(groundBody.quaternion);
+		wallBottom.position.copy(wallBottomBody.position);
+		wallBottom.quaternion.copy(wallBottomBody.quaternion);
+		wallTop.position.copy(wallTopBody.position);
+		wallTop.quaternion.copy(wallTopBody.quaternion);
+
+		if (1) // player1 (right) lose
+		{
+			vec3.x = -3;
+			vec3.y = 0;
+			vec3.z = Math.floor(Math.random() * 7) - 3;
+		}
+		else
+		{
+			vec3.x = 3;
+			vec3.y = 0;
+			vec3.z = Math.floor(Math.random() * 6) - 3;
+		}
+		ballBody.velocity.set(vec3.x, vec3.y, vec3.z);
+
+		console.log("vec3", vec3);
 	}
 
 	static dispose()
@@ -120,21 +155,20 @@ class Map
 	static update()
 	{
 		world.step(timeStep);
-		// Deplacer les update des objet fixe dans le constructeur pour ne pas update a chaque frame
-		ground.position.copy(groundBody.position);
-		ground.quaternion.copy(groundBody.quaternion);
+		
 		ball.position.copy(ballBody.position);
-		ball.quaternion.copy(ballBody.quaternion);
-		wallBottom.position.copy(wallBottomBody.position);
-		wallBottom.quaternion.copy(wallBottomBody.quaternion);
-		wallTop.position.copy(wallTopBody.position);
-		wallTop.quaternion.copy(wallTopBody.quaternion);
-		////////
+		// ball.quaternion.copy(ballBody.quaternion);
+		player1Body.position.copy(player1.position);
+		// player1Body.quaternion.copy(player1.quaternion);
+		player2Body.position.copy(player2.position);
+		// player2Body.quaternion.copy(player2.quaternion);
+		
+		if (needUpdate)
+		{
+			console.log("vec3", vec3);
+			needUpdate = false;
+		}
 		ballBody.velocity.set(vec3.x, vec3.y, vec3.z);
-		player1.position.copy(player1Body.position);
-		player1.quaternion.copy(player1Body.quaternion);
-		player2.position.copy(player2Body.position);
-		player2.quaternion.copy(player2Body.quaternion);
 	}
 }
 
