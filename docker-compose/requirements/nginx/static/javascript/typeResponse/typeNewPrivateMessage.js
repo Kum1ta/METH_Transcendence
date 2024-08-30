@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:15:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/24 23:45:05 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/30 15:47:44 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ import { userMeInfo } from "/static/javascript/typeResponse/typeLogin.js";
 
 function typeNewPrivateMessage(content)
 {
+	console.log(content);
 	messageList.push(content);
 	if (infoPanel.isOpen && infoPanel.id === content.channel)
 	{
