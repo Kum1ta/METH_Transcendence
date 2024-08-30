@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/04 13:44:11 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/29 21:33:48 by tomoron          ###   ########.fr        #
+#    Updated: 2024/08/30 15:57:02 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ def sendPrivateMessage(socket, content):
 		dest = User.objects.filter(id=content["to"])
 		if(not dest.exists()):
 			socket.sendError("User not found", 9008)
-			return;
+			return
 		user = User.objects.filter(id=socket.scope["session"]["id"])
 		if(int(content["to"]) == user[0].id):
 			socket.sendError("Invalid message sent", 9009)
@@ -41,8 +41,14 @@ def sendPrivateMessage(socket, content):
 			"content": content["content"],
 			"date": new_msg.date.strftime("%H:%M:%S %d/%m/%Y")
 		}}
-		if(content["to"] in socket.onlinePlayers):
-			socket.onlinePlayers[content["to"]].send(text_data=json.dumps(jsonVar))
 		socket.send(text_data=json.dumps(jsonVar))
+		if(content["to"] in socket.onlinePlayers):
+			jsonVar = {"type": "new_private_message", "content": {
+				"from": new_msg.sender.id,
+				"channel": new_msg.sender.id,
+				"content": content["content"],
+				"date": new_msg.date.strftime("%H:%M:%S %d/%m/%Y")
+			}}
+			socket.onlinePlayers[content["to"]].send(text_data=json.dumps(jsonVar))
 	except Exception as e:
 		socket.sendError("Invalid message sent", 9009, e)

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/26 14:48:48 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/08/30 15:42:51 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ socket.onmessage = (event) => {
 	}
 	else
 	{
+		console.log(response);
 		try {
 			functionResponse[typeResponse.indexOf(response.type)](response.content);
 		} catch {

@@ -5,3 +5,15 @@ INSERT INTO "server_user" ("username", "mail", "password", "id42", "pfp") VALUES
 INSERT INTO "server_message" ("date", "sender_id", "to_id", "content") VALUES
 ('2024-08-25 18:10:54.27476+00',	1,	2, 'coucou'),
 ('2024-08-25 18:11:25.987857+00',	2,	1, 'coucou les musulmans moi je mange la glace');
+
+INSERT INTO "server_message" ("date", "sender_id", "to_id", "content") VALUES
+('2024-08-25 18:10:54.27476+00',	3,	2, 'bonsoir'),
+('2024-08-25 18:11:25.987857+00',	2,	3, 'non');
+
+INSERT INTO "server_message" ("date", "sender_id", "to_id", "content") VALUES
+('2024-08-25 18:10:54.27476+00',	1,	3, 'bonsoir3'),
+('2024-08-25 18:11:25.987857+00',	3,	1, 'non3');
+
+INSERT INTO "server_message" ("date", "sender_id", "to_id", "content") VALUES
+('2024-08-25 18:10:54.27476+00',	4,	3, 'bonsoir3'),
+('2024-08-25 18:11:25.987857+00',	3,	4, 'non3');
