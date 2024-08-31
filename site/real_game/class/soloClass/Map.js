@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/30 19:43:15 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/08/31 15:03:26 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ let		vec3 = {x:0, y:0, z:0};
 let		player1Body		=	null;
 let		player2Body		=	null;
 let		needUpdate		=	false;
+let		speed			=	3;
 
 class Map
 {
@@ -117,6 +118,12 @@ class Map
 					console.log("Collision avec un joueur", relativeVelocity);
 					needUpdate = true;
 					vec3.x = -vec3.x;
+					if (vec3.z > 0.5)
+						aaaa = 2;
+					if (vec3.z < 0)
+						aaaa = -2;
+					console.log(vec3.z);
+					vec3.z = (vec3.z + 0.01) * aaaa;
 					break;
 			}
 		});
@@ -127,12 +134,13 @@ class Map
 		wallBottom.quaternion.copy(wallBottomBody.quaternion);
 		wallTop.position.copy(wallTopBody.position);
 		wallTop.quaternion.copy(wallTopBody.quaternion);
-
+		speed = 3;
 		if (1) // player1 (right) lose
 		{
 			vec3.x = -3;
 			vec3.y = 0;
-			vec3.z = Math.floor(Math.random() * 7) - 3;
+			vec3.z = 0;
+			// vec3.z = Math.floor(Math.random() * 7) - 3;
 		}
 		else
 		{
@@ -142,7 +150,6 @@ class Map
 		}
 		ballBody.velocity.set(vec3.x, vec3.y, vec3.z);
 
-		console.log("vec3", vec3);
 	}
 
 	static dispose()
@@ -163,12 +170,14 @@ class Map
 		player2Body.position.copy(player2.position);
 		// player2Body.quaternion.copy(player2.quaternion);
 		
-		if (needUpdate)
-		{
-			console.log("vec3", vec3);
-			needUpdate = false;
-		}
-		ballBody.velocity.set(vec3.x, vec3.y, vec3.z);
+		// if (needUpdate)
+		// {
+		// 	console.log("vec3", vec3);
+		// 	needUpdate = false;
+		// }
+		// console.log(ballBody.velocity.length());
+		speed += 0.003;
+		ballBody.velocity.set(vec3.x * speed, vec3.y * speed, vec3.z * speed);
 	}
 }
 
