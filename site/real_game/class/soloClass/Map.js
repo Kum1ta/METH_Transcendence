@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/31 15:03:26 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:08:13 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ let		ballBody		=	null;
 let		vec3 = {x:0, y:0, z:0};
 let		player1Body		=	null;
 let		player2Body		=	null;
-let		needUpdate		=	false;
 let		speed			=	3;
+let		initialZ		=	0;
+let		score			=	{player1: 0, player2: 0};
 
 class Map
 {
@@ -53,7 +54,7 @@ class Map
 		scene.add(wallBottom);
 		scene.add(new THREE.AmbientLight(0xffffff, 0.5));
 		wallTopBody = new CANNON.Body({
-			shape: new CANNON.Box(new CANNON.Vec3(width, 0.7, 0.2)),
+			shape: new CANNON.Box(new CANNON.Vec3(width / 2, 0.35, 0.1)),
 			type: CANNON.Body.STATIC,
 		})
 		wallTopBody.position.z = -6.15;
@@ -62,7 +63,7 @@ class Map
 		world.addBody(wallTopBody);
 
 		wallBottomBody = new CANNON.Body({
-			shape: new CANNON.Box(new CANNON.Vec3(width, 0.7, 0.2)),
+			shape: new CANNON.Box(new CANNON.Vec3(width / 2, 0.35, 0.1)),
 			type: CANNON.Body.STATIC,
 		})
 		wallBottomBody.position.z = 6.15;
@@ -71,7 +72,7 @@ class Map
 		world.addBody(wallBottomBody);
 
 		groundBody = new CANNON.Body({
-			shape: new CANNON.Plane(),
+			shape: new CANNON.Plane(0,0),
 			type: CANNON.Body.STATIC,
 		});
 		groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
@@ -95,36 +96,32 @@ class Map
 
 		ballBody = new CANNON.Body({
 			shape: new CANNON.Sphere(0.3),
-			mass: 1
+			mass: 10,
 		});
 		ballBody.position.set(0, 0.15, 0);
 		ballBody.velocity.set(vec3.x, vec3.y, vec3.z);
 		world.addBody(ballBody);
 
 		ballBody.addEventListener("collide", function(e) {
-			let relativeVelocity = e.contact.getImpactVelocityAlongNormal();
-	
-			let bodyA = e.contact.bi;
-			let bodyB = e.contact.bj;
-			let collided = (bodyA === ballBody) ? bodyB : bodyA;
-			
-			switch(collided.name) {
-				case "wall":
-					console.log("Collision avec un mur", relativeVelocity);
-					needUpdate = true;
-					vec3.z = -vec3.z;
+		let relativeVelocity = e.contact.getImpactVelocityAlongNormal();
+
+		let bodyA = e.contact.bi;
+		let bodyB = e.contact.bj;
+		let collided = (bodyA === ballBody) ? bodyB : bodyA;
+
+		switch(collided.name) {
+			case "wall":
+				vec3.z = -vec3.z;
+				break;
+			case "player":
+				vec3.x = -vec3.x;
+				if (Math.abs(vec3.z) - Math.abs(initialZ) > 0.3)
 					break;
-				case "player":
-					console.log("Collision avec un joueur", relativeVelocity);
-					needUpdate = true;
-					vec3.x = -vec3.x;
-					if (vec3.z > 0.5)
-						aaaa = 2;
-					if (vec3.z < 0)
-						aaaa = -2;
-					console.log(vec3.z);
-					vec3.z = (vec3.z + 0.01) * aaaa;
-					break;
+				if (Math.random() > 0.5)
+					vec3.z -= 0.1;
+				if (Math.random() < 0.5)
+					vec3.z += 0.1;
+				break;
 			}
 		});
 
@@ -134,22 +131,22 @@ class Map
 		wallBottom.quaternion.copy(wallBottomBody.quaternion);
 		wallTop.position.copy(wallTopBody.position);
 		wallTop.quaternion.copy(wallTopBody.quaternion);
+
 		speed = 3;
-		if (1) // player1 (right) lose
+		if (Math.random() > 0.5)
 		{
 			vec3.x = -3;
 			vec3.y = 0;
-			vec3.z = 0;
-			// vec3.z = Math.floor(Math.random() * 7) - 3;
+			vec3.z = Math.random() * 10 % 4 - 2;
 		}
 		else
 		{
 			vec3.x = 3;
 			vec3.y = 0;
-			vec3.z = Math.floor(Math.random() * 6) - 3;
+			vec3.z = Math.random() * 10 % 4 - 2;
 		}
+		initialZ = vec3.z;
 		ballBody.velocity.set(vec3.x, vec3.y, vec3.z);
-
 	}
 
 	static dispose()
@@ -162,22 +159,48 @@ class Map
 	static update()
 	{
 		world.step(timeStep);
-		
+
+		if (ballBody.position.x > 20)
+			return (Map.reCreate(false));
+		if (ballBody.position.x < -20)
+			return (Map.reCreate(true));
 		ball.position.copy(ballBody.position);
-		// ball.quaternion.copy(ballBody.quaternion);
 		player1Body.position.copy(player1.position);
-		// player1Body.quaternion.copy(player1.quaternion);
 		player2Body.position.copy(player2.position);
-		// player2Body.quaternion.copy(player2.quaternion);
-		
-		// if (needUpdate)
-		// {
-		// 	console.log("vec3", vec3);
-		// 	needUpdate = false;
-		// }
-		// console.log(ballBody.velocity.length());
-		speed += 0.003;
+
+		if (speed < 10)
+			speed += 0.003;
 		ballBody.velocity.set(vec3.x * speed, vec3.y * speed, vec3.z * speed);
+	}
+
+	static reCreate(dirLeft)
+	{
+		ballBody.position.set(0, 0.15, 0);
+		ball.position.copy(ballBody.position);
+		player1Body.position.set(-12, 0.4, 0);
+		player1.position.copy(player1Body.position);
+		player2Body.position.set(12, 0.4, 0);
+		player2.position.copy(player2Body.position);
+
+		speed = 3;
+		if (dirLeft)
+		{
+			score.player2++;
+			vec3.x = -3;
+			vec3.y = 0;
+			vec3.z = Math.random() * 10 % 4 - 2;
+		}
+		else
+		{
+			score.player1++;
+			vec3.x = 3;
+			vec3.y = 0;
+			vec3.z = Math.random() * 10 % 4 - 2;
+		}
+		initialZ = vec3.z;
+		ballBody.velocity.set(vec3.x, vec3.y, vec3.z);
+
+		console.log("score", score);
 	}
 }
 
@@ -198,12 +221,6 @@ function createWall(onTop)
 	const	geometry	=	new THREE.BoxGeometry(width, 0.7, 0.2);
 	const	material	=	new THREE.MeshPhysicalMaterial({color: 0x333333});
 	const	mesh		=	new THREE.Mesh(geometry, material);
-
-	// if (onTop)
-	// 	mesh.position.z = -6.15;
-	// else
-	// 	mesh.position.z = 6.15;
-	// mesh.position.y += 0.35;
 	return (mesh);
 }
 
