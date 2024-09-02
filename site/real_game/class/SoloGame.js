@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:07:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/30 15:52:41 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:06:37 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,18 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 let	scene		= 	null;
 let	renderer	=	null;
 let	camera		=	null;
-
 let	controls	= 	null;
+
+/*
+Controls :
+	- w : monter player1
+	- s : descendre player1
+
+	- haut : monter player2
+	- bas : descendre player2
+
+	- a : restart quand score debug
+*/
 
 class SoloGame
 {
@@ -43,7 +53,14 @@ class SoloGame
 
 		controls = new OrbitControls(camera, renderer.domElement);
 		camera.position.set(0, 30, 0);
-		// camera.position.set(20, 5, 20);
+		// camera.position.set(20, 5, 25);
+
+		document.addEventListener('keypress', (e) => {
+			if (e.key == 'a')
+				Map.reCreate(true);
+		})
+
+
 		renderer.setAnimationLoop(loop);
 	}
 
