@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/03 17:18:13 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/03 18:13:18 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,6 @@ class Map
 					vec3.z += 0.1;
 				break;
 			}
-
-			scoreElement.innerHTML = score.player1 + " - " + score.player2;
-
 		});
 
 		ground.position.copy(groundBody.position);
@@ -185,7 +182,15 @@ class Map
 		onUpdate = true;
 		document.getElementsByTagName('canvas')[3].style.animation = 'fadeIn 0.199s';
 		document.getElementsByTagName('canvas')[3].style.filter = 'brightness(0)';
-
+		scoreElement.style.animation = 'fadeInText 0.199s';
+		scoreElement.style.color = 'rgb(255, 255, 255, 1)';
+		setTimeout(() => {
+			if (dirLeft)
+				score.player2++;
+			else
+				score.player1++;
+			scoreElement.innerHTML = score.player1 + '-' +score.player2;
+		}, 300);
 		setTimeout(() => {
 			speed = 3;
 			if (dirLeft)
@@ -206,11 +211,6 @@ class Map
 		}, 1500);
 
 		setTimeout(() => {
-			if (dirLeft)
-				score.player2++;
-			else
-				score.player1++;
-
 			ballBody.velocity.set(0,0,0);
 			ballBody.position.set(0, 0.15, 0);
 			ball.position.copy(ballBody.position);
@@ -219,10 +219,11 @@ class Map
 			player2Body.position.set(12, 0.4, 0);
 			player2.position.copy(player2Body.position);
 
-			document.getElementsByTagName('canvas')[3].style.animation = 'fadeOut 0.199s';
+			scoreElement.style.animation = 'fadeOut 0.199s';
 			document.getElementsByTagName('canvas')[3].style.filter = 'brightness(1)';
-			scoreElement.innerHTML = score.player1 + " - " + score.player2;
-		}, 800);
+			scoreElement.style.animation = 'fadeOutText 0.399s';
+			scoreElement.style.color = 'rgb(255, 255, 255, 0.1)';
+		}, 1000);
 	}
 }
 
