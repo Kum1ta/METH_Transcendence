@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/02 18:08:13 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/03 17:18:13 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ let		player2Body		=	null;
 let		speed			=	3;
 let		initialZ		=	0;
 let		score			=	{player1: 0, player2: 0};
+let		onUpdate		=	false;
+const	scoreElement	=	document.getElementById('score');
 
 class Map
 {
@@ -123,6 +125,9 @@ class Map
 					vec3.z += 0.1;
 				break;
 			}
+
+			scoreElement.innerHTML = score.player1 + " - " + score.player2;
+
 		});
 
 		ground.position.copy(groundBody.position);
@@ -158,6 +163,8 @@ class Map
 
 	static update()
 	{
+		if (onUpdate)
+			return ;
 		world.step(timeStep);
 
 		if (ballBody.position.x > 20)
@@ -175,32 +182,47 @@ class Map
 
 	static reCreate(dirLeft)
 	{
-		ballBody.position.set(0, 0.15, 0);
-		ball.position.copy(ballBody.position);
-		player1Body.position.set(-12, 0.4, 0);
-		player1.position.copy(player1Body.position);
-		player2Body.position.set(12, 0.4, 0);
-		player2.position.copy(player2Body.position);
+		onUpdate = true;
+		document.getElementsByTagName('canvas')[3].style.animation = 'fadeIn 0.199s';
+		document.getElementsByTagName('canvas')[3].style.filter = 'brightness(0)';
 
-		speed = 3;
-		if (dirLeft)
-		{
-			score.player2++;
-			vec3.x = -3;
-			vec3.y = 0;
-			vec3.z = Math.random() * 10 % 4 - 2;
-		}
-		else
-		{
-			score.player1++;
-			vec3.x = 3;
-			vec3.y = 0;
-			vec3.z = Math.random() * 10 % 4 - 2;
-		}
-		initialZ = vec3.z;
-		ballBody.velocity.set(vec3.x, vec3.y, vec3.z);
+		setTimeout(() => {
+			speed = 3;
+			if (dirLeft)
+			{
+				vec3.x = -3;
+				vec3.y = 0;
+				vec3.z = Math.random() * 10 % 4 - 2;
+			}
+			else
+			{
+				vec3.x = 3;
+				vec3.y = 0;
+				vec3.z = Math.random() * 10 % 4 - 2;
+			}
+			initialZ = vec3.z;
 
-		console.log("score", score);
+			onUpdate = false;
+		}, 1500);
+
+		setTimeout(() => {
+			if (dirLeft)
+				score.player2++;
+			else
+				score.player1++;
+
+			ballBody.velocity.set(0,0,0);
+			ballBody.position.set(0, 0.15, 0);
+			ball.position.copy(ballBody.position);
+			player1Body.position.set(-12, 0.4, 0);
+			player1.position.copy(player1Body.position);
+			player2Body.position.set(12, 0.4, 0);
+			player2.position.copy(player2Body.position);
+
+			document.getElementsByTagName('canvas')[3].style.animation = 'fadeOut 0.199s';
+			document.getElementsByTagName('canvas')[3].style.filter = 'brightness(1)';
+			scoreElement.innerHTML = score.player1 + " - " + score.player2;
+		}, 800);
 	}
 }
 
