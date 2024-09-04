@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:58:03 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/30 16:01:52 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/04 15:07:07 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ function createBall()
 	mesh.position.y += 0.3;
 	mesh.castShadow = true;
 	mesh.receiveShadow = true;
+	mesh.material.transparent = true;
 	mesh.position.set (0, mesh.position.y, 0);
 	return (mesh);
 }

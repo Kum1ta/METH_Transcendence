@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:07:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/02 18:06:37 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:44:03 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ class SoloGame
 {
 	static create()
 	{
+		// console.log(document.getElementsByTagName('canvas'));
+		// document.getElementsByTagName('canvas')[3].style.animation = 'fadeIn 0.199s';
+		// document.getElementsByTagName('canvas')[3].style.filter = 'brightness(0)';
+
 		scene = new THREE.Scene();
 		renderer = new THREE.WebGLRenderer({antialias: true});
 		renderer.shadowMap.enabled = true;
