@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/03 18:13:18 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:19:05 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ let		groundBody		=	null;
 let		wallTopBody		=	null;
 let		wallBottomBody	=	null;
 let		ballBody		=	null;
-let		vec3 = {x:0, y:0, z:0};
+let		vec3 			= 	{x:0, y:0, z:0};
 let		player1Body		=	null;
 let		player2Body		=	null;
 let		speed			=	3;
@@ -35,6 +35,8 @@ let		initialZ		=	0;
 let		score			=	{player1: 0, player2: 0};
 let		onUpdate		=	false;
 const	scoreElement	=	document.getElementById('score');
+let		initialSpeed	=	3;
+
 
 class Map
 {
@@ -74,7 +76,7 @@ class Map
 		world.addBody(wallBottomBody);
 
 		groundBody = new CANNON.Body({
-			shape: new CANNON.Plane(0,0),
+			shape: new CANNON.Plane(),
 			type: CANNON.Body.STATIC,
 		});
 		groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
@@ -85,7 +87,7 @@ class Map
 			type: CANNON.Body.STATIC,
 		});
 		player1Body.position.set(-12, 0.4, 0);
-		player1Body.name = "player";
+		player1Body.name = "player1";
 		world.addBody(player1Body);
 
 		player2Body = new CANNON.Body({
@@ -93,7 +95,7 @@ class Map
 			type: CANNON.Body.STATIC,
 		});
 		player2Body.position.set(12, 0.4, 0);
-		player2Body.name = "player";
+		player2Body.name = "player2";
 		world.addBody(player2Body);
 
 		ballBody = new CANNON.Body({
@@ -101,31 +103,9 @@ class Map
 			mass: 10,
 		});
 		ballBody.position.set(0, 0.15, 0);
-		ballBody.velocity.set(vec3.x, vec3.y, vec3.z);
 		world.addBody(ballBody);
 
-		ballBody.addEventListener("collide", function(e) {
-		let relativeVelocity = e.contact.getImpactVelocityAlongNormal();
-
-		let bodyA = e.contact.bi;
-		let bodyB = e.contact.bj;
-		let collided = (bodyA === ballBody) ? bodyB : bodyA;
-
-		switch(collided.name) {
-			case "wall":
-				vec3.z = -vec3.z;
-				break;
-			case "player":
-				vec3.x = -vec3.x;
-				if (Math.abs(vec3.z) - Math.abs(initialZ) > 0.3)
-					break;
-				if (Math.random() > 0.5)
-					vec3.z -= 0.1;
-				if (Math.random() < 0.5)
-					vec3.z += 0.1;
-				break;
-			}
-		});
+		this.#collision();
 
 		ground.position.copy(groundBody.position);
 		ground.quaternion.copy(groundBody.quaternion);
@@ -137,18 +117,99 @@ class Map
 		speed = 3;
 		if (Math.random() > 0.5)
 		{
-			vec3.x = -3;
-			vec3.y = 0;
 			vec3.z = Math.random() * 10 % 4 - 2;
+			vec3.x = -Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
 		}
 		else
 		{
-			vec3.x = 3;
-			vec3.y = 0;
 			vec3.z = Math.random() * 10 % 4 - 2;
+			vec3.x = Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
 		}
-		initialZ = vec3.z;
+
+		initialZ = vec3.z;vec3.x = 3;
 		ballBody.velocity.set(vec3.x, vec3.y, vec3.z);
+	}
+
+	static #collision()
+	{
+		let ballPosition;
+		let playerPosition;
+		let relativePosition;
+		let playerHalfExtents;
+		let sideTouched;
+		let random;
+		let step = 1;
+
+		ballBody.addEventListener("collide", function(e) {
+			let relativeVelocity = e.contact.getImpactVelocityAlongNormal();
+
+			let bodyA = e.contact.bi;
+			let bodyB = e.contact.bj;
+			let collided = (bodyA === ballBody) ? bodyB : bodyA;
+
+			switch(collided.name) {
+				case "wall":
+					vec3.z = -vec3.z;
+					return;
+				case "player1":
+					ballPosition = ballBody.position;
+					playerPosition = collided.position;
+					relativePosition = ballPosition.vsub(playerPosition);
+					playerHalfExtents = collided.shapes[0].halfExtents;
+					if (Math.abs(relativePosition.x) > playerHalfExtents.x)
+						sideTouched = (relativePosition.x > 0) ? 'right' : 'left';
+					else if (Math.abs(relativePosition.z) > playerHalfExtents.z)
+						sideTouched = (relativePosition.z > 0) ? 'front' : 'back';
+					if (sideTouched == 'front' || sideTouched == 'back')
+					{
+						vec3.z = -vec3.z;
+						return ;
+					}
+
+					initialSpeed = Math.sqrt(vec3.x * vec3.x + vec3.z * vec3.z);
+					random = Math.random();
+					if (random > 0.5)
+					{
+						vec3.z -= step;
+						vec3.x = Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
+					}
+					else if (random < 0.5)
+					{
+						vec3.z += step;
+						vec3.x = Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
+					}
+					return;
+				case "player2":
+					ballPosition = ballBody.position;
+					playerPosition = collided.position;
+					relativePosition = ballPosition.vsub(playerPosition);
+					playerHalfExtents = collided.shapes[0].halfExtents;
+					if (Math.abs(relativePosition.x) > playerHalfExtents.x)
+						sideTouched = (relativePosition.x > 0) ? 'right' : 'left';
+					else if (Math.abs(relativePosition.z) > playerHalfExtents.z)
+						sideTouched = (relativePosition.z > 0) ? 'front' : 'back';
+					if (sideTouched == 'front' || sideTouched == 'back')
+					{
+						vec3.z = -vec3.z;
+						return ;
+					}
+
+					initialSpeed = Math.sqrt(vec3.x * vec3.x + vec3.z * vec3.z);
+					random = Math.random();
+					if (random > 0.5)
+					{
+						vec3.z -= step;
+						vec3.x = -Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
+					}
+					else if (random < 0.5)
+					{
+						vec3.z += step;
+						vec3.x = -Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
+					}
+					return;
+				}
+		});
+
 	}
 
 	static dispose()
@@ -164,56 +225,68 @@ class Map
 			return ;
 		world.step(timeStep);
 
-		if (ballBody.position.x > 20)
+		if (ballBody.position.x > 13)
+			ball.material.opacity = 1 - ((ball.position.x - 13) / 2);
+		if (ballBody.position.x < -13)
+			ball.material.opacity = 1 - (-(ball.position.x + 13) / 2);
+
+		if (ballBody.position.x > 23)
 			return (Map.reCreate(false));
-		if (ballBody.position.x < -20)
+		if (ballBody.position.x < -23)
 			return (Map.reCreate(true));
+
 		ball.position.copy(ballBody.position);
 		player1Body.position.copy(player1.position);
 		player2Body.position.copy(player2.position);
 
-		if (speed < 10)
+		if (speed < 7)
 			speed += 0.003;
+
+		// let velocity = Math.sqrt(vec3.x * speed, vec3.y * speed, vec3.z * speed);
+		// console.log("Vitesse du vecteur:", velocity);
+
 		ballBody.velocity.set(vec3.x * speed, vec3.y * speed, vec3.z * speed);
 	}
 
-	static reCreate(dirLeft)
+	static reCreate(player1Lose)
 	{
 		onUpdate = true;
 		document.getElementsByTagName('canvas')[3].style.animation = 'fadeIn 0.199s';
 		document.getElementsByTagName('canvas')[3].style.filter = 'brightness(0)';
 		scoreElement.style.animation = 'fadeInText 0.199s';
 		scoreElement.style.color = 'rgb(255, 255, 255, 1)';
+
 		setTimeout(() => {
-			if (dirLeft)
+			if (player1Lose)
 				score.player2++;
 			else
 				score.player1++;
 			scoreElement.innerHTML = score.player1 + '-' +score.player2;
-		}, 300);
+		}, 500);
+
 		setTimeout(() => {
 			speed = 3;
-			if (dirLeft)
+			initialSpeed = Math.sqrt(vec3.x * vec3.x + vec3.z * vec3.z);
+			if (player1Lose)
 			{
-				vec3.x = -3;
-				vec3.y = 0;
 				vec3.z = Math.random() * 10 % 4 - 2;
+				vec3.x = -Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
 			}
 			else
 			{
-				vec3.x = 3;
-				vec3.y = 0;
 				vec3.z = Math.random() * 10 % 4 - 2;
+				vec3.x = Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
 			}
 			initialZ = vec3.z;
 
 			onUpdate = false;
-		}, 1500);
+		}, 1700);
 
 		setTimeout(() => {
 			ballBody.velocity.set(0,0,0);
 			ballBody.position.set(0, 0.15, 0);
 			ball.position.copy(ballBody.position);
+			ball.material.opacity = 1;
 			player1Body.position.set(-12, 0.4, 0);
 			player1.position.copy(player1Body.position);
 			player2Body.position.set(12, 0.4, 0);
@@ -223,7 +296,7 @@ class Map
 			document.getElementsByTagName('canvas')[3].style.filter = 'brightness(1)';
 			scoreElement.style.animation = 'fadeOutText 0.399s';
 			scoreElement.style.color = 'rgb(255, 255, 255, 0.1)';
-		}, 1000);
+		}, 1200);
 	}
 }
 

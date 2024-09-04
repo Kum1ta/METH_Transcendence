@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Players.js                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:12:25 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/29 00:25:50 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:35:30 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,14 @@ class Players
 
 	static update()
 	{
-		const	limits	= 4.55; 
+		const	limits	= 4.55;
 		let		i		= 0;
 
 		while (i < pressedButton.length)
 		{
 			if (pressedButton[i] == 'w' && player1.position.z > -limits)
+				player1.position.z -= speed;
+			if (pressedButton[i] == 'z' && player1.position.z > -limits)
 				player1.position.z -= speed;
 			else if (pressedButton[i] == 's' && player1.position.z < limits)
 				player1.position.z += speed;
@@ -54,7 +56,7 @@ class Players
 			else if (pressedButton[i] == 'ArrowDown' && player2.position.z < limits)
 				player2.position.z += speed;
 			i++;
-		}		
+		}
 	}
 }
 
