@@ -15,3 +15,14 @@
 - 9011 : Not user registered with this 42 account
 - 9012 : Already logged in
 - 9013 : User already connected
+- 9014 : Invalid mail
+- 9015 : Username must not contain spaces		
+- 9016 : Username must be at least 3 characters long
+- 9017 : Username must be at most 20 characters long
+- 9018 : Username must contain only letters and numbers
+- 9019 : Password must be at least 8 characters long
+- 9020 : Password must contain at least one lowercase letter, one uppercase letter and one special character
+- 9021 : Password must not contain the username
+- 9022 : Mail already used
+- 9023 : Username already used
+- 9024 : An error occured while creating the account	
