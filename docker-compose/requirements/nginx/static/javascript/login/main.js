@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/30 11:59:13 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/06 17:33:28 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ class Login
 		let		nodeText		= null;
 		const	registerButton  = document.getElementsByClassName('new-player')[0];
 		const	button42		= document.getElementsByClassName('login-42-btn')[0];
+		const	registerForm	= document.getElementById('registerForm');
 
 		registerButton.addEventListener('click', changeWindowLogin);
 		button42.addEventListener('click', redirection);
@@ -40,6 +41,7 @@ class Login
 			}
 		});
 		form.addEventListener('submit', connect);
+		registerForm.addEventListener('submit', createAccount);
 	}
 
 	static dispose()
@@ -49,11 +51,13 @@ class Login
 		const   registerButton  = document.getElementById('new-player');
 		const   loginBackButton = document.getElementById('old-player');
 		const	button42		= document.getElementsByClassName('login-42-btn')[0];
+		const	registerForm	= document.getElementById('registerForm');
 
 		registerButton.removeEventListener('click', redirection);
 		loginButton.removeEventListener('click', showLoginDiv);
 		form.removeEventListener('submit', connect);
 		registerButton.removeEventListener('click', changeWindowLogin);
+		registerForm.removeEventListener('submit', createAccount);
 		loginBackButton.removeEventListener('click', changeWindowLoginBack);
 	}
 }
@@ -64,10 +68,25 @@ function	redirection(e)
 	window.location.replace('https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-d9d6d46bd0be36dc13718981df4bfcf37e574ea364a07fcb5c39658be0f5706c&redirect_uri=https://localhost:8000/login42&response_type=code&scope=public');
 }
 
+function createAccount(e)
+{
+	e.preventDefault();
+	const	username			= document.getElementById('username');
+	const	email				= document.getElementById('email-register');
+	const	password			= document.getElementById('password-register');
+	const	password_confirm	= document.getElementById('password-confirm');
+
+	console.log(username.value);
+	console.log(email.value);
+	console.log(password.value);
+	console.log(password_confirm.value);
+}
+
 function	changeWindowLogin(e)
 {
 	const	registerWindow	= document.getElementsByClassName('right-side-register')[0];
 	const	loginWindow		= document.getElementsByClassName('right-side')[0];
+
 	e.preventDefault();
 	loginWindow.style.display = 'none';
 	registerWindow.style.display = 'flex';
@@ -77,7 +96,7 @@ function   changeWindowLoginBack(e)
 {
 	const	registerWindow	= document.getElementsByClassName('right-side-register')[0];
 	const	loginWindow		= document.getElementsByClassName('right-side')[0];
-	e.preventDefault();
+	
 	loginWindow.style.display = 'flex';
 	registerWindow.style.display = 'none';
 }
