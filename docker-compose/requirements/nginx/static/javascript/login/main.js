@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/06 17:33:28 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/08 17:57:28 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,12 @@ function createAccount(e)
 	const	password			= document.getElementById('password-register');
 	const	password_confirm	= document.getElementById('password-confirm');
 
-	console.log(username.value);
-	console.log(email.value);
-	console.log(password.value);
-	console.log(password_confirm.value);
+	if (password.value != password_confirm.value)
+	{
+		CN.new("Error", "Passwords do not match", CN.defaultIcon.error);
+		return ;
+	}
+	sendRequest("create_account", {username: username.value, mail: email.value, password: password.value});
 }
 
 function	changeWindowLogin(e)
