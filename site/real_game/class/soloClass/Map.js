@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/04 17:19:05 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/08 17:04:12 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,10 @@ class Map
 
 		initialZ = vec3.z;vec3.x = 3;
 		ballBody.velocity.set(vec3.x, vec3.y, vec3.z);
+		onUpdate = true;
+		setTimeout(() => {
+			onUpdate = false;
+		}, 900);
 	}
 
 	static #collision()

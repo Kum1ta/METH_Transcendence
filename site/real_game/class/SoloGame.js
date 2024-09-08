@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   SoloGame.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:07:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/04 17:44:03 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/08 17:02:58 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,13 @@ class SoloGame
 {
 	static create()
 	{
-		// console.log(document.getElementsByTagName('canvas'));
-		// document.getElementsByTagName('canvas')[3].style.animation = 'fadeIn 0.199s';
-		// document.getElementsByTagName('canvas')[3].style.filter = 'brightness(0)';
-
+		
 		scene = new THREE.Scene();
 		renderer = new THREE.WebGLRenderer({antialias: true});
+		renderer.domElement.style.animation = 'fadeOutStart 1s';
+		renderer.domElement.style.filter = 'brightness(1)';
+		document.getElementById('score').style.animation = 'fadeOutStart 1s';
+		
 		renderer.shadowMap.enabled = true;
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		Ball.create(scene);
@@ -63,7 +64,6 @@ class SoloGame
 			if (e.key == 'a')
 				Map.reCreate(true);
 		})
-
 
 		renderer.setAnimationLoop(loop);
 	}
