@@ -6,12 +6,12 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:05:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/06 12:02:53 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:07:00 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { MultiGame } from "./class/MultiGame";
 import { SoloGame } from "./class/SoloGame";
 
-// MultiGame.create();
-SoloGame.create();
+MultiGame.create();
+// SoloGame.create();
