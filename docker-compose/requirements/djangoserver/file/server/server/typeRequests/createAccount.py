@@ -6,12 +6,11 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 08:08:00 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/06 18:53:05 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/09 21:10:56 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-from .login import userList
-from ..models import User
+from ..models import User, MailVerify
 import random
 import re
 import json
@@ -21,6 +20,8 @@ mail_pattern = "^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$"
 password_pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
 
 def createAccount(socket, content):
+	if (socket.logged_in):
+		socket.sendError("Already logged in", 9012)
 	try:
 		if (not bool(re.match(mail_pattern, content["mail"]))):
 			socket.sendError("Invalid mail", 9014)
@@ -55,9 +56,16 @@ def createAccount(socket, content):
 		password = hashlib.md5((content["mail"] + content["password"]).encode()).hexdigest()
 		new_user = User.objects.create(username=content["username"], mail=content["mail"], password=password)
 		new_user.save()
-		if(socket.login(new_user.id, content["username"])):
-			socket.send(text_data=json.dumps({"type": "create_account", "content": "Account created"}))
-		else:
-			socket.sendError("Already logged in", 9012)
+		verif_str = gen_string(200)
+		MailVerify.objects.create(uid=new_user, token=verif_str).save()
+		sendVerifMail(verif_str)
+		socket.send(text_data=json.dumps({"type": "create_account", "content": "Account created"}))
 	except Exception as e:
 		socket.sendError("An error occured while creating the account", 9024, e)
+
+def sendVerifMail(verif_str):
+	print("nope")
+
+def gen_string(length):
+	letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	return(''.join(random.choice(letters) for i in range(length)))

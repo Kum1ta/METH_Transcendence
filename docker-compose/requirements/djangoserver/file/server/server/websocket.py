@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    websocket.py                                       :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/09/09 14:31:30 by tomoron           #+#    #+#              #
+#    Updated: 2024/09/09 16:10:15 by tomoron          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 from channels.generic.websocket import WebsocketConsumer
 import json
 
@@ -10,11 +22,12 @@ from .typeRequests.sendPrivateMessage import sendPrivateMessage
 from .typeRequests.createAccount import createAccount
 from .typeRequests.login import login
 from .typeRequests.getAllListUser import getAllListUser
+from .typeRequests.gameRequest import gameRequest
 
 typeRequest = ["login", "get_private_list_user", "get_private_list_message",
-			   "send_private_message", "create_account", "get_all_list_user"]
+			   "send_private_message", "create_account", "get_all_list_user", "game"]
 functionRequest = [login, getPrivateListUser, getPrivateListMessage,
-				sendPrivateMessage, createAccount, getAllListUser]
+				sendPrivateMessage, createAccount, getAllListUser, gameRequest]
 
 from random import randint
 

@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .models import User 
+from .models import User, MailVerify
 import requests
 import json
 import os
@@ -31,6 +31,21 @@ def homePage(request):
 def lobbyPage(request):
 	request.session.save()
 	return render(request, "lobbyPage.html", {})
+
+def verify(request):
+	req_token = request.GET.get('token', None)
+	if(req_token == None):
+		return(HttpResponse("token param missing"))
+	user_code = MailVerify.objects.filter(token=req_token)
+	if(not user_code.exists()):
+		return(HttpResponse("token not found (PS : il faudrais peut-être faire une page avec un petit peu css pour ça mais moi ça me va là) ( PSS: il faudrait peut-être faire une page aussi pour quand il manque le parametre token, flemme de mettre ce message dans sa réponse c'est genre 3 lignes au dessus, c'est trop loin) (PSSS: peut-être une page d'erreur générique qu'on peut remplir avec des variables pour les messages d'erreur"))
+	user_code = user_code[0]
+	if(user_code.uid.mail_verified):
+		return(HttpResponse("your mail is already verified, you can now login (PS: voir erreur token not found)"))
+	user_code.uid.mail_verified = True
+	user_code.uid.save()
+	user_code.delete()
+	return(HttpResponse("your mail has been verified ! (et pourquoi pas une page pour dire que l'email a été verifié, sinon je peut juste redirect vers la page principale)"))
 
 def login42(request):
 	if(request.session.get("logged_in", False)):

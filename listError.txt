@@ -26,3 +26,4 @@
 - 9022 : Mail already used
 - 9023 : Username already used
 - 9024 : An error occured while creating the account	
+- 9025 : Account not verified, please verify your account before logging in
