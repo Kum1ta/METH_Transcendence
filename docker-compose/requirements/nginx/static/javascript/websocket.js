@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/30 15:42:51 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/09 14:47:26 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ import { typePrivateListMessage } from "/static/javascript/typeResponse/typePriv
 import { typeNewPrivateMessage } from "/static/javascript/typeResponse/typeNewPrivateMessage.js";
 import { typePrivateListUser } from "/static/javascript/typeResponse/typePrivateListUser.js";
 import { typeAllListUser }from "/static/javascript/typeResponse/typeAllListUser.js";
+import { createNotification as CN } from "/static/javascript/notification/main.js";
 import { typeLogin } from "/static/javascript/typeResponse/typeLogin.js";
 
 const	socket = new WebSocket('/ws');
@@ -44,10 +45,18 @@ socket.onmessage = (event) => {
 	}
 	if (response.code >= 9000 && response.code <= 9999)
 	{
-		try {
-			errorFunction[errorCode.indexOf(response.code)]();
-		} catch {
-			console.warn(response);
+		if (response.code >= 9014 && response.code <= 9024)
+		{
+			console.log(response);
+			CN.new("Error", response.content);
+		}
+		else
+		{
+			try {
+				errorFunction[errorCode.indexOf(response.code)]();
+			} catch {
+				console.warn(response);
+			}
 		}
 	}
 	else
