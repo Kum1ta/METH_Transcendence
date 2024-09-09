@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/04 13:44:11 by edbernar          #+#    #+#              #
-#    Updated: 2024/08/30 15:57:02 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/09 14:16:01 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ def sendPrivateMessage(socket, content):
 		new_msg = Message.objects.create(sender=user[0], to=dest[0], content=content["content"])
 		new_msg.save()
 		if(Message.objects.filter((Q(sender=user[0]) & Q(to=dest[0])) | (Q(sender=dest[0]) & Q(to=user[0]))).count() > 100):
-			Message.objects.order_by('date').first().delete()
+			Message.objects.filter((Q(to=id) & Q(sender=other_id)) | (Q(to=other_id) & Q(sender=id))).order_by('date').first().delete()
 
 		jsonVar = {"type": "new_private_message", "content": {
 			"from": new_msg.sender.id,
