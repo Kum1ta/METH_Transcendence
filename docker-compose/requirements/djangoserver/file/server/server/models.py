@@ -7,6 +7,7 @@ class User(models.Model):
 	password = models.CharField(max_length=100, null=True, blank=True)
 	id42 = models.DecimalField(max_digits=15, decimal_places=0, null=True, unique=True)
 	pfp = models.CharField(max_length=1024, default="/static/img/default_pfp.jpg")
+	mail_verified = models.BooleanField(default=False)
 
 class Message(models.Model):
 	id = models.AutoField(primary_key=True)
@@ -19,3 +20,7 @@ class Game(models.Model):
 	id = models.AutoField(primary_key=True)
 	player1 = models.ForeignKey("User", on_delete=models.SET_NULL, null=True, related_name="p1")
 	player2 = models.ForeignKey("User", on_delete=models.SET_NULL, null=True, related_name="p2")
+
+class MailVerify(models.Model):
+	token = models.CharField(primary_key=True, max_length=200, unique=True)
+	uid = models.ForeignKey("User", on_delete=models.CASCADE, null=False)

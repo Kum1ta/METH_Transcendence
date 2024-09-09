@@ -22,5 +22,6 @@ urlpatterns = [
 	path("homePage",views.homePage, name='homePage'),
 	path("lobbyPage", views.lobbyPage, name='lobbyPage'),
     path("login42", views.login42, name='login42'),
-    path("logout", views.logout, name='logout')
+    path("logout", views.logout, name='logout'),
+	path("verify", views.verify, name='verify')
 ]
