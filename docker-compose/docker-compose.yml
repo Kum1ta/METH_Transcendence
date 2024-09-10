@@ -37,6 +37,8 @@ services:
         DB_HOST: ${DB_HOST}
         UID_42: ${UID_42}
         SECRET_42: ${SECRET_42}
+        ICLOUD_USER: ${ICLOUD_USER}
+        ICLOUD_PASS: ${ICLOUD_PASS}
     depends_on:
       - postgresql
     restart: always 

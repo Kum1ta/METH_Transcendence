@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/09 21:19:50 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/10 13:28:38 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ def loginByPass(socket, content):
 	if(user.exists()):
 		if(user[0].mail != None and not user[0].mail_verified):
 			socket.sendError("Account not verified, please verify your account before logging in",9025) 
-			return ;
+			return
 		if(socket.login(user[0].id, user[0].username)):
 			socket.send(text_data=json.dumps({"type":"logged_in", "content":{
 				"status":True,

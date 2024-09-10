@@ -20,11 +20,14 @@ ARG DB_USERNAME
 ARG DB_PASSWORD
 ARG UID_42
 ARG SECRET_42
+ARG ICLOUD_USER
+ARG ICLOUD_PASS
 
 ENV DB_HOST=${DB_HOST}
 ENV PYTHONUNBUFFERED=1
 ENV UID_42=${UID_42}
 ENV SECRET_42=${SECRET_42}
+
 
 COPY start.sh /root/start.sh 
 
@@ -42,5 +45,6 @@ sed -i "s/VAR_DB_USERNAME/$DB_USERNAME/" /var/www/djangoserver/server/server/set
 sed -i "s/VAR_DB_PASSWORD/$DB_PASSWORD/" /var/www/djangoserver/server/server/settings.py
 
 RUN echo -n $UID_42:$SECRET_42 > /var/www/djangoserver/42_credentials
+RUN echo -n $ICLOUD_USER:$ICLOUD_PASS > /var/www/djangoserver/icloud_credentials
 
 ENTRYPOINT ["sh", "/root/start.sh"]

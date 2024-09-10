@@ -6,11 +6,14 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 08:08:00 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/09 21:10:56 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/10 14:02:32 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+from email.mime.multipart import MIMEMultipart
 from ..models import User, MailVerify
+from email.mime.text import MIMEText
+import smtplib
 import random
 import re
 import json
@@ -18,6 +21,16 @@ import hashlib
 
 mail_pattern = "^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$"
 password_pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
+URLMAIL = "https://localhost:8000/verify?token="
+ICLOUD_MAIL = None
+ICLOUD_PASS = None
+with open("/var/www/djangoserver/icloud_credentials", 'r') as f:
+	creds = f.read().split(':')
+	ICLOUD_MAIL = creds[0]
+	ICLOUD_PASS = creds[1]
+
+print(ICLOUD_MAIL)
+print(ICLOUD_PASS)
 
 def createAccount(socket, content):
 	if (socket.logged_in):
@@ -58,13 +71,106 @@ def createAccount(socket, content):
 		new_user.save()
 		verif_str = gen_string(200)
 		MailVerify.objects.create(uid=new_user, token=verif_str).save()
-		sendVerifMail(verif_str)
+		sendVerifMail(verif_str, content["mail"], content["username"])
 		socket.send(text_data=json.dumps({"type": "create_account", "content": "Account created"}))
 	except Exception as e:
 		socket.sendError("An error occured while creating the account", 9024, e)
 
-def sendVerifMail(verif_str):
-	print("nope")
+def sendVerifMail(verif_str, mail, username):
+	msg = MIMEMultipart()
+	msg['From'] = 'PTME <ptme@tmoron.fr>'
+	msg['To'] = mail
+	msg['Subject'] = 'Account verification'
+	msg.attach(MIMEText('''
+	<!DOCTYPE html>
+	<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+			body {
+				margin: 0;
+				padding: 0;
+				font-family: Arial, sans-serif;
+				background-color: #1e1e1e;
+				color: #ffffff;
+			}
+			.container {
+				max-width: 600px;
+				margin: 0 auto;
+				padding: 20px;
+				background-color: #2c2c2c;
+				border-radius: 8px;
+			}
+			h1 {
+				text-align: center;
+				font-size: 24px;
+				margin-bottom: 50px;
+				background-color: #1e1e1e;
+				padding: 20px;
+				border-radius: 8px;
+				color: #ffffff;
+			}
+			p {
+				color: #cccccc;
+				font-size: 16px;
+			}
+			.button {
+				display: inline-block;
+				padding: 10px 20px;
+				font-size: 16px;
+				color: #ffffff;
+				background-color: #0f0f0f;
+				border-radius: 5px;
+				text-decoration: none;
+				margin: 20px;
+				margin-left: 25%;
+				margin-right: 25%;
+				width: 50%;
+				text-align: center;
+			}
+			.footer {
+				font-size: 12px;
+				background-color: #1e1e1e;
+				padding: 10px;
+				text-align: center;
+				border-radius: 8px;
+				margin-top: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<table class="container" role="presentation">
+			<tr>
+				<td>
+					<h1>Bienvenue chez PTME !</h1>
+					<p>Bonjour ''' + username + ''',</p>
+					<p>Merci d'avoir créé un compte avec PTME ! Nous sommes ravis de vous accueillir parmi nous.</p>
+					<p>Pour compléter votre inscription, veuillez vérifier votre adresse e-mail en cliquant sur le bouton ci-dessous :</p>
+					<p><a href="''' + URLMAIL + verif_str +'''" class="button">Confirmer mon adresse e-mail</a></p>
+					<p>Si vous n'avez pas demandé cette inscription, vous pouvez ignorer cet e-mail.</p>
+					<p>Merci,</p>
+					<p>L'équipe PTME</p>
+					<div class="footer">
+						<p>42, 49 Bd Besson Bey, 16000 Angoulême, France</p>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</body>
+	</html>
+	''', 'html'))
+	try:
+		serveur = smtplib.SMTP('smtp.mail.me.com', 587)
+		serveur.ehlo()
+		serveur.starttls()
+		serveur.ehlo()
+		serveur.login(ICLOUD_MAIL, ICLOUD_PASS)
+		serveur.sendmail(ICLOUD_MAIL, mail, msg.as_string())
+		serveur.quit()
+		print("E-mail envoyé avec succès !")
+	except Exception as e:
+		print(f"Erreur lors de l'envoi de l'e-mail : {e}")
 
 def gen_string(length):
 	letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
