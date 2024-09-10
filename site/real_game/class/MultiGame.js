@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/10 17:16:22 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/10 18:32:10 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,11 @@ function createBarPlayer(color)
 
 	mesh.castShadow = true;
 	return (mesh);
+}
+
+function changeBarColor(bar, color)
+{
+	bar.material.color.set(color);
 }
 
 function loop()
