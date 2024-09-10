@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/08 17:57:28 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:41:57 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,17 @@ class Login
 	{
 		const	loginButton		= document.getElementById('loginButton');
 		const	form			= document.getElementById('loginForm');
-		const   registerButton  = document.getElementById('new-player');
-		const   loginBackButton = document.getElementById('old-player');
+		const	registerButton  = document.getElementsByClassName('new-player')[0];
+		// const   loginBackButton = document.getElementById('old-player');
 		const	button42		= document.getElementsByClassName('login-42-btn')[0];
 		const	registerForm	= document.getElementById('registerForm');
 
-		registerButton.removeEventListener('click', redirection);
+		button42.removeEventListener('click', redirection);
 		loginButton.removeEventListener('click', showLoginDiv);
 		form.removeEventListener('submit', connect);
 		registerButton.removeEventListener('click', changeWindowLogin);
 		registerForm.removeEventListener('submit', createAccount);
-		loginBackButton.removeEventListener('click', changeWindowLoginBack);
+		// loginBackButton.removeEventListener('click', changeWindowLoginBack);
 	}
 }
 

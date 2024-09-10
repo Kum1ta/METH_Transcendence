@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/25 21:09:33 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/10 17:33:18 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,18 @@ class Page
 
 	constructor()
 	{
+		const thisClass = this;
+		window.onpopstate = function(event) {
+			console.log("verif 2")
+			for (let i = 0; i < thisClass.availablePages.length; i++)
+			{
+				if (window.location.pathname == thisClass.availablePages[i].url)
+				{
+					thisClass.changePage(thisClass.availablePages[i].name);
+					return ;
+				}
+			}
+		};
 		for (let i = 0; i < this.availablePages.length; i++)
 		{
 			if (window.location.pathname == this.availablePages[i].url)
