@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:12:25 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/04 16:35:30 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:37:09 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ class Players
 {
 	static create(scene)
 	{
-		player1	= newBarPlayer(1);
-		player2	= newBarPlayer(2);
+		player1	= newBarPlayer(1, 0xffffff);
+		player2	= newBarPlayer(2, 0xffffff);
 
 		scene.add(player1);
 		scene.add(player2);
@@ -58,12 +58,17 @@ class Players
 			i++;
 		}
 	}
+
+	static changeColor(player, color)
+	{
+		player.material.color.set(color);
+	}
 }
 
-function newBarPlayer(nbPlayer)
+function newBarPlayer(nbPlayer, color)
 {
 	const	geometry	=	new THREE.BoxGeometry(0.3, 0.4, 2.5);
-	const	material	=	new THREE.MeshPhysicalMaterial({color: 0xffffff});
+	const	material	=	new THREE.MeshPhysicalMaterial({color: color});
 	const	mesh		=	new THREE.Mesh(geometry, material);
 
 	mesh.castShadow = true;
