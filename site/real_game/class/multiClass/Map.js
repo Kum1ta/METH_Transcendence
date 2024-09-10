@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/08/29 17:52:41 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/10 18:27:01 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ class Map
 
 	dispose()
 	{
-
 		videoList.forEach(elem => {
 			elem.video.pause();
 			elem.video.src = '';
@@ -160,6 +159,27 @@ class Map
 		meshPlane.receiveShadow = true;
 		return (meshPlane);
 	};
+
+	changePlane(texture)
+	{
+		console.log(this.arrObject);
+		for (let i = 0; i < this.arrObject.length; i++)
+		{
+			if (this.arrObject[i].name == "planeBottom" || this.arrObject[i].name == "planeTop")
+			{
+				if (this.arrObject[i].mesh.material)
+					this.arrObject[i].mesh.material.dispose();
+				if (typeof(texture) == 'string')
+				{
+					let textureLoader = new THREE.TextureLoader();
+					texture = textureLoader.load(texture);
+					this.arrObject[i].mesh.material.map = texture;
+				}
+				else if (typeof(texture) == 'number')
+					this.arrObject[i].mesh.material.color.set(texture);
+			}
+		}
+	}
 
 	#createWall(x, y, z, name)
 	{
@@ -319,17 +339,17 @@ class Map
 		this.#clearVideoCanvas();
 		if (nbImage <= 0)
 			return ;
-		
+
 		let startIndex = 0;
 		let nbVideos = 1;
 		path.sort(() => Math.random() - 0.5);
-		
+
 		// Create the canvas for the video
 		videoCanvas = document.createElement('canvas');
 		ctx = videoCanvas.getContext('2d');
 		videoCanvas.width = 100 * 2.33 * 20;
 		videoCanvas.height = 100;
-		
+
 		// Get the number of videos to display
 		if (vNameNb && typeof(vNameNb) == 'number')
 			nbVideos = vNameNb;
@@ -393,14 +413,14 @@ class Map
 				requestAnimationFrame(drawVideoOnCanvas);
 			}
 		}
-		
+
 		// Create the material and the banner
 		videoCanvasTexture = new THREE.CanvasTexture(videoCanvas);
 		videoCanvasTexture.wrapS = THREE.RepeatWrapping;
 		videoCanvasTexture.wrapT = THREE.RepeatWrapping;
 		videoCanvasTexture.repeat.set(-1, 1);
 		materialCanvas	= new THREE.MeshBasicMaterial({ map: videoCanvasTexture, side: THREE.BackSide , transparent: true});
-		
+
 		// Load the banner
 		loader.load( '../blender/exported/banner.glb', (gltf) => {
 			this.banner = gltf.scene.children[0];
@@ -452,7 +472,7 @@ class Map
 		}
 		scene.remove(this.banner);
 	}
-		
+
 	#animationGravityChanger(group, onTop)
 	{
 		let geometryGC			= new THREE.TorusGeometry(1.5, 0.05, 12, 24);

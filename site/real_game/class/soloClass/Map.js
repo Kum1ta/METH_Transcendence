@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/10 17:16:43 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/10 18:13:14 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ class Map
 		world = new CANNON.World({
 			gravity: new CANNON.Vec3(0, -9.81, 0),
 		});
-		ground = createGround(scene, '/textures/pastel.jpg');
+		ground = createGround(scene, 0x222222);
 		wallBottom = createWall(false);
 		wallTop = createWall(true);
 		spotLight = new THREE.SpotLight({color: 0xffffff});
