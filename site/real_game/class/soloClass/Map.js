@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/08 17:04:12 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/10 17:16:43 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,12 @@ let		initialSpeed	=	3;
 
 class Map
 {
-
 	static create(scene)
 	{
 		world = new CANNON.World({
 			gravity: new CANNON.Vec3(0, -9.81, 0),
 		});
-		ground = createGround(scene);
+		ground = createGround(scene, '/textures/pastel.jpg');
 		wallBottom = createWall(false);
 		wallTop = createWall(true);
 		spotLight = new THREE.SpotLight({color: 0xffffff});
@@ -213,7 +212,6 @@ class Map
 					return;
 				}
 		});
-
 	}
 
 	static dispose()
@@ -302,14 +300,40 @@ class Map
 			scoreElement.style.color = 'rgb(255, 255, 255, 0.1)';
 		}, 1200);
 	}
+
+	static changeGround(ground, texture)
+	{
+		if (ground.material)
+			ground.material.dispose();
+		if (typeof(texture) == 'string')
+		{
+			const textureLoader = new THREE.TextureLoader();
+			texture = textureLoader.load(texture);
+			ground.material.map = texture;
+		}
+		else if (typeof(texture) == 'number')
+			ground.material.color.set(texture);
+	}
 }
 
-function createGround(scene)
+function createGround(scene, texture)
 {
 	const	geometry	=	new THREE.PlaneGeometry(width, height);
-	const	material	=	new THREE.MeshPhysicalMaterial({color: 0x222222});
-	const	mesh		=	new THREE.Mesh(geometry, material);
+	let		material	=	null;
+	let		mesh		=	null;
 
+	if (typeof(texture) == 'string')
+	{
+		const textureLoader = new THREE.TextureLoader();
+		texture = textureLoader.load(texture);
+		material = new THREE.MeshPhysicalMaterial({ map: texture });
+	}
+	else if (typeof(texture) == 'number')
+		material = new THREE.MeshPhysicalMaterial({ color: texture });
+	else
+		material = new THREE.MeshPhysicalMaterial({color: 0x222222});
+
+	mesh = new THREE.Mesh(geometry, material);
 	mesh.rotateX(-Math.PI / 2);
 	mesh.position.set(0, 0, 0);
 	scene.add(mesh);
@@ -324,4 +348,4 @@ function createWall(onTop)
 	return (mesh);
 }
 
-export { Map, wallBottom, wallTop };
+export { Map, wallBottom, wallTop, ground };

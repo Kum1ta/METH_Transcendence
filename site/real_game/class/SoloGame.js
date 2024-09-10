@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   SoloGame.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:07:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/08 17:02:58 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/10 17:16:02 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from 'three';
-import { Map } from './soloClass/Map.js'
-import { Players } from './soloClass/Players.js'
+import { Map, ground } from './soloClass/Map.js'
+import { Players, player1, player2 } from './soloClass/Players.js'
 import { Ball } from './soloClass/Ball.js'
 
 import { stats } from './MultiGame.js';
@@ -38,13 +38,12 @@ class SoloGame
 {
 	static create()
 	{
-		
 		scene = new THREE.Scene();
 		renderer = new THREE.WebGLRenderer({antialias: true});
 		renderer.domElement.style.animation = 'fadeOutStart 1s';
 		renderer.domElement.style.filter = 'brightness(1)';
 		document.getElementById('score').style.animation = 'fadeOutStart 1s';
-		
+
 		renderer.shadowMap.enabled = true;
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		Ball.create(scene);
@@ -90,7 +89,6 @@ class SoloGame
 		scene = null;
 	}
 };
-
 
 function loop()
 {

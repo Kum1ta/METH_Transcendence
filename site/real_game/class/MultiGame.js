@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/29 17:54:30 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/10 17:16:22 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ Controls :
 	- 4 : balle vers la gauche
 	- 6 : balle vers ladroite
 	- 9 : inversion gravite
-	
+
 	- p : clear video
 	- o : goal video
 	- i : outstanding video
@@ -105,7 +105,6 @@ class MultiGame
 		cameraTmp.position.set(5, 3, 5);
 		controls.target = new THREE.Vector3(map.centerPos.x, 0, map.centerPos.z);
 
-
 		document.addEventListener('keypress', (e) => {
 			if (e.key == 'g')
 				player.pointAnimation(map);
@@ -117,7 +116,7 @@ class MultiGame
 				map.putVideoOnCanvas(0, null);
 			if (e.key == 'o')
 				map.putVideoOnCanvas(3, 'goal');
-			if (e.key == 'i') 
+			if (e.key == 'i')
 				map.putVideoOnCanvas(3, 'outstanding');
 			if (e.key == 'u')
 				map.putVideoOnCanvas(3, 3);
@@ -129,7 +128,7 @@ class MultiGame
 
 		renderer.setAnimationLoop(loop)
 	}
-	
+
 	static dispose()
 	{
 		debug = false;
@@ -164,7 +163,6 @@ class MultiGame
 		scene = null;
 	}
 }
-
 
 function createBarPlayer(color)
 {
