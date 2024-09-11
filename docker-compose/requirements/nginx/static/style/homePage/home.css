@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/26 18:21:45 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/09/12 01:34:19 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -439,4 +439,27 @@ footer {
 
 .footer-right p {
     font-weight: bold;
+}
+
+#popMenuLoginButton {
+	background-color: white;
+	position: absolute;
+	z-index: 500;
+	width: 130px;
+	text-align: center;
+	display: none;
+	flex-direction: column;
+	justify-content: center;
+}
+
+#popMenuLoginButton p {
+	height: 40px;
+	margin: 0;
+	padding: 0;
+	padding-top: 15px;
+}
+
+#popMenuLoginButton p:hover {
+	background-color: #020202;
+	color: white;
 }
