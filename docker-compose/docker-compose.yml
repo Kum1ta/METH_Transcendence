@@ -39,6 +39,7 @@ services:
         SECRET_42: ${SECRET_42}
         ICLOUD_USER: ${ICLOUD_USER}
         ICLOUD_PASS: ${ICLOUD_PASS}
+        SERVER_URL: ${SERVER_URL}
     depends_on:
       - postgresql
     restart: always 

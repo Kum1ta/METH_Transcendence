@@ -1,19 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import User, MailVerify
+from .data import UID42, SECRET42, SERVER_URL
 import requests
 import json
 import os
 
-UID42 = None
-SECRET42 = None
-with open("/var/www/djangoserver/42_credentials", 'r') as f:
-	creds = f.read().split(':')
-	UID42=creds[0]
-	SECRET42=creds[1]
-TOKENURL = 'https://api.intra.42.fr/oauth/token'
-INFOURL = 'https://api.intra.42.fr/v2/me'
-REDIRECT = 'https://localhost:8000/login42'
 
 def index(request):
 	try:
@@ -25,7 +17,7 @@ def index(request):
 
 def homePage(request):
 	request.session.save()
-	link42 = f"https://api.intra.42.fr/oauth/authorize?client_id={UID42}&redirect_uri={REDIRECT}&response_type=code&scope=public"
+	link42 = f"https://api.intra.42.fr/oauth/authorize?client_id={UID42}&redirect_uri={SERVER_URL}/login42&response_type=code&scope=public"
 	return render(request, "homePage.html", {"link42" : link42})
 
 def lobbyPage(request):
@@ -59,10 +51,10 @@ def login42(request):
 		'client_id': UID42,
 		'client_secret': SECRET42,
 		'code': code,
-		'redirect_uri': REDIRECT
+		'redirect_uri': SERVER_URL+"/login42"
 	}
 	print("\033[31m",data)
-	response = requests.post(TOKENURL, data=data)
+	response = requests.post('https://api.intra.42.fr/oauth/token', data=data)
 	if (response.status_code != 200):
 		print(response.json())
 		return HttpResponse("couln't get authorization token, likely invalid code")
@@ -70,7 +62,7 @@ def login42(request):
 	headers = {
 		'Authorization': f'Bearer {response["access_token"]}',
 	}
-	response = requests.get(INFOURL, headers=headers)
+	response = requests.get('https://api.intra.42.fr/v2/me', headers=headers)
 	if (response.status_code != 200):
 		return HttpResponse("couln't get user info... what, why ?")
 	response = response.json()
