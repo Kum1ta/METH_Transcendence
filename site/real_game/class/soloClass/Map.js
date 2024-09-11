@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/11 16:10:26 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/11 17:19:26 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,9 +128,24 @@ class Map
 		initialZ = vec3.z;vec3.x = 3;
 		ballBody.velocity.set(vec3.x, vec3.y, vec3.z);
 		onUpdate = true;
+
+		setTimeout(() => {
+			scoreElement.innerHTML = '3';
+		}, 1000);
+		setTimeout(() => {
+			scoreElement.innerHTML = '2';
+		}, 1750);
+		setTimeout(() => {
+			scoreElement.innerHTML = '1';
+		}, 2500);
+
+		setTimeout(() => {
+			scoreElement.innerHTML = score.player1 + '-' +score.player2;
+		}, 3250);
+
 		setTimeout(() => {
 			onUpdate = false;
-		}, 900);
+		}, 4000);
 	}
 
 	static #collision()
@@ -244,9 +259,6 @@ class Map
 		if (speed < 7)
 			speed += 0.003;
 
-		// let velocity = Math.sqrt(vec3.x * speed, vec3.y * speed, vec3.z * speed);
-		// console.log("Vitesse du vecteur:", velocity);
-
 		ballBody.velocity.set(vec3.x * speed, vec3.y * speed, vec3.z * speed);
 	}
 
@@ -262,8 +274,8 @@ class Map
 			if (player1Lose)
 				score.player2++;
 			else
-			score.player1++;
-		scoreElement.innerHTML = score.player1 + '-' +score.player2;
+				score.player1++;
+			scoreElement.innerHTML = score.player1 + '-' +score.player2;
 		}, 500);
 
 		if ((player1Lose && score.player2 >= 2) || (!player1Lose && score.player1 >= 2))
