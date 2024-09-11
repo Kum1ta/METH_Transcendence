@@ -22,6 +22,8 @@ def homePage(request):
 
 def lobbyPage(request):
 	request.session.save()
+	if(not request.session.get("logged_in", False)):
+		return(HttpResponse("you are not logged in",status=403))
 	return render(request, "lobbyPage.html", {})
 
 def verify(request):
