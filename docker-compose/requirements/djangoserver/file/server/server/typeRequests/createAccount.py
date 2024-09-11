@@ -6,12 +6,13 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 08:08:00 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/10 14:02:32 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/11 13:02:37 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from email.mime.multipart import MIMEMultipart
 from ..models import User, MailVerify
+from ..data import ICLOUD_USER, ICLOUD_PASS, SERVER_URL
 from email.mime.text import MIMEText
 import smtplib
 import random
@@ -19,18 +20,9 @@ import re
 import json
 import hashlib
 
-mail_pattern = "^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$"
+mail_pattern = "^((?!\\.)[\\w\\-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$"
 password_pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
-URLMAIL = "https://localhost:8000/verify?token="
-ICLOUD_MAIL = None
-ICLOUD_PASS = None
-with open("/var/www/djangoserver/icloud_credentials", 'r') as f:
-	creds = f.read().split(':')
-	ICLOUD_MAIL = creds[0]
-	ICLOUD_PASS = creds[1]
-
-print(ICLOUD_MAIL)
-print(ICLOUD_PASS)
+URLMAIL = SERVER_URL + "/verify?token="
 
 def createAccount(socket, content):
 	if (socket.logged_in):

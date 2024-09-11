@@ -22,11 +22,10 @@ ARG UID_42
 ARG SECRET_42
 ARG ICLOUD_USER
 ARG ICLOUD_PASS
+ARG SERVER_URL
 
-ENV DB_HOST=${DB_HOST}
 ENV PYTHONUNBUFFERED=1
-ENV UID_42=${UID_42}
-ENV SECRET_42=${SECRET_42}
+ENV DB_HOST=${DB_HOST}
 
 
 COPY start.sh /root/start.sh 
@@ -40,11 +39,14 @@ COPY file/server /var/www/djangoserver/server
 RUN chmod 755 /var/www/djangoserver/ && chown -R www-data:www-data /var/www/djangoserver/
 
 RUN sed -i "s/VAR_DB_HOST/$DB_HOST/" /var/www/djangoserver/server/server/settings.py && \
-sed -i "s/VAR_DB_NAME/$DB_NAME/" /var/www/djangoserver/server/server/settings.py && \
-sed -i "s/VAR_DB_USERNAME/$DB_USERNAME/" /var/www/djangoserver/server/server/settings.py && \
-sed -i "s/VAR_DB_PASSWORD/$DB_PASSWORD/" /var/www/djangoserver/server/server/settings.py
+	sed -i "s/VAR_DB_NAME/$DB_NAME/" /var/www/djangoserver/server/server/settings.py && \
+	sed -i "s/VAR_DB_USERNAME/$DB_USERNAME/" /var/www/djangoserver/server/server/settings.py && \
+	sed -i "s/VAR_DB_PASSWORD/$DB_PASSWORD/" /var/www/djangoserver/server/server/settings.py
 
-RUN echo -n $UID_42:$SECRET_42 > /var/www/djangoserver/42_credentials
-RUN echo -n $ICLOUD_USER:$ICLOUD_PASS > /var/www/djangoserver/icloud_credentials
+RUN sed -i "s/ENV_UID_42/$UID_42/" /var/www/djangoserver/server/server/data.py && \
+	sed -i "s/ENV_SECRET_42/$SECRET_42/" /var/www/djangoserver/server/server/data.py && \
+	sed -i "s|ENV_SERVER_URL|$SERVER_URL|" /var/www/djangoserver/server/server/data.py && \
+	sed -i "s|ENV_ICLOUD_USER|$ICLOUD_USER|" /var/www/djangoserver/server/server/data.py && \
+	sed -i "s|ENV_ICLOUD_PASS|$ICLOUD_PASS|" /var/www/djangoserver/server/server/data.py 
 
 ENTRYPOINT ["sh", "/root/start.sh"]
