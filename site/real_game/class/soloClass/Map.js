@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/10 18:13:14 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/11 16:10:26 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ let		score			=	{player1: 0, player2: 0};
 let		onUpdate		=	false;
 const	scoreElement	=	document.getElementById('score');
 let		initialSpeed	=	3;
-
+let		gameEndStatus	=	false;
 
 class Map
 {
@@ -262,9 +262,12 @@ class Map
 			if (player1Lose)
 				score.player2++;
 			else
-				score.player1++;
-			scoreElement.innerHTML = score.player1 + '-' +score.player2;
+			score.player1++;
+		scoreElement.innerHTML = score.player1 + '-' +score.player2;
 		}, 500);
+
+		if ((player1Lose && score.player2 >= 2) || (!player1Lose && score.player1 >= 2))
+			return (this.#endGame());
 
 		setTimeout(() => {
 			speed = 3;
@@ -314,6 +317,32 @@ class Map
 		else if (typeof(texture) == 'number')
 			ground.material.color.set(texture);
 	}
+
+	static #endGame()
+	{
+		speed = 3;
+		vec3.x = 0;
+		vec3.y = 0;
+		vec3.z = 0
+		initialZ = vec3.z;
+		setTimeout(() => {
+			ballBody.velocity.set(0,0,0);
+			ballBody.position.set(0, 0.15, 0);
+			ball.position.copy(ballBody.position);
+			ball.material.opacity = 1;
+			player1Body.position.set(-12, 0.4, 0);
+			player1.position.copy(player1Body.position);
+			player2Body.position.set(12, 0.4, 0);
+			player2.position.copy(player2Body.position);
+
+			scoreElement.style.animation = 'fadeOut 0.199s';
+			document.getElementsByTagName('canvas')[3].style.filter = 'brightness(1)';
+			scoreElement.style.animation = 'fadeOutText 0.399s';
+			scoreElement.style.color = 'rgb(255, 255, 255, 0.1)';
+			onUpdate = false;
+			gameEndStatus = true;
+		}, 1200);
+	}
 }
 
 function createGround(scene, texture)
@@ -348,4 +377,4 @@ function createWall(onTop)
 	return (mesh);
 }
 
-export { Map, wallBottom, wallTop, ground };
+export { Map, wallBottom, wallTop, ground, gameEndStatus };

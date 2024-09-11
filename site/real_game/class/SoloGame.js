@@ -6,22 +6,23 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:07:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/10 17:16:02 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/11 16:12:16 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from 'three';
-import { Map, ground } from './soloClass/Map.js'
+import { Map, ground, gameEndStatus } from './soloClass/Map.js'
 import { Players, player1, player2 } from './soloClass/Players.js'
 import { Ball } from './soloClass/Ball.js'
 
 import { stats } from './MultiGame.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-let	scene		= 	null;
+let	scene		=	null;
 let	renderer	=	null;
 let	camera		=	null;
-let	controls	= 	null;
+let	controls	=	null;
+let	gameEnd		=	false;
 
 /*
 Controls :
@@ -93,6 +94,8 @@ class SoloGame
 function loop()
 {
 	stats.begin();
+	if (gameEndStatus)                  // fin du jeu faire les dispose en conséquence
+		console.log('Game end');
 	controls.update();
 	Ball.update();
 	Map.update();
