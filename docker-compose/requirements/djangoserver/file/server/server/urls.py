@@ -25,3 +25,5 @@ urlpatterns = [
     path("logout", views.logout, name='logout'),
 	path("verify", views.verify, name='verify')
 ]
+
+handler404 = "server.views.handler404"

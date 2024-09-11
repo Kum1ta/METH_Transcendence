@@ -6,9 +6,9 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 16:10:26 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/09 16:53:01 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/11 14:03:28 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 def gameRequest(socket, content):
-	print("nope")
+	print("fils de pute")
