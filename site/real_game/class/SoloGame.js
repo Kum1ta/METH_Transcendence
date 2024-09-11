@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:07:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/11 16:12:16 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/11 17:14:19 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ class SoloGame
 		Players.create(scene);
 
 		controls = new OrbitControls(camera, renderer.domElement);
-		camera.position.set(0, 30, 0);
-		// camera.position.set(20, 5, 25);
+		camera.position.set(0, 22, 0);
 
 		document.addEventListener('keypress', (e) => {
 			if (e.key == 'a')
@@ -89,6 +88,7 @@ class SoloGame
 		}
 		scene = null;
 	}
+
 };
 
 function loop()
