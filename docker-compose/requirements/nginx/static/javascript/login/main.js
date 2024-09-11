@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/10 16:41:57 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/12 01:35:44 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,27 @@ class Login
 {
 	static create()
 	{
-		const	loginButton		= document.getElementById('loginButton');
-		const	pLoginButton	= loginButton.getElementsByTagName('p')[0];
-		const	form			= document.getElementById('loginForm');
-		let		nodeText		= null;
-		const	registerButton  = document.getElementsByClassName('new-player')[0];
-		const	button42		= document.getElementsByClassName('login-42-btn')[0];
-		const	registerForm	= document.getElementById('registerForm');
+		const	loginButton			= document.getElementById('loginButton');
+		const	pLoginButton		= loginButton.getElementsByTagName('p')[0];
+		const	form				= document.getElementById('loginForm');
+		let		nodeText			= null;
+		const	registerButton		= document.getElementsByClassName('new-player')[0];
+		const	button42			= document.getElementsByClassName('login-42-btn')[0];
+		const	registerForm		= document.getElementById('registerForm');
+		const   loginBackButton		= document.getElementsByClassName('old-player')[0];
+		const	popMenuLoginButton 	= document.getElementById('popMenuLoginButton');
 
 		registerButton.addEventListener('click', changeWindowLogin);
+		loginBackButton.addEventListener('click', changeWindowLoginBack);
 		button42.addEventListener('click', redirection);
+		window.addEventListener('resize', movePopMenuLoginButton);
+		movePopMenuLoginButton();
 		waitForLogin().then(() => {
 			if (userMeInfo.id !== -1)
 			{
 				nodeText = document.createTextNode(userMeInfo.username);
 				loginButton.replaceChild(nodeText, pLoginButton);
-				// loginButton.addEventListener('click', showMenu);
+				loginButton.addEventListener('click', showMenu);
 			}
 			else
 			{
@@ -49,17 +54,53 @@ class Login
 		const	loginButton		= document.getElementById('loginButton');
 		const	form			= document.getElementById('loginForm');
 		const	registerButton  = document.getElementsByClassName('new-player')[0];
-		// const   loginBackButton = document.getElementById('old-player');
+		const   loginBackButton = document.getElementsByClassName('old-player')[0];
 		const	button42		= document.getElementsByClassName('login-42-btn')[0];
 		const	registerForm	= document.getElementById('registerForm');
 
+		document.removeEventListener('click', hideMenu);
 		button42.removeEventListener('click', redirection);
 		loginButton.removeEventListener('click', showLoginDiv);
 		form.removeEventListener('submit', connect);
 		registerButton.removeEventListener('click', changeWindowLogin);
 		registerForm.removeEventListener('submit', createAccount);
-		// loginBackButton.removeEventListener('click', changeWindowLoginBack);
+		window.removeEventListener('resize', movePopMenuLoginButton);
+		loginButton.removeEventListener('click', showMenu);
+		loginBackButton.removeEventListener('click', changeWindowLoginBack);
 	}
+}
+
+function movePopMenuLoginButton()
+{
+	const	loginButton			= document.getElementById('loginButton');
+	const	pos					= loginButton.getBoundingClientRect();
+	const	popMenuLoginButton 	= document.getElementById('popMenuLoginButton');
+
+	popMenuLoginButton.style.left = pos.left + "px";
+	popMenuLoginButton.style.top = pos.top + (pos.height / 2) + "px";
+}
+
+function showMenu()
+{
+	const	popMenuLoginButton 	= document.getElementById('popMenuLoginButton');
+	const	loginButton			= document.getElementById('loginButton');
+	
+	popMenuLoginButton.style.display = 'flex';
+	setTimeout(() => {
+		document.addEventListener('click', hideMenu);
+		loginButton.removeEventListener('click', showMenu);
+	}, 50);
+}
+
+function hideMenu()
+{
+	const	loginButton			= document.getElementById('loginButton');
+	const	popMenuLoginButton 	= document.getElementById('popMenuLoginButton');
+	
+	popMenuLoginButton.style.display = 'none';
+	document.removeEventListener('click', hideMenu);
+	loginButton.addEventListener('click', showMenu);
+	console.log("ehh2");
 }
 
 function	redirection(e)
@@ -99,6 +140,7 @@ function   changeWindowLoginBack(e)
 	const	registerWindow	= document.getElementsByClassName('right-side-register')[0];
 	const	loginWindow		= document.getElementsByClassName('right-side')[0];
 	
+	e.preventDefault();
 	loginWindow.style.display = 'flex';
 	registerWindow.style.display = 'none';
 }
