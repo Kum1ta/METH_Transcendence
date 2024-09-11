@@ -82,3 +82,6 @@ def login42(request):
 def logout(request):
 	request.session.delete()
 	return redirect("/") 
+
+def handler404(request, exception):
+	return(index(request));
