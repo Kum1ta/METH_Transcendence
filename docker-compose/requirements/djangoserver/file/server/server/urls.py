@@ -23,7 +23,8 @@ urlpatterns = [
 	path("lobbyPage", views.lobbyPage, name='lobbyPage'),
     path("login42", views.login42, name='login42'),
     path("logout", views.logout, name='logout'),
-	path("verify", views.verify, name='verify')
+	path("verify", views.verify, name='verify'),
+	path("404", views.err404, name='err404')
 ]
 
 handler404 = "server.views.handler404"
