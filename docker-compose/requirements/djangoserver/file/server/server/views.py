@@ -18,13 +18,15 @@ def index(request):
 def homePage(request):
 	request.session.save()
 	if(request.method != "POST"):
-		return(HttpResponse("wrong method",status=403))
+		return index(request)
 	link42 = f"https://api.intra.42.fr/oauth/authorize?client_id={UID42}&redirect_uri={SERVER_URL}/login42&response_type=code&scope=public"
 	return render(request, "homePage.html", {"link42" : link42})
 
 def lobbyPage(request):
 	request.session.save()
-	if(not request.session.get("logged_in", False) or request.method != "POST"):
+	if(request.method != "POST"):
+		return index(request)
+	if(not request.session.get("logged_in", False)):
 		return(HttpResponse("you are not logged in",status=403))
 	return render(request, "lobbyPage.html", {})
 

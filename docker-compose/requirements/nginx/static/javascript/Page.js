@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/10 17:33:18 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/11 17:26:02 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ class Page
 	{
 		const thisClass = this;
 		window.onpopstate = function(event) {
-			console.log("verif 2")
 			for (let i = 0; i < thisClass.availablePages.length; i++)
 			{
 				if (window.location.pathname == thisClass.availablePages[i].url)
@@ -54,7 +53,9 @@ class Page
 		{
 			if (name === this.availablePages[i].name)
 			{
-				fetch(this.availablePages[i].servUrl)
+				fetch(this.availablePages[i].servUrl, {
+					method: "POST",
+				})
 				.then(response => {
 					if (response.status != 200)
 						throw Error("Page '" + name + "' can't be loaded")
@@ -71,6 +72,7 @@ class Page
 					})
 				})
 				.catch(error => {
+					window.location.href = '/';
 					throw Error(error);
 				});
 
@@ -82,7 +84,27 @@ class Page
 
 	#showUnknownPage()
 	{
-		document.body.innerHTML = "404 - Page not found";
+		if (this.actualPage != null)
+			this.actualPage.dispose();
+		fetch('/404')
+		.then(response => {
+			if (response.status != 200)
+				throw Error("Page '" + name + "' can't be loaded")
+			return (response);
+		})
+		.then(data => {
+			data.text().then(text => {
+				document.body.innerHTML = text;
+				this.actualPage = null;
+				document.title = 'PTME - Page not found';
+				history.pushState({}, this.availablePages[i].title, this.availablePages[i].url);
+			})
+		})
+		.catch(error => {
+			window.location.href = '/';
+			throw Error(error);
+		});
+
 	}
 };
 
