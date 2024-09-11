@@ -87,3 +87,6 @@ def logout(request):
 
 def handler404(request, exception):
 	return(index(request));
+
+def err404(request):
+	return(render(request, "err404.html"))
