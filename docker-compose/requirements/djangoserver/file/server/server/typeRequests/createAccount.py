@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 08:08:00 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/11 13:02:37 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/12 01:03:04 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -157,8 +157,8 @@ def sendVerifMail(verif_str, mail, username):
 		serveur.ehlo()
 		serveur.starttls()
 		serveur.ehlo()
-		serveur.login(ICLOUD_MAIL, ICLOUD_PASS)
-		serveur.sendmail(ICLOUD_MAIL, mail, msg.as_string())
+		serveur.login(ICLOUD_USER, ICLOUD_PASS)
+		serveur.sendmail(ICLOUD_USER, mail, msg.as_string())
 		serveur.quit()
 		print("E-mail envoyé avec succès !")
 	except Exception as e:
