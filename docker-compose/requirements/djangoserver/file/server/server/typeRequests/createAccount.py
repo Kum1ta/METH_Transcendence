@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 08:08:00 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/12 01:03:04 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/12 16:27:52 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ from email.mime.multipart import MIMEMultipart
 from ..models import User, MailVerify
 from ..data import ICLOUD_USER, ICLOUD_PASS, SERVER_URL
 from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
 import smtplib
 import random
 import re
