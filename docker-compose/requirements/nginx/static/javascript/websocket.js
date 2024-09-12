@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/10 14:49:32 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/12 18:18:53 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,62 +21,69 @@ import { typeAllListUser }from "/static/javascript/typeResponse/typeAllListUser.
 import { createNotification as CN } from "/static/javascript/notification/main.js";
 import { typeLogin } from "/static/javascript/typeResponse/typeLogin.js";
 
-const	socket = new WebSocket('/ws');
+let socket = null;
+let	status = 0;
 
-const	typeResponse = ["logged_in", "login", "private_list_user", "private_list_message", "new_private_message", "all_list_user", "create_account"];
-const	functionResponse = [typeLogin, typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage, typeAllListUser, typeCreateAccount];
 
-const	errorCode = [9007, 9010, 9011];
-const	errorFunction = [typeErrorInvalidPassword, typeErrorInvalidToken42, typeErrorUnknown42Account];
+function launchSocket()
+{
+	socket = new WebSocket('/ws');
 
-let		status = 0;
+	const	typeResponse = ["logged_in", "login", "private_list_user", "private_list_message", "new_private_message", "all_list_user", "create_account"];
+	const	functionResponse = [typeLogin, typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage, typeAllListUser, typeCreateAccount];
 
-socket.onopen = () => {
-	status = 1;
-	console.log('Connected');
-};
+	const	errorCode = [9007, 9010, 9011];
+	const	errorFunction = [typeErrorInvalidPassword, typeErrorInvalidToken42, typeErrorUnknown42Account];
 
-socket.onmessage = (event) => {
-	let	response;
 
-	try {
-		response = JSON.parse(event.data);
-	} catch {
-		return ;
-	}
-	if (response.code >= 9000 && response.code <= 9999)
-	{
-		if (response.code >= 9014 && response.code <= 9025)
+	socket.onopen = () => {
+		status = 1;
+		console.log('Connected');
+	};
+
+	socket.onmessage = (event) => {
+		let	response;
+
+		try {
+			response = JSON.parse(event.data);
+		} catch {
+			return ;
+		}
+		if (response.code >= 9000 && response.code <= 9999)
 		{
-			console.log(response);
-			CN.new("Error", response.content);
+			if (response.code >= 9014 && response.code <= 9025)
+			{
+				console.log(response);
+				CN.new("Error", response.content);
+			}
+			else
+			{
+				try {
+					errorFunction[errorCode.indexOf(response.code)]();
+				} catch ( error )
+				{
+					console.warn(response);
+				}
+			}
 		}
 		else
 		{
+			console.log(response);
 			try {
-				errorFunction[errorCode.indexOf(response.code)]();
-			} catch ( error )
+				functionResponse[typeResponse.indexOf(response.type)](response.content);
+			} catch (error)
 			{
 				console.error(error);
 				console.warn(response);
 			}
 		}
-	}
-	else
-	{
-		console.log(response);
-		try {
-			functionResponse[typeResponse.indexOf(response.type)](response.content);
-		} catch {
-			console.warn(response);
-		}
-	}
-};
+	};
 
-socket.onclose = () => {
-	status = 0;
-	console.log('Disconnected');
-};
+	socket.onclose = () => {
+		status = 0;
+		console.log('Disconnected');
+	};
+}
 
 function	sendRequest(type, content) {
 	let coc = null;
@@ -96,4 +103,4 @@ function	sendRequest(type, content) {
 	}));
 }
 
-export { socket, sendRequest };
+export { socket, sendRequest, launchSocket };

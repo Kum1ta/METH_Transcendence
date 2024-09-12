@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/12 12:58:13 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:44:51 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,15 @@ class Login
 		registerButton.addEventListener('click', changeWindowLogin);
 		loginBackButton.addEventListener('click', changeWindowLoginBack);
 		button42.addEventListener('click', redirection);
-		window.addEventListener('resize', movePopMenuLoginButton);
-		movePopMenuLoginButton();
 		waitForLogin().then(() => {
 			if (userMeInfo.id !== -1)
 			{
 				nodeText = document.createTextNode(userMeInfo.username);
 				loginButton.replaceChild(nodeText, pLoginButton);
 				loginButton.addEventListener('click', showMenu);
+				window.addEventListener('resize', movePopMenuLoginButton);
+				movePopMenuLoginButton();
+				initButtonPopMenuLogin();
 			}
 			else
 			{
@@ -101,6 +102,15 @@ function hideMenu()
 	loginButton.addEventListener('click', showMenu);
 }
 
+function initButtonPopMenuLogin()
+{
+	const	buttons = document.getElementById('popMenuLoginButton').getElementsByTagName('p');
+
+	buttons[2].addEventListener('click', () => {
+		window.location.replace('/logout');
+	})
+} 
+
 function	redirection(e)
 {
 	const	button42 = document.getElementsByClassName('login-42-btn')[0];
@@ -140,7 +150,8 @@ function   changeWindowLoginBack(e)
 	const	registerWindow	= document.getElementsByClassName('right-side-register')[0];
 	const	loginWindow		= document.getElementsByClassName('right-side')[0];
 	
-	e.preventDefault();
+	if (e)
+		e.preventDefault();
 	loginWindow.style.display = 'flex';
 	registerWindow.style.display = 'none';
 }
@@ -165,18 +176,18 @@ function	connect(e)
 	
 	e.preventDefault();
 	sendRequest("login", {type: "byPass", mail: mail, password: e.target.password.value});
-	waitForLogin().then((isConnected) => {
-		if (isConnected)
-		{
-			usernameNode = document.createTextNode(userMeInfo.username);
-			loginButton.replaceChild(usernameNode, pLoginButton);
-			CN.new("Connected successfully", "Welcome " + userMeInfo.username, CN.defaultIcon.success);
-			popout.style.display = 'none';
-		}
-	}).catch((err) => {
-		console.error(err);
-		CN.new("Error", "An error occured while trying to connect", CN.defaultIcon.error);
-	});
+	// waitForLogin().then((isConnected) => {
+	// 	if (isConnected)
+	// 	{
+	// 		usernameNode = document.createTextNode(userMeInfo.username);
+	// 		loginButton.replaceChild(usernameNode, pLoginButton);
+	// 		CN.new("Connected successfully", "Welcome " + userMeInfo.username, CN.defaultIcon.success);
+	// 		popout.style.display = 'none';
+	// 	}
+	// }).catch((err) => {
+	// 	console.error(err);
+	// 	CN.new("Error", "An error occured while trying to connect", CN.defaultIcon.error);
+	// });
 }
 
-export { Login };
+export { Login, changeWindowLoginBack };
