@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 08:08:00 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/12 16:27:52 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/12 16:29:17 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,8 +64,9 @@ def createAccount(socket, content):
 		new_user.save()
 		verif_str = gen_string(200)
 		MailVerify.objects.create(uid=new_user, token=verif_str).save()
-		sendVerifMail(verif_str, content["mail"], content["username"])
 		socket.send(text_data=json.dumps({"type": "create_account", "content": "Account created"}))
+		if(not sendVerifMail(verif_str, content["mail"], content["username"])):
+			socket.sendError("An error occured while sending the email, glhf", 2026)
 	except Exception as e:
 		socket.sendError("An error occured while creating the account", 9024, e)
 
@@ -162,8 +163,10 @@ def sendVerifMail(verif_str, mail, username):
 		serveur.sendmail(ICLOUD_USER, mail, msg.as_string())
 		serveur.quit()
 		print("E-mail envoyé avec succès !")
+		return(74725)
 	except Exception as e:
 		print(f"Erreur lors de l'envoi de l'e-mail : {e}")
+		return(0)
 
 def gen_string(length):
 	letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"

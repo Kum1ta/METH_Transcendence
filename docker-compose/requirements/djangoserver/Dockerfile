@@ -12,7 +12,7 @@ RUN apt install -y python3.12 postgresql-client
 RUN curl https://bootstrap.pypa.io/get-pip.py -o /root/get-pip.py
 RUN python3.12 /root/get-pip.py
 
-RUN pip3 install requests django psycopg "channels[daphne]" bcrypt
+RUN pip3 install requests django psycopg "channels[daphne]"
 
 ARG DB_HOST
 ARG DB_NAME
