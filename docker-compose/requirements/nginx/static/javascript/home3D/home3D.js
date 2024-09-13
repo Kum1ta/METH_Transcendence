@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/13 10:53:06 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/13 16:42:37 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ import { userMeInfo } from "/static/javascript/typeResponse/typeLogin.js";
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { Screen, light } from '/static/javascript/home3D/Screen.js'
 import { pageRenderer } from '/static/javascript/main.js'
+
+const	disable3D		= true;
 
 let		scene			= null;
 let		renderer		= null;
@@ -35,7 +37,8 @@ class Home3D
 {
 	static create()
 	{
-		home3D();
+		if (!disable3D)
+			home3D();
 	}
 
 	static dispose()
@@ -44,44 +47,47 @@ class Home3D
 		document.removeEventListener('mousemove', mouseTracker);
 		document.removeEventListener('click', redirection);
 
-		if (interval)
-			clearInterval(interval);
-		interval = null;
-		if (intervalFade)
-			clearInterval(intervalFade);
-		intervalFade = null;
-		if (screen)
-			screen.dispose();
-		screen = null;
-		if (composer)
+		if (!disable3D)
 		{
-			if (dofPass)
-				composer.removePass(dofPass);
-			if (renderPass)
-				composer.removePass(renderPass);
-			composer.dispose();
-			dofPass = null;
-			composer = null;
+			if (interval)
+				clearInterval(interval);
+			interval = null;
+			if (intervalFade)
+				clearInterval(intervalFade);
+			intervalFade = null;
+			if (screen)
+				screen.dispose();
+			screen = null;
+			if (composer)
+			{
+				if (dofPass)
+					composer.removePass(dofPass);
+				if (renderPass)
+					composer.removePass(renderPass);
+				composer.dispose();
+				dofPass = null;
+				composer = null;
+			}
+			isInFade = false;
+			if (renderer)
+				renderer.dispose();
+			renderer = null;
+			if (scene)
+			{
+				scene.children.forEach(child => {
+					scene.remove(child);
+					if (child.geometry)
+						child.geometry.dispose();
+					if (child.material)
+						child.material.dispose();
+					if (child.texture)
+						child.texture.dispose();
+				});
+			}
+			scene = null;
+			camera = null;
+			mouse = null;
 		}
-		isInFade = false;
-		if (renderer)
-			renderer.dispose();
-		renderer = null;
-		if (scene)
-		{
-			scene.children.forEach(child => {
-				scene.remove(child);
-				if (child.geometry)
-					child.geometry.dispose();
-				if (child.material)
-					child.material.dispose();
-				if (child.texture)
-					child.texture.dispose();
-			});
-		}
-		scene = null;
-		camera = null;
-		mouse = null;
 	}
 }
 
@@ -120,6 +126,8 @@ function home3D()
 	document.body.getElementsByClassName('homeSection')[0].appendChild(renderer.domElement);
 	
 	document.addEventListener('resize', windowUpdater);
+	mouse.x = 9999; 
+	mouse.y = 9999;
 	document.addEventListener('mousemove', mouseTracker);
 
 	composer		= new EffectComposer(renderer);
