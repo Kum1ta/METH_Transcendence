@@ -6,9 +6,11 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/13 10:41:51 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/13 15:43:17 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+import { barSelecter, goalSelecter } from '/static/javascript/lobbyPage/3d.js';
 
 /* 
 	Information :
@@ -20,6 +22,8 @@
 
 let	listSelectCard	= null;
 let	gameMode		= 0;
+let barSelector		= null;
+let goalSelector	= null;
 
 class LobbyPage
 {
@@ -40,6 +44,8 @@ class LobbyPage
 		{
 			document.body.children[i].style.animation = 'animShowMenuDiv 0.5s';
 		}
+		barSelector = new barSelecter(document.getElementById('bar'));
+		goalSelector = new goalSelecter(document.getElementById('goal'));
 	}
 
 	static dispose()
@@ -53,6 +59,10 @@ class LobbyPage
 		listSelectCard[2].removeEventListener('click', selectGameModeThree);
 		listSelectCard[3].removeEventListener('click', selectGameModeFour);
 		listSelectCard = null;
+		barSelector.dispose();
+		barSelector = null;
+		goalSelector.dispose();
+		goalSelector = null;
 	}
 }
 
