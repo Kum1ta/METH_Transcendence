@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/12 17:44:51 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:12:15 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,32 +21,45 @@ class Login
 		const	loginButton			= document.getElementById('loginButton');
 		const	pLoginButton		= loginButton.getElementsByTagName('p')[0];
 		const	form				= document.getElementById('loginForm');
-		let		nodeText			= null;
 		const	registerButton		= document.getElementsByClassName('new-player')[0];
 		const	button42			= document.getElementsByClassName('login-42-btn')[0];
 		const	registerForm		= document.getElementById('registerForm');
 		const   loginBackButton		= document.getElementsByClassName('old-player')[0];
+		let		usernameNode		= null;
+		let		nodeText			= null;
 
 		registerButton.addEventListener('click', changeWindowLogin);
 		loginBackButton.addEventListener('click', changeWindowLoginBack);
 		button42.addEventListener('click', redirection);
-		waitForLogin().then(() => {
-			if (userMeInfo.id !== -1)
-			{
-				nodeText = document.createTextNode(userMeInfo.username);
-				loginButton.replaceChild(nodeText, pLoginButton);
-				loginButton.addEventListener('click', showMenu);
-				window.addEventListener('resize', movePopMenuLoginButton);
-				movePopMenuLoginButton();
-				initButtonPopMenuLogin();
-			}
-			else
-			{
-				loginButton.addEventListener('click', showLoginDiv);
-			}
-		});
-		form.addEventListener('submit', connect);
-		registerForm.addEventListener('submit', createAccount);
+		if (userMeInfo.id !== -1)
+		{
+			usernameNode = document.createTextNode(userMeInfo.username);
+			loginButton.replaceChild(usernameNode, pLoginButton);
+			loginButton.addEventListener('click', showMenu);
+			window.addEventListener('resize', movePopMenuLoginButton);
+			movePopMenuLoginButton();
+			initButtonPopMenuLogin();
+		}
+		else
+		{
+			waitForLogin().then(() => {
+				if (userMeInfo.id !== -1)
+				{
+					nodeText = document.createTextNode(userMeInfo.username);
+					loginButton.replaceChild(nodeText, pLoginButton);
+					loginButton.addEventListener('click', showMenu);
+					window.addEventListener('resize', movePopMenuLoginButton);
+					movePopMenuLoginButton();
+					initButtonPopMenuLogin();
+				}
+				else
+				{
+					loginButton.addEventListener('click', showLoginDiv);
+				}
+			});
+			form.addEventListener('submit', connect);
+			registerForm.addEventListener('submit', createAccount);
+		}
 	}
 
 	static dispose()
@@ -176,18 +189,18 @@ function	connect(e)
 	
 	e.preventDefault();
 	sendRequest("login", {type: "byPass", mail: mail, password: e.target.password.value});
-	// waitForLogin().then((isConnected) => {
-	// 	if (isConnected)
-	// 	{
-	// 		usernameNode = document.createTextNode(userMeInfo.username);
-	// 		loginButton.replaceChild(usernameNode, pLoginButton);
-	// 		CN.new("Connected successfully", "Welcome " + userMeInfo.username, CN.defaultIcon.success);
-	// 		popout.style.display = 'none';
-	// 	}
-	// }).catch((err) => {
-	// 	console.error(err);
-	// 	CN.new("Error", "An error occured while trying to connect", CN.defaultIcon.error);
-	// });
+	waitForLogin().then((isConnected) => {
+		if (isConnected)
+		{
+			usernameNode = document.createTextNode(userMeInfo.username);
+			loginButton.replaceChild(usernameNode, pLoginButton);
+			CN.new("Connected successfully", "Welcome " + userMeInfo.username, CN.defaultIcon.success);
+			popout.style.display = 'none';
+		}
+	}).catch((err) => {
+		console.error(err);
+		CN.new("Error", "An error occured while trying to connect", CN.defaultIcon.error);
+	});
 }
 
 export { Login, changeWindowLoginBack };

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/26 11:12:50 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/13 10:53:06 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,11 +141,11 @@ function home3D()
 			}
 			camera.position.x -= (0.01 * globalSpeed);
 			camera.lookAt(screen.tv.position);
-			if (camera.position.x < 3.3)
+			if (camera.position.x < 3.3 && interval)
 				fadeInOut();
-			if (dofPass.materialBokeh.uniforms.aperture.value > 0)
+			if (dofPass.materialBokeh.uniforms.aperture.value > 0 && interval)
 				dofPass.materialBokeh.uniforms.aperture.value -= 0.0001;
-			if (camera.position.x < 3)
+			if (camera.position.x < 3 && interval)
 			{
 				clearInterval(interval);
 				camera.position.set(-2, 4, -6);
@@ -158,9 +158,9 @@ function home3D()
 					camera.lookAt(screen.tv.position);
 					camera.position.x += (0.01 * globalSpeed);
 					camera.position.y -= (0.005 * globalSpeed);
-					if (camera.position.x > 1.7)
+					if (camera.position.x > 1.7 && interval)
 						fadeInOut();
-					if (camera.position.x > 2)
+					if (camera.position.x > 2 && interval)
 					{
 						camera.position.set(0, 1.2, 0);
 						clearInterval(interval);
@@ -173,9 +173,9 @@ function home3D()
 							camera.lookAt(screen.tv.position);
 							camera.position.y += (0.005 * globalSpeed);
 							camera.position.z -= (0.01 * globalSpeed);
-							if (camera.position.x < -2.3)
+							if (camera.position.x < -2.3 && interval)
 								fadeInOut();
-							if (camera.position.z < -2)
+							if (camera.position.z < -2 && interval)
 							{
 								globalSpeed -= 0.001;
 								if (globalSpeed < 0)
@@ -187,11 +187,6 @@ function home3D()
 			}
 		}, 10);
 	}, 500);
-
-	setTimeout(() => {
-		screen.changeVideo(video.pong);
-		actualVideo = 0;
-	}, 100);
 
 	let	clickDetect = false;
 
@@ -326,7 +321,7 @@ function home3D()
 	renderer.setAnimationLoop(loop)
 }
 
-function windowUpdater()
+function windowUpdater(e)
 {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	camera.aspect = window.innerWidth / window.innerHeight;
@@ -342,7 +337,41 @@ function mouseTracker (event)
 
 function redirection()
 {
-	pageRenderer.changePage('lobbyPage');
+	const	topBar		= document.getElementById('topBar');
+
+	topBar.style.animation = 'animHideMenuDiv 0.5s';
+	topBar.style.opacity = 0;
+	moveCamera();
+	setTimeout(() => {
+		if (interval)
+		{
+			clearInterval(interval);
+			interval = null;
+		}
+		setTimeout(() => {
+			pageRenderer.changePage('lobbyPage');
+		}, 700);
+	}, 1000);
+}
+
+function moveCamera()
+{
+	const targetPosition = screen.tv.position;
+	const initialPosition = camera.position.clone();
+	const startTime = Date.now();
+
+	function updateCameraPosition()
+	{
+		const elapsedTime = Date.now() - startTime;
+		const t = Math.min(elapsedTime / 1000, 1);
+		const position = initialPosition.clone().lerp(targetPosition, t * t);
+
+		camera.position.copy(position);
+		if (t < 1)
+			requestAnimationFrame(updateCameraPosition);
+	}
+
+	updateCameraPosition();
 }
 
 export { Home3D };
