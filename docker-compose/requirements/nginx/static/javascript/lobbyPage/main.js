@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/08/25 21:20:17 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/13 10:41:51 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ class LobbyPage
 		listSelectCard[1].addEventListener('click', selectGameModeTwo);
 		listSelectCard[2].addEventListener('click', selectGameModeThree);
 		listSelectCard[3].addEventListener('click', selectGameModeFour);
+		for (let i = 0; i < document.body.children.length; i++)
+		{
+			document.body.children[i].style.animation = 'animShowMenuDiv 0.5s';
+		}
 	}
 
 	static dispose()

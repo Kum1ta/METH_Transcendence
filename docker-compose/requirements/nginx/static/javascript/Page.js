@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/11 17:26:02 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/13 11:05:33 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ class Page
 			{
 				if (window.location.pathname == thisClass.availablePages[i].url)
 				{
-					thisClass.changePage(thisClass.availablePages[i].name);
+					thisClass.changePage(thisClass.availablePages[i].name, true);
 					return ;
 				}
 			}
@@ -45,7 +45,7 @@ class Page
 		this.#showUnknownPage();
 	}
 	
-	changePage(name)
+	changePage(name, isBack = false)
 	{
 		if (this.actualPage != null)
 			this.actualPage.dispose();
@@ -67,7 +67,8 @@ class Page
 						document.body.innerHTML = text;
 						this.actualPage = this.availablePages[i].class;
 						document.title = this.availablePages[i].title;
-						history.pushState({}, this.availablePages[i].title, this.availablePages[i].url);
+						if (!isBack)
+							history.pushState({}, this.availablePages[i].title, this.availablePages[i].url);
 						this.actualPage.create();
 					})
 				})
@@ -79,7 +80,7 @@ class Page
 				return ;
 			}
 		}
-		throw Error("Page '" + page + "' not exist");
+		throw Error("Page '" + name + "' not exist");
 	}
 
 	#showUnknownPage()
