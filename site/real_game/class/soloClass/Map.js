@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/11 18:09:58 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/13 17:03:55 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ class Map
 			vec3.x = Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
 		}
 
-		initialZ = vec3.z;vec3.x = 3;
+		initialZ = vec3.z;
 		ballBody.velocity.set(vec3.x, vec3.y, vec3.z);
 		onUpdate = true;
 
@@ -183,17 +183,14 @@ class Map
 
 	static #collision()
 	{
-		let ballPosition;
 		let playerPosition;
 		let relativePosition;
 		let playerHalfExtents;
 		let sideTouched;
-		let random;
-		let step = 1;
+		let ballPosition;
+		let step = 0.75;
 
 		ballBody.addEventListener("collide", function(e) {
-			let relativeVelocity = e.contact.getImpactVelocityAlongNormal();
-
 			let bodyA = e.contact.bi;
 			let bodyB = e.contact.bj;
 			let collided = (bodyA === ballBody) ? bodyB : bodyA;
@@ -203,65 +200,75 @@ class Map
 					vec3.z = -vec3.z;
 					return;
 				case "player1":
-					scalePlayer(player1);
-					ballPosition = ballBody.position;
-					playerPosition = collided.position;
-					relativePosition = ballPosition.vsub(playerPosition);
-					playerHalfExtents = collided.shapes[0].halfExtents;
-					if (Math.abs(relativePosition.x) > playerHalfExtents.x)
-						sideTouched = (relativePosition.x > 0) ? 'right' : 'left';
-					else if (Math.abs(relativePosition.z) > playerHalfExtents.z)
-						sideTouched = (relativePosition.z > 0) ? 'front' : 'back';
-					if (sideTouched == 'front' || sideTouched == 'back')
-					{
-						vec3.z = -vec3.z;
-						return ;
-					}
-
-					initialSpeed = Math.sqrt(vec3.x * vec3.x + vec3.z * vec3.z);
-					random = Math.random();
-					if (random > 0.5)
-					{
-						vec3.z -= step;
-						vec3.x = Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
-					}
-					else if (random < 0.5)
-					{
-						vec3.z += step;
-						vec3.x = Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
-					}
+					collidedPlayer1(collided, e);
 					return;
 				case "player2":
-					scalePlayer(player2);
-					ballPosition = ballBody.position;
-					playerPosition = collided.position;
-					relativePosition = ballPosition.vsub(playerPosition);
-					playerHalfExtents = collided.shapes[0].halfExtents;
-					if (Math.abs(relativePosition.x) > playerHalfExtents.x)
-						sideTouched = (relativePosition.x > 0) ? 'right' : 'left';
-					else if (Math.abs(relativePosition.z) > playerHalfExtents.z)
-						sideTouched = (relativePosition.z > 0) ? 'front' : 'back';
-					if (sideTouched == 'front' || sideTouched == 'back')
-					{
-						vec3.z = -vec3.z;
-						return ;
-					}
-
-					initialSpeed = Math.sqrt(vec3.x * vec3.x + vec3.z * vec3.z);
-					random = Math.random();
-					if (random > 0.5)
-					{
-						vec3.z -= step;
-						vec3.x = -Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
-					}
-					else if (random < 0.5)
-					{
-						vec3.z += step;
-						vec3.x = -Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
-					}
+					collidedPlayer2(collided, e);
 					return;
 				}
 		});
+
+		function collidedPlayer1(collided, e)
+		{
+			scalePlayer(player1);
+			ballPosition = ballBody.position;
+			playerPosition = collided.position;
+			relativePosition = ballPosition.vsub(playerPosition);
+			playerHalfExtents = collided.shapes[0].halfExtents;
+			if (Math.abs(relativePosition.x) > playerHalfExtents.x)
+				sideTouched = (relativePosition.x > 0) ? 'right' : 'left';
+			else if (Math.abs(relativePosition.z) > playerHalfExtents.z)
+				sideTouched = (relativePosition.z > 0) ? 'front' : 'back';
+			if (sideTouched == 'front' || sideTouched == 'back')
+			{
+				vec3.z = -vec3.z;
+				return ;
+			}
+
+			initialSpeed = Math.sqrt(vec3.x * vec3.x + vec3.z * vec3.z);
+			let random = Math.random();
+			if (random > 0.5)
+			{
+				vec3.z -= step;
+				vec3.x = Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
+			}
+			else if (random < 0.5)
+			{
+				vec3.z += step;
+				vec3.x = Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
+			}
+		}
+
+		function collidedPlayer2(collided, e)
+		{
+			scalePlayer(player2);
+			ballPosition = ballBody.position;
+			playerPosition = collided.position;
+			relativePosition = ballPosition.vsub(playerPosition);
+			playerHalfExtents = collided.shapes[0].halfExtents;
+			if (Math.abs(relativePosition.x) > playerHalfExtents.x)
+				sideTouched = (relativePosition.x > 0) ? 'right' : 'left';
+			else if (Math.abs(relativePosition.z) > playerHalfExtents.z)
+				sideTouched = (relativePosition.z > 0) ? 'front' : 'back';
+			if (sideTouched == 'front' || sideTouched == 'back')
+			{
+				vec3.z = -vec3.z;
+				return ;
+			}
+
+			initialSpeed = Math.sqrt(vec3.x * vec3.x + vec3.z * vec3.z);
+			let random = Math.random();
+			if (random > 0.5)
+			{
+				vec3.z -= step;
+				vec3.x = -Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
+			}
+			else if (random < 0.5)
+			{
+				vec3.z += step;
+				vec3.x = -Math.sqrt(initialSpeed * initialSpeed - vec3.z * vec3.z);
+			}
+		}
 
 		function scalePlayer(player)
 		{
