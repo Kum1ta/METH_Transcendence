@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 14:31:30 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/09 16:10:15 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/14 00:30:59 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,16 +57,23 @@ class WebsocketHandler(WebsocketConsumer):
 		self.scope["session"]["username"] = username 
 		self.scope["session"].save()
 		self.logged_in = True
+		self.id = uid
+		self.username = username
 		return(1)
 
 	def connect(self):
 		self.logged_in = False
+		self.game = None
+		self.id = 0
+		self.username = None
 		self.accept()
 		if(self.scope["session"].get("logged_in", False)):
 			if(not self.add_to_online(self.scope["session"].get("id", 0))):
 				self.sendError("User already connected", 9013)
 				self.close()
 				return;
+			self.id = self.scope["session"].get("id",0)
+			self.username = self.scope["session"].get("username", None)
 		self.send(text_data=json.dumps({"type":"logged_in", "content":{
 			"status":self.scope["session"].get("logged_in",False),
 			"username":self.scope["session"].get("username",None),

@@ -1,40 +1,18 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
+#    ready.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/07/13 16:18:56 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/14 00:33:28 by tomoron          ###   ########.fr        #
+#    Created: 2024/09/13 23:41:12 by tomoron           #+#    #+#              #
+#    Updated: 2024/09/14 00:21:43 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FILE = docker-compose/docker-compose.yml
-
-COMPOSE = docker compose -f $(FILE)
-
-all: up
-
-build:
-	$(COMPOSE) build
-
-up: build
-	$(COMPOSE) up -d
-up_att: build
-	$(COMPOSE) up
-
-watch:
-	$(COMPOSE) watch
-down:
-	$(COMPOSE) down -v
-
-clean:
-	$(COMPOSE) down -v
-	docker system prune -af --volumes
-
-fclean:clean
-
-re: fclean all
-
-.PHONY: all build up up_att down fclean re
+def ready(socket, content):
+	print("ready request")
+	if(socket.game == None):
+		socket.sendError("No game started", 9101)
+		return;
+	socket.game.setReady(socket)

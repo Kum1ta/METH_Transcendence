@@ -1,40 +1,16 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
+#    start.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/07/13 16:18:56 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/14 00:33:28 by tomoron          ###   ########.fr        #
+#    Created: 2024/09/11 17:07:08 by tomoron           #+#    #+#              #
+#    Updated: 2024/09/13 23:46:25 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FILE = docker-compose/docker-compose.yml
+from ...Game import Game
 
-COMPOSE = docker compose -f $(FILE)
-
-all: up
-
-build:
-	$(COMPOSE) build
-
-up: build
-	$(COMPOSE) up -d
-up_att: build
-	$(COMPOSE) up
-
-watch:
-	$(COMPOSE) watch
-down:
-	$(COMPOSE) down -v
-
-clean:
-	$(COMPOSE) down -v
-	docker system prune -af --volumes
-
-fclean:clean
-
-re: fclean all
-
-.PHONY: all build up up_att down fclean re
+def start(socket, content):
+	game = Game(socket, content.get("with_bot", False))
