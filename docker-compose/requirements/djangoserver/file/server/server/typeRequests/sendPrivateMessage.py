@@ -6,14 +6,16 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/04 13:44:11 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/09 14:16:01 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/14 18:32:14 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+from asgiref.sync import sync_to_async
 from ..models import User, Message
 from django.db.models import Q
 import json
 
+@sync_to_async
 def sendPrivateMessage(socket, content):
 	# |Tom| Requete pour vérifier si l'user existe 
 	# Si user existe pas, faire ça : socket.sendError("User not found", 9008)
@@ -27,7 +29,7 @@ def sendPrivateMessage(socket, content):
 		if(not dest.exists()):
 			socket.sendError("User not found", 9008)
 			return
-		user = User.objects.filter(id=socket.scope["session"]["id"])
+		user = User.objects.filter(id=socket.id)
 		if(int(content["to"]) == user[0].id):
 			socket.sendError("Invalid message sent", 9009)
 		new_msg = Message.objects.create(sender=user[0], to=dest[0], content=content["content"])
@@ -41,7 +43,7 @@ def sendPrivateMessage(socket, content):
 			"content": content["content"],
 			"date": new_msg.date.strftime("%H:%M:%S %d/%m/%Y")
 		}}
-		socket.send(text_data=json.dumps(jsonVar))
+		socket.sync_send(json.dumps(jsonVar))
 		if(content["to"] in socket.onlinePlayers):
 			jsonVar = {"type": "new_private_message", "content": {
 				"from": new_msg.sender.id,
@@ -49,6 +51,6 @@ def sendPrivateMessage(socket, content):
 				"content": content["content"],
 				"date": new_msg.date.strftime("%H:%M:%S %d/%m/%Y")
 			}}
-			socket.onlinePlayers[content["to"]].send(text_data=json.dumps(jsonVar))
+			socket.onlinePlayers[content["to"]].sync_send(json.dumps(jsonVar))
 	except Exception as e:
 		socket.sendError("Invalid message sent", 9009, e)

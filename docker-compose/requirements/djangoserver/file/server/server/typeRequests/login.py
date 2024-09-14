@@ -6,10 +6,11 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/10 13:28:38 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/14 18:54:47 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+from asgiref.sync import sync_to_async
 from ..models import User
 import hashlib
 import requests
@@ -24,14 +25,15 @@ def loginByPass(socket, content):
 			socket.sendError("Account not verified, please verify your account before logging in",9025) 
 			return
 		if(socket.login(user[0].id, user[0].username)):
-			socket.send(text_data=json.dumps({"type":"logged_in", "content":{
+			socket.sync_send(json.dumps({"type":"logged_in", "content":{
 				"status":True,
 				"username":user[0].username,
 				"id": user[0].id,
 			}}))
 	else:
-		socket.send(text_data=json.dumps({"type": "error", "content": "Invalid email or password", "code": 9007}))
+		socket.sync_send(json.dumps({"type": "error", "content": "Invalid email or password", "code": 9007}))
 
+@sync_to_async
 def login(socket, content):
 	try:
 		if (content["type"] == "byPass"):

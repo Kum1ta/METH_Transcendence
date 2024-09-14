@@ -31,3 +31,4 @@
 
 - 9100 : Action out of range
 - 9101 : No game started 
+- 9102 : Game already started
