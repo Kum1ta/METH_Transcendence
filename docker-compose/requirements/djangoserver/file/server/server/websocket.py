@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 14:31:30 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/14 21:21:19 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/15 00:48:29 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,16 +61,17 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 		print("\033[32monline : ", self.onlinePlayers)
 		return(0)
 
-	def login(self, uid: int, username: str) -> int:
-		if(self.session_get("logged_in", False)):
+	async def login(self, uid: int, username: str) -> int:
+		if(await self.session_get("logged_in", False)):
+			print("already logged in")
 			return(0)
 		if(not self.add_to_online(uid)):
-			socket.sendError("Already logged in", 9012)
+			self.sendError("Already logged in", 9012)
 			return(0)
-		self.session_set("logged_in",True)
-		self.session_set("id",uid)
-		self.session_set("username",username)
-		self.session_save()
+		await self.session_set("logged_in",True)
+		await self.session_set("id",uid)
+		await self.session_set("username",username)
+		await self.session_save()
 		self.logged_in = True
 		self.id = uid
 		self.username = username

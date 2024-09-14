@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/14 18:54:47 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/15 00:47:18 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ import requests
 import json
 import os
 
+@sync_to_async
 def loginByPass(socket, content):
 	password_hash = hashlib.md5((content["mail"] + content["password"]).encode()).hexdigest()
 	user = User.objects.filter(mail=content["mail"], password=password_hash)
@@ -30,14 +31,15 @@ def loginByPass(socket, content):
 				"username":user[0].username,
 				"id": user[0].id,
 			}}))
+		else:
+			socket.sendError("An unknown error occured",9027)
 	else:
 		socket.sync_send(json.dumps({"type": "error", "content": "Invalid email or password", "code": 9007}))
 
-@sync_to_async
-def login(socket, content):
+async def login(socket, content):
 	try:
 		if (content["type"] == "byPass"):
-			loginByPass(socket, content)
+			await loginByPass(socket, content)
 		else:
 			socket.sendError("Invalid login type", 9006)
 	except Exception as e:
