@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 08:08:00 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/12 16:29:17 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/14 18:55:01 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ from ..models import User, MailVerify
 from ..data import ICLOUD_USER, ICLOUD_PASS, SERVER_URL
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
+from asgiref.sync import sync_to_async
 import smtplib
 import random
 import re
@@ -25,9 +26,12 @@ mail_pattern = "^((?!\\.)[\\w\\-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$"
 password_pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
 URLMAIL = SERVER_URL + "/verify?token="
 
+@sync_to_async
 def createAccount(socket, content):
+	print("create account")
 	if (socket.logged_in):
 		socket.sendError("Already logged in", 9012)
+		return;
 	try:
 		if (not bool(re.match(mail_pattern, content["mail"]))):
 			socket.sendError("Invalid mail", 9014)
@@ -64,10 +68,13 @@ def createAccount(socket, content):
 		new_user.save()
 		verif_str = gen_string(200)
 		MailVerify.objects.create(uid=new_user, token=verif_str).save()
-		socket.send(text_data=json.dumps({"type": "create_account", "content": "Account created"}))
+		print("send")
+		socket.sync_send(json.dumps({"type": "create_account", "content": "Account created"}))
 		if(not sendVerifMail(verif_str, content["mail"], content["username"])):
+			print("mail error")
 			socket.sendError("An error occured while sending the email, glhf", 2026)
 	except Exception as e:
+		print("error")
 		socket.sendError("An error occured while creating the account", 9024, e)
 
 def sendVerifMail(verif_str, mail, username):

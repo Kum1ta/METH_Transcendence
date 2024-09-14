@@ -6,12 +6,15 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 14:31:30 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/14 00:30:59 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/14 21:21:19 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
+from asgiref.sync import sync_to_async
+from typing import Union
 import json
+import asyncio
 
 import django
 django.setup()
@@ -31,15 +34,27 @@ functionRequest = [login, getPrivateListUser, getPrivateListMessage,
 
 from random import randint
 
-class WebsocketHandler(WebsocketConsumer):
+class WebsocketHandler(AsyncWebsocketConsumer):
 	debugMode = True
 
 	# format : {id : socket, ...}
 	onlinePlayers = {}
 
+	@sync_to_async
+	def session_get(self, key, default=None):
+		return(self.scope["session"].get(key, default))
+
+	@sync_to_async
+	def session_set(self, key, value):
+		self.scope["session"][key] = value
+
+	@sync_to_async
+	def session_save(self):
+		self.scope["session"].save()
+
 	def add_to_online(self, uid):
 		if(not uid):
-			return
+			return(0)
 		if(uid not in self.onlinePlayers):
 			self.onlinePlayers[uid] = self
 			return(1)
@@ -47,56 +62,53 @@ class WebsocketHandler(WebsocketConsumer):
 		return(0)
 
 	def login(self, uid: int, username: str) -> int:
-		if(self.scope["session"].get("logged_in", False)):
+		if(self.session_get("logged_in", False)):
 			return(0)
 		if(not self.add_to_online(uid)):
 			socket.sendError("Already logged in", 9012)
 			return(0)
-		self.scope["session"]["logged_in"] = True
-		self.scope["session"]["id"] = uid
-		self.scope["session"]["username"] = username 
-		self.scope["session"].save()
+		self.session_set("logged_in",True)
+		self.session_set("id",uid)
+		self.session_set("username",username)
+		self.session_save()
 		self.logged_in = True
 		self.id = uid
 		self.username = username
 		return(1)
 
-	def connect(self):
+	async def connect(self):
 		self.logged_in = False
 		self.game = None
 		self.id = 0
 		self.username = None
-		self.accept()
-		if(self.scope["session"].get("logged_in", False)):
-			if(not self.add_to_online(self.scope["session"].get("id", 0))):
-				self.sendError("User already connected", 9013)
-				self.close()
+		await self.accept()
+		if(await self.session_get("logged_in", False)):
+			if(not self.add_to_online(await self.session_get("id", 0))):
+				jsonVar = {"type": "error", "content": "User already connected", "code": 9013}
+				await self.send(text_data=json.dumps(jsonVar))
+				await self.close()
 				return;
-			self.id = self.scope["session"].get("id",0)
-			self.username = self.scope["session"].get("username", None)
-		self.send(text_data=json.dumps({"type":"logged_in", "content":{
-			"status":self.scope["session"].get("logged_in",False),
-			"username":self.scope["session"].get("username",None),
-			"id":self.scope["session"].get("id",0)
+			self.id = await self.session_get("id",0)
+			self.username = await self.session_get("username", None)
+			self.logged_in = True
+		await self.send(text_data=json.dumps({"type":"logged_in", "content":{
+			"status":await self.session_get("logged_in",False),
+			"username":await self.session_get("username",None),
+			"id":await self.session_get("id",0)
 		}}))
-		self.logged_in = self.scope["session"].get("logged_in", False)
 		print("new client")
 	
-	def disconnect(self, close_code):
+	async def disconnect(self, close_code):
 		print("you can go, i am not mad, we never wanted you anyway")
 		if(not self.logged_in):
 			return ;
-		uid = self.scope["session"].get("id", 0)
+		uid = await self.session_get("id", 0)
 		if(uid in self.onlinePlayers):
 			del self.onlinePlayers[uid]
+		if(self.game !=None):
+			self.game.leave(self)
 	
-	def receive(self, text_data):
-		print("someone is talking")
-		print("username is ", self.scope["session"].get("username"))
-		if(self.scope["session"].get("logged_in", False)):
-			print("user is logged in")
-		else:
-			print("user is not logged in")
+	async def receive(self, text_data):
 		try:
 			jsonRequest = json.loads(text_data)
 		except json.JSONDecodeError:
@@ -106,21 +118,37 @@ class WebsocketHandler(WebsocketConsumer):
 			self.printDebug(jsonRequest, 0)
 			if (jsonRequest["type"] in typeRequest):
 				if (jsonRequest["type"] == "login" or jsonRequest["type"] == "create_account"):
-					functionRequest[typeRequest.index(jsonRequest["type"])](self, jsonRequest["content"])
+					await functionRequest[typeRequest.index(jsonRequest["type"])](self, jsonRequest["content"])
 				else:
-					if (not self.scope["session"].get("logged_in", False)):
+					if (not await self.session_get("logged_in", False)):
 						return;
-					functionRequest[typeRequest.index(jsonRequest["type"])](self, jsonRequest["content"])
+					await functionRequest[typeRequest.index(jsonRequest["type"])](self, jsonRequest["content"])
 			else:
 				self.sendError("Invalid type", 9004)
 		except Exception as e:
 			self.sendError("Invalid request", 9005, e)
+	
+	def sync_send(self, data: Union[dict,str]):
+		txt_data = None	
+		if(type(data) is dict):
+			txt_data = json.dumps(data)
+		else:
+			txt_data = data
+
+		try:
+			loop = asyncio.get_running_loop()
+		except RuntimeError:
+			loop = asyncio.new_event_loop()
+			asyncio.set_event_loop(loop)
+			loop.run_until_complete(self.send(text_data=txt_data))
+		else:
+			loop.create_task(self.send(text_data=txt_data))
 
 	def	sendError(self, message, code, error=None):
 		try:
 			jsonVar = {"type": "error", "content": message, "code": code}
 			self.printDebug(jsonVar, 2, error)
-			self.send(text_data=json.dumps(jsonVar))
+			self.sync_send(jsonVar)
 		except Exception as e:
 			if (self.debugMode):
 				print("\033[0;31m|------ Error in sendError ------|\033[0;0m")
