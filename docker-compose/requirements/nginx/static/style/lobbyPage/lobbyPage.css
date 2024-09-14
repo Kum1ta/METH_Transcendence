@@ -30,6 +30,15 @@
 	}
 }
 
+@keyframes anim3 {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
 * {
 	margin: 0;
 	padding: 0;

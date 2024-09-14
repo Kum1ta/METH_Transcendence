@@ -37,7 +37,19 @@ def multiLocalGamePage(request):
 		return(HttpResponse("you are not logged in",status=403))
 	return render(request, "multiLocalGamePage.html", {})
 
+def waitingGamePage(request):
+	if(request.method != "POST"):
+		return index(request)
+	if(not request.session.get("logged_in", False)):
+		return(HttpResponse("you are not logged in",status=403))
+	return render(request, "waitingGamePage.html", {})
+
 def game(request):
+	if(not request.session.get("logged_in", False)):
+		return(HttpResponse("you are not logged in",status=403))
+	return redirect("/lobby")
+
+def wait_game(request):
 	if(not request.session.get("logged_in", False)):
 		return(HttpResponse("you are not logged in",status=403))
 	return redirect("/lobby")
