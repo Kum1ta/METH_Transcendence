@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Ball.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:58:03 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/04 15:07:07 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/14 00:19:46 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import * as THREE from 'three';
-import { wallTop, wallBottom } from './Map.js';
+import * as THREE from '/static/javascript/three/build/three.module.js'
+import { wallTop, wallBottom } from '/static/javascript/multiLocalGame/Map.js'
 
 let		ball		=	null;
 let		speed		=	0.15;

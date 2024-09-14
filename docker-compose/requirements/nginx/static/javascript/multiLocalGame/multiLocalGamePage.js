@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   SoloGame.js                                        :+:      :+:    :+:   */
+/*   multiLocalGamePage.js                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:07:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/13 15:33:01 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/14 01:59:38 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import * as THREE from 'three';
-import { Map, ground, gameEndStatus } from './soloClass/Map.js'
-import { Players, player1, player2 } from './soloClass/Players.js'
-import { Ball } from './soloClass/Ball.js'
+import { Map, ground, gameEndStatus, score, scoreElement } from '/static/javascript/multiLocalGame/Map.js'
+import { Players, player1, player2 } from '/static/javascript/multiLocalGame/Players.js'
+import * as THREE from '/static/javascript/three/build/three.module.js'
+import { Ball } from '/static/javascript/multiLocalGame/Ball.js'
+import { pageRenderer } from '/static/javascript/main.js'
 
-import { stats } from './MultiGame.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
 
 let	scene		=	null;
 let	renderer	=	null;
 let	camera		=	null;
-let	controls	=	null;
-let	gameEnd		=	false;
 
 /*
 Controls :
@@ -34,16 +32,15 @@ Controls :
 
 	- a : restart quand score debug
 */
-
-class SoloGame
+class multiLocalGamePage
 {
 	static create()
 	{
 		scene = new THREE.Scene();
 		renderer = new THREE.WebGLRenderer({antialias: true});
-		renderer.domElement.style.animation = 'fadeOutStart 1s';
+		renderer.domElement.style.animation = 'fadeOutStartGames 1s';
 		renderer.domElement.style.filter = 'brightness(1)';
-		document.getElementById('score').style.animation = 'fadeOutStart 1s';
+		document.getElementById('score').style.animation = 'fadeOutStartGames 1s';
 
 		renderer.shadowMap.enabled = true;
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -56,7 +53,6 @@ class SoloGame
 		document.body.appendChild(renderer.domElement);
 		Players.create(scene);
 
-		controls = new OrbitControls(camera, renderer.domElement);
 		camera.position.set(0, 22, 0);
 
 		document.addEventListener('keypress', (e) => {
@@ -65,6 +61,7 @@ class SoloGame
 		})
 
 		renderer.setAnimationLoop(loop);
+		document.body.style.opacity = 1;
 	}
 
 	static dispose()
@@ -93,15 +90,30 @@ class SoloGame
 
 function loop()
 {
-	stats.begin();
-	if (gameEndStatus)                  // fin du jeu faire les dispose en conséquence
-		console.log('Game end');
-	controls.update();
+	if (gameEndStatus)
+	{
+		renderer.setAnimationLoop(null);
+		gameFinish()
+	}
 	Ball.update();
 	Map.update();
 	Players.update();
-	renderer.render(scene, camera);
-	stats.end();
+	if (renderer)
+		renderer.render(scene, camera);
 }
 
-export { SoloGame };
+function gameFinish()
+{
+	scoreElement.innerHTML = "Player " + (score.player1 > score.player2 ? "1" : "2") + " win !";
+	scoreElement.style.fontSize = '10vh';
+	scoreElement.style.opacity = 1;
+	document.body.style.animation = 'none';
+	setTimeout(() => {
+		document.body.style.animation = 'end 1s';
+		setTimeout(() => {
+			pageRenderer.changePage('lobbyPage');
+		}, 500);
+	}, 3000);
+}
+
+export { multiLocalGamePage };

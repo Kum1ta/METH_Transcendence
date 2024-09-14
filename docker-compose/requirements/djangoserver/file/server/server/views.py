@@ -30,6 +30,18 @@ def lobbyPage(request):
 		return(HttpResponse("you are not logged in",status=403))
 	return render(request, "lobbyPage.html", {})
 
+def multiLocalGamePage(request):
+	if(request.method != "POST"):
+		return index(request)
+	if(not request.session.get("logged_in", False)):
+		return(HttpResponse("you are not logged in",status=403))
+	return render(request, "multiLocalGamePage.html", {})
+
+def game(request):
+	if(not request.session.get("logged_in", False)):
+		return(HttpResponse("you are not logged in",status=403))
+	return redirect("/lobby")
+
 def verify(request):
 	req_token = request.GET.get('token', None)
 	if(req_token == None):

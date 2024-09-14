@@ -3,15 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:05:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/11 15:18:08 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/14 01:59:59 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { MultiGame } from "./class/MultiGame";
-import { SoloGame } from "./class/SoloGame";
 
-// MultiGame.create();
-SoloGame.create();
+MultiGame.create();
