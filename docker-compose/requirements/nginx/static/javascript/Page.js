@@ -6,12 +6,13 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/13 11:05:33 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/14 00:57:30 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { HomePage } from "/static/javascript/homePage/main.js";
+import { multiLocalGamePage } from "/static/javascript/multiLocalGame/multiLocalGamePage.js"
 import { LobbyPage } from "/static/javascript/lobbyPage/main.js";
+import { HomePage } from "/static/javascript/homePage/main.js";
 
 class Page
 {
@@ -19,6 +20,7 @@ class Page
 	availablePages = [
 		{url:'/', servUrl: '/homePage', class: HomePage, name: 'homePage', title: 'PTME - Home'},
 		{url:'/lobby', servUrl: '/lobbyPage', class: LobbyPage, name: 'lobbyPage', title: 'PTME - Lobby'},
+		{url:'/game', servUrl: '/multiLocalGamePage', class: multiLocalGamePage, name: 'multiLocalGamePage', title: 'PTME - Game'},
 	]
 
 	constructor()
@@ -63,13 +65,13 @@ class Page
 				})
 				.then(data => {
 					data.text().then(text => {
-						console.log("Page updated !");
 						document.body.innerHTML = text;
 						this.actualPage = this.availablePages[i].class;
 						document.title = this.availablePages[i].title;
 						if (!isBack)
 							history.pushState({}, this.availablePages[i].title, this.availablePages[i].url);
 						this.actualPage.create();
+						console.log("Page created.");
 					})
 				})
 				.catch(error => {

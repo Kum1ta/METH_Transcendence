@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/13 16:42:37 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/13 22:13:07 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ import * as THREE from '/static/javascript/three/build/three.module.js'
 import { Screen, light } from '/static/javascript/home3D/Screen.js'
 import { pageRenderer } from '/static/javascript/main.js'
 
-const	disable3D		= true;
+const	disable3D		= false;
 
 let		scene			= null;
 let		renderer		= null;

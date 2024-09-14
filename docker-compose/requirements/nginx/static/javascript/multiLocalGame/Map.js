@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/13 17:03:55 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/14 02:02:00 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import * as CANNON from 'cannon-es';
-import * as THREE from 'three';
-import { ball } from './Ball.js'
-import { player1, player2 } from './Players.js';
+import * as CANNON from '/static/javascript/cannon-es/dist/cannon-es.js'
+// import * as CANNON from '/static/javascript/cannon/build/cannon.min.js'
+import * as THREE from '/static/javascript/three/build/three.module.js'
+import { ball } from '/static/javascript/multiLocalGame/Ball.js'
+import { player1, player2 } from '/static/javascript/multiLocalGame/Players.js';
 
 const	width			=	25;
 const	height			=	12.5;
@@ -34,14 +35,16 @@ let		speed			=	3;
 let		initialZ		=	0;
 let		score			=	{player1: 0, player2: 0};
 let		onUpdate		=	false;
-const	scoreElement	=	document.getElementById('score');
+let		scoreElement	=	null;
 let		initialSpeed	=	3;
 let		gameEndStatus	=	false;
+const	scoreToWin		=	2; //+1 for real score to win
 
 class Map
 {
 	static create(scene)
 	{
+		scoreElement = document.getElementById('score');
 		world = new CANNON.World({
 			gravity: new CANNON.Vec3(0, -9.81, 0),
 		});
@@ -153,6 +156,9 @@ class Map
 		if (spotLight)
 			spotLight.dispose();
 		spotLight = null;
+		score.player1 = 0;
+		score.player2 = 0;
+		gameEndStatus = false;
 	}
 
 	static update()
@@ -295,9 +301,9 @@ class Map
 	static reCreate(player1Lose)
 	{
 		onUpdate = true;
-		document.getElementsByTagName('canvas')[3].style.animation = 'fadeIn 0.199s';
-		document.getElementsByTagName('canvas')[3].style.filter = 'brightness(0)';
-		scoreElement.style.animation = 'fadeInText 0.199s';
+		document.getElementsByTagName('canvas')[0].style.animation = 'fadeInGames 0.199s';
+		document.getElementsByTagName('canvas')[0].style.filter = 'brightness(0)';
+		scoreElement.style.animation = 'fadeInTextGames 0.199s';
 		scoreElement.style.color = 'rgb(255, 255, 255, 1)';
 
 		setTimeout(() => {
@@ -308,7 +314,7 @@ class Map
 			scoreElement.innerHTML = score.player1 + '-' +score.player2;
 		}, 500);
 
-		if ((player1Lose && score.player2 >= 2) || (!player1Lose && score.player1 >= 2))
+		if ((player1Lose && score.player2 >= scoreToWin) || (!player1Lose && score.player1 >= scoreToWin))
 			return (this.#endGame());
 
 		setTimeout(() => {
@@ -339,9 +345,9 @@ class Map
 			player2Body.position.set(12, 0.4, 0);
 			player2.position.copy(player2Body.position);
 
-			scoreElement.style.animation = 'fadeOut 0.199s';
-			document.getElementsByTagName('canvas')[3].style.filter = 'brightness(1)';
-			scoreElement.style.animation = 'fadeOutText 0.399s';
+			scoreElement.style.animation = 'fadeOutGames 0.199s';
+			document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
+			scoreElement.style.animation = 'fadeOutTextGames 0.399s';
 			scoreElement.style.color = 'rgb(255, 255, 255, 0.1)';
 		}, 1200);
 	}
@@ -377,9 +383,9 @@ class Map
 			player2Body.position.set(12, 0.4, 0);
 			player2.position.copy(player2Body.position);
 
-			scoreElement.style.animation = 'fadeOut 0.199s';
-			document.getElementsByTagName('canvas')[3].style.filter = 'brightness(1)';
-			scoreElement.style.animation = 'fadeOutText 0.399s';
+			scoreElement.style.animation = 'fadeOutGames 0.199s';
+			document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
+			scoreElement.style.animation = 'fadeOutTextGames 0.399s';
 			scoreElement.style.color = 'rgb(255, 255, 255, 0.1)';
 			onUpdate = false;
 			gameEndStatus = true;
@@ -419,4 +425,4 @@ function createWall(onTop)
 	return (mesh);
 }
 
-export { Map, wallBottom, wallTop, ground, gameEndStatus };
+export { Map, wallBottom, wallTop, ground, gameEndStatus, score, scoreElement };

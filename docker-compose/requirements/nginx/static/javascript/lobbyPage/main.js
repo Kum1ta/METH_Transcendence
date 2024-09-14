@@ -6,12 +6,12 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/13 15:43:17 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/14 01:28:25 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { barSelecter, goalSelecter } from '/static/javascript/lobbyPage/3d.js';
-
+import { pageRenderer } from '/static/javascript/main.js'
 /* 
 	Information :
 		- 0: Multiplayer local
@@ -29,9 +29,9 @@ class LobbyPage
 {
 	static create()
 	{
-		console.log("Lobby created");
-		listSelectCard = document.getElementsByClassName('select-card');
+		const	startButton = document.getElementsByClassName('buttonStartGame')[0];
 
+		listSelectCard = document.getElementsByClassName('select-card');
 		gameMode = 0;
 		document.getElementsByClassName('game-mode')[0].addEventListener('click', showGameMode);
 		document.getElementById('closePopupBtn').addEventListener('click', hideGameMode);
@@ -46,11 +46,15 @@ class LobbyPage
 		}
 		barSelector = new barSelecter(document.getElementById('bar'));
 		goalSelector = new goalSelecter(document.getElementById('goal'));
+		startButton.addEventListener('click', startMode);
 	}
 
 	static dispose()
 	{
+		const	startButton = document.getElementsByClassName('buttonStartGame')[0];
+
 		gameMode = 0;
+		startButton.removeEventListener('click', startMode);
 		document.getElementsByClassName('game-mode')[0].removeEventListener('click', showGameMode);
 		document.getElementById('closePopupBtn').removeEventListener('click', hideGameMode);
 		window.removeEventListener('click', closeClickOutsiteGameMode);
@@ -63,9 +67,31 @@ class LobbyPage
 		barSelector = null;
 		goalSelector.dispose();
 		goalSelector = null;
+		listSelectCard = null;
 	}
 }
 
+function startMode()
+{
+	if (gameMode == 0)
+		startMultiLocal();
+	else if (gameMode == 1)
+		alert("Not implemented");
+	else if (gameMode == 2)
+		alert("Not implemented");
+	else if (gameMode == 3)
+		alert("Not implemented");
+}
+
+function startMultiLocal()
+{
+	console.log(1);
+	document.body.style.animation = "startGameAnim 0.5s";
+	document.body.style.opacity = 0;
+	setTimeout(() => {
+		pageRenderer.changePage("multiLocalGamePage");
+	}, 500);
+}
 
 function showGameMode()
 {

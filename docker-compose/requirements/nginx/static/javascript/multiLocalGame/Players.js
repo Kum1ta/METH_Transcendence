@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Players.js                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:12:25 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/10 16:37:09 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/14 00:20:51 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import * as THREE from 'three';
+import * as THREE from '/static/javascript/three/build/three.module.js'
 
 const	speed			=	0.25;
 let		player1			=	null;
