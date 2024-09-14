@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/14 00:40:30 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/14 12:01:35 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ class Game:
 
 		if(not withBot):
 			print("no bot")
-			while(Game.WaitingForPlayerLock):
+			while(Game.waitingForPlayerLock):
 				time.sleep(0.05)
 			Game.waitingForPlayerLock = True
 			if(Game.waitingForPlayer == None):
