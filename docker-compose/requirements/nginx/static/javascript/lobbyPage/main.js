@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/14 01:28:25 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/14 23:21:38 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ class LobbyPage
 		const	startButton = document.getElementsByClassName('buttonStartGame')[0];
 
 		listSelectCard = document.getElementsByClassName('select-card');
-		gameMode = 0;
 		document.getElementsByClassName('game-mode')[0].addEventListener('click', showGameMode);
 		document.getElementById('closePopupBtn').addEventListener('click', hideGameMode);
 		window.addEventListener('click', closeClickOutsiteGameMode);
@@ -40,6 +39,7 @@ class LobbyPage
 		listSelectCard[1].addEventListener('click', selectGameModeTwo);
 		listSelectCard[2].addEventListener('click', selectGameModeThree);
 		listSelectCard[3].addEventListener('click', selectGameModeFour);
+		document.getElementsByClassName('mode-card')[0].getElementsByTagName('p')[0].innerHTML = listSelectCard[gameMode].innerHTML;
 		for (let i = 0; i < document.body.children.length; i++)
 		{
 			document.body.children[i].style.animation = 'animShowMenuDiv 0.5s';
@@ -53,7 +53,6 @@ class LobbyPage
 	{
 		const	startButton = document.getElementsByClassName('buttonStartGame')[0];
 
-		gameMode = 0;
 		startButton.removeEventListener('click', startMode);
 		document.getElementsByClassName('game-mode')[0].removeEventListener('click', showGameMode);
 		document.getElementById('closePopupBtn').removeEventListener('click', hideGameMode);
@@ -76,7 +75,7 @@ function startMode()
 	if (gameMode == 0)
 		startMultiLocal();
 	else if (gameMode == 1)
-		alert("Not implemented");
+		startMatchmaking();
 	else if (gameMode == 2)
 		alert("Not implemented");
 	else if (gameMode == 3)
@@ -85,11 +84,23 @@ function startMode()
 
 function startMultiLocal()
 {
-	console.log(1);
+	document.body.style.animation = "none";
+	document.body.offsetHeight;
 	document.body.style.animation = "startGameAnim 0.5s";
 	document.body.style.opacity = 0;
 	setTimeout(() => {
 		pageRenderer.changePage("multiLocalGamePage");
+	}, 500);
+}
+
+function startMatchmaking()
+{
+	document.body.style.animation = "none";
+	document.body.offsetHeight;
+	document.body.style.animation = "startGameAnim 0.5s";
+	document.body.style.opacity = 0;
+	setTimeout(() => {
+		pageRenderer.changePage("waitingGamePage");
 	}, 500);
 }
 

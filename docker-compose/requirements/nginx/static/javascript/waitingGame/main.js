@@ -1,0 +1,62 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.js                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/14 21:20:45 by edbernar          #+#    #+#             */
+/*   Updated: 2024/09/14 23:24:24 by edbernar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+import { sendRequest } from "/static/javascript/websocket.js";
+import { pageRenderer } from '/static/javascript/main.js'
+
+let	intervalPoints = null;
+
+class WaitingGamePage
+{
+	static create()
+	{
+		const	returnButton	= document.getElementById('returnToLobbyButton');
+		const	sentence		= document.getElementById('sentence');
+		const	text			= sentence.innerText;
+		let		points			= "";
+
+		document.body.style.opacity = 1;
+		for (let i = 0; i < document.body.children.length; i++)
+		{
+			document.body.children[i].style.animation = 'animShowMenuDiv 0.5s';
+		}
+		intervalPoints = setInterval(() => {
+			if (points.length < 3)
+				points += '.';
+			else
+				points = '';
+			sentence.innerText = text + points;
+		}, 500);
+		sendRequest("game", {action: 0})
+		returnButton.addEventListener('click', returnToLobby);
+	}
+
+	static dispose()
+	{
+		if (intervalPoints)
+			clearInterval(intervalPoints);
+		intervalPoints = null;
+	}
+}
+
+function returnToLobby()
+{
+	for (let i = 0; i < document.body.children.length; i++)
+	{
+		document.body.children[i].style.animation = "anim3 0.6s";
+	}
+	setTimeout(() => {
+		pageRenderer.changePage('lobbyPage');
+	}, 500);
+}
+
+export { WaitingGamePage };
