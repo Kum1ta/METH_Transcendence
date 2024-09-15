@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 16:10:26 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/14 19:22:52 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/15 13:38:55 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,5 +39,8 @@ async def gameRequest(socket, content):
 	if(action < 0 or action > len(action_list)):
 		socket.sendError("Action out of range", 9100)	
 		return;
+	if(action != 0 and socket.game == None):
+		socket.sendError("No game started",9101)
+		return ;
 	await action_list[action](socket,content)
 
