@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/14 21:30:54 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/15 13:33:31 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ class Game:
 				self.p1 = socket
 			else:
 				self.p2 = socket
+			print("set game to self")
 			socket.game = self
 			if(self.p2 != None and self.p1 != None):
 				data = json.dumps({"type":"game", "content":{
