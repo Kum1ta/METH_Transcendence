@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/15 00:47:18 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/15 11:14:32 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,18 +18,25 @@ import json
 import os
 
 @sync_to_async
-def loginByPass(socket, content):
-	password_hash = hashlib.md5((content["mail"] + content["password"]).encode()).hexdigest()
-	user = User.objects.filter(mail=content["mail"], password=password_hash)
-	if(user.exists()):
-		if(user[0].mail != None and not user[0].mail_verified):
+def userExists(mail, password):
+	password_hash = hashlib.md5((mail + password).encode()).hexdigest()
+	user = User.objects.filter(mail=mail, password=password_hash)
+	if(not user.exists()):
+		return({"found":False})
+	else:
+		return({"found":True, "id":user[0].id, "username":user[0].username, "mail_verified":user[0].mail_verified})
+
+async def loginByPass(socket, content):
+	u_info = await userExists(content["mail"],content["password"])
+	if(u_info["found"]):
+		if(not u_info["mail_verified"]):
 			socket.sendError("Account not verified, please verify your account before logging in",9025) 
 			return
-		if(socket.login(user[0].id, user[0].username)):
+		if(await socket.login(u_info["id"], u_info["username"])):
 			socket.sync_send(json.dumps({"type":"logged_in", "content":{
 				"status":True,
-				"username":user[0].username,
-				"id": user[0].id,
+				"username":u_info["username"],
+				"id": u_info["id"],
 			}}))
 		else:
 			socket.sendError("An unknown error occured",9027)
