@@ -22,6 +22,7 @@ urlpatterns = [
 	path("homePage",views.homePage, name='homePage'),
 	path("lobbyPage", views.lobbyPage, name='lobbyPage'),
 	path("multiLocalGamePage", views.multiLocalGamePage, name='multiLocalGamePage'),
+	path("multiOnlineGamePage", views.multiOnlineGamePage, name='multiOnlineGamePage'),
 	path("waitingGamePage", views.waitingGamePage, name='waitingGamePage'),
 	path("game", views.game, name='game'),
 	path("wait_game", views.game, name='wait_game'),

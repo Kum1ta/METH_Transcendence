@@ -1,0 +1,44 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Opponent.js                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/21 10:34:49 by edbernar          #+#    #+#             */
+/*   Updated: 2024/09/15 14:56:35 by edbernar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+let opponentExist = false;
+
+class Opponent
+{
+	object		= null;
+	speed		= 0.1;
+	interval	= null;
+	limits		= {};
+	player		= null;
+
+	constructor (object, map)
+	{
+		if (opponentExist)
+			throw Error("Opponent is already init.");
+		opponentExist = true;
+		this.object = object;
+		this.limits = map.limits;
+		this.object.position.set(0, 0.3, -map.mapLength / 2 + 0.2);
+	}
+
+	dispose()
+	{
+		opponentExist = false;
+	}
+
+	update()
+	{
+		//en attente du serveur
+	}
+}
+
+export { Opponent };
