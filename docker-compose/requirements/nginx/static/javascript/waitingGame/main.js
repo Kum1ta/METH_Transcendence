@@ -6,14 +6,15 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 21:20:45 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/14 23:24:24 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/15 12:57:52 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { sendRequest } from "/static/javascript/websocket.js";
 import { pageRenderer } from '/static/javascript/main.js'
 
-let	intervalPoints = null;
+let	intervalPoints	= null;
+let timeout			= null;
 
 class WaitingGamePage
 {
@@ -36,7 +37,9 @@ class WaitingGamePage
 				points = '';
 			sentence.innerText = text + points;
 		}, 500);
-		sendRequest("game", {action: 0})
+		timeout = setTimeout(() => {
+			sendRequest("game", {action: 0})
+		}, 1500);
 		returnButton.addEventListener('click', returnToLobby);
 	}
 
@@ -45,11 +48,29 @@ class WaitingGamePage
 		if (intervalPoints)
 			clearInterval(intervalPoints);
 		intervalPoints = null;
+		if (timeout)
+			clearTimeout(timeout);
+		timeout = null;
+		returnButton.removeEventListener('click', returnToLobby);
+
+	}
+
+	static showOpponent(username)
+	{
+		const	returnButton	= document.getElementById('returnToLobbyButton');
+		const	sentence		= document.getElementById('sentence');
+
+		if (intervalPoints)
+			clearInterval(intervalPoints);
+		intervalPoints = null;
+		sentence.innerText = "Match found";
+		document.body.removeChild(returnButton);
 	}
 }
 
 function returnToLobby()
 {
+	sendRequest("game", {action: 2});
 	for (let i = 0; i < document.body.children.length; i++)
 	{
 		document.body.children[i].style.animation = "anim3 0.6s";

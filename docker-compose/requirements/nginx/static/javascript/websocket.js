@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/12 18:18:53 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/15 11:55:47 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ import { typeCreateAccount } from "/static/javascript/typeResponse/typeCreateAcc
 import { typeAllListUser }from "/static/javascript/typeResponse/typeAllListUser.js";
 import { createNotification as CN } from "/static/javascript/notification/main.js";
 import { typeLogin } from "/static/javascript/typeResponse/typeLogin.js";
+import { typeGame } from "/static/javascript/typeResponse/typeGame.js"
 
 let socket = null;
 let	status = 0;
@@ -29,8 +30,8 @@ function launchSocket()
 {
 	socket = new WebSocket('/ws');
 
-	const	typeResponse = ["logged_in", "login", "private_list_user", "private_list_message", "new_private_message", "all_list_user", "create_account"];
-	const	functionResponse = [typeLogin, typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage, typeAllListUser, typeCreateAccount];
+	const	typeResponse = ["logged_in", "login", "private_list_user", "private_list_message", "new_private_message", "all_list_user", "create_account", "game"];
+	const	functionResponse = [typeLogin, typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage, typeAllListUser, typeCreateAccount, typeGame];
 
 	const	errorCode = [9007, 9010, 9011];
 	const	errorFunction = [typeErrorInvalidPassword, typeErrorInvalidToken42, typeErrorUnknown42Account];
