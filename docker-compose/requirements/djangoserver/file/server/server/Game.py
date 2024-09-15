@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Game.py                                            :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
+#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/15 13:33:31 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/15 14:44:14 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,16 +48,10 @@ class Game:
 				self.p1 = socket
 			else:
 				self.p2 = socket
-			print("set game to self")
 			socket.game = self
 			if(self.p2 != None and self.p1 != None):
-				data = json.dumps({"type":"game", "content":{
-					"action" : 1,
-					"id": socket.id,
-					"username": socket.username
-				}})
-				self.p1.sync_send(data)
-				self.p2.sync_send(data)
+				self.p1.sync_send({"type":"game", "content":{"action":1,"id":self.p2.id,"username":self.p2.username}})
+				self.p2.sync_send({"type":"game", "content":{"action":1,"id":self.p1.id,"username":self.p1.username}})
 		except Exception as e:
 			socket.sendError("invalid request", 9005, e)
 

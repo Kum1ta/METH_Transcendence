@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/10 18:27:01 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/15 15:24:37 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// import * as THREE from '/static/javascript/three/build/three.module.js';
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { Video } from './Video.js';
+import { GLTFLoader } from '/static/javascript/three/examples/jsm/loaders/GLTFLoader.js';
+import * as THREE from '/static/javascript/three/build/three.module.js'
+import { Video } from '/static/javascript/multiOnlineGame/Video.js';
 
 let loader				= null;
 let	scene				= null;
@@ -27,12 +26,12 @@ let texturePlane		= null;
 let ctx					= null;
 
 let path = [
-	{name: 'goal', 			onChoice: true, src:'../textures/video/goal2.webm'},
-	{name: 'easteregg',		onChoice: true, src:'../textures/video/easteregg.webm'},
-	{name: 'outstanding', 	onChoice: true, src:'../textures/video/outstanding.webm'},
-	{name: 'ping', 			onChoice: false, src:'../textures/video/pingpong.mp4'},
-	{name: 'catch', 		onChoice: false, src:'../textures/video/catch.mp4'},
-	{name: 'fortnite', 		onChoice: false, src:'../textures/video/fortnite.mp4'},
+	{name: 'goal', 			onChoice: true, src:'/static/video/multiOnlineGamePage/goal2.webm'},
+	{name: 'easteregg',		onChoice: true, src:'/static/video/multiOnlineGamePage/easteregg.webm'},
+	{name: 'outstanding', 	onChoice: true, src:'/static/video/multiOnlineGamePage/outstanding.webm'},
+	{name: 'ping', 			onChoice: false, src:'/static/video/multiOnlineGamePage/pingpong.mp4'},
+	{name: 'catch', 		onChoice: false, src:'/static/video/multiOnlineGamePage/catch.mp4'},
+	{name: 'fortnite', 		onChoice: false, src:'/static/video/multiOnlineGamePage/fortnite.mp4'},
 ]
 let spacingImages = [
 	100 * 2.33 * 10 - (100 * 2.33),   // 2 images
@@ -119,8 +118,8 @@ class Map
 		this.centerPos.y = 0.15;
 		this.centerPos.z = -length / 2 + length / 2;
 		this.mapLength = length;
-		scene.add(this.#createPlanes(7.5, length, -(Math.PI / 2), "planeBottom", true, '/textures/pastel.jpg'));
-		scene.add(this.#createPlanes(7.5, length, (Math.PI / 2), "planeTop", false, '/textures/pastel.jpg'));
+		scene.add(this.#createPlanes(7.5, length, -(Math.PI / 2), "planeBottom", true, '/static/img/multiOnlineGamePage/pastel.jpg'));
+		scene.add(this.#createPlanes(7.5, length, (Math.PI / 2), "planeTop", false, '/static/img/multiOnlineGamePage/pastel.jpg'));
 		scene.add(this.#createWall(-3.5, 0.4, -length/2, "wallLeft"));
 		scene.add(this.#createWall(3.5, 0.4, -length/2, "wallRight"));
 		if (obstacles)
@@ -422,7 +421,7 @@ class Map
 		materialCanvas	= new THREE.MeshBasicMaterial({ map: videoCanvasTexture, side: THREE.BackSide , transparent: true});
 
 		// Load the banner
-		loader.load( '../blender/exported/banner.glb', (gltf) => {
+		loader.load( '/static/models3D/multiOnlineGame/banner.glb', (gltf) => {
 			this.banner = gltf.scene.children[0];
 			gltf = null;
 			this.banner.material = materialCanvas;

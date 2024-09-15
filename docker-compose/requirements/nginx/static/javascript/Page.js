@@ -6,10 +6,11 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/14 21:36:06 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/15 15:48:43 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import { MultiOnlineGamePage } from "/static/javascript/multiOnlineGame/multiOnlineGamePage.js"
 import { multiLocalGamePage } from "/static/javascript/multiLocalGame/multiLocalGamePage.js"
 import { WaitingGamePage } from "/static/javascript/waitingGame/main.js"
 import { LobbyPage } from "/static/javascript/lobbyPage/main.js";
@@ -23,6 +24,7 @@ class Page
 		{url:'/lobby', servUrl: '/lobbyPage', class: LobbyPage, name: 'lobbyPage', title: 'PTME - Lobby'},
 		{url:'/game', servUrl: '/multiLocalGamePage', class: multiLocalGamePage, name: 'multiLocalGamePage', title: 'PTME - Game'},
 		{url:'/wait_game', servUrl: '/waitingGamePage', class: WaitingGamePage, name: 'waitingGamePage', title: 'PTME - Wait for a game'},
+		{url:'/game', servUrl: '/multiOnlineGamePage', class: MultiOnlineGamePage, name: 'multiOnlineGamePage', title: 'PTME - Game'},
 	]
 
 	constructor()

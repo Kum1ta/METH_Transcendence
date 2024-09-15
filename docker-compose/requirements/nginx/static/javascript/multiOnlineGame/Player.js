@@ -6,12 +6,11 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/28 11:38:45 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/15 14:57:56 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import * as THREE from 'three';
-// import * as THREE from '/static/javascript/three/build/three.module.js';
+import * as THREE from '/static/javascript/three/build/three.module.js'
 
 /*
 	Explication du code :

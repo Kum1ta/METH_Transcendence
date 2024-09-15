@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   MultiGame.js                                       :+:      :+:    :+:   */
+/*   multiOnlineGamePage.js                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/10 18:32:10 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/15 15:07:29 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import * as THREE from 'three';
-// import * as THREE from '/static/javascript/three/build/three.module.js';
-import { Player } from './multiClass/Player'
-import { Map } from './multiClass/Map'
-import { Ball } from './multiClass/Ball'
-import { Opponent } from './multiClass/Opponent'
-import { OrbitControls } from 'three/examples/jsm/Addons.js';
-import Stats from 'stats.js';
+import * as THREE from '/static/javascript/three/build/three.module.js'
+import { Player } from '/static/javascript/multiOnlineGame/Player.js'
+import { Map } from '/static/javascript/multiOnlineGame/Map.js'
+import { Ball } from '/static/javascript/multiOnlineGame/Ball.js'
+import { Opponent } from '/static/javascript/multiOnlineGame/Opponent.js'
 
 /*
 Controls :
@@ -45,12 +42,6 @@ Controls :
 	- t : 4 video
 */
 
-let	debug = false;
-const fpsLocker = {
-	status: false,
-	limit: 60,
-};
-let previousTime		= 0;
 let scene				= null;
 let map					= null;
 let ball				= null;
@@ -60,35 +51,27 @@ let spotLight			= null;
 let ambiantLight		= null;
 let opponent			= null;
 
-// ------------------- (need to be remove) -------------------- //
-const stats = new Stats();
-stats.showPanel(0);
-document.body.appendChild(stats.dom);
-
-const cameraTmp = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight);
-let controls = null;
-// ------------------------------------------------------------ //
-
-class MultiGame
+class MultiOnlineGamePage
 {
 	static create()
 	{
 		const bar1		= createBarPlayer(0xed56ea);
 		const bar2		= createBarPlayer(0xf3e11e);
 
-		previousTime	= Date.now();
+		document.body.setAttribute('style', '');
 		scene			= new THREE.Scene()
 		map				= new Map(scene, 13, true);
 		renderer		= new THREE.WebGLRenderer({antialias: true});
 		renderer.shadowMap.enabled = true;
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+		renderer.domElement.style.animation = 'fadeOutStartGames 1s';
+		renderer.domElement.style.filter = 'brightness(1)';
 		player			= new Player(bar1, map);
 		spotLight		= new THREE.SpotLight(0xffffff, 10000, 0, 0.2);
 		spotLight.castShadow = true;
 		ambiantLight	= new THREE.AmbientLight(0xffffff, 0.5);
 		ball			= new Ball(scene, map);
 		opponent		= new Opponent(bar2, map);
-		debug			= false;
 
 		scene.add(player.object);
 		scene.add(opponent.object);
@@ -101,9 +84,6 @@ class MultiGame
 		ball.initMoveBallTmp();
 		map.ballObject = ball.object;
 
-		controls = new OrbitControls(cameraTmp, renderer.domElement)
-		cameraTmp.position.set(5, 3, 5);
-		controls.target = new THREE.Vector3(map.centerPos.x, 0, map.centerPos.z);
 
 		document.addEventListener('keypress', (e) => {
 			if (e.key == 'g')
@@ -131,8 +111,6 @@ class MultiGame
 
 	static dispose()
 	{
-		debug = false;
-
 		if (renderer)
 			renderer.dispose();
 		renderer = null;
@@ -181,28 +159,9 @@ function changeBarColor(bar, color)
 
 function loop()
 {
-	stats.begin();
-	// ===== FPS locker ===== //
-	if (fpsLocker.status)
-	{
-		const currentTime = Date.now();
-		if (currentTime - previousTime < 1000 / 60)
-			return ;
-		previousTime = currentTime;
-	}
-	// ====================== //
-
 	player.update();
 	map.update(ball);
-	if (debug)
-	{
-		controls.update();
-		renderer.render(scene, cameraTmp);
-	}
-	else
-		renderer.render(scene, player.camera);
-
-	stats.end();
+	renderer.render(scene, player.camera);
 }
 
-export { MultiGame, stats };
+export { MultiOnlineGamePage };

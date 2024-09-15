@@ -6,15 +6,9 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:34:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/28 11:39:59 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/15 14:56:35 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-import { playerExist } from './Player'
-import * as THREE from 'three';
-
-// import * as THREE from '/static/javascript/three/build/three.module.js';
-
 
 let opponentExist = false;
 
