@@ -6,13 +6,14 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 16:10:26 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/15 13:38:55 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/16 13:59:24 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from .gameActions.start import start
 from .gameActions.ready import ready
 from .gameActions.leave import leave
+from .gameActions.move import move
 
 # game request format : {"type":"game", "content":{"action": 1, ...}}
 
@@ -24,6 +25,11 @@ from .gameActions.leave import leave
 #		- username
 #
 #	2 : go : the game started
+# 
+#	3 : move : when the oponnent moves or the client did an illegal move
+#		- is_opponent
+#		- pos
+#		- up
 
 #client actions (actions sent by the client) :
 #	0 : start : starts a game
@@ -32,8 +38,12 @@ from .gameActions.leave import leave
 #	1 : ready : tell the server the game is ready to start
 #
 #	2 : leave : leave the game (or waiting screen)
+#
+#	3 : move : when the client moves
+#		- pos :  
+#		- up : True/False(default : False) is the player up
 
-action_list = [start, ready, leave]
+action_list = [start, ready, leave, move]
 async def gameRequest(socket, content):
 	action = content["action"]
 	if(action < 0 or action > len(action_list)):
