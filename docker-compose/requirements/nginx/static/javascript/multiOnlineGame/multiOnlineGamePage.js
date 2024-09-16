@@ -6,11 +6,12 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/15 15:07:29 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/16 15:48:15 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from '/static/javascript/three/build/three.module.js'
+import { sendRequest } from "/static/javascript/websocket.js";
 import { Player } from '/static/javascript/multiOnlineGame/Player.js'
 import { Map } from '/static/javascript/multiOnlineGame/Map.js'
 import { Ball } from '/static/javascript/multiOnlineGame/Ball.js'
@@ -50,6 +51,7 @@ let player				= null;
 let spotLight			= null;
 let ambiantLight		= null;
 let opponent			= null;
+let	interval			= null;
 
 class MultiOnlineGamePage
 {
@@ -107,6 +109,10 @@ class MultiOnlineGamePage
 		})
 
 		renderer.setAnimationLoop(loop)
+		sendRequest('game', {action: 1});
+		interval = setInterval(() => {
+			sendRequest('game', {action: 3, pos: player.object.position.x, up: player.isUp});
+		}, 1000 / 20);
 	}
 
 	static dispose()
@@ -160,8 +166,9 @@ function changeBarColor(bar, color)
 function loop()
 {
 	player.update();
+	opponent.update();
 	map.update(ball);
 	renderer.render(scene, player.camera);
 }
 
-export { MultiOnlineGamePage };
+export { MultiOnlineGamePage, opponent };

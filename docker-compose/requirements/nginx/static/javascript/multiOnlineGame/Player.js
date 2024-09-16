@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/15 14:57:56 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/16 15:44:46 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ let	pressedButton		= [];
 
 class Player
 {
+	isUp			= false;
 	object			= null;
 	camera			= null;
 	speed			= 4;
@@ -207,6 +208,7 @@ class Player
 		{
 			if (pressedButton[i] == 'w' && this.object.position.y < this.limits.up)
 			{
+				this.isUp = true;
 				if (this.interval)
 					clearInterval(this.interval);
 				this.interval = setInterval(() => {
@@ -222,6 +224,7 @@ class Player
 			}
 			if (pressedButton[i] == 's' && this.object.position.y > this.limits.down)
 			{
+				this.isUp = false;
 				if (this.interval)
 					clearInterval(this.interval);
 				this.interval = setInterval(() => {
