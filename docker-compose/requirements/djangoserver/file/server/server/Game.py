@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/15 14:44:14 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/16 14:03:03 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,6 +90,10 @@ class Game:
 		data_raw = json.dumps({"type":"game","content":data})
 		self.p1.sync_send(data_raw)
 		self.p2.sync_send(data_raw)
+
+	def move(self, socket, pos, up):
+		opponent = p1 if socket != p1 else p2
+		opponent.sync_send({"type":"game","content":{"action":3, "pos":pos, "up":up}})
 
 	async def gameLoop(self):
 		self.started = True

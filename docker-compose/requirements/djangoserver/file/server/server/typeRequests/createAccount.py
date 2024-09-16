@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 08:08:00 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/14 18:55:01 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/16 13:39:22 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ import hashlib
 
 mail_pattern = "^((?!\\.)[\\w\\-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$"
 password_pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
+allowed_char_username = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
 URLMAIL = SERVER_URL + "/verify?token="
 
 @sync_to_async
@@ -45,7 +46,7 @@ def createAccount(socket, content):
 		if (len(content["username"]) > 20):
 			socket.sendError("Username must be at most 20 characters long", 9017)
 			return
-		if (content["username"].isalnum() == False):
+		if (not all(c in allowed_char_username for c in content["username"])):
 			socket.sendError("Username must contain only letters and numbers", 9018)
 			return
 		if (len(content["password"]) < 8):
