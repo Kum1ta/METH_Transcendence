@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:34:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/16 15:51:15 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/17 00:22:47 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ class Opponent
 	object		= null;
 	speed		= 4;
 	interval	= null;
+	interval2	= null;
 	limits = {
 		up : 3,
 		down: 0.3,
@@ -41,13 +42,26 @@ class Opponent
 
 	update()
 	{
-		console.log(this.object.position);
 	}
 
 	movePlayer(content)
 	{
-		const thisClass = this;
-		this.object.position.x = content.pos;
+		const lerp			= (start, end, t) => start + (end - start) * t;
+		const thisClass		= this;
+		const speedFactor	= 0.5;
+
+		if (thisClass.animationFrame)
+			cancelAnimationFrame(thisClass.animationFrame);
+		const animate = () => {
+			this.object.position.x = lerp(this.object.position.x, content.pos, speedFactor);
+			if (Math.abs(this.object.position.x - content.pos) < 0.01)
+				this.object.position.x = content.pos;
+			else
+				thisClass.animationFrame = requestAnimationFrame(animate);
+		};
+
+		thisClass.animationFrame = requestAnimationFrame(animate);
+	
 		if (content.up && thisClass.object.position.y < thisClass.limits.up)
 		{
 			if (this.interval)

@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/16 14:28:57 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/17 00:07:47 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -93,7 +93,7 @@ class Game:
 
 	def move(self, socket, pos, up):
 		opponent = self.p1 if socket != self.p1 else self.p2
-		opponent.sync_send({"type":"game","content":{"action":3, "pos":pos, "up":up, "is_opponent":True}})
+		opponent.sync_send({"type":"game","content":{"action":3, "pos":-pos, "up":up, "is_opponent":True}})
 
 	async def gameLoop(self):
 		self.started = True
