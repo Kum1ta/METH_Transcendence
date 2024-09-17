@@ -6,13 +6,14 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:19:10 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/25 18:26:52 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/17 23:10:22 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { infoPanel } from "/static/javascript/typeResponse/typePrivateListMessage.js";
 import { showActualGameMessage } from "/static/javascript/liveChat/showActualGameMessage.js";
 import { showListUser } from "/static/javascript/liveChat/showUserList.js";
+import { userMeInfo } from "/static/javascript/typeResponse/typeLogin.js";
 
 /*
 	Todo (Eddy) :
@@ -20,6 +21,7 @@ import { showListUser } from "/static/javascript/liveChat/showUserList.js";
 		- game message when game will be implemented
 */
 
+let		chatContent = null;
 let		chatButton = null;
 let		topChatHomeCross = null;
 
@@ -86,14 +88,22 @@ function	removeButtonIfExist()
 
 async function showChatMenu()
 {
+	const infoChat = document.getElementById("infoChat");
+
 	chatDiv.style.display = "flex";
-	removeButtonIfExist();
-	addDefaultButton();
-	await showListUser();
+	if (userMeInfo.id !== -1)
+	{
+		if (infoChat)
+			infoChat.remove();
+		removeButtonIfExist();
+		addDefaultButton();
+		await showListUser();
+	}
 }
 
 function hideChatMenu()
 {
+	console.log("hideChatMenu");
 	chatDiv.style.display = "none";
 	infoPanel.isOpen = false;
 }
