@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/17 13:59:13 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:23:53 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ class Map
 	ballObject = null;
 	mapLength = 0;
 	banner = null;
+	firework = null;
+	fireworkMixer = null;
+	fireworkAnimations = null;
 	centerPos = {
 		x: -1,
 		y: -1,
@@ -474,6 +477,26 @@ class Map
 		scene.remove(this.banner);
 	}
 
+	animationGoal()
+	{
+		loader.load('/static/models3D/multiOnlineGame/fireworkv1.glb', (gltf) => {
+			this.firework = gltf.scene.children[0];
+			this.fireworkAnimations = gltf.animations; // Récupérez les animations du modèle
+			gltf = null;
+			this.firework.material = new THREE.MeshPhysicalMaterial({color: 0xff0000});
+			scene.add(this.firework);
+
+			this.fireworkMixer = new THREE.AnimationMixer(this.firework);
+			this.fireworkAnimations.forEach((clip) => {
+				this.fireworkMixer.clipAction(clip).play(); // Joue toutes les animations
+			});
+
+			console.log(this.firework);
+		}, undefined, function (error) {
+			console.error(error);
+		});
+	}
+
 	#animationGravityChanger(group, onTop)
 	{
 		let geometryGC			= new THREE.TorusGeometry(1.5, 0.05, 12, 24);
@@ -541,6 +564,9 @@ class Map
 
 	update(ball)
 	{
+		if (this.mixer) {
+			this.mixer.update(0.016); // Le deltaTime, ajustez selon le temps entre les frames
+		}
 		for (let i = 0; this.arrObject && i < this.arrObject.length; i++)
 		{
 			if (this.arrObject[i].name == "wallLeft")

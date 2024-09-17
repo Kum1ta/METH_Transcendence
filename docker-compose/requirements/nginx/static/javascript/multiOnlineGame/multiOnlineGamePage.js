@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   multiOnlineGamePage.js                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/17 15:38:02 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/17 18:02:20 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { createNotification as CN } from "/static/javascript/notification/main.js";
 import * as THREE from '/static/javascript/three/build/three.module.js'
+import Stats from '/static/javascript/three/examples/jsm/libs/stats.module.js'
+import { OrbitControls } from '/static/javascript/three/examples/jsm/Addons.js';
 import { sendRequest } from "/static/javascript/websocket.js";
 import { Player } from '/static/javascript/multiOnlineGame/Player.js'
 import { Map } from '/static/javascript/multiOnlineGame/Map.js'
@@ -55,6 +57,15 @@ let ambiantLight		= null;
 let opponent			= null;
 let	interval			= null;
 
+// ------------------- (need to be remove) -------------------- //
+const stats = new Stats();
+stats.showPanel(0);
+document.body.appendChild(stats.dom);
+
+const cameraTmp = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight);
+let controls = null;
+// ------------------------------------------------------------ //
+
 class MultiOnlineGamePage
 {
 	static create()
@@ -88,6 +99,12 @@ class MultiOnlineGamePage
 		ball.initMoveBallTmp();
 		map.ballObject = ball.object;
 
+		//////////////////////////
+		controls = new OrbitControls(cameraTmp, renderer.domElement)
+		cameraTmp.position.set(5, 3, 5);
+		controls.target = new THREE.Vector3(map.centerPos.x, 0, map.centerPos.z);
+		//////////////////////////
+
 
 		document.addEventListener('keypress', (e) => {
 			if (e.key == 'g')
@@ -99,7 +116,10 @@ class MultiOnlineGamePage
 			if (e.key == 'p')
 				map.putVideoOnCanvas(0, null);
 			if (e.key == 'o')
+			{
 				map.putVideoOnCanvas(3, 'goal');
+				map.animationGoal();
+			}
 			if (e.key == 'i')
 				map.putVideoOnCanvas(3, 'outstanding');
 			if (e.key == 'u')
@@ -182,11 +202,25 @@ function changeBarColor(bar, color)
 
 function loop()
 {
+	/////////////
+	stats.begin();
+	/////////////
+
 	player.update();
 	opponent.update();
 	ball.update();
 	map.update(ball);
-	renderer.render(scene, player.camera);
+	if (debug)
+	{
+		controls.update();
+		renderer.render(scene, cameraTmp);
+	}
+	else
+		renderer.render(scene, player.camera);
+
+	/////////////
+	stats.end();
+	////////////
 }
 
 export { MultiOnlineGamePage, opponent, ball };
