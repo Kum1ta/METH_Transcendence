@@ -3,33 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   liveChat.css                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:53:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/25 18:20:50 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/17 14:13:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #chatButton {
 	position: fixed;
-	bottom: 10px;
-	left: 30px;
-	background-color: white;
-	width: 100px;
-	height: 40px;
-	text-align: center;
 	cursor : pointer;
 	z-index: 10;
-}
-
-#chatButton p {
-	margin: 0;
-	margin-top: 10px;
+	bottom: 40px;
+	left: 60px;
+	background-color: #020202;
+	border-radius: 50%;
+	height: 70px;
+	width: 70px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	transition: transform 0.3s ease;
 }
 
 #chatButton:hover {
-	background-color: rgb(204, 204, 204);
+	transform: scale(1.2);
+}
+
+#chatButton img{
+	width: 45px;
+	height: 45px;
 }
 
 #chatDiv {

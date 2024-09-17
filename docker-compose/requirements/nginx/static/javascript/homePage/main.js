@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:02:19 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/25 18:26:17 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/17 13:06:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ class HomePage
 		Login.create();
 		LiveChat.create();
 		window.addEventListener('scroll', scrool);
+		window.addEventListener('bScroll', scrollToSection)
 	}
 
 	static dispose()
@@ -30,9 +31,16 @@ class HomePage
 		Login.dispose();
 		LiveChat.dispose();
 		window.removeEventListener('scroll', scrool);
+		window.removeEventListener('bScroll', scrollToSection)
 	}
 };
 
+function scrollToSection() {
+	document.querySelector('#homeSection relative').scrollIntoView({
+	  behavior: 'smooth'
+	});
+	console.log("CACA");
+  }
 
 function scrool()
 {

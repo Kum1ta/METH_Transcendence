@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/13 10:40:18 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/17 14:20:28 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ body {
 }
 
 #topBar #loginButton:hover {
-	background-color: #020202;
+	background-color: transparent;
 	color: white;
 	cursor: pointer;
 }
@@ -173,8 +173,7 @@ body {
 .right-side-register h1 {
     font-size: 2rem;
     margin-bottom: 30px;
-	align-items: center;
-	justify-content: center;
+	text-align: center;
 }
 
 .close {
@@ -189,8 +188,7 @@ body {
 .right-side h1 {
     font-size: 2rem;
     margin-bottom: 30px;
-	align-items: center;
-	justify-content: center;
+	text-align: center;
 }
 
 form {
@@ -251,7 +249,6 @@ button {
 
 .old-player {
     text-align: center;
-    margin-bottom: 20px;
 }
 
 .old-player a {
