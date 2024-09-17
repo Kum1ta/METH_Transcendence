@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 16:10:26 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/16 13:59:24 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/16 16:31:10 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,8 @@ from .gameActions.move import move
 #		- is_opponent
 #		- pos
 #		- up
+#
+#	4 : leave : when the opponent left the game
 
 #client actions (actions sent by the client) :
 #	0 : start : starts a game

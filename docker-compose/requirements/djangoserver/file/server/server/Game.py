@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/17 00:07:47 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/17 12:53:12 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,11 @@ class Game:
 		self.started = False
 		self.playerLeft = False
 		self.end = False
+
+		self.player1Pos = {"pos":0, "up": False)
+		self.player1Pos = {"pos":0, "up": False)
+		
+		self.ballPos = {"pos":(0, 0), "up", False)
 
 		if(withBot):
 			self.join(socket)
@@ -75,6 +80,10 @@ class Game:
 		elif(socket == self.p2):
 			self.p2 = None
 			self.p2Ready =False
+		if(self.p1 != None):
+			self.p2.sync_send({"type":"game","content":{"action":4}})
+		if(self.p2 != None):
+			self.p1.sync_send({"type":"game","content":{"action":4}})
 		if(not self.started):
 			while(Game.waitingForPlayerLock):
 				time.sleep(0.05)
