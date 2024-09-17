@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 16:10:26 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/16 16:31:10 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/17 14:44:01 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,10 @@ from .gameActions.move import move
 #		- up
 #
 #	4 : leave : when the opponent left the game
+#
+#	5 : ball_move : send new directtion/movement to the client
+#		- pos : [x, z]
+#		- velocity : [x, z]
 
 #client actions (actions sent by the client) :
 #	0 : start : starts a game

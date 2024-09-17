@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/17 12:53:12 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/17 14:44:29 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,14 @@ import asyncio
 class Game:
 	waitingForPlayerLock = False
 	waitingForPlayer = None
+	limits = {
+		left = -3
+		right = 3
+		back = -6.5
+		front = 6.5
+
+	}
+	StartSpeed = 0.5
 	def __init__(self, socket, withBot):
 		self.p1 = None
 		self.p2 = None
@@ -27,10 +35,12 @@ class Game:
 		self.playerLeft = False
 		self.end = False
 
-		self.player1Pos = {"pos":0, "up": False)
-		self.player1Pos = {"pos":0, "up": False)
+		self.p1Pos = {"pos":0, "up": False}
+		self.p1Pos = {"pos":0, "up": False}
 		
-		self.ballPos = {"pos":(0, 0), "up", False)
+		self.ballPos = {"pos":(0, 0), "up": False}
+		self.speed = Game.startSpeed
+		self.ballVel = (0, self.speed)
 
 		if(withBot):
 			self.join(socket)
@@ -81,9 +91,9 @@ class Game:
 			self.p2 = None
 			self.p2Ready =False
 		if(self.p1 != None):
-			self.p2.sync_send({"type":"game","content":{"action":4}})
-		if(self.p2 != None):
 			self.p1.sync_send({"type":"game","content":{"action":4}})
+		if(self.p2 != None):
+			self.p2.sync_send({"type":"game","content":{"action":4}})
 		if(not self.started):
 			while(Game.waitingForPlayerLock):
 				time.sleep(0.05)
@@ -102,11 +112,20 @@ class Game:
 
 	def move(self, socket, pos, up):
 		opponent = self.p1 if socket != self.p1 else self.p2
-		opponent.sync_send({"type":"game","content":{"action":3, "pos":-pos, "up":up, "is_opponent":True}})
+		if(socket == self.p1):
+			self.p1Pos["pos"] = pos
+			self.p1Pos["up"] = up;
+		else:
+			self.p2Pos["pos"] = -pos;
+			self.p2Pos["up"] = up
+		if(opponent != None):
+			opponent.sync_send({"type":"game","content":{"action":3, "pos":-pos, "up":up, "is_opponent":True}})
 
 	async def gameLoop(self):
 		self.started = True
 		self.sendPlayers({"action":2})
+		self.ballPos = {"pos":(0, 0), "up": False}
+		self.sendPlayers({"action":5, "pos" : [self.ballPos["pos"][0],self.ballPos["pos"][1]], "velocity":[self.velocrity[0], self.velocity[1]]})
 		while(not self.end):
 			print("AAAAAAAAAAAAAAAAAAA")
 			await asyncio.sleep(1)
