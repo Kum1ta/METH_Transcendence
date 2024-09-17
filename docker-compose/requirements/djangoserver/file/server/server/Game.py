@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/17 14:44:29 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/17 15:15:59 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,13 +18,13 @@ class Game:
 	waitingForPlayerLock = False
 	waitingForPlayer = None
 	limits = {
-		left = -3
-		right = 3
-		back = -6.5
-		front = 6.5
+		"left" : -3,
+		"right" : 3,
+		"back" : -6.5,
+		"front" : 6.5
 
 	}
-	StartSpeed = 0.5
+	startSpeed = 0.5
 	def __init__(self, socket, withBot):
 		self.p1 = None
 		self.p2 = None
@@ -121,11 +121,18 @@ class Game:
 		if(opponent != None):
 			opponent.sync_send({"type":"game","content":{"action":3, "pos":-pos, "up":up, "is_opponent":True}})
 
+	def sendNewBallInfo(self):
+		self.sendPlayers({"action":5,
+			"pos" : [self.ballPos["pos"][0],self.ballPos["pos"][1]],
+			"velocity":[self.ballVel[0], self.ballVel[1]]
+		})
+
+
 	async def gameLoop(self):
 		self.started = True
 		self.sendPlayers({"action":2})
 		self.ballPos = {"pos":(0, 0), "up": False}
-		self.sendPlayers({"action":5, "pos" : [self.ballPos["pos"][0],self.ballPos["pos"][1]], "velocity":[self.velocrity[0], self.velocity[1]]})
+		self.sendNewBallInfo(self)
 		while(not self.end):
 			print("AAAAAAAAAAAAAAAAAAA")
 			await asyncio.sleep(1)
