@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/17 22:46:41 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/18 01:48:32 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,14 @@ function showGameMode()
 	document.getElementById('loginPopup').style.display = 'flex';
 }
 
+// Pour EDDY : Je l'ai fait fonctionné comme ça mais change le comme tu le veux,
+// La fonction sert a quitter la login popup si on clique en dehors de la zone. (Efface le commentaire quand tu fais les changements)
+
+window.addEventListener('click', function(event) {
+    if (event.target == document.getElementById('loginPopup')) {
+        document.getElementById('loginPopup').style.display = 'none';
+    }
+});
 
 function hideGameMode()
 {

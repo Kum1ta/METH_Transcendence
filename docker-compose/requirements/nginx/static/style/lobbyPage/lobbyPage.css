@@ -57,7 +57,7 @@ body {
 }
 
 .main{
-	padding-block: 25px;
+	padding-block: 45px;
 	padding-inline: 150px;
 	display: flex;
 	flex-direction: row;
@@ -187,7 +187,7 @@ body {
 	padding: 0;
 	padding-inline: 50px;
 	display: flex;
-	gap: 2rem;
+	gap: 5rem;
 	align-items: center;
 	justify-content: center;
 	inset-inline: 0;
@@ -230,6 +230,7 @@ body {
 	display: flex;
 	align-items: flex-start;
 	justify-content: center;
+
 	width: 40%;
 	padding-top: 20px;
 }

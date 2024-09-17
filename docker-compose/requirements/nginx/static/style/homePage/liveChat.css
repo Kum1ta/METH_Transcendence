@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   liveChat.css                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:53:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/17 23:12:39 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/18 01:28:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,8 @@
 	font-size: 25px;
 }
 
-/* Delete this, is just for cross style */
-#chatDiv h2 {
-	cursor : pointer;
-	margin: 0;
-	font-size: 25px;
+#topChatCross span{
+	font-size: 30px;
 }
 
 #chatDiv #topChatHome {
