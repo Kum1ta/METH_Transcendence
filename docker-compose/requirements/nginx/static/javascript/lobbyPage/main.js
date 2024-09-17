@@ -6,12 +6,14 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/14 23:21:38 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/17 22:46:41 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import { userMeInfo, waitForLogin } from '/static/javascript/typeResponse/typeLogin.js';
 import { barSelecter, goalSelecter } from '/static/javascript/lobbyPage/3d.js';
 import { pageRenderer } from '/static/javascript/main.js'
+
 /* 
 	Information :
 		- 0: Multiplayer local
@@ -30,7 +32,18 @@ class LobbyPage
 	static create()
 	{
 		const	startButton = document.getElementsByClassName('buttonStartGame')[0];
+		const	usernameP = document.getElementById('loginButton').getElementsByTagName('p')[0];
+		const	loginButton = document.getElementById('loginButton');
 
+		if (userMeInfo.id == -1)
+			waitForLogin().then(() => usernameP.innerHTML = userMeInfo.username);
+		else
+			usernameP.innerHTML = userMeInfo.username;
+		loginButton.addEventListener('click', showMenu);
+		window.addEventListener('resize', movePopMenuLoginButton);
+		movePopMenuLoginButton();
+		initButtonPopMenuLogin();
+		
 		listSelectCard = document.getElementsByClassName('select-card');
 		document.getElementsByClassName('game-mode')[0].addEventListener('click', showGameMode);
 		document.getElementById('closePopupBtn').addEventListener('click', hideGameMode);
@@ -53,6 +66,7 @@ class LobbyPage
 	{
 		const	startButton = document.getElementsByClassName('buttonStartGame')[0];
 
+		window.removeEventListener('resize', movePopMenuLoginButton);
 		startButton.removeEventListener('click', startMode);
 		document.getElementsByClassName('game-mode')[0].removeEventListener('click', showGameMode);
 		document.getElementById('closePopupBtn').removeEventListener('click', hideGameMode);
@@ -150,5 +164,45 @@ function selectGameModeFour()
 	gameMode = 3;
 }
 
+function movePopMenuLoginButton()
+{
+	const	loginButton			= document.getElementById('loginButton');
+	const	pos					= loginButton.getBoundingClientRect();
+	const	popMenuLoginButton 	= document.getElementById('popMenuLoginButton');
+
+	popMenuLoginButton.style.left = pos.left + "px";
+	popMenuLoginButton.style.top = pos.top + pos.height + "px";
+}
+
+function showMenu()
+{
+	const	popMenuLoginButton 	= document.getElementById('popMenuLoginButton');
+	const	loginButton			= document.getElementById('loginButton');
+	
+	popMenuLoginButton.style.display = 'flex';
+	setTimeout(() => {
+		document.addEventListener('click', hideMenu);
+		loginButton.removeEventListener('click', showMenu);
+	}, 50);
+}
+
+function hideMenu()
+{
+	const	loginButton			= document.getElementById('loginButton');
+	const	popMenuLoginButton 	= document.getElementById('popMenuLoginButton');
+	
+	popMenuLoginButton.style.display = 'none';
+	document.removeEventListener('click', hideMenu);
+	loginButton.addEventListener('click', showMenu);
+}
+
+function initButtonPopMenuLogin()
+{
+	const	buttons = document.getElementById('popMenuLoginButton').getElementsByTagName('p');
+
+	buttons[2].addEventListener('click', () => {
+		window.location.replace('/logout');
+	})
+}
 
 export { LobbyPage };

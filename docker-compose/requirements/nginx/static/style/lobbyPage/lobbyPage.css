@@ -305,3 +305,22 @@ body {
 		opacity: 0;
 	}
 }
+
+
+#topBarLobby #loginButton {
+	font-size: 20px;
+	background-color: white;
+	height: 40px;
+	width: 130px;	
+	color: black;
+	text-align: center;
+	line-height: 40px;
+	margin-left: auto;
+	transition: background-color 0.3s ease;
+}
+
+#topBarLobby #loginButton:hover {
+	background-color: transparent;
+	color: white;
+	cursor: pointer;
+}
