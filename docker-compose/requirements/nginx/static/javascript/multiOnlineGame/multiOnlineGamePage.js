@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/17 15:04:18 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/17 15:38:02 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,12 @@ class MultiOnlineGamePage
 		renderer.setAnimationLoop(loop)
 		sendRequest('game', {action: 1});
 		let lastPosition = player.object.position.x;
+		let lastUp = player.isUp;
 		interval = setInterval(() => {
-			if (player && player.object.position.x != lastPosition)
+			if (player && player.object.position.x != lastPosition || player.isUp != lastUp)
 			{
 				lastPosition = player.object.position.x;
+				lastUp = player.isUp;
 				sendRequest('game', {action: 3, pos: player.object.position.x, up: player.isUp});
 			}
 		}, 1000 / 20);
@@ -160,9 +162,6 @@ class MultiOnlineGamePage
 	static opponentDisconnect()
 	{
 		pageRenderer.changePage('lobbyPage');
-		setTimeout(() => {
-			CN.new("Game", "Opponent disconnect", CN.defaultIcon.error);
-		}, 1000);
 	}
 }
 

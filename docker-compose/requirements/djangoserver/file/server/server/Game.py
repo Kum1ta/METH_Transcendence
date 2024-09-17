@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/17 15:18:09 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/17 15:33:06 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ class Game:
 		self.end = False
 
 		self.p1Pos = {"pos":0, "up": False}
-		self.p1Pos = {"pos":0, "up": False}
+		self.p2Pos = {"pos":0, "up": False}
 		
 		self.ballPos = {"pos":(0, 0), "up": False}
 		self.speed = Game.startSpeed

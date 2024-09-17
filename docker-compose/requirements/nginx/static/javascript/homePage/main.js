@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:02:19 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/17 13:06:30 by marvin           ###   ########.fr       */
+/*   Updated: 2024/09/17 16:43:50 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ class HomePage
 		Login.create();
 		LiveChat.create();
 		window.addEventListener('scroll', scrool);
-		window.addEventListener('bScroll', scrollToSection)
+		document.getElementById('AAAAAAA').addEventListener('click', scrollToSection)
 	}
 
 	static dispose()
@@ -31,13 +31,16 @@ class HomePage
 		Login.dispose();
 		LiveChat.dispose();
 		window.removeEventListener('scroll', scrool);
-		window.removeEventListener('bScroll', scrollToSection)
+		document.getElementById('AAAAAAA').removeEventListener('click', scrollToSection)
 	}
 };
 
-function scrollToSection() {
-	document.querySelector('#homeSection relative').scrollIntoView({
-	  behavior: 'smooth'
+function scrollToSection()
+{
+	const pos = document.getElementById('QWERTYUIOP').getBoundingClientRect().top + window.scrollY;
+	window.scroll({
+		top: pos,
+		behavior: 'smooth'
 	});
 	console.log("CACA");
   }
