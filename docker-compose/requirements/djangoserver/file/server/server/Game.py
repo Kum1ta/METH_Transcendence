@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/17 15:15:59 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/17 15:18:09 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -132,7 +132,7 @@ class Game:
 		self.started = True
 		self.sendPlayers({"action":2})
 		self.ballPos = {"pos":(0, 0), "up": False}
-		self.sendNewBallInfo(self)
+		self.sendNewBallInfo()
 		while(not self.end):
 			print("AAAAAAAAAAAAAAAAAAA")
 			await asyncio.sleep(1)
