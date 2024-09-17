@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home3D.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/13 22:13:07 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:20:23 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -382,4 +382,4 @@ function moveCamera()
 	updateCameraPosition();
 }
 
-export { Home3D };
+export { Home3D, redirection };

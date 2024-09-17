@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:02:19 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/17 16:43:50 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:21:27 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import { redirection } from "/static/javascript/home3D/home3D.js";
 import { LiveChat } from "/static/javascript/liveChat/main.js";
 import { Home3D } from "/static/javascript/home3D/home3D.js"
 import { Login } from "/static/javascript/login/main.js";
@@ -22,7 +23,9 @@ class HomePage
 		Login.create();
 		LiveChat.create();
 		window.addEventListener('scroll', scrool);
-		document.getElementById('AAAAAAA').addEventListener('click', scrollToSection)
+		document.getElementById('buttonPlay').addEventListener('click', redirection);
+		document.getElementById('buttonProject').addEventListener('click', () => scrollToSection(0));
+		document.getElementById('buttonAuthors').addEventListener('click', () => scrollToSection(1));
 	}
 
 	static dispose()
@@ -31,19 +34,25 @@ class HomePage
 		Login.dispose();
 		LiveChat.dispose();
 		window.removeEventListener('scroll', scrool);
-		document.getElementById('AAAAAAA').removeEventListener('click', scrollToSection)
 	}
 };
 
-function scrollToSection()
+function scrollToSection(i)
 {
-	const pos = document.getElementById('QWERTYUIOP').getBoundingClientRect().top + window.scrollY;
+	let pos;
+	if (i == 0)
+	{
+		pos = document.getElementById('project').getBoundingClientRect().top + window.scrollY;
+	}
+	else if (i == 1)
+	{
+		pos = document.getElementById('authors').getBoundingClientRect().top + window.scrollY;
+	}
 	window.scroll({
 		top: pos,
 		behavior: 'smooth'
 	});
-	console.log("CACA");
-  }
+}
 
 function scrool()
 {
