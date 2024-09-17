@@ -6,11 +6,14 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/15 14:56:07 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/17 15:13:50 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import * as CANNON from '/static/javascript/cannon-es/dist/cannon-es.js'
 import * as THREE from '/static/javascript/three/build/three.module.js'
+
+const	timeStep		=	1 / 60;
 
 class Ball
 {
@@ -18,6 +21,8 @@ class Ball
 	centerPos	= {};
 	limits		= {};
 	interval	= null;
+	world		= null;
+	ballBody	= null;
 
 	constructor(scene, map)
 	{
@@ -27,6 +32,13 @@ class Ball
 		this.limits = map.playerLimits;
 		this.resetPosBall();
 		scene.add(this.object);
+		this.world = new CANNON.World();
+		this.ballBody = new CANNON.Body({
+			shape: new CANNON.Sphere(0.15),
+			mass: 10,
+		});
+		this.ballBody.position.copy(this.object.position);
+		this.world.addBody(this.ballBody);
 	}
 
 	#createBall()
@@ -106,6 +118,22 @@ class Ball
 		});
 	}
 	/*---------------------------------------------------*/
+
+	updatePos(content)
+	{
+		// {action: 5, pos: [ball.object.position.x, ball.object.position.z], velocity: [ball.object.velocity.x, ball.object.velocity.z]}
+
+		this.ballBody.position.x = content.pos[0];
+		this.ballBody.position.z = content.pos[1];
+		this.ballBody.velocity.set(content.velocity[0], 0, content.velocity[1]);
+	}
+
+	update()
+	{
+		this.world.step(timeStep);
+		this.object.position.copy(this.ballBody.position);
+		this.object.quaternion.copy(this.ballBody.quaternion);
+	}
 
 	dispose()
 	{

@@ -6,15 +6,17 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/16 15:48:15 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/17 15:04:18 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import { createNotification as CN } from "/static/javascript/notification/main.js";
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { sendRequest } from "/static/javascript/websocket.js";
 import { Player } from '/static/javascript/multiOnlineGame/Player.js'
 import { Map } from '/static/javascript/multiOnlineGame/Map.js'
 import { Ball } from '/static/javascript/multiOnlineGame/Ball.js'
+import { pageRenderer } from '/static/javascript/main.js'
 import { Opponent } from '/static/javascript/multiOnlineGame/Opponent.js'
 
 /*
@@ -110,13 +112,21 @@ class MultiOnlineGamePage
 
 		renderer.setAnimationLoop(loop)
 		sendRequest('game', {action: 1});
+		let lastPosition = player.object.position.x;
 		interval = setInterval(() => {
-			sendRequest('game', {action: 3, pos: player.object.position.x, up: player.isUp});
+			if (player && player.object.position.x != lastPosition)
+			{
+				lastPosition = player.object.position.x;
+				sendRequest('game', {action: 3, pos: player.object.position.x, up: player.isUp});
+			}
 		}, 1000 / 20);
 	}
 
 	static dispose()
 	{
+		if (interval)
+			clearInterval(interval);
+		interval = null;
 		if (renderer)
 			renderer.dispose();
 		renderer = null;
@@ -146,6 +156,14 @@ class MultiOnlineGamePage
 		}
 		scene = null;
 	}
+
+	static opponentDisconnect()
+	{
+		pageRenderer.changePage('lobbyPage');
+		setTimeout(() => {
+			CN.new("Game", "Opponent disconnect", CN.defaultIcon.error);
+		}, 1000);
+	}
 }
 
 function createBarPlayer(color)
@@ -167,8 +185,9 @@ function loop()
 {
 	player.update();
 	opponent.update();
+	ball.update();
 	map.update(ball);
 	renderer.render(scene, player.camera);
 }
 
-export { MultiOnlineGamePage, opponent };
+export { MultiOnlineGamePage, opponent, ball };

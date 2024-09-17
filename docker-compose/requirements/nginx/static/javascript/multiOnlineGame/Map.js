@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/15 15:24:37 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/17 13:59:13 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,22 @@ let texturePlane		= null;
 let ctx					= null;
 
 let path = [
-	{name: 'goal', 			onChoice: true, src:'/static/video/multiOnlineGamePage/goal2.webm'},
-	{name: 'easteregg',		onChoice: true, src:'/static/video/multiOnlineGamePage/easteregg.webm'},
-	{name: 'outstanding', 	onChoice: true, src:'/static/video/multiOnlineGamePage/outstanding.webm'},
-	{name: 'ping', 			onChoice: false, src:'/static/video/multiOnlineGamePage/pingpong.mp4'},
-	{name: 'catch', 		onChoice: false, src:'/static/video/multiOnlineGamePage/catch.mp4'},
-	{name: 'fortnite', 		onChoice: false, src:'/static/video/multiOnlineGamePage/fortnite.mp4'},
+	{name: 'goal', 			onChoice: true, src:'/static/video/multiOnlineGamePage/goal2.webm', blob: null},
+	{name: 'easteregg',		onChoice: true, src:'/static/video/multiOnlineGamePage/easteregg.webm', blob: null},
+	{name: 'outstanding', 	onChoice: true, src:'/static/video/multiOnlineGamePage/outstanding.webm', blob: null},
+	{name: 'ping', 			onChoice: false, src:'/static/video/multiOnlineGamePage/pingpong.mp4', blob: null},
+	{name: 'catch', 		onChoice: false, src:'/static/video/multiOnlineGamePage/catch.mp4', blob: null},
+	{name: 'fortnite', 		onChoice: false, src:'/static/video/multiOnlineGamePage/fortnite.mp4', blob: null},
 ]
+
+path.forEach(elem => {
+	fetch(elem.src)
+	.then(response => response.blob())
+	.then(blob => {
+		elem.blob = URL.createObjectURL(blob);
+	});
+});
+
 let spacingImages = [
 	100 * 2.33 * 10 - (100 * 2.33),   // 2 images
 	100 * 2.33 * 5 - (100 * 2.33),    // 4 images
@@ -63,14 +72,9 @@ class Map
 
 	dispose()
 	{
-		videoList.forEach(elem => {
-			elem.video.pause();
-			elem.video.src = '';
-			elem.video.removeAttribute('src');
-			elem.video.load();
-		})
 		videoList = null;
-		videoCanvas.remove();
+		if (videoCanvas)
+			videoCanvas.remove();
 		if (videoCanvasTexture)
 			videoCanvasTexture.dispose();
 		if (materialCanvas)
@@ -374,10 +378,8 @@ class Map
 				continue ;
 			}
 			let videoTmp = null;
-			if (Math.random() < 0.99)
-				videoTmp = new Video(path[i].src).video;
-			else
-				videoTmp = new Video(path[getIndex('easteregg')].src).video;
+			videoTmp = new Video(path[i].blob).video;
+			console.log(videoTmp.src);
 			videoTmp.addEventListener('loadeddata', () => {
 				videoTmp.play();
 				drawVideoOnCanvas();

@@ -6,12 +6,11 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/14 02:02:00 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/17 15:02:11 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as CANNON from '/static/javascript/cannon-es/dist/cannon-es.js'
-// import * as CANNON from '/static/javascript/cannon/build/cannon.min.js'
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { ball } from '/static/javascript/multiLocalGame/Ball.js'
 import { player1, player2 } from '/static/javascript/multiLocalGame/Players.js';
