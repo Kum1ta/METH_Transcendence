@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/18 19:51:45 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/18 20:30:09 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ class Login
 		}
 		else
 		{
-			waitForLogin().then(() => {
+			waitForLogin().then((aa) => {
 				if (userMeInfo.id !== -1)
 				{
 					nodeText = document.createTextNode(userMeInfo.username);

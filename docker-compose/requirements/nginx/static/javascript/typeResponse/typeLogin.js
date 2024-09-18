@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 00:39:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/18 19:45:25 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/18 20:33:20 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ let userMeInfo = {
 };
 
 let loginAvailable = false;
-let loginResolve = null;
+let loginResolve = [];
 
 function waitForLogin() {
 	return new Promise((resolve) => {
 		if (loginAvailable)
 			resolve(userMeInfo);
 		else
-			loginResolve = resolve;
+			loginResolve.push(resolve);
 	});
 }
 
@@ -54,10 +54,10 @@ function	typeLogin(content)
 			}
 		}
 		loginAvailable = true;
-		if (loginResolve)
+		if (loginResolve != [])
 		{
-			loginResolve(content);
-			loginResolve = null;
+			loginResolve.forEach(func => func(content));
+			loginResolve = [];
 		}
 	// }, 100);
 }

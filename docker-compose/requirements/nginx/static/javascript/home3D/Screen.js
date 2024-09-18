@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:13:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/25 02:16:17 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/18 20:18:51 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ class Screen
         	texture.needsUpdate = true;
 			video.play().then(() => {
 				updateCanvas();
-			}).catch(err => console.error("Error playing video: ", err));
+			});
 		});
 
 		function updateCanvas()

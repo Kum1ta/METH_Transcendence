@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/15 15:48:43 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/18 20:13:45 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ class Page
 				})
 				.catch(error => {
 					window.location.href = '/';
-					throw Error(error);
+					// throw Error(error);
 				});
 
 				return ;
