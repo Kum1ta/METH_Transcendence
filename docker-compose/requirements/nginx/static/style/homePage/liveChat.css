@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:53:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/18 01:28:22 by marvin           ###   ########.fr       */
+/*   Updated: 2024/09/18 12:20:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,19 @@
 	align-items: center;
 	justify-content: center;
 	transition: transform 0.3s ease;
+}
+
+/* Pour EDDY : Put display none and change on js to display flex when we have notification */
+
+.notification-badge {
+	display: flex;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 10px;
+	height: 10px;
+	background-color: #E74040;
+	border-radius: 50%;
 }
 
 #chatButton:hover {

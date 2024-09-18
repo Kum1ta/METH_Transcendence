@@ -186,7 +186,6 @@ body {
 	margin-block: 25px;
 	padding: 0;
 	padding-inline: 50px;
-	display: flex;
 	gap: 5rem;
 	align-items: center;
 	justify-content: center;
@@ -230,9 +229,7 @@ body {
 	display: flex;
 	align-items: flex-start;
 	justify-content: center;
-
 	width: 40%;
-	padding-top: 20px;
 }
 
 .search-input {

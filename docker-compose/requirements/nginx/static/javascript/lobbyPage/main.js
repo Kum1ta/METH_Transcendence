@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/18 09:16:58 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/18 10:59:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ class LobbyPage
 {
 	static create()
 	{
+		const	ptmeButton		= document.getElementById("homeButton");
 		const	startButton		= document.getElementsByClassName('buttonStartGame')[0];
 		const	usernameP		= document.getElementById('loginButton').getElementsByTagName('p')[0];
 		const	loginButton 	= document.getElementById('loginButton');
@@ -66,6 +67,7 @@ class LobbyPage
 		barSelector = new barSelecter(document.getElementById('bar'));
 		goalSelector = new goalSelecter(document.getElementById('goal'));
 		startButton.addEventListener('click', startMode);
+		ptmeButton.addEventListener('click', goBackHome);
 	}
 
 	static dispose()
@@ -117,6 +119,11 @@ function ajustSearchUserList()
 	searchResult.style.width = pos.width + 'px';
 	searchResult.style.top = pos.top + pos.height + 'px';
 	searchResult.style.left = pos.left + 'px';
+}
+
+function goBackHome()
+{
+	pageRenderer.changePage('homePage');
 }
 
 function startMode()
