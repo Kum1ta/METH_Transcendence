@@ -45,6 +45,9 @@ Controls :
 	- u : 16 video
 	- y : 8 video
 	- t : 4 video
+
+	- l : recreate et augmente le score de player
+	- k : recreate et augmente le score de opponent
 */
 
 let scene				= null;
@@ -107,7 +110,6 @@ class MultiOnlineGamePage
 		controls.target = new THREE.Vector3(map.centerPos.x, 0, map.centerPos.z);
 		//////////////////////////
 
-
 		document.addEventListener('keypress', (e) => {
 			if (e.key == 'g')
 				player.pointAnimation(map);
@@ -130,6 +132,10 @@ class MultiOnlineGamePage
 				map.putVideoOnCanvas(2, 3);
 			if (e.key == 't')
 				map.putVideoOnCanvas(1, 3);
+			if (e.key == 'l')
+				map.reCreate("player");
+			if (e.key == 'k')
+				map.reCreate("opponent");
 		})
 
 		renderer.setAnimationLoop(loop)
@@ -225,4 +231,4 @@ function loop()
 	////////////
 }
 
-export { MultiOnlineGamePage, opponent, ball };
+export { MultiOnlineGamePage, player, opponent, ball };

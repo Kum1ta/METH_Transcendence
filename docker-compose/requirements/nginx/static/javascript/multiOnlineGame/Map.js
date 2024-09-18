@@ -13,6 +13,9 @@
 import { GLTFLoader } from '/static/javascript/three/examples/jsm/loaders/GLTFLoader.js';
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { Video } from '/static/javascript/multiOnlineGame/Video.js';
+import { GUI } from '/static/javascript/three/examples/jsm/libs/lil-gui.module.min.js';
+import { player, opponent, ball} from '/static/javascript/multiOnlineGame/multiOnlineGamePage.js';
+import { Ball } from '/static/javascript/multiOnlineGame/Ball.js'
 
 let loader				= null;
 let	scene				= null;
@@ -24,6 +27,11 @@ let materialCanvas		= null;
 let textureLoaderPlane	= null;
 let texturePlane		= null;
 let ctx					= null;
+let fireworkMixer		= null;
+let canvasText			= null;
+let contextCanvasText	= null;
+let textureCanvasText	= null;
+let	score				= {player: 0, opponent: 0};
 
 let path = [
 	{name: 'goal', 			onChoice: true, src:'/static/video/multiOnlineGamePage/goal2.webm', blob: null},
@@ -55,9 +63,6 @@ class Map
 	ballObject = null;
 	mapLength = 0;
 	banner = null;
-	firework = null;
-	fireworkMixer = null;
-	fireworkAnimations = null;
 	centerPos = {
 		x: -1,
 		y: -1,
@@ -131,6 +136,29 @@ class Map
 		scene.add(this.#createWall(3.5, 0.4, -length/2, "wallRight"));
 		if (obstacles)
 			this.#generateObstacle();
+
+		{ // A retirer
+			/* Style de couleur why not
+			0xFFCCCC
+			0xFF9999
+			0xFF6666
+			0xFF3333
+			0xCC0000
+
+			0xCCFFCC
+			0x99FF99
+			0x66FF66
+			0x33FF33
+			0x009900
+
+			0xCCCCFF
+			0x9999FF
+			0x6666FF
+			0x3333FF
+			0x0000CC
+			*/
+		}
+		this.putScoreboard(0xCCCCFF);
 	};
 
 	#createPlanes(x, y, rot, name, isBottom, visual)
@@ -185,7 +213,7 @@ class Map
 					this.arrObject[i].mesh.material.color.set(texture);
 			}
 		}
-	}
+	};
 
 	#createWall(x, y, z, name)
 	{
@@ -331,15 +359,82 @@ class Map
 		else
 			meshWallObs.position.set(x, 0.4, y);
 		return (meshWallObs);
-	}
+	};
 
-	/* Todo (Hugo) :
-		- Faire une zone Player banner (importer un model blender)
-		- Faire une zone pour les pub 							 		(ok)
-		- Effet gros pixel 												(ok)
-		- Effet de lumière en 2d (essayer shader ou filtre)
-		- Preparer differents events 									(ok)
-	*/
+	putScoreboard(color)
+	{
+		this.#clearScoreboard();
+		let materialScoreboard	= null;
+		let geometryScoreboard1	= null;
+		let meshScoreboard1		= null;
+		let geometryScoreboard2	= null;
+		let meshScoreboard2		= null;
+
+		let materialText		= null;
+		let geometryText1		= null;
+		let meshText1			= null;
+		let geometryText2		= null;
+		let meshText2			= null;
+
+		let height = 1.8;
+		let width = 6;
+		let depth = 0.2;
+
+		materialScoreboard	= new THREE.MeshPhysicalMaterial({color: color});
+		geometryScoreboard1	= new THREE.BoxGeometry(width, height, depth);
+		meshScoreboard1		= new THREE.Mesh(geometryScoreboard1, materialScoreboard);
+		geometryScoreboard2	= new THREE.BoxGeometry(width, height, depth);
+		meshScoreboard2		= new THREE.Mesh(geometryScoreboard2, materialScoreboard);
+
+		canvasText = document.createElement('canvas');
+		contextCanvasText = canvasText.getContext('2d');
+		canvasText.width = 512 * 2;
+		canvasText.height = 256 * 2;
+    	drawScore(score);
+		textureCanvasText = new THREE.CanvasTexture(canvasText);
+		
+		materialText		= new THREE.MeshBasicMaterial({ map: textureCanvasText });
+		geometryText1		= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
+		meshText1			= new THREE.Mesh(geometryText1, materialText);
+		geometryText2		= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
+		meshText2			= new THREE.Mesh(geometryText2, materialText);
+
+		meshScoreboard1.rotation.y = Math.PI;
+		meshText1.rotation.y = Math.PI;
+		meshScoreboard1.position.set(0, 1.65, 9.5);
+		meshText1.position.set(0, 1.65, 9.5 - depth / 2 - 0.05);
+		meshScoreboard2.position.set(0, 1.65, -9.5);
+		meshText2.position.set(0, 1.65, - 9.5 + depth / 2 + 0.05);
+
+		scene.add(meshScoreboard1);
+		scene.add(meshScoreboard2);
+		scene.add(meshText1);
+		scene.add(meshText2);
+		this.arrObject.push({mesh: meshScoreboard1, name: "", type: "scoreboard"});
+		this.arrObject.push({mesh: meshScoreboard2, name: "", type: "scoreboard"});
+		this.arrObject.push({mesh: meshText1, name: "", type: "scoreboard"});
+		this.arrObject.push({mesh: meshText2, name: "", type: "scoreboard"});
+	};
+
+	#clearScoreboard()
+	{
+		for (let i = 0; i < this.arrObject.length; i++)
+		{
+			if (this.arrObject[i].type == "scoreboard")
+			{
+				if (this.arrObject[i].mesh.geometry)
+					this.arrObject[i].mesh.geometry.dispose();
+				if (this.arrObject[i].mesh.material)
+					this.arrObject[i].mesh.material.dispose();
+				scene.remove(this.arrObject[i].mesh);
+				this.arrObject[i].mesh.geometry = null;
+				this.arrObject[i].mesh.material = null;
+				this.arrObject[i].mesh = null;
+				this.arrObject.splice(i, 1);
+			}
+		}
+	};
+
 	putVideoOnCanvas(nbImage, vNameNb)
 	{
 		this.#clearVideoCanvas();
@@ -440,7 +535,7 @@ class Map
 		}, undefined, function ( error ) {
 			console.error( error );
 		} );
-	}
+	};
 
 	#clearVideoCanvas()
 	{
@@ -475,27 +570,31 @@ class Map
 			interval2 = null;
 		}
 		scene.remove(this.banner);
-	}
+	};
 
 	animationGoal()
 	{
+		let actions = {};
+
 		loader.load('/static/models3D/multiOnlineGame/fireworkv1.glb', (gltf) => {
-			this.firework = gltf.scene.children[0];
-			this.fireworkAnimations = gltf.animations; // Récupérez les animations du modèle
-			gltf = null;
-			this.firework.material = new THREE.MeshPhysicalMaterial({color: 0xff0000});
-			scene.add(this.firework);
-
-			this.fireworkMixer = new THREE.AnimationMixer(this.firework);
-			this.fireworkAnimations.forEach((clip) => {
-				this.fireworkMixer.clipAction(clip).play(); // Joue toutes les animations
-			});
-
-			console.log(this.firework);
+			fireworkMixer = new THREE.AnimationMixer(gltf.scene);
+			for (let value of gltf.animations){
+				let action = fireworkMixer.clipAction(value);
+				action.play();
+			}
+			scene.add(gltf.scene);
+			fireworkAnimate();
 		}, undefined, function (error) {
 			console.error(error);
 		});
-	}
+
+		let fireworkAnimate = function ()
+		{
+			console.log("fireworkAnimate");
+			requestAnimationFrame(fireworkAnimate);
+			fireworkMixer.update(0.016);
+		}
+	};
 
 	#animationGravityChanger(group, onTop)
 	{
@@ -522,7 +621,7 @@ class Map
 			if (materialGC.opacity == 0)
 				clearInterval(interval);
 		}, 10);
-	}
+	};
 
 	#generateObstacle()
 	{
@@ -564,9 +663,6 @@ class Map
 
 	update(ball)
 	{
-		if (this.mixer) {
-			this.mixer.update(0.016); // Le deltaTime, ajustez selon le temps entre les frames
-		}
 		for (let i = 0; this.arrObject && i < this.arrObject.length; i++)
 		{
 			if (this.arrObject[i].name == "wallLeft")
@@ -643,6 +739,34 @@ class Map
 			}
 		}
 	};
+
+	updateScore(name, score)
+	{
+		if (name == "player")
+			score.player++;
+		else if (name == "opponent")
+			score.opponent++;
+		drawScore(score);
+		textureCanvasText.needsUpdate = true;
+	}
+
+	reCreate(name)
+	{
+		this.updateScore(name, score);
+		ball.resetPosBall();
+		player.resetPosPlayer();
+		player.reserCameraPlayer();
+		opponent.resetPosOpponent();
+	};
+};
+
+function drawScore(score)
+{
+	contextCanvasText.clearRect(0, 0, canvasText.width, canvasText.height);
+	contextCanvasText.fillStyle = "white";
+	contextCanvasText.font = "bold 350px Arial";
+	contextCanvasText.textAlign = "center";
+	contextCanvasText.fillText(score.player + " - " + score.opponent, canvasText.width / 2, canvasText.height - canvasText.height / 4);
 };
 
 export { Map };

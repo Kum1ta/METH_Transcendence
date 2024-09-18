@@ -46,6 +46,7 @@ import * as THREE from '/static/javascript/three/build/three.module.js'
 let	playerExist			= false;
 let	isOnPointAnim		= false;
 let	pressedButton		= [];
+let mapLength			= 0;
 
 class Player
 {
@@ -70,6 +71,7 @@ class Player
 		this.limits = map.playerLimits;
 		this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 10000);
 		this.object.position.set(0, this.limits.down, map.mapLength / 2 - 0.2);
+		mapLength = map.mapLength;
 		this.setCameraPosition(
 			this.object.position.x,
 			this.object.position.y + 0.7,
@@ -90,6 +92,20 @@ class Player
 		pressedButton = [];
 		if (this.interval)
 			clearInterval(interval);
+	}
+
+	resetPosPlayer()
+	{
+		this.object.position.set(0, this.limits.down, mapLength / 2 - 0.2);
+	}
+
+	reserCameraPlayer()
+	{
+		this.setCameraPosition(
+			this.object.position.x,
+			this.object.position.y + 0.7,
+			this.object.position.z + 1.5
+		);
 	}
 
 	pointAnimation(map)

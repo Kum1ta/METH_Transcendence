@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 let opponentExist = false;
+let mapLength = 0;
 
 class Opponent
 {
@@ -33,6 +34,7 @@ class Opponent
 		opponentExist = true;
 		this.object = object;
 		this.object.position.set(0, 0.3, -map.mapLength / 2 + 0.2);
+		mapLength = map.mapLength;
 	}
 
 	dispose()
@@ -42,6 +44,11 @@ class Opponent
 
 	update()
 	{
+	}
+
+	resetPosOpponent()
+	{
+		this.object.position.set(0, 0.3, -mapLength / 2 + 0.2);
 	}
 
 	movePlayer(content)
