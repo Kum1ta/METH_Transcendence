@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 00:39:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/17 22:52:44 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/18 06:25:11 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ function waitForLogin() {
 
 function	typeLogin(content)
 {
-	setTimeout(() => {
+	// setTimeout(() => {
 		const	popout 			= document.getElementById('loginPopup');
 		const	loginButton		= document.getElementById('loginButton');
 		let		pLoginButton	= null;
@@ -57,9 +57,9 @@ function	typeLogin(content)
 		if (loginResolve)
 		{
 			loginResolve(content);
-			loginResolve = null;
+			// loginResolve = null;
 		}
-	}, 100);
+	// }, 100);
 }
 
 export { userMeInfo, typeLogin, waitForLogin };

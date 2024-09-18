@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home3D.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/17 17:20:23 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/09/18 06:20:08 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,19 @@ import { pageRenderer } from '/static/javascript/main.js'
 
 const	disable3D		= false;
 
-let		scene			= null;
-let		renderer		= null;
-let		camera			= null;
-let		screen			= null;
-let		raycaster		= null;
-let		interval		= null;
-let		intervalFade	= null;
-let		isInFade		= false;
-let		composer		= null;
-let		mouse			= null;
-let		renderPass		= null;
-let		dofPass			= null;
+let		scene				= null;
+let		renderer			= null;
+let		camera				= null;
+let		screen				= null;
+let		raycaster			= null;
+let		interval			= null;
+let		intervalFade		= null;
+let		isInFade			= false;
+let		composer			= null;
+let		mouse				= null;
+let		renderPass			= null;
+let		dofPass				= null;
+let		playButtonMouseOver	= false;
 
 class Home3D
 {
@@ -208,7 +209,7 @@ function home3D()
 			composer.render();
 			return ;
 		}
-		if (intersects.length === 0)
+		if (intersects.length === 0 && !playButtonMouseOver)
 		{
 			if (actualVideo != 0)
 			{
@@ -223,7 +224,7 @@ function home3D()
 				document.removeEventListener('click', redirection);
 				clickDetect = false;
 			}
-			if (intersects[0].object == screen.screen)
+			if (playButtonMouseOver || intersects[0].object == screen.screen)
 			{
 				if (userMeInfo.id == -1)
 				{
@@ -329,6 +330,11 @@ function home3D()
 	renderer.setAnimationLoop(loop)
 }
 
+function changePlayButtonMouseOverValue()
+{
+	playButtonMouseOver = !playButtonMouseOver;
+}
+
 function windowUpdater(e)
 {
 	renderer.setSize(window.innerWidth, window.innerHeight);
@@ -349,13 +355,13 @@ function redirection()
 
 	topBar.style.animation = 'animHideMenuDiv 0.5s';
 	topBar.style.opacity = 0;
+	if (interval)
+	{
+		clearInterval(interval);
+		interval = null;
+	}
 	moveCamera();
 	setTimeout(() => {
-		if (interval)
-		{
-			clearInterval(interval);
-			interval = null;
-		}
 		setTimeout(() => {
 			pageRenderer.changePage('lobbyPage');
 		}, 700);
@@ -382,4 +388,4 @@ function moveCamera()
 	updateCameraPosition();
 }
 
-export { Home3D, redirection };
+export { Home3D, redirection, changePlayButtonMouseOverValue };

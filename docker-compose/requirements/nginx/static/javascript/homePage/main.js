@@ -6,11 +6,12 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:02:19 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/17 23:02:03 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/18 06:17:05 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { redirection } from "/static/javascript/home3D/home3D.js";
+import { waitForLogin } from "/static/javascript/typeResponse/typeLogin.js";
+import { redirection, changePlayButtonMouseOverValue } from "/static/javascript/home3D/home3D.js";
 import { LiveChat } from "/static/javascript/liveChat/main.js";
 import { Home3D } from "/static/javascript/home3D/home3D.js"
 import { Login } from "/static/javascript/login/main.js";
@@ -23,7 +24,15 @@ class HomePage
 		Login.create();
 		LiveChat.create();
 		window.addEventListener('scroll', scrool);
-		document.getElementById('buttonPlay').addEventListener('click', redirection);
+		waitForLogin().then((infoUser) => {
+			if (infoUser.id !== 0)
+				document.getElementById('buttonPlay').addEventListener('click', redirection);
+			else
+			{
+				document.getElementById('buttonPlay').addEventListener('mouseover', changePlayButtonMouseOverValue);
+				document.getElementById('buttonPlay').addEventListener('mouseout', changePlayButtonMouseOverValue);
+			}
+		})
 		document.getElementById('buttonProject').addEventListener('click', () => scrollToSection(0));
 		document.getElementById('buttonAuthors').addEventListener('click', () => scrollToSection(1));
 	}
@@ -34,6 +43,7 @@ class HomePage
 		Login.dispose();
 		LiveChat.dispose();
 		window.removeEventListener('scroll', scrool);
+		document.getElementById('buttonPlay').removeEventListener('click', redirection);
 	}
 };
 
