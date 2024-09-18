@@ -6,13 +6,14 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/18 06:20:08 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/18 23:51:51 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { EffectComposer } from '/static/javascript/three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from '/static/javascript/three/examples/jsm/postprocessing/RenderPass.js';
 import { BokehPass } from '/static/javascript/three/examples/jsm/postprocessing/BokehPass.js';
+import { GLTFLoader } from '/static/javascript/three/examples/jsm/loaders/GLTFLoader.js';
 import { userMeInfo } from "/static/javascript/typeResponse/typeLogin.js";
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { Screen, light } from '/static/javascript/home3D/Screen.js'
@@ -94,6 +95,7 @@ class Home3D
 
 function home3D()
 {
+	const	loader			= new GLTFLoader();
 	let		actualVideo		= -1;
 	let		globalSpeed		= 0.75;
 	const	ambiantLight	= new THREE.AmbientLight(0xffffff, 35);
@@ -113,6 +115,10 @@ function home3D()
 	
 	if (Math.random() % 100 > 0.97)
 		video.pong = '/static/video/homePage/easteregg.webm'
+	newBgWall();
+	putObject('/static/models3D/homePage/lamp.glb', -2.5, 0, 2.5, 3, 0, Math.PI + Math.PI / 8, 0);
+	putObject('/static/models3D/homePage/plant.glb', 1.5, 0, 3, 0.5, 0, 0, 0);
+	putObject('/static/models3D/homePage/gameboy.glb', -0.5, -0.075, 0.5, 0.1, 0, 0.4, 0);
 	renderer.toneMapping = THREE.LinearToneMapping;
 	renderer.shadowMap.enabled = true;
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -250,6 +256,44 @@ function home3D()
 			}
 		}
 		composer.render();
+	}
+
+	function putObject(objUrl, x, y, z, scale, rX, rY, rZ) {
+		loader.load(objUrl, (gltf) => {
+			const group = new THREE.Group();
+			const material =  new THREE.MeshPhysicalMaterial({color: 0x080808});
+	
+			gltf.scene.children.forEach(elem => {
+				elem.traverse((child) => {
+					if (child.isMesh) {
+						child.material = material; // Appliquer le matériau aux meshes
+						child.receiveShadow = true;
+						child.castShadow = true;
+					}
+				});
+				group.add(elem);
+			});
+	
+			group.position.set(x, y, z);
+			group.scale.set(scale, scale, scale);
+			group.rotation.set(rX, rY, rZ);
+			scene.add(group);
+		});
+	}
+
+	function newBgWall()
+	{
+		const	geometry	= new THREE.BoxGeometry(100, 100, 0.1);
+		const	material	= new THREE.MeshStandardMaterial({color: 0x020202});
+		const	mesh		= new THREE.Mesh(geometry, material);
+		const	geometry2	= new THREE.BoxGeometry(10, 10, 0.1);
+		const	material2	= new THREE.MeshStandardMaterial({color: 0x020202});
+		const	mesh2		= new THREE.Mesh(geometry2, material2);
+		mesh.position.set(0, 0, 5);
+		scene.add(mesh);
+		mesh2.position.set(-5, 0, 0);
+		mesh2.rotateY(Math.PI / 2);
+		scene.add(mesh2);
 	}
 
 	function createCube()
