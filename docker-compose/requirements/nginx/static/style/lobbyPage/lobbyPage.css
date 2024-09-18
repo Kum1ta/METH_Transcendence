@@ -188,7 +188,7 @@ body {
 	padding-inline: 50px;
 	gap: 5rem;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-between;
 	inset-inline: 0;
 	top: 0;
 	z-index: 500;
@@ -228,7 +228,6 @@ body {
 .search-container {
 	display: flex;
 	align-items: flex-start;
-	justify-content: center;
 	width: 40%;
 }
 
@@ -314,7 +313,6 @@ body {
 	color: black;
 	text-align: center;
 	line-height: 40px;
-	margin-left: auto;
 	transition: background-color 0.3s ease;
 }
 

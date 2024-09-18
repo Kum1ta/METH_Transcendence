@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiOnlineGamePage.js                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/17 18:02:20 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:24:40 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ let spotLight			= null;
 let ambiantLight		= null;
 let opponent			= null;
 let	interval			= null;
+let debug				= false;
 
 // ------------------- (need to be remove) -------------------- //
 const stats = new Stats();
 stats.showPanel(0);
-document.body.appendChild(stats.dom);
 
 const cameraTmp = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight);
 let controls = null;
@@ -70,6 +70,8 @@ class MultiOnlineGamePage
 {
 	static create()
 	{
+		document.body.appendChild(stats.dom);
+
 		const bar1		= createBarPlayer(0xed56ea);
 		const bar2		= createBarPlayer(0xf3e11e);
 
