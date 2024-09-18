@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 08:08:00 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/16 13:39:22 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/18 07:24:47 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,7 +73,7 @@ def createAccount(socket, content):
 		socket.sync_send(json.dumps({"type": "create_account", "content": "Account created"}))
 		if(not sendVerifMail(verif_str, content["mail"], content["username"])):
 			print("mail error")
-			socket.sendError("An error occured while sending the email, glhf", 2026)
+			socket.sendError("An error occured while sending the email, glhf", 9026)
 	except Exception as e:
 		print("error")
 		socket.sendError("An error occured while creating the account", 9024, e)

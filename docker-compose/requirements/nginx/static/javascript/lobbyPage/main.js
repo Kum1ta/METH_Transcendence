@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/18 01:48:32 by marvin           ###   ########.fr       */
+/*   Updated: 2024/09/18 09:16:58 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { userMeInfo, waitForLogin } from '/static/javascript/typeResponse/typeLogin.js';
 import { barSelecter, goalSelecter } from '/static/javascript/lobbyPage/3d.js';
+import { sendRequest } from "/static/javascript/websocket.js";
 import { pageRenderer } from '/static/javascript/main.js'
 
 /* 
@@ -26,24 +27,29 @@ let	listSelectCard	= null;
 let	gameMode		= 0;
 let barSelector		= null;
 let goalSelector	= null;
+let timeout			= null;
 
 class LobbyPage
 {
 	static create()
 	{
-		const	startButton = document.getElementsByClassName('buttonStartGame')[0];
-		const	usernameP = document.getElementById('loginButton').getElementsByTagName('p')[0];
-		const	loginButton = document.getElementById('loginButton');
+		const	startButton		= document.getElementsByClassName('buttonStartGame')[0];
+		const	usernameP		= document.getElementById('loginButton').getElementsByTagName('p')[0];
+		const	loginButton 	= document.getElementById('loginButton');
+		const	inputUser		= document.getElementById('searchInputUser');
 
 		if (userMeInfo.id == -1)
 			waitForLogin().then(() => usernameP.innerHTML = userMeInfo.username);
 		else
 			usernameP.innerHTML = userMeInfo.username;
+		inputUser.addEventListener('input', searchUser);
 		loginButton.addEventListener('click', showMenu);
 		window.addEventListener('resize', movePopMenuLoginButton);
+		window.addEventListener('resize', ajustSearchUserList);
 		movePopMenuLoginButton();
 		initButtonPopMenuLogin();
 		
+		window.addEventListener('click', closePopUpWhenClickOutsite);
 		listSelectCard = document.getElementsByClassName('select-card');
 		document.getElementsByClassName('game-mode')[0].addEventListener('click', showGameMode);
 		document.getElementById('closePopupBtn').addEventListener('click', hideGameMode);
@@ -66,10 +72,12 @@ class LobbyPage
 	{
 		const	startButton = document.getElementsByClassName('buttonStartGame')[0];
 
+		window.removeEventListener('click', closePopUpWhenClickOutsite);
 		window.removeEventListener('resize', movePopMenuLoginButton);
 		startButton.removeEventListener('click', startMode);
 		document.getElementsByClassName('game-mode')[0].removeEventListener('click', showGameMode);
 		document.getElementById('closePopupBtn').removeEventListener('click', hideGameMode);
+		window.removeEventListener('resize', ajustSearchUserList);
 		window.removeEventListener('click', closeClickOutsiteGameMode);
 		listSelectCard[0].removeEventListener('click', selectGameModeOne);
 		listSelectCard[1].removeEventListener('click', selectGameModeTwo);
@@ -82,6 +90,33 @@ class LobbyPage
 		goalSelector = null;
 		listSelectCard = null;
 	}
+}
+
+function searchUser(event)
+{
+	const	searchResult	= document.getElementById('searchResult');
+
+	if (timeout)
+		clearTimeout(timeout);
+	if (event.target.value == '')
+		searchResult.innerHTML = '';
+	else
+	{
+		timeout = setTimeout(() => {
+			sendRequest("search_user", {username: event.target.value});
+		}, 300);
+	}
+}
+
+function ajustSearchUserList()
+{
+	const	searchInputUser	= document.getElementById('searchInputUser');
+	const	pos				= searchInputUser.getBoundingClientRect();
+	const	searchResult	= document.getElementById('searchResult');
+
+	searchResult.style.width = pos.width + 'px';
+	searchResult.style.top = pos.top + pos.height + 'px';
+	searchResult.style.left = pos.left + 'px';
 }
 
 function startMode()
@@ -123,14 +158,11 @@ function showGameMode()
 	document.getElementById('loginPopup').style.display = 'flex';
 }
 
-// Pour EDDY : Je l'ai fait fonctionné comme ça mais change le comme tu le veux,
-// La fonction sert a quitter la login popup si on clique en dehors de la zone. (Efface le commentaire quand tu fais les changements)
-
-window.addEventListener('click', function(event) {
-    if (event.target == document.getElementById('loginPopup')) {
+function closePopUpWhenClickOutsite (event)
+{
+    if (event.target == document.getElementById('loginPopup'))
         document.getElementById('loginPopup').style.display = 'none';
-    }
-});
+};
 
 function hideGameMode()
 {
