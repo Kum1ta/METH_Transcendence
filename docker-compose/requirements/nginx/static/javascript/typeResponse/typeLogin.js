@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 00:39:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/18 06:25:11 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/18 19:45:25 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ function	typeLogin(content)
 		if (loginResolve)
 		{
 			loginResolve(content);
-			// loginResolve = null;
+			loginResolve = null;
 		}
 	// }, 100);
 }

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/18 13:52:39 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/18 19:51:25 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ class LobbyPage
 		listSelectCard = document.getElementsByClassName('select-card');
 		document.getElementsByClassName('game-mode')[0].addEventListener('click', showGameMode);
 		document.getElementById('closePopupBtn').addEventListener('click', hideGameMode);
-		window.addEventListener('click', closeClickOutsiteGameMode);
 		listSelectCard[0].addEventListener('click', selectGameModeOne);
 		listSelectCard[1].addEventListener('click', selectGameModeTwo);
 		listSelectCard[2].addEventListener('click', selectGameModeThree);
@@ -80,7 +79,7 @@ class LobbyPage
 		document.getElementsByClassName('game-mode')[0].removeEventListener('click', showGameMode);
 		document.getElementById('closePopupBtn').removeEventListener('click', hideGameMode);
 		window.removeEventListener('resize', ajustSearchUserList);
-		window.removeEventListener('click', closeClickOutsiteGameMode);
+		
 		listSelectCard[0].removeEventListener('click', selectGameModeOne);
 		listSelectCard[1].removeEventListener('click', selectGameModeTwo);
 		listSelectCard[2].removeEventListener('click', selectGameModeThree);
@@ -174,13 +173,6 @@ function closePopUpWhenClickOutsite (event)
 function hideGameMode()
 {
 	document.getElementById('loginPopup').style.display = 'none';
-}
-
-function closeClickOutsiteGameMode(event)
-{
-	if (event.target == document.getElementById('loginPopup')) {
-		document.getElementById('loginPopup').style.display = 'none';
-	}
 }
 
 function selectGameModeOne()

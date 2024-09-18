@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/18 06:24:12 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/18 19:51:45 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ class Login
 				else
 				{
 					loginButton.addEventListener('click', showLoginDiv);
+					window.addEventListener('click', closeClickOutsiteGameMode);
 				}
 			});
 			form.addEventListener('submit', connect);
@@ -78,6 +79,7 @@ class Login
 		registerButton.removeEventListener('click', changeWindowLogin);
 		registerForm.removeEventListener('submit', createAccount);
 		window.removeEventListener('resize', movePopMenuLoginButton);
+		window.removeEventListener('click', closeClickOutsiteGameMode);
 		loginButton.removeEventListener('click', showMenu);
 		loginBackButton.removeEventListener('click', changeWindowLoginBack);
 	}
@@ -201,6 +203,12 @@ function	connect(e)
 	// 	console.error(err);
 	// 	CN.new("Error", "An error occured while trying to connect", CN.defaultIcon.error);
 	// });
+}
+
+function closeClickOutsiteGameMode(event)
+{
+	if (event.target == document.getElementById('loginPopup'))
+		document.getElementById('loginPopup').style.display = 'none';
 }
 
 export { Login, changeWindowLoginBack };
