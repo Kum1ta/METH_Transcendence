@@ -65,8 +65,7 @@ body {
 }
 
 .skin-select{
-	/* padding-block: 25px; */
-	width: 40%;
+	justify-content: space-between;
 }
 
 .popup {
@@ -166,18 +165,50 @@ body {
 	background-color: rgb(18, 223, 96);
 }
 
+#whatGame {
+	display: flex;
+	flex-direction: column;
+	margin-block: 25px;
+	max-width: 500px;
+	font-size: 1.5rem;
+}
+
+#whatGame p{
+	color: white;
+}
+
+.line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: rgb(255, 255, 255);
+    margin: 20px 0;
+	justify-content: center;
+	align-items: center;
+}
+
 #bar{
-	margin: 15px;
+	margin: 25px;
 	width: 250px;
 	height: 250px;
 	border: 5px solid white;
+	transition: transform 0.3s ease;
+}
+
+#bar:hover{
+	transform: scale(1.05);
 }
 
 #goal{
-	margin: 15px;
+	margin: 25px;
 	width: 250px;
 	height: 250px;
 	border: 5px solid white;
+	transition: transform 0.3s ease;
+}
+
+#goal:hover{
+	transform: scale(1.05);
 }
 
 #topBarLobby {
@@ -228,7 +259,7 @@ body {
 .search-container {
 	display: flex;
 	align-items: flex-start;
-	width: 40%;
+	width: 30%;
 }
 
 .search-input {
@@ -242,20 +273,6 @@ body {
 
 .search-input:focus {
 	border-color: white;
-}
-
-.search-button {
-	padding: 10px 20px;
-	border: 2px solid white;
-	background-color: #272727;
-	color: white;
-	cursor: pointer;
-	font-size: 16px;
-}
-
-.search-button:hover {
-	background-color: #202020;
-	border-color: #c4c4c4;
 }
 
 .bottom {
