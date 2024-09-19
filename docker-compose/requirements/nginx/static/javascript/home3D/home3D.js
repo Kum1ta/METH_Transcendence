@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/18 23:51:51 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:53:13 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,7 +266,7 @@ function home3D()
 			gltf.scene.children.forEach(elem => {
 				elem.traverse((child) => {
 					if (child.isMesh) {
-						child.material = material; // Appliquer le matériau aux meshes
+						child.material = material;
 						child.receiveShadow = true;
 						child.castShadow = true;
 					}

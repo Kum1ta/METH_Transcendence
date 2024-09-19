@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/17 15:13:50 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:16:32 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ class Ball
 	interval	= null;
 	world		= null;
 	ballBody	= null;
+	lastTime	= 0;
+	velocity	= [0, 0];
+	lastPos		= [0, 0, 0];
 
 	constructor(scene, map)
 	{
@@ -122,17 +125,23 @@ class Ball
 	updatePos(content)
 	{
 		// {action: 5, pos: [ball.object.position.x, ball.object.position.z], velocity: [ball.object.velocity.x, ball.object.velocity.z]}
-
-		this.ballBody.position.x = content.pos[0];
-		this.ballBody.position.z = content.pos[1];
-		this.ballBody.velocity.set(content.velocity[0], 0, content.velocity[1]);
+		this.lastTime = new Date().getTime();
+		// this.ballBody.position.x = content.pos[0];
+		// this.ballBody.position.z = content.pos[1];
+		console.log(this.object.position);
+		this.lastPos = [content.pos[0], this.object.position.y, content.pos[1]];
+		this.velocity = content.velocity;
+		// this.ballBody.velocity.set(content.velocity[0], 0, content.velocity[1]);
 	}
 
 	update()
 	{
-		this.world.step(timeStep);
-		this.object.position.copy(this.ballBody.position);
-		this.object.quaternion.copy(this.ballBody.quaternion);
+		const	deltaTime = ((new Date().getTime()) - this.lastTime) / 1000;
+		const	x = this.lastPos[0] + (deltaTime * this.velocity[0]);
+		const	z = this.lastPos[2] + (deltaTime * this.velocity[1]);
+		this.object.position.set(x, this.object.position.y, z);
+		// this.object.position.copy(this.ballBody.position);
+		// this.world.step(timeStep);
 	}
 
 	dispose()
