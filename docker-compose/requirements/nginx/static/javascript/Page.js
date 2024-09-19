@@ -6,13 +6,14 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/18 20:13:45 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/20 01:02:39 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { MultiOnlineGamePage } from "/static/javascript/multiOnlineGame/multiOnlineGamePage.js"
 import { multiLocalGamePage } from "/static/javascript/multiLocalGame/multiLocalGamePage.js"
 import { WaitingGamePage } from "/static/javascript/waitingGame/main.js"
+import { ProfilPage } from "/static/javascript/profilPage/main.js";
 import { LobbyPage } from "/static/javascript/lobbyPage/main.js";
 import { HomePage } from "/static/javascript/homePage/main.js";
 
@@ -25,6 +26,7 @@ class Page
 		{url:'/game', servUrl: '/multiLocalGamePage', class: multiLocalGamePage, name: 'multiLocalGamePage', title: 'PTME - Game'},
 		{url:'/wait_game', servUrl: '/waitingGamePage', class: WaitingGamePage, name: 'waitingGamePage', title: 'PTME - Wait for a game'},
 		{url:'/game', servUrl: '/multiOnlineGamePage', class: MultiOnlineGamePage, name: 'multiOnlineGamePage', title: 'PTME - Game'},
+		{url:'/profil', servUrl: '/profilPage', class: ProfilPage, name: 'profilPage', title: 'PTME - Profil'},
 	]
 
 	constructor()
@@ -51,7 +53,7 @@ class Page
 		this.#showUnknownPage();
 	}
 	
-	changePage(name, isBack = false)
+	changePage(name, isBack = false, arg = null)
 	{
 		if (this.actualPage != null)
 			this.actualPage.dispose();
@@ -74,7 +76,10 @@ class Page
 						document.title = this.availablePages[i].title;
 						if (!isBack)
 							history.pushState({}, this.availablePages[i].title, this.availablePages[i].url);
-						this.actualPage.create();
+						if (arg)
+							this.actualPage.create(arg);
+						else
+							this.actualPage.create();
 						console.log("Page created.");
 					})
 				})

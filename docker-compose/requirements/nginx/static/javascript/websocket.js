@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/18 08:31:09 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/20 00:50:56 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ import { typeCreateAccount } from "/static/javascript/typeResponse/typeCreateAcc
 import { typeAllListUser }from "/static/javascript/typeResponse/typeAllListUser.js";
 import { createNotification as CN } from "/static/javascript/notification/main.js";
 import { typeSearchUser } from "/static/javascript/typeResponse/typeSearchUser.js";
+import { typeUserInfo } from "/static/javascript/typeResponse/typeUserInfo.js";
 import { typeLogin } from "/static/javascript/typeResponse/typeLogin.js";
 import { typeGame } from "/static/javascript/typeResponse/typeGame.js"
 
@@ -31,8 +32,8 @@ function launchSocket()
 {
 	socket = new WebSocket('/ws');
 
-	const	typeResponse = ["logged_in", "login", "private_list_user", "private_list_message", "new_private_message", "all_list_user", "create_account", "game", "search_user"];
-	const	functionResponse = [typeLogin, typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage, typeAllListUser, typeCreateAccount, typeGame, typeSearchUser];
+	const	typeResponse = ["logged_in", "login", "private_list_user", "private_list_message", "new_private_message", "all_list_user", "create_account", "game", "search_user", "user_info"];
+	const	functionResponse = [typeLogin, typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage, typeAllListUser, typeCreateAccount, typeGame, typeSearchUser, typeUserInfo];
 
 	const	errorCode = [9007, 9010, 9011];
 	const	errorFunction = [typeErrorInvalidPassword, typeErrorInvalidToken42, typeErrorUnknown42Account];

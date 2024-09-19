@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 14:31:30 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/18 07:33:08 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/20 00:16:31 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,14 +27,15 @@ from .typeRequests.createAccount import createAccount
 from .typeRequests.login import login
 from .typeRequests.getAllListUser import getAllListUser
 from .typeRequests.gameRequest import gameRequest
+from .typeRequests.getUserInfo import getUserInfo
 
 typeRequest = ["login", "get_private_list_user", "get_private_list_message",
 			   "send_private_message", "create_account", "get_all_list_user", "game",
-			   "search_user"
+			   "search_user", "get_user_info"
 			   ]
 functionRequest = [login, getPrivateListUser, getPrivateListMessage,
 				sendPrivateMessage, createAccount, getAllListUser, gameRequest,
-				searchUser
+				searchUser, getUserInfo
 				]
 
 from random import randint

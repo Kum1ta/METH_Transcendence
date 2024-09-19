@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 08:12:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/18 22:05:40 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/20 00:23:27 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ function typeSearchUser(userList)
 		div.innerHTML = '<img src="' + user[2] + '">' + '<p>' + user[0] + '</p>';
 		searchResult.appendChild(div);
 		div.addEventListener('click', () => {
-			console.log("Show profil " + user[0]);
+			pageRenderer.changePage('profilPage', false, user[1]);
 		})
 	});
 }

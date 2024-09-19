@@ -52,14 +52,23 @@ def waitingGamePage(request):
 	return render(request, "waitingGamePage.html", {})
 
 def game(request):
-	if(not request.session.get("logged_in", False)):
-		return(HttpResponse("you are not logged in",status=403))
-	return redirect("/lobby")
+	# return lobbyPage(request)
+	return redirect('/lobby')
 
 def wait_game(request):
+	# return lobbyPage(request)
+	return redirect('/lobby')
+
+def profil(request):
+	# return lobbyPage(request)
+	return redirect('/lobby')
+
+def profilPage(request):
+	if(request.method != "POST"):
+		return index(request)
 	if(not request.session.get("logged_in", False)):
 		return(HttpResponse("you are not logged in",status=403))
-	return redirect("/lobby")
+	return render(request, "profilPage.html", {})
 
 def verify(request):
 	req_token = request.GET.get('token', None)
