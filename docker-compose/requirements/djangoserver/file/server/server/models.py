@@ -7,6 +7,7 @@ class User(models.Model):
 	password = models.CharField(max_length=100, null=True, blank=True)
 	id42 = models.DecimalField(max_digits=15, decimal_places=0, null=True, unique=True)
 	pfp = models.CharField(max_length=1024, default="/static/img/default_pfp.jpg")
+	banner = models.CharField(max_length=1024, default="/static/img/default_banner.jpg")
 	mail_verified = models.BooleanField(default=False)
 
 class Message(models.Model):
