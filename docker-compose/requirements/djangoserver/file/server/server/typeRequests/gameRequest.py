@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 16:10:26 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/17 14:44:01 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/20 12:45:26 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,9 @@ from .gameActions.move import move
 #	5 : ball_move : send new directtion/movement to the client
 #		- pos : [x, z]
 #		- velocity : [x, z]
+#
+#	6 : goal : someone scored a goal
+#		- is_opponent
 
 #client actions (actions sent by the client) :
 #	0 : start : starts a game

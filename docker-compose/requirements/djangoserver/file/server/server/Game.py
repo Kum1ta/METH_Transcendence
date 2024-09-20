@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/20 02:45:11 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/20 12:53:09 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -176,6 +176,8 @@ class Game:
 					velZ = -velZ
 			else:
 				print("a player suffured from a major skill issue")
+				self.p1.sync_send({"type":"game","content":{"action":6, "is_opponent": newBallPos[1] < 0}})
+				self.p2.sync_send({"type":"game","content":{"action":6, "is_opponent": newBallPos[1] > 0}})
 				await asyncio.sleep(3)
 				self.prepareGame(True)
 				await asyncio.sleep(3)
