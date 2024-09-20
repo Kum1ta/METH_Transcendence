@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/20 12:53:09 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/20 21:19:25 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ class Game:
 	waitingForPlayerLock = False
 	waitingForPlayer = None
 	ballWidth = 0.15
-	playerLength = 1
+	playerLength = 1 + (ballWidth * 2)
 	limits = {
 		"left" : -3.5 + ballWidth,
 		"right" : 3.5 - ballWidth,
@@ -41,6 +41,7 @@ class Game:
 		self.ballPos = {"pos":(0, 0), "up": False}
 		self.speed = Game.startSpeed
 		self.ballVel = (self.speed, 0)
+		self.score = [0, 0]
 
 		if(withBot):
 			self.join(socket)
@@ -154,6 +155,18 @@ class Game:
 		print("chose player :", 2 if ballPos[1] < 0 else 1)
 		print("ball position :", ballPos[0])
 		return(playerPos - ballPos[0])
+	
+	async def scoreGoal(self, player):
+		print("a player suffured from a major skill issue")
+		self.score[player-1] += 1
+		print("new score :", self.score)
+		self.p1.sync_send({"type":"game","content":{"action":6, "is_opponent": player == 2}})
+		self.p2.sync_send({"type":"game","content":{"action":6, "is_opponent": player == 1}})
+		await asyncio.sleep(4.5)
+		self.prepareGame(True)
+		await asyncio.sleep(3)
+		self.prepareGame()
+		return;
 
 	async def updateBall(self):
 		now = time.time()
@@ -165,23 +178,14 @@ class Game:
 		round(currentBallPos[1] + (delta * velZ), 5))
 		if(newBallPos[1] <= Game.limits["back"] or newBallPos[1] >= Game.limits["front"]):
 			playerDistance = self.getPlayerDistance(newBallPos)
-			print("player distance :", playerDistance)
-			if(playerDistance >= -1 and playerDistance <= 1):
-				print("colided")
-				velX = -((self.speed * 0.80) * playerDistance)
+			if(playerDistance >= -(Game.playerLength / 2) and playerDistance <= Game.playerLength / 2):
+				velX = -((self.speed * 0.80) * (playerDistance / (Game.playerLength / 2)))
 				velZ = self.speed - abs(velX)
-				print("velocity : " , velX , ", ", velZ)
-				
 				if(newBallPos[1] > 0):
 					velZ = -velZ
 			else:
-				print("a player suffured from a major skill issue")
-				self.p1.sync_send({"type":"game","content":{"action":6, "is_opponent": newBallPos[1] < 0}})
-				self.p2.sync_send({"type":"game","content":{"action":6, "is_opponent": newBallPos[1] > 0}})
-				await asyncio.sleep(3)
-				self.prepareGame(True)
-				await asyncio.sleep(3)
-				self.prepareGame()
+				print("distance :", playerDistance)
+				await self.scoreGoal(1 if newBallPos[1] < 0 else 2)
 				return;
 		elif(newBallPos[0] <= Game.limits["left"] or newBallPos[0] >= Game.limits["right"]):
 			velX = -velX
