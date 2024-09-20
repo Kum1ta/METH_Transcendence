@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/18 14:24:40 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/20 19:15:03 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,4 +231,4 @@ function loop()
 	////////////
 }
 
-export { MultiOnlineGamePage, player, opponent, ball };
+export { MultiOnlineGamePage, player, opponent, ball, map};
