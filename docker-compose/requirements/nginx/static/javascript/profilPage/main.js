@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/20 11:15:34 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/20 14:17:56 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ class ProfilPage
 {
 	static create(userId)
 	{
-		const	profilInfos =	document.getElementsByClassName('profile-info')[0];
 		const	username	=	document.getElementsByTagName('h2')[0];
 		const	pfp			=	document.getElementsByClassName('profile-image')[0];
 		const	banner		=	document.getElementsByClassName('background-card')[0];

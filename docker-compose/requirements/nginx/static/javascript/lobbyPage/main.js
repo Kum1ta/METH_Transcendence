@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/18 19:51:25 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/20 14:19:33 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,9 +239,12 @@ function initButtonPopMenuLogin()
 {
 	const	buttons = document.getElementById('popMenuLoginButton').getElementsByTagName('p');
 
+	buttons[0].addEventListener('click', () => {
+		pageRenderer.changePage('profilPage', false, userMeInfo.id);
+	})
 	buttons[2].addEventListener('click', () => {
 		window.location.replace('/logout');
-	})
+	});
 }
 
 export { LobbyPage };
