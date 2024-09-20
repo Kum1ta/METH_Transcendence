@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/18 17:50:53 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/20 02:45:11 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,14 +18,14 @@ class Game:
 	waitingForPlayerLock = False
 	waitingForPlayer = None
 	ballWidth = 0.15
+	playerLength = 1
 	limits = {
 		"left" : -3.5 + ballWidth,
 		"right" : 3.5 - ballWidth,
-		"back" : -6.5 + ballWidth,
-		"front" : 6.5 - ballWidth
-
+		"back" : -6.25 + ballWidth,
+		"front" : 6.25 - ballWidth
 	}
-	startSpeed = 2
+	startSpeed = 4
 	def __init__(self, socket, withBot):
 		self.p1 = None
 		self.p2 = None
@@ -119,6 +119,7 @@ class Game:
 			opponent.sync_send({"type":"game","content":{"action":3, "pos":-pos, "up":up, "is_opponent":True}})
 
 	def sendNewBallInfo(self):
+		print("send new ball info")
 		if(self.p1):
 			self.p1.sync_send({"type":"game", "content":{"action":5,
 				"pos" : [self.ballPos["pos"][0],self.ballPos["pos"][1]],
@@ -133,9 +134,7 @@ class Game:
 		if(not velocity):
 			return(-1)
 		limit = Game.limits[limitNeg] if velocity < 0 else Game.limits[limitPos] 
-		print("limit is :", limit)
 		distance = max(limit, position) - min(limit, position)
-		print("distance : ", distance)
 		colision_time = distance / abs(velocity)
 		return(colision_time)
 
@@ -143,49 +142,68 @@ class Game:
 	def getSleepTime(self):
 		time_x = self.getTimeUntilColision("left","right", self.ballPos["pos"][0], self.ballVel[0])
 		time_z = self.getTimeUntilColision("back","front", self.ballPos["pos"][1], self.ballVel[1])
-		print("time for x : ", time_x)
-		print("time for y : ", time_z)
 		if(time_x == -1):
 			return(time_z)
 		if(time_z == -1):
 			return(time_x)
 		return(min(time_x, time_z))
 
-	def updateBall(self):
+	def getPlayerDistance(self, ballPos):
+		playerPos = self.p2Pos["pos"] if ballPos[1] < 0 else self.p1Pos["pos"]
+		print("Player pos : ", playerPos)
+		print("chose player :", 2 if ballPos[1] < 0 else 1)
+		print("ball position :", ballPos[0])
+		return(playerPos - ballPos[0])
+
+	async def updateBall(self):
 		now = time.time()
-		print("last update :", self.lastUpdate)
-		print("now :", now)
 		delta = now - self.lastUpdate
 		currentBallPos = self.ballPos["pos"]
 		velX = self.ballVel[0]
 		velZ = self.ballVel[1]
-		print("delta :", delta)
-		print("velocity :", self.ballVel)
-		print("current pos:", currentBallPos)
-		newBallPos = (currentBallPos[0] + (delta * velX),
-		currentBallPos[1] + (delta * velZ))
-		print("new pos:", newBallPos)
-		if(newBallPos[0] <= Game.limits["left"] or newBallPos[0] >= Game.limits["right"]):
-			velX = -velX
+		newBallPos = (round(currentBallPos[0] + (delta * velX), 5),
+		round(currentBallPos[1] + (delta * velZ), 5))
 		if(newBallPos[1] <= Game.limits["back"] or newBallPos[1] >= Game.limits["front"]):
-			velZ = -velZ
+			playerDistance = self.getPlayerDistance(newBallPos)
+			print("player distance :", playerDistance)
+			if(playerDistance >= -1 and playerDistance <= 1):
+				print("colided")
+				velX = -((self.speed * 0.80) * playerDistance)
+				velZ = self.speed - abs(velX)
+				print("velocity : " , velX , ", ", velZ)
+				
+				if(newBallPos[1] > 0):
+					velZ = -velZ
+			else:
+				print("a player suffured from a major skill issue")
+				await asyncio.sleep(3)
+				self.prepareGame(True)
+				await asyncio.sleep(3)
+				self.prepareGame()
+				return;
+		elif(newBallPos[0] <= Game.limits["left"] or newBallPos[0] >= Game.limits["right"]):
+			velX = -velX
 		self.ballVel = (velX, velZ)
 		self.lastUpdate = now
 		self.ballPos["pos"] = newBallPos
 		self.sendNewBallInfo()
-		print("new ball pos : ", self.ballPos)
-		print("new ball velocity : ", self.ballVel)
-			
+	
+	def prepareGame(self, stop = False):
+		self.ballPos = {"pos":(0, 0), "up": False}
+		if(stop):
+			self.ballVel = (0, 0)
+		else:
+			self.ballVel = (self.speed/2, self.speed/2)
+		self.sendNewBallInfo()
+		self.lastUpdate = time.time()
 
 	async def gameLoop(self):
 		self.started = True
 		self.sendPlayers({"action":2})
-		self.ballPos = {"pos":(0, 0), "up": False}
-		self.ballVel = (Game.startSpeed, Game.startSpeed)
-		self.sendNewBallInfo()
-		self.lastUpdate = time.time()
+		await asyncio.sleep(3)
+		self.prepareGame()
 		while(not self.end):
-			self.updateBall()
+			await self.updateBall()
 			sleep_time = self.getSleepTime()
 			await asyncio.sleep(sleep_time)
 		print("game end")
