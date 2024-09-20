@@ -6,12 +6,13 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/20 01:09:20 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/20 11:15:34 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { createNotification as CN } from "/static/javascript/notification/main.js";
 import { waitForUserInfo } from "/static/javascript/typeResponse/typeUserInfo.js";
+import { userMeInfo } from "/static/javascript/typeResponse/typeLogin.js";
+import { createNotification as CN } from "/static/javascript/notification/main.js";
 import { sendRequest } from "/static/javascript/websocket.js";
 
 
@@ -27,8 +28,17 @@ class ProfilPage
 		sendRequest("get_user_info", {id: userId});
 		waitForUserInfo().then((userInfo) => {
 			username.innerText = userInfo.username + ' (status not implemented)';
-			pfp.innerHTML = `<img src='${userInfo.pfp}'>`
-			banner.innerHTML = `<img src='${userInfo.banner}'>`
+			pfp.style.backgroundImage = `url("${userInfo.pfp}")`
+			pfp.style.backgroundSize = "cover";
+			pfp.style.backgroundRepeat = "no-repeat";
+			banner.style.backgroundImage = `url("${userInfo.banner}")`
+			banner.style.backgroundSize = "cover";
+			banner.style.backgroundRepeat = "no-repeat";
+			if (userId == userMeInfo.id)
+			{
+				pfp.innerHTML = `<div id='editPenPfpBg'><img class='editPenPfp' src='/static/img/profilPage/editPen.png'/></div>`
+				banner.innerHTML = `<img class='editPen' src='/static/img/profilPage/editPen.png'/>`
+			}	
 		});
 	}
 
