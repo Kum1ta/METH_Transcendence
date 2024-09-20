@@ -6,12 +6,11 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/16 15:44:46 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/20 21:59:24 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from '/static/javascript/three/build/three.module.js'
-
 /*
 	Explication du code :
 		- Un seul joueur peut etre instancié, sinon ça throw une erreur
@@ -59,9 +58,13 @@ class Player
 	limits			= {};
 	previousTime	= Date.now();	
 	deltaTime		= 1;
+	mapVar			= null;
+	opponent		= null;
 
-	constructor (object, map)
+	constructor (object, map, opponent)
 	{
+		this.mapVar = map;
+		this.opponent = opponent;
 		if (playerExist)
 			throw Error("Player is already init.");
 		playerExist = true;
@@ -106,6 +109,20 @@ class Player
 			this.object.position.y + 0.7,
 			this.object.position.z + 1.5
 		);
+	}
+
+	makeAnimation(isOpponent)
+	{
+		if (isOpponent)
+		{
+			this.mapVar.reCreate("opponent");
+			this.pointOpponentAnimation(this.mapVar, this.opponent.object);
+		}
+		else
+		{
+			this.mapVar.reCreate("player");
+			this.pointAnimation(this.mapVar);
+		}
 	}
 
 	pointAnimation(map)
@@ -179,7 +196,6 @@ class Player
 			this.camera = tmpCamera;
 			interval = setInterval(() => {
 				tmpCamera.lookAt(oppponentObject.position);
-				console.log(tmpCamera.position)
 				hue += 0.01;
 				if (hue > 1)
 					hue = 0;

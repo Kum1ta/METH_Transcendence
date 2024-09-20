@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/20 19:15:03 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/20 22:32:09 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,18 +80,18 @@ class MultiOnlineGamePage
 
 		document.body.setAttribute('style', '');
 		scene			= new THREE.Scene()
-		map				= new Map(scene, 13, true);
+		map				= new Map(scene, 13, false);
 		renderer		= new THREE.WebGLRenderer({antialias: true});
 		renderer.shadowMap.enabled = true;
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		renderer.domElement.style.animation = 'fadeOutStartGames 1s';
 		renderer.domElement.style.filter = 'brightness(1)';
-		player			= new Player(bar1, map);
+		opponent		= new Opponent(bar2, map);
+		player			= new Player(bar1, map, opponent);
 		spotLight		= new THREE.SpotLight(0xffffff, 10000, 0, 0.2);
 		spotLight.castShadow = true;
 		ambiantLight	= new THREE.AmbientLight(0xffffff, 0.5);
 		ball			= new Ball(scene, map);
-		opponent		= new Opponent(bar2, map);
 
 		scene.add(player.object);
 		scene.add(opponent.object);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/17 17:23:53 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/20 23:05:19 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ let fireworkMixer		= null;
 let canvasText			= null;
 let contextCanvasText	= null;
 let textureCanvasText	= null;
-let	score				= {player: 0, opponent: 0};
 
 let path = [
 	{name: 'goal', 			onChoice: true, src:'/static/video/multiOnlineGamePage/goal2.webm', blob: null},
@@ -59,6 +58,7 @@ let spacingImages = [
 
 class Map
 {
+	score	= {player: 0, opponent: 0};
 	arrObject = [];
 	ballObject = null;
 	mapLength = 0;
@@ -338,7 +338,7 @@ class Map
 				groupJumper.children[i].position.set(groupJumper.children[i].position.x, groupJumper.children[i].position.y + distanceY[i], groupJumper.children[i].position.z);
 			}
 			else
-			groupJumper.children[i].position.set(groupJumper.children[i].position.x, groupJumper.children[i].position.y - distanceY[i], groupJumper.children[i].position.z);
+				groupJumper.children[i].position.set(groupJumper.children[i].position.x, groupJumper.children[i].position.y - distanceY[i], groupJumper.children[i].position.z);
 		}
 
 		this.arrObject.push({mesh: groupJumper, name: name, type: typeName});
@@ -390,7 +390,7 @@ class Map
 		contextCanvasText = canvasText.getContext('2d');
 		canvasText.width = 512 * 2;
 		canvasText.height = 256 * 2;
-    	drawScore(score);
+    	drawScore(this.score);
 		textureCanvasText = new THREE.CanvasTexture(canvasText);
 		
 		materialText		= new THREE.MeshBasicMaterial({ map: textureCanvasText });
@@ -623,6 +623,21 @@ class Map
 		}, 10);
 	};
 
+	placeObject(listObject)
+	{
+		let	nbJumper = 0; 
+		
+		listObject.forEach(obj => {
+			if (obj.type == 1)
+			{
+				this.#createGravityChanger(obj.pos.x, obj.pos.y, obj.pos.z, type + i, obj.isUp ? "jumperTop" : "jumperBottom", obj.isUp);
+				nbJumper++;
+			}
+			else if (obj.type == 2)
+				scene.add(this.#createWallObstacle(obj.pos.x, obj.pos.y, obj.pos.z, obj.isUp));
+		});
+	}
+
 	#generateObstacle()
 	{
 		const wallPos = [
@@ -752,7 +767,7 @@ class Map
 
 	reCreate(name)
 	{
-		this.updateScore(name, score);
+		this.updateScore(name, this.score);
 		ball.resetPosBall();
 		player.resetPosPlayer();
 		player.reserCameraPlayer();
