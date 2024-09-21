@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/20 21:59:24 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/21 23:07:39 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,10 @@ class Player
 
 	makeAnimation(isOpponent)
 	{
+		this.mapVar.putVideoOnCanvas(3, 'goal');
+		setTimeout(() => {
+			this.mapVar.putVideoOnCanvas(0, null);
+		}, 4000);
 		if (isOpponent)
 		{
 			this.mapVar.reCreate("opponent");
@@ -166,7 +170,7 @@ class Player
 						this.setCameraPosition(
 							this.object.position.x,
 							this.object.position.y - (this.object.position.y >= this.limits.up ? 0.7 : -0.7),
-							this.object.position.z + 2
+							this.object.position.z + 1.5
 						);
 					}
 					document.getElementsByTagName('canvas')[0].style.animation = 'fadeOut 0.199s';
@@ -217,7 +221,7 @@ class Player
 						this.setCameraPosition(
 							this.object.position.x,
 							this.object.position.y - (this.object.position.y >= this.limits.up ? 0.7 : -0.7),
-							this.object.position.z + 2
+							this.object.position.z + 1.5
 						);
 					}
 					document.getElementsByTagName('canvas')[0].style.animation = 'fadeOut 0.199s';

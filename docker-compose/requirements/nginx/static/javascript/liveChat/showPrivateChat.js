@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:17:54 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/26 00:40:11 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:14:15 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,62 +17,46 @@ import { sendRequest } from "/static/javascript/websocket.js";
 
 let savedButtons = [];
 
-async function	showPrivateChat(user)
+function	showPrivateChat(user)
 {
 	const	divMessageListChatHome = document.getElementById("messageListChatHome");
 
 	sendRequest("get_private_list_message", {id: user.id});
-	await waitForMessageList();
-	infoPanel.id = user.id;
-	infoPanel.isOpen = true;
-	infoPanel.divMessage = divMessageListChatHome;
-	await changeButton(user);
-	await displayAllMessage(divMessageListChatHome);
-	await displayInputBar(divMessageListChatHome, user);
+	waitForMessageList().then(() => {
+		infoPanel.id = user.id;
+		infoPanel.isOpen = true;
+		infoPanel.divMessage = divMessageListChatHome;
+		changeButton(user);
+		displayAllMessage(divMessageListChatHome);
+		displayInputBar(divMessageListChatHome, user);
+
+	})
 }
 
-async function	restoreButton()
+function	changeButton(user)
 {
-	const	divButtonTypeChatHome = document.getElementById("buttonTypeChatHome");
-
-	divButtonTypeChatHome.innerHTML = '';
-	savedButtons.forEach(element => {
-		divButtonTypeChatHome.appendChild(element);
-	});
-}
-
-async function	changeButton(user)
-{
-	const	divButtonTypeChatHome	= document.getElementById("buttonTypeChatHome");
+	const	divMessageListChatHome 	= document.getElementById("messageListChatHome");
 	const	h2Username				= document.createElement("h2");
 	const	h2UsernameNode			= document.createTextNode(user.name);
+	const	div						= document.createElement('div');
 	let		returnButton 			= null;
-	let		h2Button				= null;
-	let		lenh2Button				= 0;
 
-	h2Button = divButtonTypeChatHome.getElementsByTagName("h2");
-	lenh2Button = h2Button.length;
-	savedButtons.splice(0, savedButtons.length);
-	for (let i = 0; i < lenh2Button; i++) {
-		savedButtons.push(h2Button[0]);
-		h2Button[0].remove();
-	}
-	h2Username.appendChild(h2UsernameNode);
-	divButtonTypeChatHome.appendChild(h2Username);
-	divButtonTypeChatHome	.innerHTML += `
+	divMessageListChatHome.before(div);
+	div.innerHTML += `
 		<p id="returnButton" style="margin: 8px 10px 0 0; text-align: right;">Return</p>
 	`;
-	h2Button[0].style.cursor = "default";
+	div.setAttribute('id', 'buttonTypeChatHome');
+	h2Username.appendChild(h2UsernameNode);
 	returnButton = document.getElementById("returnButton");
+	returnButton.before(h2Username);
 	returnButton.style.cursor = "pointer";
 	returnButton.addEventListener("click", () => {
-		restoreButton();
 		infoPanel.isOpen = false;
 		showListUser();
 	});
 }
 
-async function	displayAllMessage(divMessageListChatHome)
+function	displayAllMessage(divMessageListChatHome)
 {
 	let		newDiv				= null;
 	let		contentNode			= null;
@@ -100,7 +84,7 @@ async function	displayAllMessage(divMessageListChatHome)
 	divMessageListChatHome.scrollTop = divMessageListChatHome.scrollHeight;
 }
 
-async function	displayInputBar(divMessageListChatHome, user)
+function	displayInputBar(divMessageListChatHome, user)
 {
 	let		sendButton;
 	let		inputMessage;

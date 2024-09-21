@@ -6,12 +6,13 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/20 14:19:33 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/21 17:27:24 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { userMeInfo, waitForLogin } from '/static/javascript/typeResponse/typeLogin.js';
 import { barSelecter, goalSelecter } from '/static/javascript/lobbyPage/3d.js';
+import { LiveChat } from "/static/javascript/liveChat/main.js";
 import { sendRequest } from "/static/javascript/websocket.js";
 import { pageRenderer } from '/static/javascript/main.js'
 
@@ -43,13 +44,13 @@ class LobbyPage
 			waitForLogin().then(() => usernameP.innerHTML = userMeInfo.username);
 		else
 			usernameP.innerHTML = userMeInfo.username;
+		LiveChat.create();
 		inputUser.addEventListener('input', searchUser);
 		loginButton.addEventListener('click', showMenu);
 		window.addEventListener('resize', movePopMenuLoginButton);
 		window.addEventListener('resize', ajustSearchUserList);
 		movePopMenuLoginButton();
 		initButtonPopMenuLogin();
-		
 		window.addEventListener('click', closePopUpWhenClickOutsite);
 		listSelectCard = document.getElementsByClassName('select-card');
 		document.getElementsByClassName('game-mode')[0].addEventListener('click', showGameMode);
@@ -79,7 +80,8 @@ class LobbyPage
 		document.getElementsByClassName('game-mode')[0].removeEventListener('click', showGameMode);
 		document.getElementById('closePopupBtn').removeEventListener('click', hideGameMode);
 		window.removeEventListener('resize', ajustSearchUserList);
-		
+		LiveChat.dispose();
+
 		listSelectCard[0].removeEventListener('click', selectGameModeOne);
 		listSelectCard[1].removeEventListener('click', selectGameModeTwo);
 		listSelectCard[2].removeEventListener('click', selectGameModeThree);

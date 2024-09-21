@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:32:52 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/24 23:41:57 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/21 22:25:12 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,11 @@ function	newNotification(title, message, img, action, timer, actionText)
 	let		timeoutInTimout	= null;
 
 	console.log("New notification: " + message);
+	if (divNotification == null)
+	{
+		console.warn("No div for display notification here. Add div in html template for display it.");
+		return ;
+	}
 	newNotification.classList.add("notification");
 	newNotification.style.width = "100%";
 	newNotification.appendChild(header);

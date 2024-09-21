@@ -6,11 +6,11 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 12:00:01 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/20 22:49:59 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/21 22:52:13 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { MultiOnlineGamePage, opponent, ball, player } from "/static/javascript/multiOnlineGame/multiOnlineGamePage.js"
+import { MultiOnlineGamePage, opponent, ball, player, map } from "/static/javascript/multiOnlineGame/multiOnlineGamePage.js"
 import { WaitingGamePage } from "/static/javascript/waitingGame/main.js"
 import { pageRenderer } from '/static/javascript/main.js'
 

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 21:20:45 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/15 14:53:22 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/21 22:35:05 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ class WaitingGamePage
 			sentence.innerText = text + points;
 		}, 500);
 		timeout = setTimeout(() => {
-			sendRequest("game", {action: 0})
+			sendRequest("game", {action: 0});
+			timeout = null;
 		}, 1500);
 		returnButton.addEventListener('click', returnToLobby);
 	}
@@ -83,7 +84,13 @@ class WaitingGamePage
 
 function returnToLobby()
 {
-	sendRequest("game", {action: 2});
+	if (timeout)
+	{
+		clearTimeout(timeout);
+		timeout = null;
+	}
+	else
+		sendRequest("game", {action: 2});
 	for (let i = 0; i < document.body.children.length; i++)
 	{
 		document.body.children[i].style.animation = "anim3 0.6s";
