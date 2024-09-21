@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/20 00:07:01 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/21 20:08:48 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,26 @@
 	}
 }
 
+@keyframes fadeInUp {
+	0% {
+	  opacity: 0;
+	  transform: translate(-50%, 100%);
+	}
+	100% {
+	  opacity: 1;
+	  transform: translate(-50%, 0);
+	}
+  }
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.3;
+    }
+}
+  
 ::-webkit-scrollbar {
 	width: 10px;
 }
@@ -374,6 +394,17 @@ button {
     width: 100%;
     height: auto;
 }
+
+.centered-text {
+	position: absolute;
+	bottom: 65px;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: 24px;
+	color: white;
+	opacity: 0;
+	animation: fadeInUp 1.5s forwards 12s, blink 1.5s 13.5s infinite alternate;
+  }
 
 .info {
     position: absolute;
