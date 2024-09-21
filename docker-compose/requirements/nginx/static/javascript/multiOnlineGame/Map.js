@@ -28,9 +28,9 @@ let textureLoaderPlane	= null;
 let texturePlane		= null;
 let ctx					= null;
 let fireworkMixer		= null;
-let canvasText			= null;
-let contextCanvasText	= null;
-let textureCanvasText	= null;
+let canvasTextScore		= null;
+let contextTextScore	= null;
+let textureTextScore	= null;
 
 let path = [
 	{name: 'goal', 			onChoice: true, src:'/static/video/multiOnlineGamePage/goal2.webm', blob: null},
@@ -159,6 +159,7 @@ class Map
 			*/
 		}
 		this.putScoreboard(0xCCCCFF);
+		this.#putNameBoard("Player", "Opponent", 0xCCCCFF);
 	};
 
 	#createPlanes(x, y, rot, name, isBottom, visual)
@@ -386,14 +387,14 @@ class Map
 		geometryScoreboard2	= new THREE.BoxGeometry(width, height, depth);
 		meshScoreboard2		= new THREE.Mesh(geometryScoreboard2, materialScoreboard);
 
-		canvasText = document.createElement('canvas');
-		contextCanvasText = canvasText.getContext('2d');
-		canvasText.width = 512 * 2;
-		canvasText.height = 256 * 2;
+		canvasTextScore = document.createElement('canvas');
+		contextTextScore = canvasTextScore.getContext('2d');
+		canvasTextScore.width = 512 * 2;
+		canvasTextScore.height = 256 * 2;
     	drawScore(this.score);
-		textureCanvasText = new THREE.CanvasTexture(canvasText);
+		textureTextScore = new THREE.CanvasTexture(canvasTextScore);
 		
-		materialText		= new THREE.MeshBasicMaterial({ map: textureCanvasText });
+		materialText		= new THREE.MeshBasicMaterial({ map: textureTextScore });
 		geometryText1		= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
 		meshText1			= new THREE.Mesh(geometryText1, materialText);
 		geometryText2		= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
@@ -401,10 +402,10 @@ class Map
 
 		meshScoreboard1.rotation.y = Math.PI;
 		meshText1.rotation.y = Math.PI;
-		meshScoreboard1.position.set(0, 1.65, 9.5);
-		meshText1.position.set(0, 1.65, 9.5 - depth / 2 - 0.05);
-		meshScoreboard2.position.set(0, 1.65, -9.5);
-		meshText2.position.set(0, 1.65, - 9.5 + depth / 2 + 0.05);
+		meshScoreboard1.position.set(0, 1.45, 9.5);
+		meshText1.position.set(0, 1.45, 9.5 - depth / 2 - 0.025);
+		meshScoreboard2.position.set(0, 1.45, -9.5);
+		meshText2.position.set(0, 1.45, - 9.5 + depth / 2 + 0.025);
 
 		scene.add(meshScoreboard1);
 		scene.add(meshScoreboard2);
@@ -433,6 +434,129 @@ class Map
 				this.arrObject.splice(i, 1);
 			}
 		}
+	};
+
+	#putNameBoard(nameLeft, nameRight, color)
+	{
+		let materialBoardLeftFront;
+		let geometryBoardLeftFront;
+		let meshBoardLeftFront;
+
+		let materialBoardRightFront;
+		let geometryBoardRightFront;
+		let meshBoardRightFront;
+		
+		let materialBoardLeftBack;
+		let geometryBoardLeftBack;
+		let meshBoardLeftBack;
+
+		let materialBoardRightBack;
+		let geometryBoardRightBack;
+		let meshBoardRightBack;
+
+		let height = 0.5;
+		let width = 2.95;
+		let depth = 0.2;
+
+		materialBoardLeftFront	= new THREE.MeshPhysicalMaterial({color: color});
+		geometryBoardLeftFront	= new THREE.BoxGeometry(width, height, depth);
+		meshBoardLeftFront		= new THREE.Mesh(geometryBoardLeftFront, materialBoardLeftFront);
+
+		materialBoardRightFront	= new THREE.MeshPhysicalMaterial({color: color});
+		geometryBoardRightFront	= new THREE.BoxGeometry(width, height, depth);
+		meshBoardRightFront		= new THREE.Mesh(geometryBoardRightFront, materialBoardRightFront);
+
+		materialBoardLeftBack	= new THREE.MeshPhysicalMaterial({color: color});
+		geometryBoardLeftBack	= new THREE.BoxGeometry(width, height, depth);
+		meshBoardLeftBack		= new THREE.Mesh(geometryBoardLeftBack, materialBoardLeftBack);
+
+		materialBoardRightBack	= new THREE.MeshPhysicalMaterial({color: color});
+		geometryBoardRightBack	= new THREE.BoxGeometry(width, height, depth);
+		meshBoardRightBack	= new THREE.Mesh(geometryBoardRightBack, materialBoardRightBack);
+
+		meshBoardLeftFront.position.set(-width / 2 - (3 - width), 2.7, -9.5);
+		meshBoardRightFront.position.set(width / 2 + (3 - width), 2.7, -9.5);
+
+		meshBoardLeftBack.rotation.y = Math.PI;
+		meshBoardLeftBack.position.set(-width / 2 - (3 - width), 2.7, 9.5);
+		meshBoardRightBack.rotation.y = Math.PI;
+		meshBoardRightBack.position.set(width / 2 + (3 - width), 2.7, 9.5);
+
+		scene.add(meshBoardLeftFront);
+		scene.add(meshBoardRightFront);
+		scene.add(meshBoardLeftBack);
+		scene.add(meshBoardRightBack);
+		this.arrObject.push({mesh: meshBoardLeftFront, name: "", type: "nameBoard"});
+		this.arrObject.push({mesh: meshBoardRightFront, name: "", type: "nameBoard"});
+		this.arrObject.push({mesh: meshBoardLeftBack, name: "", type: "nameBoard"});
+		this.arrObject.push({mesh: meshBoardRightBack, name: "", type: "nameBoard"});
+
+		let canvasTextNameLeft		= null;
+		let contextTextNameLeft		= null;
+		let textureTextNameLeft		= null;
+
+		let canvasTextNameRight		= null;
+		let contextTextNameRight	= null;
+		let textureTextNameRight	= null;
+
+		canvasTextNameLeft = document.createElement('canvas');
+		contextTextNameLeft = canvasTextNameLeft.getContext('2d');
+		canvasTextNameLeft.width = 1920;
+		canvasTextNameLeft.height = 1080;
+    	drawName(nameLeft, canvasTextNameLeft, contextTextNameLeft);
+		textureTextNameLeft = new THREE.CanvasTexture(canvasTextNameLeft);
+
+		canvasTextNameRight = document.createElement('canvas');
+		contextTextNameRight = canvasTextNameRight.getContext('2d');
+		canvasTextNameRight.width = 1920;
+		canvasTextNameRight.height = 1080;
+    	drawName(nameRight, canvasTextNameRight, contextTextNameRight);
+		textureTextNameRight = new THREE.CanvasTexture(canvasTextNameRight);
+
+		let materialTextLeft		= null;
+		let materialTextRight		= null;
+		
+		let geometryTextLeftFront	= null;
+		let meshTextLeftFront		= null;
+		let geometryTextRightFront	= null;
+		let meshTextRightFront		= null;
+
+		let geometryTextLeftBack	= null;
+		let meshTextLeftBack		= null;
+		let geometryTextRightBack	= null;
+		let meshTextRightBack		= null;
+		
+		materialTextLeft		= new THREE.MeshBasicMaterial({ map: textureTextNameLeft });
+		materialTextRight		= new THREE.MeshBasicMaterial({ map: textureTextNameRight });
+
+		geometryTextLeftFront	= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
+		meshTextLeftFront		= new THREE.Mesh(geometryTextLeftFront, materialTextLeft);
+
+		geometryTextRightFront	= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
+		meshTextRightFront		= new THREE.Mesh(geometryTextRightFront, materialTextRight);
+
+		geometryTextLeftBack	= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
+		meshTextLeftBack		= new THREE.Mesh(geometryTextLeftBack, materialTextLeft);
+
+		geometryTextRightBack	= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
+		meshTextRightBack		= new THREE.Mesh(geometryTextRightBack, materialTextRight);
+
+		meshTextLeftFront.position.set(-width / 2 - (3 - width), 2.7, - 9.5 + depth / 2 + 0.025);
+		meshTextRightFront.position.set(width / 2 + (3 - width), 2.7, - 9.5 + depth / 2 + 0.025);
+
+		meshTextLeftBack.rotation.y = Math.PI;
+		meshTextLeftBack.position.set(width / 2 + (3 - width), 2.7, 9.5 - depth / 2 - 0.025);
+		meshTextRightBack.rotation.y = Math.PI;
+		meshTextRightBack.position.set(-width / 2 - (3 - width), 2.7, 9.5 - depth / 2 - 0.025);
+
+		scene.add(meshTextLeftFront);
+		scene.add(meshTextRightFront);
+		scene.add(meshTextLeftBack);
+		scene.add(meshTextRightBack);
+		this.arrObject.push({mesh: meshTextLeftFront, name: "", type: "nameBoard"});
+		this.arrObject.push({mesh: meshTextRightFront, name: "", type: "nameBoard"});
+		this.arrObject.push({mesh: meshTextLeftBack, name: "", type: "nameBoard"});
+		this.arrObject.push({mesh: meshTextRightBack, name: "", type: "nameBoard"});
 	};
 
 	putVideoOnCanvas(nbImage, vNameNb)
@@ -762,7 +886,7 @@ class Map
 		else if (name == "opponent")
 			score.opponent++;
 		drawScore(score);
-		textureCanvasText.needsUpdate = true;
+		textureTextScore.needsUpdate = true;
 	}
 
 	reCreate(name)
@@ -777,11 +901,20 @@ class Map
 
 function drawScore(score)
 {
-	contextCanvasText.clearRect(0, 0, canvasText.width, canvasText.height);
-	contextCanvasText.fillStyle = "white";
-	contextCanvasText.font = "bold 350px Arial";
-	contextCanvasText.textAlign = "center";
-	contextCanvasText.fillText(score.player + " - " + score.opponent, canvasText.width / 2, canvasText.height - canvasText.height / 4);
+	contextTextScore.clearRect(0, 0, canvasTextScore.width, canvasTextScore.height);
+	contextTextScore.fillStyle = "white";
+	contextTextScore.font = "bold 350px Arial";
+	contextTextScore.textAlign = "center";
+	contextTextScore.fillText(score.player + " - " + score.opponent, canvasTextScore.width / 2, canvasTextScore.height - canvasTextScore.height / 4);
 };
+
+function drawName(name, canvas, context)
+{
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	context.fillStyle = "white";
+	context.font = "bold 500px Arial";
+	context.textAlign = "center";
+	context.fillText(name, canvas.width / 2, canvas.height - canvas.height / 4);
+}
 
 export { Map };
