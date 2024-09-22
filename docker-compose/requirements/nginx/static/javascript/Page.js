@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Page.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/20 01:02:39 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/22 18:58:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ class Page
 {
 	actualPage = null;
 	availablePages = [
-		{url:'/', servUrl: '/homePage', class: HomePage, name: 'homePage', title: 'PTME - Home'},
-		{url:'/lobby', servUrl: '/lobbyPage', class: LobbyPage, name: 'lobbyPage', title: 'PTME - Lobby'},
-		{url:'/game', servUrl: '/multiLocalGamePage', class: multiLocalGamePage, name: 'multiLocalGamePage', title: 'PTME - Game'},
-		{url:'/wait_game', servUrl: '/waitingGamePage', class: WaitingGamePage, name: 'waitingGamePage', title: 'PTME - Wait for a game'},
-		{url:'/game', servUrl: '/multiOnlineGamePage', class: MultiOnlineGamePage, name: 'multiOnlineGamePage', title: 'PTME - Game'},
-		{url:'/profil', servUrl: '/profilPage', class: ProfilPage, name: 'profilPage', title: 'PTME - Profil'},
+		{url:'/', servUrl: '/homePage', class: HomePage, name: 'homePage', title: 'METH - Home'},
+		{url:'/lobby', servUrl: '/lobbyPage', class: LobbyPage, name: 'lobbyPage', title: 'METH - Lobby'},
+		{url:'/game', servUrl: '/multiLocalGamePage', class: multiLocalGamePage, name: 'multiLocalGamePage', title: 'METH - Game'},
+		{url:'/wait_game', servUrl: '/waitingGamePage', class: WaitingGamePage, name: 'waitingGamePage', title: 'METH - Wait for a game'},
+		{url:'/game', servUrl: '/multiOnlineGamePage', class: MultiOnlineGamePage, name: 'multiOnlineGamePage', title: 'METH - Game'},
+		{url:'/profil', servUrl: '/profilPage', class: ProfilPage, name: 'profilPage', title: 'METH - Profil'},
 	]
 
 	constructor()
@@ -108,7 +108,7 @@ class Page
 			data.text().then(text => {
 				document.body.innerHTML = text;
 				this.actualPage = null;
-				document.title = 'PTME - Page not found';
+				document.title = 'METH - Page not found';
 				history.pushState({}, this.availablePages[i].title, this.availablePages[i].url);
 			})
 		})

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    createAccount.py                                   :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 08:08:00 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/18 07:24:47 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/22 18:58:55 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,7 @@ def createAccount(socket, content):
 
 def sendVerifMail(verif_str, mail, username):
 	msg = MIMEMultipart()
-	msg['From'] = 'PTME <ptme@tmoron.fr>'
+	msg['From'] = 'METH <meth@tmoron.fr>'
 	msg['To'] = mail
 	msg['Subject'] = 'Account verification'
 	msg.attach(MIMEText('''
@@ -145,14 +145,14 @@ def sendVerifMail(verif_str, mail, username):
 		<table class="container" role="presentation">
 			<tr>
 				<td>
-					<h1>Bienvenue chez PTME !</h1>
+					<h1>Bienvenue chez METH !</h1>
 					<p>Bonjour ''' + username + ''',</p>
-					<p>Merci d'avoir créé un compte avec PTME ! Nous sommes ravis de vous accueillir parmi nous.</p>
+					<p>Merci d'avoir créé un compte avec METH ! Nous sommes ravis de vous accueillir parmi nous.</p>
 					<p>Pour compléter votre inscription, veuillez vérifier votre adresse e-mail en cliquant sur le bouton ci-dessous :</p>
 					<p><a href="''' + URLMAIL + verif_str +'''" class="button">Confirmer mon adresse e-mail</a></p>
 					<p>Si vous n'avez pas demandé cette inscription, vous pouvez ignorer cet e-mail.</p>
 					<p>Merci,</p>
-					<p>L'équipe PTME</p>
+					<p>L'équipe METH</p>
 					<div class="footer">
 						<p>42, 49 Bd Besson Bey, 16000 Angoulême, France</p>
 					</div>

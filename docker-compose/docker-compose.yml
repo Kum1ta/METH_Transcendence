@@ -70,7 +70,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: '~/PTME_data'
+      device: '~/METH_data'
 
 networks:
   transcendence:

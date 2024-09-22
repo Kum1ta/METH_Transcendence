@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/21 17:27:24 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/22 18:58:55 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ class LobbyPage
 {
 	static create()
 	{
-		const	ptmeButton		= document.getElementById("homeButton");
+		const	methButton		= document.getElementById("homeButton");
 		const	startButton		= document.getElementsByClassName('buttonStartGame')[0];
 		const	usernameP		= document.getElementById('loginButton').getElementsByTagName('p')[0];
 		const	loginButton 	= document.getElementById('loginButton');
@@ -67,7 +67,7 @@ class LobbyPage
 		barSelector = new barSelecter(document.getElementById('bar'));
 		goalSelector = new goalSelecter(document.getElementById('goal'));
 		startButton.addEventListener('click', startMode);
-		ptmeButton.addEventListener('click', goBackHome);
+		methButton.addEventListener('click', goBackHome);
 	}
 
 	static dispose()
