@@ -6,13 +6,14 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/20 21:19:25 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/22 16:10:51 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import time
 import json
 import asyncio
+import random
 
 class Game:
 	waitingForPlayerLock = False
@@ -25,7 +26,25 @@ class Game:
 		"back" : -6.25 + ballWidth,
 		"front" : 6.25 - ballWidth
 	}
+	mapLength = 13
 	startSpeed = 4
+	wallsPos = [
+			{ "type":2, "pos": {"x": 1, "y": 0, "z": 1}, "isUp": False},
+			{ "type":2, "pos": {"x": 1, "y": 0, "z": 1}, "isUp": True},
+			{ "type":2, "pos": {"x": -1, "y": 0, "z": 1}, "isUp": False},
+			{ "type":2, "pos": {"x": -1, "y": 0, "z": 1}, "isUp": True}
+	]
+	jumpersPos = [
+			{ "type":1, "pos":{"x": -1.5, "y": 0.2, "z":mapLength/4}, "isUp": False },
+			{ "type":1, "pos":{"x": -1.5, "y": 3.2, "z": mapLength / 4}, "isUp": True },
+			{ "type":1, "pos":{"x": 1.5, "y": 0.2, "z": mapLength / 4}, "isUp": False },
+			{ "type":1, "pos":{"x": 1.5, "y": 3.2, "z": mapLength / 4}, "isUp": True },
+			{ "type":1, "pos":{"x": -1.5, "y": 0.2, "z": -mapLength / 4}, "isUp": False },
+			{ "type":1, "pos":{"x": -1.5, "y": 3.2, "z": -mapLength / 4}, "isUp": True },
+			{ "type":1, "pos":{"x": 1.5, "y": 0.2, "z": -mapLength / 4}, "isUp": False },
+			{ "type":1, "pos":{"x": 1.5, "y": 3.2, "z": -mapLength / 4}, "isUp": True }
+	]
+
 	def __init__(self, socket, withBot):
 		self.p1 = None
 		self.p2 = None
@@ -42,6 +61,7 @@ class Game:
 		self.speed = Game.startSpeed
 		self.ballVel = (self.speed, 0)
 		self.score = [0, 0]
+		self.obstacles = []
 
 		if(withBot):
 			self.join(socket)
@@ -57,6 +77,25 @@ class Game:
 				Game.waitingForPlayer.join(socket)
 				Game.waitingForPlayer = None
 			Game.waitingForPlayerLock = False
+
+	def obstaclesInvLength(self):
+		for x in self.obstacles:
+			x["pos"]["z"] = -x["pos"]["z"]
+
+	def genObstacles(self):
+		for x in Game.wallsPos:
+			if random.randint(1, 100) < 50:
+				self.obstacles.append(x)
+		i = 0
+		while(i <  len(Game.jumpersPos)):
+			if(random.randint(1, 100) < 50):
+				self.obstacles.append(Game.jumpersPos[i])
+				i+=1
+			i+=1
+		self.p1.sync_send({"type":"game", "content":{"action":7, "content":self.obstacles}})
+		self.obstaclesInvLength()
+		self.p2.sync_send({"type":"game", "content":{"action":7, "content":self.obstacles}})
+		self.obstaclesInvLength()
 
 	def join(self, socket):
 		try:
@@ -80,6 +119,8 @@ class Game:
 			return(0)
 		if(self.p1Ready and self.p2Ready):
 			print("both players are ready, starting game")
+			self.genObstacles()
+			print("obstacles generated :", self.obstacles)
 			asyncio.create_task(self.gameLoop())
 		return(1)
 	
