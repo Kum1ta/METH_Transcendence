@@ -56,12 +56,18 @@ body {
 	user-select: none;
 }
 
+.main-container{
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .main{
 	padding-block: 45px;
 	padding-inline: 150px;
 	display: flex;
 	flex-direction: row;
-	gap: 2.6rem;
+	gap: 12rem;
 }
 
 .skin-select{
