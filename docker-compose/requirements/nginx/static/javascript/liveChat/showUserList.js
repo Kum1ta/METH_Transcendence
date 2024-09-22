@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:21:10 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/21 17:15:11 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/22 17:37:10 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,20 @@ function	showListUser() {
 	const	buttons	= document.getElementById('buttonTypeChatHome');
 	const	infoChat = document.getElementById("infoChat");
 	const	divMessageListChatHome = document.getElementById("messageListChatHome");
-	let		divUser;
-	let		userList;
+	const	inputMessageDiv = document.getElementById("inputMessageDiv");
+	let		listUser;
 
 	sendRequest("get_private_list_user", {});
 	waitForUserList().then((userList) => {
+		if (buttons)
+			buttons.remove();
+		if (inputMessageDiv)
+			inputMessageDiv.remove();
 		if (!userList.length)
-			infoChat.innerText = "No conversation"
+		{
+			if (infoChat)
+				infoChat.innerText = "No conversation"
+		}
 		else
 		{
 			divMessageListChatHome.style.height = "100%";
@@ -35,8 +42,6 @@ function	showListUser() {
 			divMessageListChatHome.scrollTop = 0;
 			if (infoChat)
 				infoChat.remove();
-			if (buttons)
-				buttons.remove();
 			userList.forEach(element => {
 				let user = document.createElement("div");
 				user.classList.add("user");
@@ -50,9 +55,9 @@ function	showListUser() {
 				user.querySelector("h3").innerText = element.name;
 				divMessageListChatHome.appendChild(user);
 			});
-			divUser = divMessageListChatHome.children;
-			for (let i = 0; i < divUser.length; i++) {
-				divUser[i].addEventListener("click", async () => {
+			listUser = divMessageListChatHome.children;
+			for (let i = 0; i < listUser.length; i++) {
+				listUser[i].addEventListener("click", async () => {
 					showPrivateChat(userList[i]);
 				});
 			}

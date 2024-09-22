@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/19 16:16:32 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/22 17:49:04 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ class Ball
 		this.lastTime = new Date().getTime();
 		// this.ballBody.position.x = content.pos[0];
 		// this.ballBody.position.z = content.pos[1];
-		console.log(this.object.position);
 		this.lastPos = [content.pos[0], this.object.position.y, content.pos[1]];
 		this.velocity = content.velocity;
 		// this.ballBody.velocity.set(content.velocity[0], 0, content.velocity[1]);

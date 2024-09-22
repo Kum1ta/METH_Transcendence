@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/20 23:05:19 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/22 17:59:07 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -751,15 +751,18 @@ class Map
 	{
 		let	nbJumper = 0; 
 		
-		listObject.forEach(obj => {
-			if (obj.type == 1)
+		listObject = listObject.content;
+		for (let i = 0; i < listObject.length; i++ )
+		{
+			console.log(listObject[i]);
+			if (listObject[i].type == 1)
 			{
-				this.#createGravityChanger(obj.pos.x, obj.pos.y, obj.pos.z, type + i, obj.isUp ? "jumperTop" : "jumperBottom", obj.isUp);
+				this.#createGravityChanger(listObject[i].pos.x, listObject[i].pos.y, listObject[i].pos.z, "gravityChanger" + i, listObject[i].isUp ? "jumperTop" : "jumperBottom", listObject[i].isUp);
 				nbJumper++;
 			}
-			else if (obj.type == 2)
-				scene.add(this.#createWallObstacle(obj.pos.x, obj.pos.y, obj.pos.z, obj.isUp));
-		});
+			else if (listObject[i].type == 2)
+				scene.add(this.#createWallObstacle(listObject[i].pos.x, listObject[i].pos.y, listObject[i].pos.z, listObject[i].isUp));
+		}
 	}
 
 	#generateObstacle()

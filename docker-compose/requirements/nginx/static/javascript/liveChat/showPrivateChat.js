@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:17:54 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/21 17:14:15 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/22 17:16:00 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,14 @@ function	changeButton(user)
 	const	divMessageListChatHome 	= document.getElementById("messageListChatHome");
 	const	h2Username				= document.createElement("h2");
 	const	h2UsernameNode			= document.createTextNode(user.name);
+	const	buttonTypeChatHome		= document.getElementById('buttonTypeChatHome');
 	const	div						= document.createElement('div');
 	let		returnButton 			= null;
 
+	if (buttonTypeChatHome)
+		buttonTypeChatHome.remove();
 	divMessageListChatHome.before(div);
-	div.innerHTML += `
+	div.innerHTML = `
 		<p id="returnButton" style="margin: 8px 10px 0 0; text-align: right;">Return</p>
 	`;
 	div.setAttribute('id', 'buttonTypeChatHome');
