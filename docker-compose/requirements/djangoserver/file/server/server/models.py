@@ -11,7 +11,6 @@ class User(models.Model):
 	mail_verified = models.BooleanField(default=False)
 	github_link = models.CharField(max_length=1024, null=True, blank=True, default=None)
 	discord_username = models.CharField(max_length=1024, null=True, blank=True, default=None)
-	
 
 class Message(models.Model):
 	id = models.AutoField(primary_key=True)

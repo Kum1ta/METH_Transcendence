@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/21 21:51:43 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/22 23:47:16 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ class ProfilPage
 		let		usernameText	=	null;
 
 		LiveChat.create();
+		
 		sendRequest("get_user_info", {id: userId});
 		waitForUserInfo().then((userInfo) => {
 			usernameText = userInfo.username;
@@ -46,10 +47,15 @@ class ProfilPage
 				banner.innerHTML = `<img class='editPen' src='/static/img/profilPage/editPen.png'/>`
 			}	
 		});
-		convButton.addEventListener('click', () => {
-			showChatMenu();
-			showPrivateChat({id: userId, name: usernameText});
-		});
+		if (userId != userMeInfo.id)
+		{
+			convButton.addEventListener('click', () => {
+				showChatMenu();
+				showPrivateChat({id: userId, name: usernameText});
+			});
+		}
+		else
+			convButton.remove();
 	}
 
 	static dispose()

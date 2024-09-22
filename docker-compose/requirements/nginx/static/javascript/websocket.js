@@ -6,10 +6,11 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/20 13:04:33 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/22 23:36:55 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import { typeErrorConnectedElsewhere } from "/static/javascript/typeErrorResponse/typeErrorConnectedElsewhere.js";
 import { typeErrorUnknown42Account } from "/static/javascript/typeErrorResponse/typeErrorUnknown42Account.js";
 import { typeErrorInvalidPassword } from "/static/javascript/typeErrorResponse/typeErrorInvalidPassword.js";
 import { typeErrorInvalidToken42 } from "/static/javascript/typeErrorResponse/typeErrorInvalidToken42.js";
@@ -30,13 +31,15 @@ let	status = 0;
 
 function launchSocket()
 {
+	let		lastError = 0;
+
 	socket = new WebSocket('/ws');
 
 	const	typeResponse = ["logged_in", "login", "private_list_user", "private_list_message", "new_private_message", "all_list_user", "create_account", "game", "search_user", "user_info"];
 	const	functionResponse = [typeLogin, typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage, typeAllListUser, typeCreateAccount, typeGame, typeSearchUser, typeUserInfo];
 
-	const	errorCode = [9007, 9010, 9011];
-	const	errorFunction = [typeErrorInvalidPassword, typeErrorInvalidToken42, typeErrorUnknown42Account];
+	const	errorCode = [9007, 9010, 9011, 9013];
+	const	errorFunction = [typeErrorInvalidPassword, typeErrorInvalidToken42, typeErrorUnknown42Account, typeErrorConnectedElsewhere];
 
 
 	socket.onopen = () => {
@@ -54,6 +57,7 @@ function launchSocket()
 		}
 		if (response.code >= 9000 && response.code <= 9999)
 		{
+			lastError = response.code;
 			if (response.code >= 9014 && response.code <= 9025)
 			{
 				console.log(response);
@@ -84,9 +88,12 @@ function launchSocket()
 	socket.onclose = () => {
 		status = 0;
 		console.log('Disconnected');
-		setTimeout(() => {
-			launchSocket();
-		}, 500);
+		if (lastError !=  9013)
+		{
+			setTimeout(() => {
+				launchSocket();
+			}, 500);
+		}
 	};
 }
 

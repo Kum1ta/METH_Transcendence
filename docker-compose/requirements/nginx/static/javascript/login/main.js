@@ -6,13 +6,14 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/18 21:51:14 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/22 23:44:49 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { createNotification as CN } from "/static/javascript/notification/main.js";
 import { userMeInfo, waitForLogin } from "/static/javascript/typeResponse/typeLogin.js";
+import { createNotification as CN } from "/static/javascript/notification/main.js";
 import { sendRequest } from "/static/javascript/websocket.js";
+import { pageRenderer } from '/static/javascript/main.js'
 
 class Login
 {
@@ -121,6 +122,9 @@ function initButtonPopMenuLogin()
 {
 	const	buttons = document.getElementById('popMenuLoginButton').getElementsByTagName('p');
 
+	buttons[0].addEventListener('click', () => {
+		pageRenderer.changePage('profilPage', false, userMeInfo.id);
+	});
 	buttons[2].addEventListener('click', () => {
 		window.location.replace('/logout');
 	})

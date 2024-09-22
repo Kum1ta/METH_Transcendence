@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/22 18:58:55 by marvin           ###   ########.fr       */
+/*   Updated: 2024/09/22 23:43:07 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,7 +243,7 @@ function initButtonPopMenuLogin()
 
 	buttons[0].addEventListener('click', () => {
 		pageRenderer.changePage('profilPage', false, userMeInfo.id);
-	})
+	});
 	buttons[2].addEventListener('click', () => {
 		window.location.replace('/logout');
 	});
