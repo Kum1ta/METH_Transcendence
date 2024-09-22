@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Page.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/22 18:58:44 by marvin           ###   ########.fr       */
+/*   Updated: 2024/09/23 00:59:54 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ class Page
 {
 	actualPage = null;
 	availablePages = [
-		{url:'/', servUrl: '/homePage', class: HomePage, name: 'homePage', title: 'METH - Home'},
-		{url:'/lobby', servUrl: '/lobbyPage', class: LobbyPage, name: 'lobbyPage', title: 'METH - Lobby'},
-		{url:'/game', servUrl: '/multiLocalGamePage', class: multiLocalGamePage, name: 'multiLocalGamePage', title: 'METH - Game'},
-		{url:'/wait_game', servUrl: '/waitingGamePage', class: WaitingGamePage, name: 'waitingGamePage', title: 'METH - Wait for a game'},
-		{url:'/game', servUrl: '/multiOnlineGamePage', class: MultiOnlineGamePage, name: 'multiOnlineGamePage', title: 'METH - Game'},
-		{url:'/profil', servUrl: '/profilPage', class: ProfilPage, name: 'profilPage', title: 'METH - Profil'},
+		{suffix: false, url:'/', servUrl: '/homePage', class: HomePage, name: 'homePage', title: 'METH - Home'},
+		{suffix: false, url:'/lobby', servUrl: '/lobbyPage', class: LobbyPage, name: 'lobbyPage', title: 'METH - Lobby'},
+		{suffix: false, url:'/game', servUrl: '/multiLocalGamePage', class: multiLocalGamePage, name: 'multiLocalGamePage', title: 'METH - Game'},
+		{suffix: false, url:'/wait_game', servUrl: '/waitingGamePage', class: WaitingGamePage, name: 'waitingGamePage', title: 'METH - Wait for a game'},
+		{suffix: false, url:'/game', servUrl: '/multiOnlineGamePage', class: MultiOnlineGamePage, name: 'multiOnlineGamePage', title: 'METH - Game'},
+		{suffix: true, url:'/profil', servUrl: '/profilPage', class: ProfilPage, name: 'profilPage', title: 'METH - Profil'},
 	]
 
 	constructor()
@@ -35,25 +35,31 @@ class Page
 		window.onpopstate = function(event) {
 			for (let i = 0; i < thisClass.availablePages.length; i++)
 			{
-				if (window.location.pathname == thisClass.availablePages[i].url)
+				if (window.location.pathname == thisClass.availablePages[i].url || (thisClass.availablePages[i].suffix && window.location.pathname.startsWith(thisClass.availablePages[i].url)))
 				{
-					thisClass.changePage(thisClass.availablePages[i].name, true);
+					let arg = window.location.pathname.slice(thisClass.availablePages[i].url.length + 1);
+					if (arg == "" || !thisClass.availablePages[i].suffix)
+						arg = null;
+					thisClass.changePage(thisClass.availablePages[i].name, true, arg, !thisClass.availablePages[i].suffix);
 					return ;
 				}
 			}
 		};
 		for (let i = 0; i < this.availablePages.length; i++)
 		{
-			if (window.location.pathname == this.availablePages[i].url)
+			if (window.location.pathname == this.availablePages[i].url || (thisClass.availablePages[i].suffix && window.location.pathname.startsWith(thisClass.availablePages[i].url)))
 			{
-				this.changePage(this.availablePages[i].name);
+				let arg = window.location.pathname.slice(thisClass.availablePages[i].url.length + 1);
+				if (arg == "" || !thisClass.availablePages[i].suffix)
+					arg = null;
+				this.changePage(this.availablePages[i].name, false, arg, !thisClass.availablePages[i].suffix);
 				return ;
 			}
 		}
 		this.#showUnknownPage();
 	}
 	
-	changePage(name, isBack = false, arg = null)
+	changePage(name, isBack = false, arg = null, needToChangePath = true)
 	{
 		if (this.actualPage != null)
 			this.actualPage.dispose();
@@ -75,7 +81,12 @@ class Page
 						this.actualPage = this.availablePages[i].class;
 						document.title = this.availablePages[i].title;
 						if (!isBack)
-							history.pushState({}, this.availablePages[i].title, this.availablePages[i].url);
+						{
+							if (needToChangePath)
+								history.pushState({}, this.availablePages[i].title, this.availablePages[i].url);
+							else
+								history.pushState({}, this.availablePages[i].title, window.location.pathname);
+						}
 						if (arg)
 							this.actualPage.create(arg);
 						else

@@ -26,7 +26,6 @@ urlpatterns = [
 	path("waitingGamePage", views.waitingGamePage, name='waitingGamePage'),
 	path("profilPage", views.profilPage, name='profilPage'),
 	path("game", views.game, name='game'),
-	path("profil", views.profil, name='profil'),
 	path("wait_game", views.game, name='wait_game'),
     path("login42", views.login42, name='login42'),
     path("logout", views.logout, name='logout'),

@@ -59,10 +59,6 @@ def wait_game(request):
 	# return lobbyPage(request)
 	return redirect('/lobby')
 
-def profil(request):
-	# return lobbyPage(request)
-	return redirect('/lobby')
-
 def profilPage(request):
 	if(request.method != "POST"):
 		return index(request)
