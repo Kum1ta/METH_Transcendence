@@ -16,6 +16,14 @@
     height: 30vh;
 }
 
+#cross-profil{
+    color: white;
+    position: absolute;
+    font-size: 64px;
+    top: 40px;
+    left: 40px;
+}
+
 #profil .container {
     width: 70%;
     height: 200px;
@@ -94,7 +102,7 @@
     margin-top: 100px;
 }
 
-#profil .dashboard, .history {
+#profil .dashboard {
     background-color: #D3D3D3;
     width: 48%;
     height: 42vh;
@@ -102,9 +110,62 @@
     text-align: center;
 }
 
+#profil .history {
+    background-color: #D3D3D3;
+    width: 48%;
+    height: 42vh;
+    padding: 20px;
+    text-align: center;
+}
+
+#profil .history-card {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    background-color: #E74040;
+    height: 110px;
+    padding: 15px;
+    padding-inline: 40px;
+    transition: 0.3s ease;
+}
+
+#profil .history-card:hover {
+    transform: scale(1.02);
+}
+
+#profil .history-card p {
+    color: white;
+}
+
+
+#profil .history-card #score-history {
+    display: flex;
+    align-items: center;
+    font-size: 35px;
+}
+
+
+#profil .profile-img-history{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #D3D3D3;
+    margin-bottom: 5px;
+}
+
+#profil .profile-img-history-enemy {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #D3D3D3;
+    margin-left: auto;
+}
+
 #profil .container .rightButtonDiv {
     margin-left: auto;
     margin-right: 50px;
+    display: flex;
+    gap: 20px;
 }
 
 #profil .container .rightButtonDiv img {
@@ -114,6 +175,24 @@
     object-position: 50% 50%;
     margin-left: 5px;
     cursor: pointer;
+}
+
+#profil .user-1 {
+    display: flex;
+    align-items: center;
+}
+
+#profil .user-2 {
+    display: flex;
+    align-items: center;
+}
+
+#profil .versus{
+    color: white;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #profil .container .editPen {
@@ -144,8 +223,8 @@
 }
 
 #profil .container .editPenPfp {
-    width: 50%;
-    height: 50%;
+    width: 30%;
+    height: 30%;
     position: absolute;
     top: 50%;
     left: 50%;
