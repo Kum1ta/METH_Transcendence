@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/19 15:53:13 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:39:20 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,7 +242,7 @@ function home3D()
 				}
 				else
 				{
-					if (!clickDetect)
+					if (!clickDetect && userMeInfo.id > 0)
 					{
 						document.addEventListener('click', redirection);
 						clickDetect = true;

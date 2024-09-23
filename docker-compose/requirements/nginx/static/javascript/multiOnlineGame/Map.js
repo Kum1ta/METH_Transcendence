@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/22 17:59:07 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:44:57 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -895,10 +895,10 @@ class Map
 	reCreate(name)
 	{
 		this.updateScore(name, this.score);
-		ball.resetPosBall();
-		player.resetPosPlayer();
+		// ball.resetPosBall();
+		// player.resetPosPlayer();
 		player.reserCameraPlayer();
-		opponent.resetPosOpponent();
+		// opponent.resetPosOpponent();
 	};
 };
 

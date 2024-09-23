@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:02:19 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/18 06:17:05 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:39:50 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ class HomePage
 		LiveChat.create();
 		window.addEventListener('scroll', scrool);
 		waitForLogin().then((infoUser) => {
-			if (infoUser.id !== 0)
+			if (infoUser.id > 0)
 				document.getElementById('buttonPlay').addEventListener('click', redirection);
 			else
 			{
