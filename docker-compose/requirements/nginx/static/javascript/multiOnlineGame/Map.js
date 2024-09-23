@@ -31,6 +31,7 @@ let fireworkMixer		= null;
 let canvasTextScore		= null;
 let contextTextScore	= null;
 let textureTextScore	= null;
+let animateGoalObjectUpdate	= null;
 
 let path = [
 	{name: 'goal', 			onChoice: true, src:'/static/video/multiOnlineGamePage/goal2.webm', blob: null},
@@ -432,6 +433,7 @@ class Map
 				this.arrObject[i].mesh.material = null;
 				this.arrObject[i].mesh = null;
 				this.arrObject.splice(i, 1);
+				i--;
 			}
 		}
 	};
@@ -696,29 +698,86 @@ class Map
 		scene.remove(this.banner);
 	};
 
-	animationGoal()
+	animationGoal(side)
 	{
-		let actions = {};
+		this.#clearAnimationGoal();
 
-		loader.load('/static/models3D/multiOnlineGame/fireworkv1.glb', (gltf) => {
-			fireworkMixer = new THREE.AnimationMixer(gltf.scene);
-			for (let value of gltf.animations){
-				let action = fireworkMixer.clipAction(value);
-				action.play();
-			}
-			scene.add(gltf.scene);
-			fireworkAnimate();
-		}, undefined, function (error) {
-			console.error(error);
-		});
+		const colorList = [
+			0xFF5733,  // Orange
+			0x3357FF,  // Bleu clair
+			0x33FFFF,  // Cyan
+			0x9933FF,  // Violet
+			0x33FF99,  // Vert menthe
+			0xFF9933,  // Orange doux
+			0xFF33CC,  // Magenta
+			0xCC33FF,  // Violet profond
+			0x33FFCC,  // Aqua
+			0xFF6633,  // Rouge brique
+		];
 
-		let fireworkAnimate = function ()
-		{
-			console.log("fireworkAnimate");
-			requestAnimationFrame(fireworkAnimate);
-			fireworkMixer.update(0.016);
-		}
+		let triangle	= createTriangle(colorList[Math.floor(Math.random() * 100 % colorList.length)]);
+		let cylinder	= createCylinder(colorList[Math.floor(Math.random() * 100 % colorList.length)]);
+		let box			= createBox(colorList[Math.floor(Math.random() * 100 % colorList.length)]);
+		let star		= createStar(colorList[Math.floor(Math.random() * 100 % colorList.length)]);
+		let rectangle	= createRectangle(colorList[Math.floor(Math.random() * 100 % colorList.length)]);
+		let ring		= createRing(colorList[Math.floor(Math.random() * 100 % colorList.length)]);
+
+		let pos;
+		if (side == "left" || side == "back")
+			pos = 8;
+		else if (side == "right" || side == "front")
+			pos = -8;
+
+		triangle.position.set(-2.5, 0, pos);
+		cylinder.position.set(-1.5, 0, pos);
+		star.position.set(-0.5, 0, pos);
+		box.position.set(0.5, 0, pos);
+		rectangle.position.set(1.5, 0, pos);
+		ring.position.set(2.5, 0, pos);
+
+		triangle.scale.set(0.2, 0.2, 0.2);
+		cylinder.scale.set(0.2, 0.2, 0.2);
+		star.scale.set(0.2, 0.2, 0.2);
+		box.scale.set(0.2, 0.2, 0.2);
+		rectangle.scale.set(0.2, 0.2, 0.2);
+		ring.scale.set(0.2, 0.2, 0.2);
+
+		scene.add(triangle);
+		scene.add(cylinder);
+		scene.add(star);
+		scene.add(box);
+		scene.add(rectangle);
+		scene.add(ring);
+		
+		this.arrObject.push({mesh: triangle, name: "triangle", type: "goalObject"});
+		this.arrObject.push({mesh: cylinder, name: "cylinder", type: "goalObject"});
+		this.arrObject.push({mesh: star, name: "star", type: "goalObject"});
+		this.arrObject.push({mesh: box, name: "box", type: "goalObject"});
+		this.arrObject.push({mesh: rectangle, name: "rectangle", type: "goalObject"});
+		this.arrObject.push({mesh: ring, name: "ring", type: "goalObject"});
+
+		animateGoalObjectUpdate = true;
 	};
+
+	#clearAnimationGoal()
+	{
+		for (let i = 0; i < this.arrObject.length; i++)
+		{
+			if (this.arrObject[i].type == "goalObject")
+			{
+				if (this.arrObject[i].mesh.geometry)
+					this.arrObject[i].mesh.geometry.dispose();
+				if (this.arrObject[i].mesh.material)
+					this.arrObject[i].mesh.material.dispose();
+				scene.remove(this.arrObject[i].mesh);
+				this.arrObject[i].mesh.geometry = null;
+				this.arrObject[i].mesh.material = null;
+				this.arrObject[i].mesh = null;
+				this.arrObject.splice(i, 1);
+				i--;
+			}
+		}
+	}
 
 	#animationGravityChanger(group, onTop)
 	{
@@ -879,7 +938,56 @@ class Map
 					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
 				}
 			}
+			if (animateGoalObjectUpdate && this.arrObject[i].type == "goalObject")
+			{
+				this.#updateGoalAnimation(this.arrObject[i]);
+			}
 		}
+	};
+
+	#updateGoalAnimation(object)
+	{
+		object.mesh.rotation.x += 0.03;
+		object.mesh.rotation.y += 0.03;
+		object.mesh.rotation.z += 0.03;
+
+		// if (object.name == "triangle")
+		// {
+		// 	object.mesh.position.x -= 0.002;
+		// 	object.mesh.position.y += 0.002;
+		// 	object.mesh.position.z += 0.02;
+		// }
+		// if (object.name == "cylinder")
+		// {
+		// 	object.mesh.position.x -= 0.0015;
+		// 	object.mesh.position.y += 0.003;
+		// 	object.mesh.position.z += 0.02;
+		// }
+		// if (object.name == "star")
+		// {
+		// 	object.mesh.position.x -= 0.001;
+		// 	object.mesh.position.y += 0.004;
+		// 	object.mesh.position.z += 0.02;
+		// }
+
+		// if (object.name == "box")
+		// {
+		// 	object.mesh.position.x -= 0.001;
+		// 	object.mesh.position.y += 0.004;
+		// 	object.mesh.position.z += 0.02;
+		// }
+		// if (object.name == "rectangle")
+		// {
+		// 	object.mesh.position.x -= 0.0015;
+		// 	object.mesh.position.y += 0.003;
+		// 	object.mesh.position.z += 0.02;
+		// }
+		// if (object.name == "ring")
+		// {
+		// 	object.mesh.position.x -= 0.002;
+		// 	object.mesh.position.y += 0.002;
+		// 	object.mesh.position.z += 0.02;
+		// }
 	};
 
 	updateScore(name, score)
@@ -894,6 +1002,9 @@ class Map
 
 	reCreate(name)
 	{
+		this.#clearAnimationGoal();
+		animateGoalObjectUpdate = false;
+
 		this.updateScore(name, this.score);
 		// ball.resetPosBall();
 		// player.resetPosPlayer();
@@ -918,6 +1029,69 @@ function drawName(name, canvas, context)
 	context.font = "bold 500px Arial";
 	context.textAlign = "center";
 	context.fillText(name, canvas.width / 2, canvas.height - canvas.height / 4);
+}
+
+function createTriangle(colorO) {
+	const shape = new THREE.Shape();
+	shape.moveTo(0, 1);
+	shape.lineTo(-1, -1);
+	shape.lineTo(1, -1);
+	shape.lineTo(0, 1);
+	const extrudeSettings = {
+		depth: 0.5,
+		bevelEnabled: false
+	};
+
+	const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+	const material = new THREE.MeshBasicMaterial({ color: colorO });
+	return new THREE.Mesh(geometry, material);
+}
+
+function createCylinder(colorO) {
+	const geometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
+	const material = new THREE.MeshBasicMaterial({ color: colorO });
+	return new THREE.Mesh(geometry, material);
+}
+
+function createStar(colorO) {
+	const shape = new THREE.Shape();
+	const outerRadius = 0.5;
+	const innerRadius = 0.2;
+	const spikes = 5;
+
+	for (let i = 0; i < spikes * 2; i++) {
+		const radius = i % 2 === 0 ? outerRadius : innerRadius;
+		const angle = (i / (spikes * 2)) * Math.PI * 2;
+		shape.lineTo(Math.cos(angle) * radius, Math.sin(angle) * radius);
+	}
+	shape.closePath();
+
+	const extrudeSettings = {
+		depth: 0.5,
+		bevelEnabled: false
+	};
+
+	const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+	const material = new THREE.MeshBasicMaterial({ color: colorO });
+	return new THREE.Mesh(geometry, material);
+}
+
+function createBox(colorO) {
+	const geometry = new THREE.BoxGeometry(1, 1, 1);
+	const material = new THREE.MeshBasicMaterial({ color: colorO });
+	return new THREE.Mesh(geometry, material);
+}
+
+function createRectangle(colorO) {
+	const geometry = new THREE.BoxGeometry(1, 2, 0.5);
+	const material = new THREE.MeshBasicMaterial({ color: colorO });
+	return new THREE.Mesh(geometry, material);
+}
+
+function createRing(colorO) {
+	const geometry = new THREE.TorusGeometry(0.5, 0.2, 16, 100);
+	const material = new THREE.MeshBasicMaterial({ color: colorO });
+	return new THREE.Mesh(geometry, material);
 }
 
 export { Map };

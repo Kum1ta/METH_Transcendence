@@ -140,11 +140,9 @@ class Map
 		setTimeout(() => {
 			scoreElement.innerHTML = '1';
 		}, 2500);
-
 		setTimeout(() => {
 			scoreElement.innerHTML = score.player1 + '-' +score.player2;
 		}, 3250);
-
 		setTimeout(() => {
 			onUpdate = false;
 		}, 4000);

@@ -112,9 +112,15 @@ class MultiOnlineGamePage
 
 		document.addEventListener('keypress', (e) => {
 			if (e.key == 'g')
+			{
 				player.pointAnimation(map);
+				map.animationGoal("left");
+			}
 			if (e.key == 'h')
+			{
 				player.pointOpponentAnimation(map, opponent.object);
+				map.animationGoal("right");
+			}
 			if (e.key == 'c')
 				debug = !debug;
 			if (e.key == 'p')
@@ -122,7 +128,7 @@ class MultiOnlineGamePage
 			if (e.key == 'o')
 			{
 				map.putVideoOnCanvas(3, 'goal');
-				map.animationGoal();
+				map.animationGoal("right");
 			}
 			if (e.key == 'i')
 				map.putVideoOnCanvas(3, 'outstanding');
