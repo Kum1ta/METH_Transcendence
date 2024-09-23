@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/23 00:59:35 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:00:23 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ class ProfilPage
 		else
 			sendRequest("get_user_info", {id: user});
 		waitForUserInfo().then((userInfo) => {
+			console.log(userInfo);
 			if (userInfo == null)
 			{
 				pageRenderer.changePage('homePage');
@@ -42,7 +43,9 @@ class ProfilPage
 			}
 			if (typeof(user) != 'string')
 				history.replaceState({}, document.title, window.location.pathname + '/' + userInfo.username);
-			username.innerText = userInfo.username + ' (status not implemented)';
+			username.innerHTML = userInfo.username + '<span class="online-status"></span>';
+			if (!userInfo.online)
+				document.getElementsByClassName('online-status')[0].style.backgroundColor = '#E74040';
 			pfp.style.backgroundImage = `url("${userInfo.pfp}")`
 			pfp.style.backgroundSize = "cover";
 			pfp.style.backgroundRepeat = "no-repeat";
