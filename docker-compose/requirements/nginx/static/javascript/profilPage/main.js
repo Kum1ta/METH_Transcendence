@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/23 00:59:35 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:18:00 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,25 @@ class ProfilPage
 		const	username		=	document.getElementsByTagName('h2')[0];
 		const	pfp				=	document.getElementsByClassName('profile-image')[0];
 		const	banner			=	document.getElementsByClassName('background-card')[0];
-		const	githubButton	=	document.getElementById('github');
-		const	discordButton	=	document.getElementById('discord');
 		const	convButton		=	document.getElementById('newConv');
+		let		interval		=	null;
 
 		LiveChat.create();
 		if (typeof(user) == 'string')
-			sendRequest("get_user_info", {username: user});
+		{
+			interval = setInterval(() => {
+				if (userMeInfo.id > 0)
+				{
+					sendRequest("get_user_info", {username: user})
+					clearInterval(interval);
+				}
+			}, 100);
+			
+		}
 		else
 			sendRequest("get_user_info", {id: user});
 		waitForUserInfo().then((userInfo) => {
+			console.log(userInfo);
 			if (userInfo == null)
 			{
 				pageRenderer.changePage('homePage');
@@ -42,13 +51,16 @@ class ProfilPage
 			}
 			if (typeof(user) != 'string')
 				history.replaceState({}, document.title, window.location.pathname + '/' + userInfo.username);
-			username.innerText = userInfo.username + ' (status not implemented)';
+			username.innerHTML = userInfo.username + '<span class="online-status"></span>';
+			if (!userInfo.online)
+				document.getElementsByClassName('online-status')[0].style.backgroundColor = '#E74040';
 			pfp.style.backgroundImage = `url("${userInfo.pfp}")`
 			pfp.style.backgroundSize = "cover";
 			pfp.style.backgroundRepeat = "no-repeat";
 			banner.style.backgroundImage = `url("${userInfo.banner}")`
 			banner.style.backgroundSize = "cover";
 			banner.style.backgroundRepeat = "no-repeat";
+			externButtons(userInfo)
 			if (userInfo.id == userMeInfo.id)
 			{
 				pfp.innerHTML = `<div id='editPenPfpBg'><img class='editPenPfp' src='/static/img/profilPage/editPen.png'/></div>`
@@ -70,7 +82,22 @@ class ProfilPage
 	{
 		LiveChat.dispose();
 	}
-	
+}
+
+
+function externButtons(userInfo)
+{
+	const	githubButton	=	document.getElementById('github');
+	const	discordButton	=	document.getElementById('discord');
+
+	if (userInfo.github)
+		githubButton.setAttribute('href', userInfo.github);
+	else
+		githubButton.remove();
+	if (userInfo.discord)
+		discordButton.setAttribute('name', userInfo.discord);
+	else
+		discordButton.remove();
 }
 
 export { ProfilPage };
