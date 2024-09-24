@@ -15,23 +15,28 @@ import * as THREE from '/static/javascript/three/build/three.module.js'
 import { Video } from '/static/javascript/multiOnlineGame/Video.js';
 import { GUI } from '/static/javascript/three/examples/jsm/libs/lil-gui.module.min.js';
 import { player, opponent, ball} from '/static/javascript/multiOnlineGame/multiOnlineGamePage.js';
-import { Ball } from '/static/javascript/multiOnlineGame/Ball.js'
+// import { Ball } from '/static/javascript/multiOnlineGame/Ball.js'
 
-let loader				= null;
-let	scene				= null;
-let videoList			= [];
-let interval2			= null;
-let videoCanvas			= null;
-let videoCanvasTexture	= null;
-let materialCanvas		= null;
-let textureLoaderPlane	= null;
-let texturePlane		= null;
-let ctx					= null;
-let fireworkMixer		= null;
-let canvasTextScore		= null;
-let contextTextScore	= null;
-let textureTextScore	= null;
-let animateGoalObjectUpdate	= null;
+let loader						= null;
+let	scene						= null;
+let videoList					= [];
+let interval2					= null;
+let videoCanvas					= null;
+let videoCanvasTexture			= null;
+let materialCanvas				= null;
+let textureLoaderPlane			= null;
+let texturePlane				= null;
+let ctx							= null;
+let fireworkMixer				= null;
+let canvasTextScore				= null;
+let contextTextScore			= null;
+let textureTextScore			= null;
+let animationSpeed1				= 0.05;
+let animationSpeed2				= 0.05;
+let animationSpeed3				= 0.05;
+let animateGoalObjectUpdate1	= null;
+let animateGoalObjectUpdate2	= null;
+let animateGoalObjectUpdate3	= null;
 
 let path = [
 	{name: 'goal', 			onChoice: true, src:'/static/video/multiOnlineGamePage/goal2.webm', blob: null},
@@ -61,7 +66,6 @@ class Map
 {
 	score	= {player: 0, opponent: 0};
 	arrObject = [];
-	ballObject = null;
 	mapLength = 0;
 	banner = null;
 	centerPos = {
@@ -698,7 +702,17 @@ class Map
 		scene.remove(this.banner);
 	};
 
-	animationGoal(side)
+	handleAnimation(ball, name)
+	{
+		if (name == "object3d") // 0, 0.3, 6.3
+			this.#animationGoal1(ball.object.position.x, ball.object.position.y, ball.object.position.z);
+		if (name == "downScale")
+			this.#animationGoal2(ball.object.position.x, ball.object.position.y, ball.object.position.z);
+		if (name == "upScale")
+			this.#animationGoal3(ball.object.position.x, ball.object.position.y, ball.object.position.z);
+	}
+
+	#animationGoal1(cordX, cordY, cordZ)
 	{
 		this.#clearAnimationGoal();
 
@@ -722,18 +736,12 @@ class Map
 		let rectangle	= createRectangle(colorList[Math.floor(Math.random() * 100 % colorList.length)]);
 		let ring		= createRing(colorList[Math.floor(Math.random() * 100 % colorList.length)]);
 
-		let pos;
-		if (side == "left" || side == "back")
-			pos = 8;
-		else if (side == "right" || side == "front")
-			pos = -8;
-
-		triangle.position.set(-2.5, 0, pos);
-		cylinder.position.set(-1.5, 0, pos);
-		star.position.set(-0.5, 0, pos);
-		box.position.set(0.5, 0, pos);
-		rectangle.position.set(1.5, 0, pos);
-		ring.position.set(2.5, 0, pos);
+		triangle.position.set(cordX, cordY, cordZ);
+		cylinder.position.set(cordX, cordY, cordZ);
+		star.position.set(cordX, cordY, cordZ);
+		box.position.set(cordX, cordY, cordZ);
+		rectangle.position.set(cordX, cordY, cordZ);
+		ring.position.set(cordX, cordY, cordZ);
 
 		triangle.scale.set(0.2, 0.2, 0.2);
 		cylinder.scale.set(0.2, 0.2, 0.2);
@@ -756,7 +764,17 @@ class Map
 		this.arrObject.push({mesh: rectangle, name: "rectangle", type: "goalObject"});
 		this.arrObject.push({mesh: ring, name: "ring", type: "goalObject"});
 
-		animateGoalObjectUpdate = true;
+		animateGoalObjectUpdate1 = true;
+	};
+
+	#animationGoal2(cordX, cordY, cordZ)
+	{
+		animateGoalObjectUpdate2 = true;
+	};
+
+	#animationGoal3(cordX, cordY, cordZ)
+	{
+		animateGoalObjectUpdate3 = true;
 	};
 
 	#clearAnimationGoal()
@@ -881,7 +899,7 @@ class Map
 				else
 					this.arrObject[i].mesh.material.opacity = 1 - (diff / 2);
 			}
-			if (this.arrObject[i].name == "wallRight")
+			else if (this.arrObject[i].name == "wallRight")
 			{
 				// Move the wall with the ball position
 				if (ball.object.position.z < this.mapLength / 2 - 0.35 && ball.object.position.z > -this.mapLength / 2 + 0.35)
@@ -917,7 +935,7 @@ class Map
 					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
 				}
 			}
-			if (this.arrObject[i].type == 'jumperTop')
+			else if (this.arrObject[i].type == 'jumperTop')
 			{
 				const cylinder	= this.arrObject[i].mesh.children[5];
 				const distance	= ball.object.position.distanceTo(cylinder.position);
@@ -938,56 +956,67 @@ class Map
 					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
 				}
 			}
-			if (animateGoalObjectUpdate && this.arrObject[i].type == "goalObject")
-			{
-				this.#updateGoalAnimation(this.arrObject[i]);
-			}
+			if (animateGoalObjectUpdate1 && this.arrObject[i].type == "goalObject")
+				this.#updateGoalAnimation1(this.arrObject[i], animationSpeed1 += 0.004);
+			else if (animateGoalObjectUpdate2);
+				// this.#updateGoalAnimation2(ball, animationSpeed2 += 0.000);
+			else if (animateGoalObjectUpdate3);
+				// this.#updateGoalAnimation3(ball, animationSpeed3 += 0.000);
 		}
 	};
 
-	#updateGoalAnimation(object)
+	#updateGoalAnimation1(object, speed)
 	{
 		object.mesh.rotation.x += 0.03;
 		object.mesh.rotation.y += 0.03;
 		object.mesh.rotation.z += 0.03;
 
-		// if (object.name == "triangle")
-		// {
-		// 	object.mesh.position.x -= 0.002;
-		// 	object.mesh.position.y += 0.002;
-		// 	object.mesh.position.z += 0.02;
-		// }
-		// if (object.name == "cylinder")
-		// {
-		// 	object.mesh.position.x -= 0.0015;
-		// 	object.mesh.position.y += 0.003;
-		// 	object.mesh.position.z += 0.02;
-		// }
-		// if (object.name == "star")
-		// {
-		// 	object.mesh.position.x -= 0.001;
-		// 	object.mesh.position.y += 0.004;
-		// 	object.mesh.position.z += 0.02;
-		// }
+		if (object.name == "triangle")
+		{
+			object.mesh.position.x += 0.05 * speed;
+			object.mesh.position.y += 0.05 * speed;
+			object.mesh.position.z += 0.02 * speed;
+		}
+		else if (object.name == "cylinder")
+		{
+			object.mesh.position.x -= 0.03 * speed;
+			object.mesh.position.y += 0.04 * speed;
+			object.mesh.position.z -= 0.05 * speed;
+		}
+		else if (object.name == "star")
+		{
+			object.mesh.position.x += 0.04 * speed;
+			object.mesh.position.y += 0.03 * speed;
+			object.mesh.position.z += 0.06 * speed;
+		}
+		else if (object.name == "box")
+		{
+			object.mesh.position.x -= 0.06 * speed;
+			object.mesh.position.y += 0.02 * speed;
+			object.mesh.position.z += 0.05 * speed;
+		}
+		else if (object.name == "rectangle")
+		{
+			object.mesh.position.x += 0.03 * speed;
+			object.mesh.position.y += 0.04 * speed;
+			object.mesh.position.z += 0.03 * speed;
+		}
+		else if (object.name == "ring")
+		{
+			object.mesh.position.x -= 0.05 * speed;
+			object.mesh.position.y += 0.03 * speed;
+			object.mesh.position.z -= 0.04 * speed;
+		}
+	};
 
-		// if (object.name == "box")
-		// {
-		// 	object.mesh.position.x -= 0.001;
-		// 	object.mesh.position.y += 0.004;
-		// 	object.mesh.position.z += 0.02;
-		// }
-		// if (object.name == "rectangle")
-		// {
-		// 	object.mesh.position.x -= 0.0015;
-		// 	object.mesh.position.y += 0.003;
-		// 	object.mesh.position.z += 0.02;
-		// }
-		// if (object.name == "ring")
-		// {
-		// 	object.mesh.position.x -= 0.002;
-		// 	object.mesh.position.y += 0.002;
-		// 	object.mesh.position.z += 0.02;
-		// }
+	#updateGoalAnimation2(object, speed)
+	{
+
+	};
+
+	#updateGoalAnimation3(object, speed)
+	{
+
 	};
 
 	updateScore(name, score)
@@ -1003,12 +1032,15 @@ class Map
 	reCreate(name)
 	{
 		this.#clearAnimationGoal();
-		animateGoalObjectUpdate = false;
+		animateGoalObjectUpdate1 = false;
+		animateGoalObjectUpdate2 = false;
+		animateGoalObjectUpdate3 = false;
+		animationSpeed1 = 0.05;
 
 		this.updateScore(name, this.score);
-		// ball.resetPosBall();
-		// player.resetPosPlayer();
 		player.reserCameraPlayer();
+		// ball.resetScaleBall();
+		// player.resetPosPlayer();
 		// opponent.resetPosOpponent();
 	};
 };

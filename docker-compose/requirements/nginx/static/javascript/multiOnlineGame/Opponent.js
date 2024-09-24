@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+import { goalAnimation } from '/static/javascript/multiOnlineGame/Player.js'
+
 let opponentExist = false;
 let mapLength = 0;
 
@@ -26,8 +28,9 @@ class Opponent
 		right: 3,
 	};
 	last		= false;
+	playerGoalAnimation = null;
 
-	constructor (object, map)
+	constructor (object, map, indexGoalAnimation)
 	{
 		if (opponentExist)
 			throw Error("Opponent is already init.");
@@ -35,6 +38,7 @@ class Opponent
 		this.object = object;
 		this.object.position.set(0, 0.3, -map.mapLength / 2 + 0.2);
 		mapLength = map.mapLength;
+		this.playerGoalAnimation = goalAnimation[indexGoalAnimation];
 	}
 
 	dispose()

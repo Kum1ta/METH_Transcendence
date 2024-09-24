@@ -46,6 +46,7 @@ let	playerExist			= false;
 let	isOnPointAnim		= false;
 let	pressedButton		= [];
 let mapLength			= 0;
+const goalAnimation		= ["object3d", "downScale", "upScale"];
 
 class Player
 {
@@ -60,8 +61,9 @@ class Player
 	deltaTime		= 1;
 	mapVar			= null;
 	opponent		= null;
+	playerGoalAnimation = null;
 
-	constructor (object, map, opponent)
+	constructor (object, map, opponent, indexGoalAnimation)
 	{
 		this.mapVar = map;
 		this.opponent = opponent;
@@ -74,6 +76,7 @@ class Player
 		this.limits = map.playerLimits;
 		this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 10000);
 		this.object.position.set(0, this.limits.down, map.mapLength / 2 - 0.2);
+		this.playerGoalAnimation = goalAnimation[indexGoalAnimation];
 		mapLength = map.mapLength;
 		this.setCameraPosition(
 			this.object.position.x,
@@ -338,4 +341,4 @@ function simplePressKey(e)
 	}				
 }
 
-export { Player, playerExist };
+export { Player, playerExist, goalAnimation};

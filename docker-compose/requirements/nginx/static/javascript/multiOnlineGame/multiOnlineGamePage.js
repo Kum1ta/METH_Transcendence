@@ -79,19 +79,19 @@ class MultiOnlineGamePage
 		const bar2		= createBarPlayer(0xf3e11e);
 
 		document.body.setAttribute('style', '');
-		scene			= new THREE.Scene()
-		map				= new Map(scene, 13, false);
-		renderer		= new THREE.WebGLRenderer({antialias: true});
+		scene					= new THREE.Scene()
+		map						= new Map(scene, 13, false);
+		renderer				= new THREE.WebGLRenderer({antialias: true});
 		renderer.shadowMap.enabled = true;
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		renderer.domElement.style.animation = 'fadeOutStartGames 1s';
 		renderer.domElement.style.filter = 'brightness(1)';
-		opponent		= new Opponent(bar2, map);
-		player			= new Player(bar1, map, opponent);
-		spotLight		= new THREE.SpotLight(0xffffff, 10000, 0, 0.2);
-		spotLight.castShadow = true;
-		ambiantLight	= new THREE.AmbientLight(0xffffff, 0.5);
-		ball			= new Ball(scene, map);
+		opponent				= new Opponent(bar2, map, 1);
+		player					= new Player(bar1, map, opponent, 0);
+		spotLight				= new THREE.SpotLight(0xffffff, 10000, 0, 0.2);
+		spotLight.castShadow	= true;
+		ambiantLight			= new THREE.AmbientLight(0xffffff, 0.5);
+		ball					= new Ball(scene, map);
 
 		scene.add(player.object);
 		scene.add(opponent.object);
@@ -114,12 +114,14 @@ class MultiOnlineGamePage
 			if (e.key == 'g')
 			{
 				player.pointAnimation(map);
-				map.animationGoal("left");
+				map.handleAnimation(ball, player.playerGoalAnimation);
+				// map.animationGoal1(0, 0.30, 6.3); // Le serv envoie la position de la balle pour faire l'explosion la ou il y a but
 			}
 			if (e.key == 'h')
 			{
 				player.pointOpponentAnimation(map, opponent.object);
-				map.animationGoal("right");
+				map.handleAnimation(ball, opponent.playerGoalAnimation);
+				// map.animationGoal1(0, 0.30, -6.3);
 			}
 			if (e.key == 'c')
 				debug = !debug;
@@ -128,7 +130,6 @@ class MultiOnlineGamePage
 			if (e.key == 'o')
 			{
 				map.putVideoOnCanvas(3, 'goal');
-				map.animationGoal("right");
 			}
 			if (e.key == 'i')
 				map.putVideoOnCanvas(3, 'outstanding');
@@ -146,6 +147,7 @@ class MultiOnlineGamePage
 
 		renderer.setAnimationLoop(loop)
 		sendRequest('game', {action: 1});
+		
 		let lastPosition = player.object.position.x;
 		let lastUp = player.isUp;
 		interval = setInterval(() => {

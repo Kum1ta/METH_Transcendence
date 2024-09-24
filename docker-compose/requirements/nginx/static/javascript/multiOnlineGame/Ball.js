@@ -61,6 +61,11 @@ class Ball
 		this.setPosition(this.centerPos.x, this.centerPos.y, this.centerPos.z);
 	}
 
+	resetScaleBall()
+	{
+		this.object.scale.set(1, 1, 1);
+	};
+
 	setPosition(x, y, z)
 	{
 		this.object.position.set(x, y, z);
