@@ -6,22 +6,33 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/13 15:36:35 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 00:05:55 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from '/static/javascript/three/build/three.module.js'
 
-let actualBarSelecor = null;
-let actualGoalSelecter = null;
-
+let actualBarSelecor	= null;
+let actualGoalSelecter	= null;
+let	lastSelected		= null;
 class barSelecter
 {
 	scene			= null;
 	renderer		= null;
 	camera			= null;
-	ambiantLight	= new THREE.AmbientLight(0xffffff, 35);
-	bar				= this.createBarPlayer(0xe3e3e3)
+	spotLight		= new THREE.SpotLight(0xffffff, 5);
+	availableSkins		=	[
+		{id: 0, color: 0xff53aa, texture: null},
+		{id: 1, color: 0xaa24ea, texture: null},
+		{id: 2, color: 0x2c9c49, texture: null},
+		{id: 3, color: 0x101099, texture: null},
+		{id: 4, color: null, texture: '/static/img/skin/1.jpg'},
+		{id: 5, color: null, texture: '/static/img/skin/2.jpg'},
+		{id: 6, color: null, texture: '/static/img/skin/3.jpg'},
+		{id: 7, color: null, texture: '/static/img/skin/4.jpg'},
+	]
+	selected		= lastSelected ? lastSelected : this.availableSkins[0];
+	bar				= this.createBarPlayer(this.selected.color ? this.selected.color : this.selected.texture);
 
 	constructor(div)
 	{
@@ -32,20 +43,70 @@ class barSelecter
 	
 		this.scene.background = new THREE.Color(0x020202);
 		this.renderer.setSize(pos.width - 10, pos.height - 10);
-		this.scene.add(this.ambiantLight);
+		this.scene.add(this.spotLight);
 		this.camera.position.set(0.7, 0.5, 0.7);
+		this.spotLight.position.set(0.7, 0.5, 0.7);
 		div.appendChild(this.renderer.domElement);
 		actualBarSelecor = this;
 		this.scene.add(this.bar);
 		actualBarSelecor.camera.lookAt(actualBarSelecor.bar.position);
+		this.spotLight.target = this.bar;
+		this.spotLight.lookAt(this.bar.position);
 		this.renderer.setAnimationLoop(this.#loop);
+		div.addEventListener('click', () => {
+			const	popup	=	document.getElementById('popup-background');
+			const	skins	=	document.getElementsByClassName('color-box');
+		
+			popup.style.display = 'flex';
+			for (let i = 0; i < skins.length; i++)
+			{
+				skins[i].setAttribute('skinId', this.availableSkins[i].id);
+				if (this.availableSkins[i].color != null)
+					skins[i].style.backgroundColor = `#${this.availableSkins[i].color.toString(16)}`;
+				else
+					skins[i].style.backgroundImage = `url("${this.availableSkins[i].texture}")`
+				skins[i].removeEventListener('click', this.changeSkin.bind(this));
+				skins[i].addEventListener('click', this.changeSkin.bind(this));
+			}
+			popup.removeEventListener('click', this.hideSkinSelector);
+			popup.addEventListener('click', this.hideSkinSelector);
+		})
+	}
+
+	hideSkinSelector(event)
+	{
+		const	popup	=	document.getElementById('popup-background');
+
+		if (event.target.getAttribute('class') == 'popup-background')
+			popup.style.display = 'none';
+	}
+
+	changeSkin (event)
+	{
+		const	popup	=	document.getElementById('popup-background');
+	
+		const id = event.target.getAttribute('skinId');
+		popup.style.display = 'none';
+		console.log(this.bar);
+		this.bar.material.dispose();
+		lastSelected = this.availableSkins[id];
+		if (this.availableSkins[id].color != null)
+			this.bar.material = new THREE.MeshPhysicalMaterial({color: this.availableSkins[id].color});
+		else
+			this.bar.material = new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(this.availableSkins[id].texture)});
+		this.selected = this.availableSkins[id];
 	}
 
 	createBarPlayer(color)
 	{
-		const geometry	= new THREE.BoxGeometry(1, 0.1, 0.1);
-		const material	= new THREE.MeshPhysicalMaterial({color: color});
-		const mesh		= new THREE.Mesh(geometry, material);
+		const	geometry	= new THREE.BoxGeometry(1, 0.1, 0.1);
+		let		material	= null;
+
+		if (typeof(color) == 'number')
+			material = new THREE.MeshPhysicalMaterial({color: color});
+		else
+			material = new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(color)});
+		const	mesh		= new THREE.Mesh(geometry, material);
 
 		mesh.castShadow = true;
 		return (mesh);

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/22 23:43:07 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/24 23:56:38 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,9 @@ class LobbyPage
 		{
 			document.body.children[i].style.animation = 'animShowMenuDiv 0.5s';
 		}
-		barSelector = new barSelecter(document.getElementById('bar'));
-		goalSelector = new goalSelecter(document.getElementById('goal'));
 		startButton.addEventListener('click', startMode);
 		methButton.addEventListener('click', goBackHome);
+		document.getElementsByClassName('menuSelected')[gameMode].style.display = 'flex';
 	}
 
 	static dispose()
@@ -180,28 +179,68 @@ function hideGameMode()
 function selectGameModeOne()
 {
 	document.getElementById('loginPopup').style.display = 'none';
+	if (gameMode == 0)
+		return ;
 	document.getElementsByClassName('mode-card')[0].getElementsByTagName('p')[0].innerHTML = listSelectCard[0].innerHTML;
+	const	menuList = document.getElementsByClassName('menuSelected');
+	for (let i = 0; i < menuList.length; i++)
+	{
+		menuList[i].style.display = 'none';
+	}
+	document.getElementsByClassName('menuSelected')[0].style.display = 'flex';
 	gameMode = 0;
 }
 
 function selectGameModeTwo()
 {
 	document.getElementById('loginPopup').style.display = 'none';
+	if (gameMode == 1)
+		return ;
 	document.getElementsByClassName('mode-card')[0].getElementsByTagName('p')[0].innerHTML = listSelectCard[1].innerHTML;
+	const	menuList = document.getElementsByClassName('menuSelected');
+	for (let i = 0; i < menuList.length; i++)
+	{
+		menuList[i].style.display = 'none';
+	}
+	document.getElementsByClassName('menuSelected')[1].style.display = 'flex';
+	if (barSelector)
+		barSelector.dispose();
+	if (goalSelector)
+		goalSelector.dispose();
+	document.getElementById('bar').innerHTML = '';
+	document.getElementById('goal').innerHTML = '';
+	barSelector = new barSelecter(document.getElementById('bar'));
+	goalSelector = new goalSelecter(document.getElementById('goal'));
 	gameMode = 1;
 }
 
 function selectGameModeThree()
 {
 	document.getElementById('loginPopup').style.display = 'none';
+	if (gameMode == 2)
+		return ;
 	document.getElementsByClassName('mode-card')[0].getElementsByTagName('p')[0].innerHTML = listSelectCard[2].innerHTML;
+	const	menuList = document.getElementsByClassName('menuSelected');
+	for (let i = 0; i < menuList.length; i++)
+	{
+		menuList[i].style.display = 'none';
+	}
+	document.getElementsByClassName('menuSelected')[2].style.display = 'flex';
 	gameMode = 2;
 }
 
 function selectGameModeFour()
 {
 	document.getElementById('loginPopup').style.display = 'none';
+	if (gameMode == 3)
+		return ;
 	document.getElementsByClassName('mode-card')[0].getElementsByTagName('p')[0].innerHTML = listSelectCard[3].innerHTML;
+	const	menuList = document.getElementsByClassName('menuSelected');
+	for (let i = 0; i < menuList.length; i++)
+	{
+		menuList[i].style.display = 'none';
+	}
+	document.getElementsByClassName('menuSelected')[3].style.display = 'flex';
 	gameMode = 3;
 }
 
