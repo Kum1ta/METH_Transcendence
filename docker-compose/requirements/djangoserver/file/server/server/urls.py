@@ -30,7 +30,9 @@ urlpatterns = [
     path("login42", views.login42, name='login42'),
     path("logout", views.logout, name='logout'),
 	path("verify", views.verify, name='verify'),
-	path("404", views.err404, name='err404')
+	path("404", views.err404, name='err404'),
+	path("pfp/<str>", views.pfp, name='pfp'),
+	path("banner/<str>", views.banner, name='banner'),
 ]
 
 handler404 = "server.views.handler404"

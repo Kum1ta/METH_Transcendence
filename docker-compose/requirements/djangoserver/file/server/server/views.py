@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from django.shortcuts import render, redirect
 from .models import User, MailVerify
 from .data import UID42, SECRET42, SERVER_URL
@@ -126,7 +126,15 @@ def logout(request):
 	return redirect("/") 
 
 def handler404(request, exception):
-	return(index(request));
+	return(index(request))
 
 def err404(request):
 	return(render(request, "err404.html"))
+
+def	pfp(request, str):
+	image_path = os.path.join('/var/www/djangoserver/pfp/', str)
+	return FileResponse(open(image_path, 'rb'), content_type='image/png')
+
+def	banner(request, str):
+	image_path = os.path.join('/var/www/djangoserver/banner/', str)
+	return FileResponse(open(image_path, 'rb'), content_type='image/png')

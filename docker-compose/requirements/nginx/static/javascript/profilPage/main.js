@@ -6,10 +6,11 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/23 23:40:42 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:32:22 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import { waitForchangePfp } from "/static/javascript/typeResponse/typeChangePfp.js";
 import { createNotification as CN } from "/static/javascript/notification/main.js";
 import { waitForUserInfo } from "/static/javascript/typeResponse/typeUserInfo.js";
 import { showPrivateChat } from "/static/javascript/liveChat/showPrivateChat.js";
@@ -29,6 +30,8 @@ class ProfilPage
 		const	crossProfil		=	document.getElementById('cross-profil');
 		let		editPenPfpBg	=	null;
 		let		inputPfp		=	null;
+		let		editPenBanner	=	null;
+		let		inputBanner		=	null;
 		let		interval		=	null;
 
 		LiveChat.create();
@@ -73,38 +76,24 @@ class ProfilPage
 			if (userInfo.id == userMeInfo.id)
 			{
 				pfp.innerHTML = `<div id='editPenPfpBg'><input style='display: none' id='inputPfp' type="file"><img class='editPenPfp' src='/static/img/profilPage/editPen.png'/></div>`
-				banner.innerHTML = `<img class='editPen' src='/static/img/profilPage/editPen.png'/>`
+				banner.innerHTML = `<img class='editPen' src='/static/img/profilPage/editPen.png'/><input style='display: none' id='inputBanner' type="file">`
 				editPenPfpBg = document.getElementById('editPenPfpBg');
 				inputPfp = document.getElementById('inputPfp');
 				editPenPfpBg.addEventListener('click', () => {
+					inputPfp.setAttribute('accept', '.png, .jpeg, .jpg, .gif');
 					inputPfp.click();
 				});
-				inputPfp.setAttribute('accept', '.png, .jpeg, .jpg');
-				inputPfp.addEventListener('change', (event) => {
-					const reader		= new FileReader();
-					const validTypes	=	['image/png', 'image/jpeg'];
-					const file			=	event.target.files[0];
+				inputPfp.setAttribute('accept', '.png, .jpeg, .jpg, .gif');
+				inputPfp.addEventListener('change', () => inputChange(true));
 
-					function arrayBufferToBase64(buffer) {
-						let binary = '';
-						const bytes = new Uint8Array(buffer);
-						const len = bytes.byteLength;
-						for (let i = 0; i < len; i++) {
-						  binary += String.fromCharCode(bytes[i]);
-						}
-						return window.btoa(binary);
-					  }
-					if (validTypes.includes(file.type))
-					{
-						reader.onload = (e) => {
-							const arrayBuffer = e.target.result;
-
-							console.log(arrayBuffer);
-							sendRequest('change_pfp', {img: arrayBufferToBase64(arrayBuffer), type: file.type})
-						}
-						reader.readAsArrayBuffer(file);
-					}
-				  });
+				editPenBanner = document.getElementsByClassName('editPen')[0];
+				inputBanner = document.getElementById('inputBanner');
+				editPenBanner.addEventListener('click', () => {
+					inputBanner.setAttribute('accept', '.png, .jpeg, .jpg, .gif');
+					inputBanner.click();
+				});
+				inputBanner.setAttribute('accept', '.png, .jpeg, .jpg, .gif');
+				inputBanner.addEventListener('change',  () => inputChange(false));
 			}
 			if (userInfo.id != userMeInfo.id)
 			{
@@ -139,5 +128,41 @@ function externButtons(userInfo)
 	else
 		discordButton.remove();
 }
+
+function inputChange(isPfp)
+{
+	const reader		= new FileReader();
+	const validTypes	=	['image/png', 'image/jpeg', 'image/webp']
+	const file			=	event.target.files[0];
+
+	function arrayBufferToBase64(buffer) {
+		let binary = '';
+		const bytes = new Uint8Array(buffer);
+		const len = bytes.byteLength;
+		for (let i = 0; i < len; i++) {
+		  binary += String.fromCharCode(bytes[i]);
+		}
+		return window.btoa(binary);
+	  }
+	if (validTypes.includes(file.type))
+	{
+		reader.onload = (e) => {
+			const arrayBuffer = e.target.result;
+
+			if (isPfp)
+				sendRequest('change_pfp', {img: arrayBufferToBase64(arrayBuffer), type: file.type})
+			else
+				sendRequest('change_banner', {img: arrayBufferToBase64(arrayBuffer), type: file.type})
+			waitForchangePfp().then((content) => {
+				if (isPfp)
+					document.getElementsByClassName('profile-image')[0].style.backgroundImage = `url("${content.pfp}")`
+				else
+					document.getElementsByClassName('background-card')[0].style.backgroundImage = `url("${content.banner}")`
+			});
+		}
+		reader.readAsArrayBuffer(file);
+	}
+}
+
 
 export { ProfilPage };

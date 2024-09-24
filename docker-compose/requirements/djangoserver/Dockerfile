@@ -34,6 +34,8 @@ RUN mkdir -p /var/www/djangoserver/
 WORKDIR /var/www/djangoserver
 STOPSIGNAL SIGKILL
 RUN mkdir -p /var/www/djangoserver/static/
+RUN mkdir -p /var/www/djangoserver/pfp/
+RUN mkdir -p /var/www/djangoserver/banner/
 
 COPY file/server /var/www/djangoserver/server
 RUN chmod 755 /var/www/djangoserver/ && chown -R www-data:www-data /var/www/djangoserver/
