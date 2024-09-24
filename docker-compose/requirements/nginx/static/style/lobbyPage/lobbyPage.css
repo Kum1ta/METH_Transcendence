@@ -74,8 +74,55 @@ body {
 	justify-content: space-between;
 }
 
+/* POUR EDDY : CHANGE HERE FOR SELECTING THE SKIN */
+
+.popup-background {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	justify-content: center;
+	align-items: center;
+}
+
+.popup-skin {
+	background-color: white;
+	padding: 20px;
+	text-align: center;
+}
+
+.popup-skin h1 {
+	margin-bottom: 30px;
+	font-size: 24px;
+}
+
+.color-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 140px);
+	gap: 20px;
+	align-items: center;
+	justify-content: center;
+	padding-inline: 40px;
+	padding-bottom: 20px;
+}
+
+.color-box {
+	width: 120px;
+	height: 120px;
+	border: 4px solid black;
+	cursor: pointer;
+	transition: transform 0.3s ease;
+}
+
+.color-box:hover {
+	transform: scale(1.1);
+}
+
 .popup {
-	display: none; /* La popup est masquée par défaut */
+	display: none;
 	position: fixed;
 	top: 0;
 	left: 0;

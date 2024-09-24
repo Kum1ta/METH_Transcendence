@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/21 20:08:48 by marvin           ###   ########.fr       */
+/*   Updated: 2024/09/24 15:16:08 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -403,7 +403,7 @@ button {
 	font-size: 24px;
 	color: white;
 	opacity: 0;
-	animation: fadeInUp 1.5s forwards 12s, blink 1.5s 13.5s infinite alternate;
+	animation: fadeInUp 1.5s forwards 16s, blink 1.5s 17.5s infinite alternate;
   }
 
 .info {
@@ -446,6 +446,10 @@ footer {
 
 .footer-left p {
     color: #afafaf;
+}
+
+.footer-right{
+	margin-bottom: auto;
 }
 
 .footer-right p {
