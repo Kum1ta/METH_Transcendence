@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/24 15:55:37 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/26 00:59:46 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ import { typeNewPrivateMessage } from "/static/javascript/typeResponse/typeNewPr
 import { typePrivateListUser } from "/static/javascript/typeResponse/typePrivateListUser.js";
 import { typeCreateAccount } from "/static/javascript/typeResponse/typeCreateAccount.js";
 import { typeAllListUser }from "/static/javascript/typeResponse/typeAllListUser.js";
+import { typePrivateInfo } from "/static/javascript/typeResponse/typePrivateInfo.js"
 import { createNotification as CN } from "/static/javascript/notification/main.js";
 import { typeSearchUser } from "/static/javascript/typeResponse/typeSearchUser.js";
 import { typeChangePfp } from "/static/javascript/typeResponse/typeChangePfp.js";
@@ -36,8 +37,8 @@ function launchSocket()
 
 	socket = new WebSocket('/ws');
 
-	const	typeResponse = ["logged_in", "login", "private_list_user", "private_list_message", "new_private_message", "all_list_user", "create_account", "game", "search_user", "user_info", "change_pfp"];
-	const	functionResponse = [typeLogin, typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage, typeAllListUser, typeCreateAccount, typeGame, typeSearchUser, typeUserInfo, typeChangePfp];
+	const	typeResponse		= ["logged_in", "login", "private_list_user", "private_list_message", "new_private_message", "all_list_user", "create_account", "game", "search_user", "user_info", "change_pfp", "private_info"];
+	const	functionResponse	= [typeLogin, typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage, typeAllListUser, typeCreateAccount, typeGame, typeSearchUser, typeUserInfo, typeChangePfp, typePrivateInfo];
 
 	const	errorCode = [9007, 9010, 9011, 9013];
 	const	errorFunction = [typeErrorInvalidPassword, typeErrorInvalidToken42, typeErrorUnknown42Account, typeErrorConnectedElsewhere];
@@ -116,4 +117,4 @@ function	sendRequest(type, content) {
 	}));
 }
 
-export { socket, sendRequest, launchSocket };
+export { socket, sendRequest, launchSocket, status };

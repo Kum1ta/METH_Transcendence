@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/25 18:28:18 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/25 22:19:13 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -998,7 +998,7 @@ class Map
 
 		this.updateScore(name, this.score);
 		player.reserCameraPlayer();
-		ball.resetScaleBall();
+		ball.resetPosBall();
 		// player.resetPosPlayer();
 		// opponent.resetPosOpponent();
 	};

@@ -29,6 +29,7 @@
 - 9025 : Account not verified, please verify your account before logging in
 - 9026 : An error occured while sending the email, glhf
 - 9027 : An unknown error occured
+- 9028 : You must provide exactly one field to update"
 
 - 9100 : Action out of range
 - 9101 : No game started 
