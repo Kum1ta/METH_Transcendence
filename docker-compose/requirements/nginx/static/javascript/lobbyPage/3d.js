@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/25 09:17:42 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 14:40:02 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ class barSelecter
 	];
 	selected		= lastSelected ? lastSelected : this.availableSkins[0];
 	bar				= this.createBarPlayer(this.selected.color ? this.selected.color : this.selected.texture);
+	boundChangeSkin = this.changeSkin.bind(this);
+
 
 	constructor(div)
 	{
@@ -68,8 +70,8 @@ class barSelecter
 					skins[i].style.backgroundColor = `#${this.availableSkins[i].color.toString(16)}`;
 				else
 					skins[i].style.backgroundImage = `url("${this.availableSkins[i].texture}")`
-				skins[i].removeEventListener('click', this.changeSkin.bind(this));
-				skins[i].addEventListener('click', this.changeSkin.bind(this));
+				skins[i].removeEventListener('click', this.boundChangeSkin);
+				skins[i].addEventListener('click', this.boundChangeSkin);
 			}
 			popup.removeEventListener('click', this.hideSkinSelector);
 			popup.addEventListener('click', this.hideSkinSelector);

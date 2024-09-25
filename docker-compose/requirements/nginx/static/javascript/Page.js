@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/23 00:59:54 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 15:47:22 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ import { HomePage } from "/static/javascript/homePage/main.js";
 class Page
 {
 	actualPage = null;
+	wasRefresh = false;
 	availablePages = [
 		{suffix: false, url:'/', servUrl: '/homePage', class: HomePage, name: 'homePage', title: 'METH - Home'},
 		{suffix: false, url:'/lobby', servUrl: '/lobbyPage', class: LobbyPage, name: 'lobbyPage', title: 'METH - Lobby'},
@@ -45,6 +46,7 @@ class Page
 				}
 			}
 		};
+		this.wasRefresh = (performance.getEntriesByType("navigation").length > 0 && performance.getEntriesByType("navigation")[0].type === "reload")
 		for (let i = 0; i < this.availablePages.length; i++)
 		{
 			if (window.location.pathname == this.availablePages[i].url || (thisClass.availablePages[i].suffix && window.location.pathname.startsWith(thisClass.availablePages[i].url)))
@@ -80,13 +82,14 @@ class Page
 						document.body.innerHTML = text;
 						this.actualPage = this.availablePages[i].class;
 						document.title = this.availablePages[i].title;
-						if (!isBack)
+						if (!isBack && !this.wasRefresh)
 						{
 							if (needToChangePath)
 								history.pushState({}, this.availablePages[i].title, this.availablePages[i].url);
 							else
 								history.pushState({}, this.availablePages[i].title, window.location.pathname);
 						}
+						this.wasRefresh = false;
 						if (arg)
 							this.actualPage.create(arg);
 						else

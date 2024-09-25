@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/25 09:05:07 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 15:37:29 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ class LobbyPage
 		const	usernameP		= document.getElementById('loginButton').getElementsByTagName('p')[0];
 		const	loginButton 	= document.getElementById('loginButton');
 		const	inputUser		= document.getElementById('searchInputUser');
+		const	func			= [selectGameModeOne, selectGameModeTwo, selectGameModeThree, selectGameModeFour];
 
 		if (userMeInfo.id == -1)
 			waitForLogin().then(() => usernameP.innerHTML = userMeInfo.username);
@@ -59,6 +60,7 @@ class LobbyPage
 		listSelectCard[1].addEventListener('click', selectGameModeTwo);
 		listSelectCard[2].addEventListener('click', selectGameModeThree);
 		listSelectCard[3].addEventListener('click', selectGameModeFour);
+		func[gameMode]();
 		document.getElementsByClassName('mode-card')[0].getElementsByTagName('p')[0].innerHTML = listSelectCard[gameMode].innerHTML;
 		for (let i = 0; i < document.body.children.length; i++)
 		{
@@ -125,7 +127,7 @@ function ajustSearchUserList()
 
 function goBackHome()
 {
-	pageRenderer.changePage('homePage');
+	pageRenderer.changePage('homePage', false);
 }
 
 function startMode()

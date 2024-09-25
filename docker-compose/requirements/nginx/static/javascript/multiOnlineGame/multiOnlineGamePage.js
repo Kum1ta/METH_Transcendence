@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/21 22:59:04 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 15:22:28 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ class MultiOnlineGamePage
 		scene.background = new THREE.Color(0x1a1a1a);
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		document.body.appendChild(renderer.domElement);
-		ball.initMoveBallTmp();
 		map.ballObject = ball.object;
 
 		//////////////////////////
