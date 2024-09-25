@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/22 17:49:04 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 13:47:32 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ class Ball
 		this.object.position.set(x, y, z);
 	}
 
-	changeGravity(ballIsOnJumper)
+	changeGravity()
 	{
 		let		diffTop	= this.limits.up - this.object.position.y;
 		let		diffBot	= this.object.position.y - this.limits.down;
@@ -93,39 +93,10 @@ class Ball
 					this.setPosition(this.object.position.x, this.limits.up, this.object.position.z);
 				else
 					this.setPosition(this.object.position.x, this.limits.down, this.object.position.z);
-				ballIsOnJumper.can = true;
 			}
 			speed -= speed * slower;
 		}, 10);
 	}
-
-	/*---------------- FUNCTION FOR TEST ----------------*/
-	initMoveBallTmp()
-	{
-		console.warn("Don't forget to remove function initMoveBallTmp");
-		const	speedBallTmp	=	0.1;
-		let		warn = false;
-		
-		document.addEventListener('keypress', (e) => {
-			if (!this.object && !warn)
-			{
-				console.warn("EventListener in initMoveBallTmp() is still here");
-				warn = true;
-				return ;
-			}
-			if (e.key == '4')
-				this.object.position.x -= speedBallTmp;
-			if (e.key == '6')
-				this.object.position.x += speedBallTmp;
-			if (e.key == '8')
-				this.object.position.z -= speedBallTmp;
-			if (e.key == '2')
-				this.object.position.z += speedBallTmp;
-			if (e.key == '9')
-				this.changeGravity();
-		});
-	}
-	/*---------------------------------------------------*/
 
 	updatePos(content)
 	{

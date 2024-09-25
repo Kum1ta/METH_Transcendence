@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 12:00:01 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/21 22:52:13 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 13:38:28 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ function typeGame(content)
 		player.makeAnimation(content.is_opponent);
 	else if (content.action == 7 && pageRenderer.actualPage == MultiOnlineGamePage)
 		map.placeObject(content);
+	else if (content.action == 8 && pageRenderer.actualPage == MultiOnlineGamePage)
+		map.activeJumper(content.index);
 }
 
 export { typeGame };

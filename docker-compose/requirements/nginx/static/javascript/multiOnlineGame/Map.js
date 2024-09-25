@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/23 13:44:57 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 13:58:28 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,6 @@ class Map
 		down: 0.3,
 		left: -3,
 		right: 3,
-	};
-	ballIsOnJumper = {
-		can: true
 	};
 
 	dispose()
@@ -831,7 +828,6 @@ class Map
 		listObject = listObject.content;
 		for (let i = 0; i < listObject.length; i++ )
 		{
-			console.log(listObject[i]);
 			if (listObject[i].type == 1)
 			{
 				this.#createGravityChanger(listObject[i].pos.x, listObject[i].pos.y, listObject[i].pos.z, "gravityChanger" + i, listObject[i].isUp ? "jumperTop" : "jumperBottom", listObject[i].isUp);
@@ -841,6 +837,16 @@ class Map
 				scene.add(this.#createWallObstacle(listObject[i].pos.x, listObject[i].pos.y, listObject[i].pos.z, listObject[i].isUp));
 		}
 	}
+
+	activeJumper(index)
+	{
+		ball.changeGravity();
+		if (listObject[index].isUp)
+			this.#animationGravityChanger(this.arrObject[index].mesh, true);
+		else
+			this.#animationGravityChanger(this.arrObject[index].mesh, false);
+	}
+
 
 	#generateObstacle()
 	{
@@ -916,18 +922,6 @@ class Map
 			}
 			if (this.arrObject[i].type == 'jumperBottom')
 			{
-				const cylinder	= this.arrObject[i].mesh.children[5];
-				const distance	= ball.object.position.distanceTo(cylinder.position);
-				const speed		= 0.1;
-
-				// Detect if the ball is on the jumper
-				if (distance < 0.25 && this.ballIsOnJumper.can)
-				{
-					this.ballIsOnJumper.can = false;
-					ball.changeGravity(this.ballIsOnJumper);
-					this.#animationGravityChanger(this.arrObject[i].mesh, false);
-				}
-
 				// Gravity changer animation
 				for (let j = 0; j < 3; j++)
 				{
@@ -937,18 +931,6 @@ class Map
 			}
 			else if (this.arrObject[i].type == 'jumperTop')
 			{
-				const cylinder	= this.arrObject[i].mesh.children[5];
-				const distance	= ball.object.position.distanceTo(cylinder.position);
-				const speed		= 0.1;
-
-				// Detect if the ball is on the jumper
-				if (distance < 0.4 && this.ballIsOnJumper.can)
-				{
-					this.ballIsOnJumper.can = false;
-					ball.changeGravity(this.ballIsOnJumper);
-					this.#animationGravityChanger(this.arrObject[i].mesh, true);
-				}
-
 				// Gravity changer animation
 				for (let j = 0; j < 3; j++)
 				{
