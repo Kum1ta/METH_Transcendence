@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/25 16:32:24 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/25 17:08:55 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,14 +37,14 @@ class Game:
 			{ "type":2, "pos": {"x": -1, "y": 0, "z": 1}, "isUp": True}
 	]
 	jumpersPos = [
-#			{ "type":1, "pos":{"x": -1.5, "y": 0.2, "z":mapLength/4}, "isUp": False },
-#			{ "type":1, "pos":{"x": -1.5, "y": 3.2, "z": mapLength / 4}, "isUp": True },
+			{ "type":1, "pos":{"x": -1.5, "y": 0.2, "z":mapLength/4}, "isUp": False },
+			{ "type":1, "pos":{"x": -1.5, "y": 3.2, "z": mapLength / 4}, "isUp": True },
 			{ "type":1, "pos":{"x": 1.5, "y": 0.2, "z": mapLength / 4}, "isUp": False },
-#			{ "type":1, "pos":{"x": 1.5, "y": 3.2, "z": mapLength / 4}, "isUp": True },
-#			{ "type":1, "pos":{"x": -1.5, "y": 0.2, "z": -mapLength / 4}, "isUp": False },
-#			{ "type":1, "pos":{"x": -1.5, "y": 3.2, "z": -mapLength / 4}, "isUp": True },
-#			{ "type":1, "pos":{"x": 1.5, "y": 0.2, "z": -mapLength / 4}, "isUp": False },
-#			{ "type":1, "pos":{"x": 1.5, "y": 3.2, "z": -mapLength / 4}, "isUp": True }
+			{ "type":1, "pos":{"x": 1.5, "y": 3.2, "z": mapLength / 4}, "isUp": True },
+			{ "type":1, "pos":{"x": -1.5, "y": 0.2, "z": -mapLength / 4}, "isUp": False },
+			{ "type":1, "pos":{"x": -1.5, "y": 3.2, "z": -mapLength / 4}, "isUp": True },
+			{ "type":1, "pos":{"x": 1.5, "y": 0.2, "z": -mapLength / 4}, "isUp": False },
+			{ "type":1, "pos":{"x": 1.5, "y": 3.2, "z": -mapLength / 4}, "isUp": True }
 	]
 	skins = [
 		{id: 0, 'color': 0xff53aa, 'texture': None},
@@ -74,6 +74,7 @@ class Game:
 		self.ballVel = (self.speed, 0)
 		self.score = [0, 0]
 		self.obstacles = []
+		self.lastWin = 2
 
 		if(withBot):
 			self.join(socket)
@@ -101,7 +102,7 @@ class Game:
 				self.obstacles.append(x)
 		i = 0
 		while(i <  len(Game.jumpersPos)):
-			if(random.randint(1, 100) < 101):
+			if(random.randint(1, 100) < 50):
 				self.obstacles.append(Game.jumpersPos[i])
 				i+=1
 			i+=1
@@ -305,6 +306,7 @@ class Game:
 					velZ = -velZ
 			else:
 				print("distance :", playerDistance)
+				self.lastWin = 1 if newBallPos[1] < 0 else 2
 				await self.scoreGoal(1 if newBallPos[1] < 0 else 2)
 				return;
 		elif(newBallPos[0] <= Game.limits["left"] or newBallPos[0] >= Game.limits["right"]):
@@ -316,11 +318,15 @@ class Game:
 		self.sendNewBallInfo()
 	
 	def prepareGame(self, stop = False):
-		self.ballPos = {"pos":(0, 6), "up": False}
+		self.ballPos = {"pos":(0, 0), "up": False}
 		if(stop):
 			self.ballVel = (0, 0)
 		else:
-			self.ballVel = (0.50, -1)
+			velX = self.speed * (random.randint(-50, 50) / 100)
+			velZ = self.speed - abs(velX)
+			if(self.lastWin == 2):
+				velZ = -velZ
+			self.ballVel = (velX, velZ)
 		self.sendNewBallInfo()
 		self.lastUpdate = time.time()
 
