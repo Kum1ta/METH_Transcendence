@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/25 13:02:29 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/25 16:32:24 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,20 +14,22 @@ import time
 import json
 import asyncio
 import random
+import math
 
 class Game:
 	waitingForPlayerLock = False
 	waitingForPlayer = None
-	ballWidth = 0.15
-	playerLength = 1 + (ballWidth * 2)
+	ballRadius = 0.15
+	playerLength = 1 + (ballRadius * 4)
 	limits = {
-		"left" : -3.5 + ballWidth,
-		"right" : 3.5 - ballWidth,
-		"back" : -6.25 + ballWidth,
-		"front" : 6.25 - ballWidth
+		"left" : -3.5 + ballRadius,
+		"right" : 3.5 - ballRadius,
+		"back" : -6.25 + ballRadius,
+		"front" : 6.25 - ballRadius
 	}
 	mapLength = 13
 	startSpeed = 4
+	jumperRadius = 0.2
 	wallsPos = [
 			{ "type":2, "pos": {"x": 1, "y": 0, "z": 1}, "isUp": False},
 			{ "type":2, "pos": {"x": 1, "y": 0, "z": 1}, "isUp": True},
@@ -35,14 +37,14 @@ class Game:
 			{ "type":2, "pos": {"x": -1, "y": 0, "z": 1}, "isUp": True}
 	]
 	jumpersPos = [
-			{ "type":1, "pos":{"x": -1.5, "y": 0.2, "z":mapLength/4}, "isUp": False },
-			{ "type":1, "pos":{"x": -1.5, "y": 3.2, "z": mapLength / 4}, "isUp": True },
+#			{ "type":1, "pos":{"x": -1.5, "y": 0.2, "z":mapLength/4}, "isUp": False },
+#			{ "type":1, "pos":{"x": -1.5, "y": 3.2, "z": mapLength / 4}, "isUp": True },
 			{ "type":1, "pos":{"x": 1.5, "y": 0.2, "z": mapLength / 4}, "isUp": False },
-			{ "type":1, "pos":{"x": 1.5, "y": 3.2, "z": mapLength / 4}, "isUp": True },
-			{ "type":1, "pos":{"x": -1.5, "y": 0.2, "z": -mapLength / 4}, "isUp": False },
-			{ "type":1, "pos":{"x": -1.5, "y": 3.2, "z": -mapLength / 4}, "isUp": True },
-			{ "type":1, "pos":{"x": 1.5, "y": 0.2, "z": -mapLength / 4}, "isUp": False },
-			{ "type":1, "pos":{"x": 1.5, "y": 3.2, "z": -mapLength / 4}, "isUp": True }
+#			{ "type":1, "pos":{"x": 1.5, "y": 3.2, "z": mapLength / 4}, "isUp": True },
+#			{ "type":1, "pos":{"x": -1.5, "y": 0.2, "z": -mapLength / 4}, "isUp": False },
+#			{ "type":1, "pos":{"x": -1.5, "y": 3.2, "z": -mapLength / 4}, "isUp": True },
+#			{ "type":1, "pos":{"x": 1.5, "y": 0.2, "z": -mapLength / 4}, "isUp": False },
+#			{ "type":1, "pos":{"x": 1.5, "y": 3.2, "z": -mapLength / 4}, "isUp": True }
 	]
 	skins = [
 		{id: 0, 'color': 0xff53aa, 'texture': None},
@@ -91,14 +93,15 @@ class Game:
 	def obstaclesInvLength(self):
 		for x in self.obstacles:
 			x["pos"]["z"] = -x["pos"]["z"]
+			x["pos"]["x"] = -x["pos"]["x"]
 
 	def genObstacles(self):
 		for x in Game.wallsPos:
-			if random.randint(1, 100) < 50:
+			if random.randint(1, 100) < 0:
 				self.obstacles.append(x)
 		i = 0
 		while(i <  len(Game.jumpersPos)):
-			if(random.randint(1, 100) < 50):
+			if(random.randint(1, 100) < 101):
 				self.obstacles.append(Game.jumpersPos[i])
 				i+=1
 			i+=1
@@ -182,26 +185,79 @@ class Game:
 				"pos" : [-self.ballPos["pos"][0],-self.ballPos["pos"][1]],
 				"velocity":[-self.ballVel[0], -self.ballVel[1]]
 			}})
+
+	def solve_quadratic(self, a, b, c):
+		disc = (b ** 2) - (4 * a * c)
+		if(disc < 0):
+			return None
+		res = (((-b) + math.sqrt(disc)) / ( 2 * a )) + (((-b) - math.sqrt(disc)) / ( 2 * a ))
+		print("res : ", res/2)
+		return(res / 2)
+
+	def check_jumper_colision(self, jumper):
+		jpos = (jumper["pos"]["x"], jumper["pos"]["z"])
+		pos1 = self.ballPos["pos"]
+		pos2 = self.ballPos["pos"][0] +self.ballVel[0], self.ballPos["pos"][1] + self.ballVel[1]
+		print(pos1)
+		print(pos2)
+		slope = 0
+		if(pos1[0] - pos2[0] == 0):
+			slope=100000
+		else:
+			slope = (pos1[1] - pos2[1])/(pos1[0] - pos2[0])
+		offset = pos1[1] - (slope * pos1[0])
+
+		#salagadou la menchikabou la bibidi bobidi bou
+		a = 1 + (slope ** 2) 
+		b = ((-jpos[0]) * 2) + (2 * (slope * (-jpos[1] + offset)))
+		c = (((-jpos[0]) ** 2) + (((-jpos[1]) + offset) ** 2)) - (Game.jumperRadius ** 2)
+		return(self.solve_quadratic(a, b ,c))
+
+	def check_collision_obstacles(self):
+		min_time = -1
+		for x in self.obstacles:
+			if x["isUp"] != self.ballPos["up"]:
+				continue
+			if x["type"] == 1:
+				pos = self.check_jumper_colision(x)
+				if(pos == None):
+					print("no colision")
+					continue
+				print("pos :", pos)
+				print("ballPos :", self.ballPos["pos"][0])
+				dist = pos - self.ballPos["pos"][0]
+				print("dist : ", dist)
+				time = dist / (self.ballVel[0])
+				if(time > 0):
+					if(min_time == -1):
+						min_time = time
+					else:
+						min_time = (min(min_time, time))
+				print("time :",time)
+		return(min_time)
+
 	def getTimeUntilColision(self, limitNeg, limitPos, position, velocity):
 		if(not velocity):
 			return(-1)
 		limit = Game.limits[limitNeg] if velocity < 0 else Game.limits[limitPos] 
-		distance = max(limit, position) - min(limit, position)
-		colision_time = distance / abs(velocity)
+		wallDistance = max(limit, position) - min(limit, position)
+		colision_time = wallDistance / abs(velocity)
 		return(colision_time)
-
 
 	def getSleepTime(self):
 		time_x = self.getTimeUntilColision("left","right", self.ballPos["pos"][0], self.ballVel[0])
 		time_z = self.getTimeUntilColision("back","front", self.ballPos["pos"][1], self.ballVel[1])
+		time_objects = self.check_collision_obstacles()
+		if(time_objects != -1):
+			time_x = min(time_x, time_objects)
 		if(time_x == -1):
 			return(time_z)
 		if(time_z == -1):
 			return(time_x)
 		return(min(time_x, time_z))
 
-	def getPlayerDistance(self, ballPos):
-		playerPos = self.p2Pos["pos"] if ballPos[1] < 0 else self.p1Pos["pos"]
+	def getPlayerDistance(self, player, ballPos):
+		playerPos = player["pos"]
 		print("Player pos : ", playerPos)
 		print("chose player :", 2 if ballPos[1] < 0 else 1)
 		print("ball position :", ballPos[0])
@@ -218,6 +274,18 @@ class Game:
 		await asyncio.sleep(3)
 		self.prepareGame()
 		return;
+	
+	def twoPointsDistance(self, pos1, pos2):
+		return(math.sqrt(((pos2[0] - pos1[0]) ** 2) + ((pos2[1] - pos1[1]) ** 2)))
+
+	def checkJumpersDistance(self, ballPos):
+		for i in range(0, len(self.obstacles)):
+			if(self.obstacles[i]["isUp"] != self.ballPos["up"]):
+				continue	
+			if(self.twoPointsDistance((self.obstacles[i]["pos"]["x"], self.obstacles[i]["pos"]["z"]), ballPos) < Game.jumperRadius):
+				self.p1.sync_send({"type":"game", "content":{"action":8,"id":i}})	
+				self.p2.sync_send({"type":"game", "content":{"action":8,"id":i}})	
+				self.ballPos["up"] = not self.ballPos["up"]
 
 	async def updateBall(self):
 		now = time.time()
@@ -228,8 +296,9 @@ class Game:
 		newBallPos = (round(currentBallPos[0] + (delta * velX), 5),
 		round(currentBallPos[1] + (delta * velZ), 5))
 		if(newBallPos[1] <= Game.limits["back"] or newBallPos[1] >= Game.limits["front"]):
-			playerDistance = self.getPlayerDistance(newBallPos)
-			if(playerDistance >= -(Game.playerLength / 2) and playerDistance <= Game.playerLength / 2):
+			player = self.p2Pos if newBallPos[1] < 0 else self.p1Pos
+			playerDistance = self.getPlayerDistance(player, newBallPos)
+			if(playerDistance >= -(Game.playerLength / 2) and playerDistance <= Game.playerLength / 2 and player["up"] == self.ballPos["up"]):
 				velX = -((self.speed * 0.80) * (playerDistance / (Game.playerLength / 2)))
 				velZ = self.speed - abs(velX)
 				if(newBallPos[1] > 0):
@@ -240,17 +309,18 @@ class Game:
 				return;
 		elif(newBallPos[0] <= Game.limits["left"] or newBallPos[0] >= Game.limits["right"]):
 			velX = -velX
+		self.checkJumpersDistance(newBallPos)
 		self.ballVel = (velX, velZ)
 		self.lastUpdate = now
 		self.ballPos["pos"] = newBallPos
 		self.sendNewBallInfo()
 	
 	def prepareGame(self, stop = False):
-		self.ballPos = {"pos":(0, 0), "up": False}
+		self.ballPos = {"pos":(0, 6), "up": False}
 		if(stop):
 			self.ballVel = (0, 0)
 		else:
-			self.ballVel = (self.speed/2, self.speed/2)
+			self.ballVel = (0.50, -1)
 		self.sendNewBallInfo()
 		self.lastUpdate = time.time()
 
@@ -262,5 +332,6 @@ class Game:
 		while(not self.end):
 			await self.updateBall()
 			sleep_time = self.getSleepTime()
+			print("sleep time : " , sleep_time)
 			await asyncio.sleep(sleep_time)
 		print("game end")

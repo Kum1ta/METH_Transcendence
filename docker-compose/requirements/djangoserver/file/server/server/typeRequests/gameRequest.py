@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 16:10:26 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/20 12:45:26 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/25 13:20:50 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,14 @@ from .gameActions.move import move
 #
 #	6 : goal : someone scored a goal
 #		- is_opponent
+#
+#	7 : place object : place generated objects on the map
+#		- pos (x, y , z)
+#		- isUp
+#		- type
+#
+#	8 : jumper colision:
+#		id : index of the jumper
 
 #client actions (actions sent by the client) :
 #	0 : start : starts a game
