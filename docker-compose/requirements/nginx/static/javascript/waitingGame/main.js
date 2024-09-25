@@ -6,10 +6,11 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 21:20:45 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/21 22:35:05 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 09:06:34 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import { lastSelected } from '/static/javascript/lobbyPage/3d.js';
 import { sendRequest } from "/static/javascript/websocket.js";
 import { pageRenderer } from '/static/javascript/main.js'
 
@@ -37,8 +38,9 @@ class WaitingGamePage
 				points = '';
 			sentence.innerText = text + points;
 		}, 500);
+		console.log(lastSelected)
 		timeout = setTimeout(() => {
-			sendRequest("game", {action: 0});
+			sendRequest("game", {action: 0, skinId: lastSelected.id});
 			timeout = null;
 		}, 1500);
 		returnButton.addEventListener('click', returnToLobby);

@@ -6,13 +6,11 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:21:10 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/22 17:37:10 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 08:50:20 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { waitForUserList } from "/static/javascript/typeResponse/typePrivateListUser.js";
-import { waitForallListUser } from "/static/javascript/typeResponse/typeAllListUser.js";
-import { userList } from "/static/javascript/typeResponse/typePrivateListUser.js";
 import { showPrivateChat } from "/static/javascript/liveChat/showPrivateChat.js";
 import { sendRequest } from "/static/javascript/websocket.js";
 

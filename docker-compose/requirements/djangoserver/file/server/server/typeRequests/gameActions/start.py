@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    start.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
+#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/11 17:07:08 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/15 13:33:53 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/25 09:23:02 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,5 +16,5 @@ async def start(socket, content):
 	if(socket.game != None):
 		socket.sendError("Game already started", 9102)
 		return;
-	Game(socket, content.get("with_bot", False))
+	Game(socket, content.get("with_bot", False), content.get("skinId", 0))
 

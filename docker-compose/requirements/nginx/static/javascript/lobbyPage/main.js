@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/24 23:56:38 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 09:05:07 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,11 @@ class LobbyPage
 		listSelectCard[2].removeEventListener('click', selectGameModeThree);
 		listSelectCard[3].removeEventListener('click', selectGameModeFour);
 		listSelectCard = null;
-		barSelector.dispose();
+		if (barSelector)
+			barSelector.dispose();
 		barSelector = null;
-		goalSelector.dispose();
+		if (goalSelector)
+			goalSelector.dispose();
 		goalSelector = null;
 		listSelectCard = null;
 	}

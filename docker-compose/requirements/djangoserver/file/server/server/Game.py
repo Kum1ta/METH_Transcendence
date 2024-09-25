@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/22 16:10:51 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/25 13:02:29 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,8 +44,18 @@ class Game:
 			{ "type":1, "pos":{"x": 1.5, "y": 0.2, "z": -mapLength / 4}, "isUp": False },
 			{ "type":1, "pos":{"x": 1.5, "y": 3.2, "z": -mapLength / 4}, "isUp": True }
 	]
+	skins = [
+		{id: 0, 'color': 0xff53aa, 'texture': None},
+		{id: 1, 'color': 0xaa24ea, 'texture': None},
+		{id: 2, 'color': 0x2c9c49, 'texture': None},
+		{id: 3, 'color': 0x101099, 'texture': None},
+		{id: 4, 'color': None, 'texture': '/static/img/skin/1.jpg'},
+		{id: 5, 'color': None, 'texture': '/static/img/skin/2.jpg'},
+		{id: 6, 'color': None, 'texture': '/static/img/skin/3.jpg'},
+		{id: 7, 'color': None, 'texture': '/static/img/skin/4.jpg'},
+	]
 
-	def __init__(self, socket, withBot):
+	def __init__(self, socket, withBot, skinId):
 		self.p1 = None
 		self.p2 = None
 		self.p1Ready = False

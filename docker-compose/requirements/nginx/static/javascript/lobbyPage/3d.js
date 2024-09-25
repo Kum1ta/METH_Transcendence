@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/25 00:05:55 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 09:17:42 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,14 @@ import * as THREE from '/static/javascript/three/build/three.module.js'
 let actualBarSelecor	= null;
 let actualGoalSelecter	= null;
 let	lastSelected		= null;
+
 class barSelecter
 {
 	scene			= null;
 	renderer		= null;
 	camera			= null;
 	spotLight		= new THREE.SpotLight(0xffffff, 5);
-	availableSkins		=	[
+	availableSkins	=	[
 		{id: 0, color: 0xff53aa, texture: null},
 		{id: 1, color: 0xaa24ea, texture: null},
 		{id: 2, color: 0x2c9c49, texture: null},
@@ -30,7 +31,7 @@ class barSelecter
 		{id: 5, color: null, texture: '/static/img/skin/2.jpg'},
 		{id: 6, color: null, texture: '/static/img/skin/3.jpg'},
 		{id: 7, color: null, texture: '/static/img/skin/4.jpg'},
-	]
+	];
 	selected		= lastSelected ? lastSelected : this.availableSkins[0];
 	bar				= this.createBarPlayer(this.selected.color ? this.selected.color : this.selected.texture);
 
@@ -41,6 +42,8 @@ class barSelecter
 		this.renderer	= new THREE.WebGLRenderer({antialias: true});
 		this.camera		= new THREE.PerspectiveCamera(60, (pos.width - 10) / (pos.height - 10));
 	
+		if (!lastSelected)
+			lastSelected = this.availableSkins[0];
 		this.scene.background = new THREE.Color(0x020202);
 		this.renderer.setSize(pos.width - 10, pos.height - 10);
 		this.scene.add(this.spotLight);
@@ -206,4 +209,4 @@ class goalSelecter
 	}
 }
 
-export { barSelecter, goalSelecter }
+export { barSelecter, goalSelecter, lastSelected}
