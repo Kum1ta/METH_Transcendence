@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/25 17:07:57 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 18:28:18 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,8 @@ let fireworkMixer				= null;
 let canvasTextScore				= null;
 let contextTextScore			= null;
 let textureTextScore			= null;
-let animationSpeed1				= 0.05;
-let animationSpeed2				= 0.05;
-let animationSpeed3				= 0.05;
-let animateGoalObjectUpdate1	= null;
-let animateGoalObjectUpdate2	= null;
-let animateGoalObjectUpdate3	= null;
+let animationSpeed				= 0.02;
+let animateGoalObjectUpdate		= null;
 
 let path = [
 	{name: 'goal', 			onChoice: true, src:'/static/video/multiOnlineGamePage/goal2.webm', blob: null},
@@ -46,6 +42,19 @@ let path = [
 	{name: 'catch', 		onChoice: false, src:'/static/video/multiOnlineGamePage/catch.mp4', blob: null},
 	{name: 'fortnite', 		onChoice: false, src:'/static/video/multiOnlineGamePage/fortnite.mp4', blob: null},
 ]
+
+const colorList = [
+    0xFFB3BA, 0xFFDFBA, 0xFFFFBA, 0xBAFFC9, 0xBAE1FF, // Pastel pink, peach, yellow, green, blue
+    0xFFD1DC, 0xFF9AA2, 0xFFB7B2, 0xFFDAC1, 0xE2F0CB, // More pastel pinks, greens
+    0xB5EAD7, 0xC7CEEA, 0xE0BBE4, 0xFFDFD3, 0xF3FFE3, // Soft purple, beige, mint
+    0xFFB3B3, 0xFFC1E3, 0xFDDDE6, 0xD4C0E2, 0xFFC2D1, // Soft reds, pinks, purples
+    0xA9E5BB, 0xFFF2CC, 0xFFC3A0, 0xFFB7CE, 0xFFFFCB, // Pastel greens, peaches, yellows
+    0x9EADBA, 0xE4BAD4, 0xFFCECE, 0xD4E157, 0xC1E7E3, // Gentle blues, violets, greens
+    0xFFEDCC, 0xC6D6E7, 0xFDDDEC, 0xC4DFDF, 0xD3FBD8, // Very soft pastels, blues, peaches
+    0xFCF7DE, 0xDBFFD6, 0xD4E2D4, 0xFFD6E0, 0xFFEDDF, // Soft beige, mint, light rose
+    0xF5F0E1, 0xB1E1FF, 0xFAD4C0, 0xFFC9DE, 0xBFD7EA, // Soft tan, peach, blue, light pink
+    0xFFFAE3, 0xE7D3D3, 0xFDE3A7, 0xCDE0C9, 0xF4D9E3  // Soft light peach, pale pink, green, lavender
+]; // Merci chatGPT
 
 path.forEach(elem => {
 	fetch(elem.src)
@@ -699,79 +708,60 @@ class Map
 		scene.remove(this.banner);
 	};
 
-	handleAnimation(ball, name)
-	{
-		if (name == "object3d") // 0, 0.3, 6.3
-			this.#animationGoal1(ball.object.position.x, ball.object.position.y, ball.object.position.z);
-		if (name == "downScale")
-			this.#animationGoal2(ball.object.position.x, ball.object.position.y, ball.object.position.z);
-		if (name == "upScale")
-			this.#animationGoal3(ball.object.position.x, ball.object.position.y, ball.object.position.z);
-	}
-
-	#animationGoal1(cordX, cordY, cordZ)
+	animationGoal(cordX, cordY, cordZ, nameObject)
 	{
 		this.#clearAnimationGoal();
 
-		const colorList = [
-			0xFF5733,  // Orange
-			0x3357FF,  // Bleu clair
-			0x33FFFF,  // Cyan
-			0x9933FF,  // Violet
-			0x33FF99,  // Vert menthe
-			0xFF9933,  // Orange doux
-			0xFF33CC,  // Magenta
-			0xCC33FF,  // Violet profond
-			0x33FFCC,  // Aqua
-			0xFF6633,  // Rouge brique
-		];
+		let objectList = [];
 
-		let triangle	= createTriangle(colorList[Math.floor(Math.random() * 100 % colorList.length)]);
-		let cylinder	= createCylinder(colorList[Math.floor(Math.random() * 100 % colorList.length)]);
-		let box			= createBox(colorList[Math.floor(Math.random() * 100 % colorList.length)]);
-		let star		= createStar(colorList[Math.floor(Math.random() * 100 % colorList.length)]);
-		let rectangle	= createRectangle(colorList[Math.floor(Math.random() * 100 % colorList.length)]);
-		let ring		= createRing(colorList[Math.floor(Math.random() * 100 % colorList.length)]);
+		if (nameObject == "triangle")
+		{
+			for (let i = 0; i < 6; i++)
+				objectList.push(createTriangle(colorList[Math.floor(Math.random() * 100 % colorList.length)]));
+		}
+		else if (nameObject == "cylinder")
+		{
+			for (let i = 0; i < 6; i++)
+				objectList.push(createCylinder(colorList[Math.floor(Math.random() * 100 % colorList.length)]));
+		}
+		else if (nameObject == "star")
+		{
+			for (let i = 0; i < 6; i++)
+				objectList.push(createStar(colorList[Math.floor(Math.random() * 100 % colorList.length)]));
+		}
+		else if (nameObject == "box")
+		{
+			for (let i = 0; i < 6; i++)
+				objectList.push(createBox(colorList[Math.floor(Math.random() * 100 % colorList.length)]));
+		}
+		else if (nameObject == "rectangle")
+		{
+			for (let i = 0; i < 6; i++)
+				objectList.push(createRectangle(colorList[Math.floor(Math.random() * 100 % colorList.length)]));
+		}
+		else if (nameObject == "ring")
+		{
+			for (let i = 0; i < 6; i++)
+				objectList.push(createRing(colorList[Math.floor(Math.random() * 100 % colorList.length)]));
+		}
 
-		triangle.position.set(cordX, cordY, cordZ);
-		cylinder.position.set(cordX, cordY, cordZ);
-		star.position.set(cordX, cordY, cordZ);
-		box.position.set(cordX, cordY, cordZ);
-		rectangle.position.set(cordX, cordY, cordZ);
-		ring.position.set(cordX, cordY, cordZ);
-
-		triangle.scale.set(0.2, 0.2, 0.2);
-		cylinder.scale.set(0.2, 0.2, 0.2);
-		star.scale.set(0.2, 0.2, 0.2);
-		box.scale.set(0.2, 0.2, 0.2);
-		rectangle.scale.set(0.2, 0.2, 0.2);
-		ring.scale.set(0.2, 0.2, 0.2);
-
-		scene.add(triangle);
-		scene.add(cylinder);
-		scene.add(star);
-		scene.add(box);
-		scene.add(rectangle);
-		scene.add(ring);
+		for (let i = 0; i < objectList.length; i++)
+		{
+			objectList[i].position.set(cordX, cordY, cordZ);
+			objectList[i].scale.set(0.2, 0.2, 0.2);
+			
+			if (Math.random() < 0.5)
+				objectList[i].rotateX(Math.PI / 2);
+			if (Math.random() < 0.5)
+				objectList[i].rotateY(Math.PI / 2);
+			if (Math.random() < 0.5)
+				objectList[i].rotateZ(Math.PI / 2);
+			
+			scene.add(objectList[i]);
+			this.arrObject.push({mesh: objectList[i], name: "object" + i, type: "goalObject"});
+		}
 		
-		this.arrObject.push({mesh: triangle, name: "triangle", type: "goalObject"});
-		this.arrObject.push({mesh: cylinder, name: "cylinder", type: "goalObject"});
-		this.arrObject.push({mesh: star, name: "star", type: "goalObject"});
-		this.arrObject.push({mesh: box, name: "box", type: "goalObject"});
-		this.arrObject.push({mesh: rectangle, name: "rectangle", type: "goalObject"});
-		this.arrObject.push({mesh: ring, name: "ring", type: "goalObject"});
-
-		animateGoalObjectUpdate1 = true;
-	};
-
-	#animationGoal2(cordX, cordY, cordZ)
-	{
-		animateGoalObjectUpdate2 = true;
-	};
-
-	#animationGoal3(cordX, cordY, cordZ)
-	{
-		animateGoalObjectUpdate3 = true;
+		animateGoalObjectUpdate = true;
 	};
 
 	#clearAnimationGoal()
@@ -846,7 +836,6 @@ class Map
 		else
 			this.#animationGravityChanger(this.arrObject[index].mesh, false);
 	}
-
 
 	#generateObstacle()
 	{
@@ -938,67 +927,57 @@ class Map
 					this.arrObject[i].mesh.children[j].rotation.y = Math.sin(Date.now() * 0.001 + (j - 2) * 5) * 0.1 + Math.cos(Date.now() * 0.001) * 0.1;;
 				}
 			}
-			if (animateGoalObjectUpdate1 && this.arrObject[i].type == "goalObject")
-				this.#updateGoalAnimation1(this.arrObject[i], animationSpeed1 += 0.004);
-			else if (animateGoalObjectUpdate2);
-				// this.#updateGoalAnimation2(ball, animationSpeed2 += 0.000);
-			else if (animateGoalObjectUpdate3);
-				// this.#updateGoalAnimation3(ball, animationSpeed3 += 0.000);
+			if (animateGoalObjectUpdate && this.arrObject[i].type == "goalObject")
+				this.#updateGoalAnimation(this.arrObject[i], animationSpeed += 0.003);
 		}
 	};
 
-	#updateGoalAnimation1(object, speed)
+	#updateGoalAnimation(object, speed)
 	{
 		object.mesh.rotation.x += 0.03;
 		object.mesh.rotation.y += 0.03;
 		object.mesh.rotation.z += 0.03;
 
-		if (object.name == "triangle")
+		object.mesh.scale.x -= 0.001 * speed;
+		object.mesh.scale.y -= 0.001 * speed;
+		object.mesh.scale.z -= 0.001 * speed;
+
+		if (object.name == "object0")
 		{
 			object.mesh.position.x += 0.05 * speed;
 			object.mesh.position.y += 0.05 * speed;
 			object.mesh.position.z += 0.02 * speed;
 		}
-		else if (object.name == "cylinder")
+		else if (object.name == "object1")
 		{
 			object.mesh.position.x -= 0.03 * speed;
 			object.mesh.position.y += 0.04 * speed;
 			object.mesh.position.z -= 0.05 * speed;
 		}
-		else if (object.name == "star")
+		else if (object.name == "object2")
 		{
 			object.mesh.position.x += 0.04 * speed;
 			object.mesh.position.y += 0.03 * speed;
 			object.mesh.position.z += 0.06 * speed;
 		}
-		else if (object.name == "box")
+		else if (object.name == "object3")
 		{
 			object.mesh.position.x -= 0.06 * speed;
 			object.mesh.position.y += 0.02 * speed;
 			object.mesh.position.z += 0.05 * speed;
 		}
-		else if (object.name == "rectangle")
+		else if (object.name == "object4")
 		{
 			object.mesh.position.x += 0.03 * speed;
 			object.mesh.position.y += 0.04 * speed;
 			object.mesh.position.z += 0.03 * speed;
 		}
-		else if (object.name == "ring")
+		else if (object.name == "object5")
 		{
 			object.mesh.position.x -= 0.05 * speed;
 			object.mesh.position.y += 0.03 * speed;
 			object.mesh.position.z -= 0.04 * speed;
 		}
-	};
-
-	#updateGoalAnimation2(object, speed)
-	{
-
-	};
-
-	#updateGoalAnimation3(object, speed)
-	{
-
 	};
 
 	updateScore(name, score)
@@ -1014,10 +993,8 @@ class Map
 	reCreate(name)
 	{
 		this.#clearAnimationGoal();
-		animateGoalObjectUpdate1 = false;
-		animateGoalObjectUpdate2 = false;
-		animateGoalObjectUpdate3 = false;
-		animationSpeed1 = 0.05;
+		animateGoalObjectUpdate = false;
+		animationSpeed = 0.02;
 
 		this.updateScore(name, this.score);
 		player.reserCameraPlayer();

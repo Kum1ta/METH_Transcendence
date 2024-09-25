@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiOnlineGamePage.js                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/25 17:07:14 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 18:28:23 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ class MultiOnlineGamePage
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		renderer.domElement.style.animation = 'fadeOutStartGames 1s';
 		renderer.domElement.style.filter = 'brightness(1)';
-		opponent				= new Opponent(bar2, map, 1);
-		player					= new Player(bar1, map, opponent, 0);
+		opponent				= new Opponent(bar2, map, Math.floor(Math.random() * 100 % 6));
+		player					= new Player(bar1, map, opponent, Math.floor(Math.random() * 100 % 6));
 		spotLight				= new THREE.SpotLight(0xffffff, 10000, 0, 0.2);
 		spotLight.castShadow	= true;
 		ambiantLight			= new THREE.AmbientLight(0xffffff, 0.5);
@@ -113,14 +113,14 @@ class MultiOnlineGamePage
 			if (e.key == 'g')
 			{
 				player.pointAnimation(map);
-				map.handleAnimation(ball, player.playerGoalAnimation);
-				// map.animationGoal1(0, 0.30, 6.3); // Le serv envoie la position de la balle pour faire l'explosion la ou il y a but
+				map.animationGoal(ball.object.position.x, ball.object.position.y, ball.object.position.z, player.playerGoalAnimation);
+				console.log('player.playerGoalAnimation', player.playerGoalAnimation);
 			}
 			if (e.key == 'h')
 			{
 				player.pointOpponentAnimation(map, opponent.object);
-				map.handleAnimation(ball, opponent.playerGoalAnimation);
-				// map.animationGoal1(0, 0.30, -6.3);
+				map.animationGoal(ball.object.position.x, ball.object.position.y, ball.object.position.z, opponent.playerGoalAnimation);
+				console.log('player.playerGoalAnimation', opponent.playerGoalAnimation);
 			}
 			if (e.key == 'c')
 				debug = !debug;

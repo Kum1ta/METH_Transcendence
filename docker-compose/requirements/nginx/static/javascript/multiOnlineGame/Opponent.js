@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Opponent.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:34:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/17 00:22:47 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 15:29:52 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class Opponent
 		left: -3,
 		right: 3,
 	};
-	last		= false;
+	last				= false;
 	playerGoalAnimation = null;
 
 	constructor (object, map, indexGoalAnimation)

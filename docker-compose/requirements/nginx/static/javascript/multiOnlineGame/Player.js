@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/23 13:44:55 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 18:13:50 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ let	playerExist			= false;
 let	isOnPointAnim		= false;
 let	pressedButton		= [];
 let mapLength			= 0;
-const goalAnimation		= ["object3d", "downScale", "upScale"];
+const goalAnimation		= ["triangle", "cylinder", "star", "box", "rectangle", "ring"];
 
 class Player
 {
