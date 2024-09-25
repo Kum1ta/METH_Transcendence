@@ -6,12 +6,13 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/25 15:47:22 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 17:01:12 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { MultiOnlineGamePage } from "/static/javascript/multiOnlineGame/multiOnlineGamePage.js"
 import { multiLocalGamePage } from "/static/javascript/multiLocalGame/multiLocalGamePage.js"
+import { settingsPage } from "/static/javascript/settingsPage/settingsPage.js"
 import { WaitingGamePage } from "/static/javascript/waitingGame/main.js"
 import { ProfilPage } from "/static/javascript/profilPage/main.js";
 import { LobbyPage } from "/static/javascript/lobbyPage/main.js";
@@ -28,6 +29,7 @@ class Page
 		{suffix: false, url:'/wait_game', servUrl: '/waitingGamePage', class: WaitingGamePage, name: 'waitingGamePage', title: 'METH - Wait for a game'},
 		{suffix: false, url:'/game', servUrl: '/multiOnlineGamePage', class: MultiOnlineGamePage, name: 'multiOnlineGamePage', title: 'METH - Game'},
 		{suffix: true, url:'/profil', servUrl: '/profilPage', class: ProfilPage, name: 'profilPage', title: 'METH - Profil'},
+		{suffix: false, url:'/settings', servUrl: '/settingsPage', class: settingsPage, name: 'settingsPage', title: 'METH - Settings'},
 	]
 
 	constructor()

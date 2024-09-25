@@ -33,6 +33,7 @@ urlpatterns = [
 	path("404", views.err404, name='err404'),
 	path("pfp/<str>", views.pfp, name='pfp'),
 	path("banner/<str>", views.banner, name='banner'),
+	path("settingsPage", views.settingsPage, name='settingsPage'),
 ]
 
 handler404 = "server.views.handler404"

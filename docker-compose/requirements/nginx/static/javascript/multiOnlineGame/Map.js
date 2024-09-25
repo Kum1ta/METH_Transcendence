@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/25 13:58:28 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/25 17:07:57 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -841,7 +841,7 @@ class Map
 	activeJumper(index)
 	{
 		ball.changeGravity();
-		if (listObject[index].isUp)
+		if (this.arrObject[index].isUp)
 			this.#animationGravityChanger(this.arrObject[index].mesh, true);
 		else
 			this.#animationGravityChanger(this.arrObject[index].mesh, false);
@@ -1021,7 +1021,7 @@ class Map
 
 		this.updateScore(name, this.score);
 		player.reserCameraPlayer();
-		// ball.resetScaleBall();
+		ball.resetScaleBall();
 		// player.resetPosPlayer();
 		// opponent.resetPosOpponent();
 	};

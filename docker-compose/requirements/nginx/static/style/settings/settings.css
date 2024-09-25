@@ -1,0 +1,102 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#settingsBody {
+    background-color: #020202;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+#settingsBody .container-settings {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    width: 60%;
+    padding: 20px;
+}
+
+#settingsBody .left-section,
+#settingsBody .right-section {
+    display: flex;
+    flex-direction: column;
+}
+
+#settingsBody .form-group-settings {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+#settingsBody label {
+    margin-bottom: 5px;
+}
+
+#settingsBody input {
+    padding: 20px;
+    margin-bottom: 5px;
+    border: none;
+    background-color: white;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+#settingsBody button{
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+#settingsBody button.save-btn-settings {
+    padding: 10px;
+    background-color: white;
+    color: #020202;
+    border: none;
+    cursor: pointer;
+    margin-top: 5px;
+    min-width: 100px;
+    transition: 0.3s ease;
+}
+
+#settingsBody button.save-btn-settings:hover {
+    transform: scale(1.1);
+}
+
+#settingsBody button.delete-btn {
+    padding: 10px;
+    width: 50%;
+    background-color: #D94343;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-left: auto;
+    transition: 0.3s ease;
+}
+
+#settingsBody button.delete-btn:hover {
+    transform: scale(1.1);
+}
+
+#settingsBody .form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}
+
+#settingsBody small {
+    font-size: 13px;
+    color: #999;
+    margin-right: 10px;
+    margin-top: 5px;
+}

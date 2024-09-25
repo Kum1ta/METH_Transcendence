@@ -148,3 +148,10 @@ def	banner(request, str):
 	except Exception:
 		ret = FileResponse("banner not found", status=404)
 	return ret
+
+def	settingsPage(request):
+	if(request.method != "POST"):
+		return index(request)
+	if(not request.session.get("logged_in", False)):
+		return(HttpResponse("you are not logged in",status=403))
+	return render(request, "settingsPage.html", {})
