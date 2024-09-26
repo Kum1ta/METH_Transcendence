@@ -142,10 +142,12 @@ class Player
 
 		document.getElementsByTagName('canvas')[0].style.animation = 'fadeIn 0.199s';
 		document.getElementsByTagName('canvas')[0].style.filter = 'brightness(0)';
+
 		setTimeout(() => {
 			document.getElementsByTagName('canvas')[0].style.animation = 'fadeOut 0.199s';
 			document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
 		}, 300)
+
 		setTimeout(() => {
 			tmpCamera.position.set(this.limits.left, this.limits.up / 2 + 0.5, map.centerPos.z);
 			isOnPointAnim = true;
@@ -159,11 +161,24 @@ class Player
 				tmpCamera.fov -= 0.05;
 				tmpCamera.updateProjectionMatrix();
 			}, 10);
+
+			///////////////////////
+			// Ici je souhaite savoir ou la camera est oriente : this.playerGoalAnimation soit this.opponent.playerGoalAnimation
+			// Egalement, l'animation se lance uniquement sur 1 seul client (celui qui a marque le point)
+			setTimeout(() => {
+				if (0)
+					map.animationGoal(this.object.position.x, this.object.position.y, this.object.position.z, this.playerGoalAnimation);
+				else
+					map.animationGoal(this.object.position.x, this.object.position.y, this.object.position.z, this.opponent.playerGoalAnimation);
+			}, 1000);
+			///////////////////////
+
 			setTimeout(() => {
 				clearInterval(interval);
 				document.getElementsByTagName('canvas')[3].style.animation = null;
 				document.getElementsByTagName('canvas')[3].style.animation = 'fadeInGames 0.99s';
 				document.getElementsByTagName('canvas')[3].style.filter = 'brightness(0)';
+
 				setTimeout(() => {
 					this.camera = tmp;
 					this.object.material.color.copy(startColor);
