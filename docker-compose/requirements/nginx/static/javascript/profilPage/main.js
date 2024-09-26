@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/24 17:32:22 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 00:54:02 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ class ProfilPage
 		const	pfp				=	document.getElementsByClassName('profile-image')[0];
 		const	banner			=	document.getElementsByClassName('background-card')[0];
 		const	convButton		=	document.getElementById('newConv');
+		const	inviteButton	=	document.getElementById('invite');
 		const	crossProfil		=	document.getElementById('cross-profil');
+		let		ctx				=	document.getElementById('stats').getContext('2d');
 		let		editPenPfpBg	=	null;
 		let		inputPfp		=	null;
 		let		editPenBanner	=	null;
@@ -55,7 +57,6 @@ class ProfilPage
 				pageRenderer.changePage('lobbyPage');
 		});
 		waitForUserInfo().then((userInfo) => {
-			console.log(userInfo);
 			if (userInfo == null)
 			{
 				pageRenderer.changePage('homePage');
@@ -72,9 +73,12 @@ class ProfilPage
 			banner.style.backgroundImage = `url("${userInfo.banner}")`
 			banner.style.backgroundSize = "cover";
 			banner.style.backgroundRepeat = "no-repeat";
-			externButtons(userInfo)
+			externButtons(userInfo);
+			createGraph(ctx, {win: 10, lose: 1});
+			console.warn("Graph values are settled in code, please change it with data request")
 			if (userInfo.id == userMeInfo.id)
 			{
+				inviteButton.remove();
 				pfp.innerHTML = `<div id='editPenPfpBg'><input style='display: none' id='inputPfp' type="file"><img class='editPenPfp' src='/static/img/profilPage/editPen.png'/></div>`
 				banner.innerHTML = `<img class='editPen' src='/static/img/profilPage/editPen.png'/><input style='display: none' id='inputBanner' type="file">`
 				editPenPfpBg = document.getElementById('editPenPfpBg');
@@ -100,6 +104,14 @@ class ProfilPage
 				convButton.addEventListener('click', () => {
 					showChatMenu();
 					showPrivateChat({id: userInfo.id, name: userInfo.username});
+				});
+				inviteButton.addEventListener('click', () => {
+					if (!userInfo.online)
+						CN.new("Invitation", `Can't invite ${userInfo.username} (offline)`)
+					else
+					{
+						pageRenderer.changePage("waitingGamePage", false, {username: userInfo.username, id: userInfo.id});
+					}
 				});
 			}
 			else
@@ -162,6 +174,33 @@ function inputChange(isPfp)
 		}
 		reader.readAsArrayBuffer(file);
 	}
+}
+
+function createGraph(ctx, data)
+{
+	new Chart(ctx, {
+		type: 'pie',
+		data: {
+			labels: ['Win', 'Lose'],
+			datasets: [{
+				label: 'Couleurs',
+				data: [data.win, data.lose],
+				backgroundColor: ['#11ad11', '#E74040'],
+				hoverOffset: 4
+			}]
+		},
+		options: {
+			responsive: true,
+			plugins: {
+				legend: {
+					position: 'bottom',
+				},
+				tooltip: {
+					enabled: true
+				}
+			}
+		}
+	});
 }
 
 

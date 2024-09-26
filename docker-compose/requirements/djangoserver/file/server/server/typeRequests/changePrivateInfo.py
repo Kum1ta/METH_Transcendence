@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/25 23:28:49 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/26 00:41:16 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/26 14:56:22 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,12 +26,21 @@ def changePrivateInfo(socket, content):
 		data = []
 		if (content.get("username")):
 			data.append("username")
-		if (content.get("password")):
-			data.append("password")
+		if (content.get("new_password")):
+			data.append("new_password")
 		if (content.get("discord")):
 			data.append("discord")
+		if (content.get("delete")):
+			data.append("delete")
 		if (len(data) != 1):
 			socket.sendError("You must provide exactly one field to update", 9028)
+			return
+		if (content.get("delete")):
+			user = User.objects.get(id=socket.id)
+			user.delete()
+			socket.scope["session"].delete()
+			socket.sync_send(json.dumps({"type": "change_private_info", "content": "Successfully deleted."}))
+			socket.close()
 			return
 		if (content.get("username")):
 			if (content["username"].find(' ') != -1):
@@ -49,15 +58,18 @@ def changePrivateInfo(socket, content):
 			if (User.objects.filter(username=content["username"]).exists()):
 				socket.sendError("Username already used", 9023)
 				return
-		if (content.get("password")):
-			if (len(content["password"]) < 8):
+		if (content.get("new_password")):
+			if (not content.get("old_password")):
+				raise Exception("Old password is required")
+			if (len(content["new_password"]) < 8):
 				socket.sendError("Password must be at least 8 characters long", 9019)
 				return
-			if (content["password"].find(content["username"]) != -1):
+			if (content["new_password"].find(str(content.get("username"))) != -1):
 				socket.sendError("Password must not contain the username", 9021)
 				return
 			if (not bool(re.match(password_pattern, content["password"]))):
 				socket.sendError("Password must contain at least one lowercase letter, one uppercase letter and one special character", 9020)
+			if (not bool(re.match(password_pattern, content["new_password"]))):
 				return
 		if (content.get("discord")):
 			if (len(content["discord"]) > 32):
@@ -72,8 +84,11 @@ def changePrivateInfo(socket, content):
 			user.username = content["username"]
 			socket.username = content["username"]
 			socket.scope["session"]['username'] = content["username"]
-		if (content.get("password")):
-			user.password = hashlib.sha256(user['mail' + content["password"]].encode()).hexdigest()
+		if (content.get("new_password")):
+			if (hashlib.md5((user.mail + content["old_password"]).encode()).hexdigest() != user.password):
+				socket.sendError("Invalid password", 9029)
+				return
+			user.password = hashlib.md5((user.mail + content["new_password"]).encode()).hexdigest()
 		if (content.get("discord")):
 			if (content["discord"] != ""):
 				user.discord_username = content["discord"]

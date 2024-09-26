@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/25 15:37:29 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/26 16:41:52 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,6 +286,9 @@ function initButtonPopMenuLogin()
 
 	buttons[0].addEventListener('click', () => {
 		pageRenderer.changePage('profilPage', false, userMeInfo.id);
+	});
+	buttons[1].addEventListener('click', () => {
+		pageRenderer.changePage('settingsPage', false);
 	});
 	buttons[2].addEventListener('click', () => {
 		window.location.replace('/logout');

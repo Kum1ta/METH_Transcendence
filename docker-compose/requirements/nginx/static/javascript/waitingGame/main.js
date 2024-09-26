@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 21:20:45 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/25 09:06:34 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 00:26:12 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ let timeout			= null;
 
 class WaitingGamePage
 {
-	static create()
+	static create(opponentInfo)
 	{
 		const	returnButton	= document.getElementById('returnToLobbyButton');
 		const	sentence		= document.getElementById('sentence');
-		const	text			= sentence.innerText;
+		let		text			= sentence.innerText;
 		let		points			= "";
 
 		document.body.style.opacity = 1;
@@ -31,6 +31,10 @@ class WaitingGamePage
 		{
 			document.body.children[i].style.animation = 'animShowMenuDiv 0.5s';
 		}
+		if (!opponentInfo)
+			opponentInfo = {id: -1}
+		else
+			text = text.replace("other players", opponentInfo.username);
 		intervalPoints = setInterval(() => {
 			if (points.length < 3)
 				points += '.';
@@ -38,9 +42,11 @@ class WaitingGamePage
 				points = '';
 			sentence.innerText = text + points;
 		}, 500);
-		console.log(lastSelected)
 		timeout = setTimeout(() => {
-			sendRequest("game", {action: 0, skinId: lastSelected.id});
+			if (!lastSelected)
+				sendRequest("game", {action: 0, skinId: 0, opponent: opponentInfo.id});
+			else
+				sendRequest("game", {action: 0, skinId: lastSelected.id, opponent: opponentInfo.id});
 			timeout = null;
 		}, 1500);
 		returnButton.addEventListener('click', returnToLobby);

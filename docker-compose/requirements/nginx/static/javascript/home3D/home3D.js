@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/23 13:39:20 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 01:16:28 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ let		mouse				= null;
 let		renderPass			= null;
 let		dofPass				= null;
 let		playButtonMouseOver	= false;
+let		spotLight			= null;
 
 class Home3D
 {
@@ -89,6 +90,7 @@ class Home3D
 			scene = null;
 			camera = null;
 			mouse = null;
+			spotLight = null;
 		}
 	}
 }
@@ -112,8 +114,14 @@ function home3D()
 	interval		= null;
 	mouse			= new THREE.Vector2();
 	isInFade		= false;
+	spotLight		= new THREE.SpotLight(0xffffff, 500);
+
 	
-	if (Math.random() % 100 > 0.97)
+	spotLight.position.set(0, 10, 0);
+	spotLight.castShadow = true;
+	spotLight.rotateX(Math.PI / 2);	
+	scene.add(spotLight);
+	if (Math.random() % 100 > 0.99)
 		video.pong = '/static/video/homePage/easteregg.webm'
 	newBgWall();
 	putObject('/static/models3D/homePage/lamp.glb', -2.5, 0, 2.5, 3, 0, Math.PI + Math.PI / 8, 0);
@@ -405,11 +413,6 @@ function redirection()
 		interval = null;
 	}
 	moveCamera();
-	setTimeout(() => {
-		setTimeout(() => {
-			pageRenderer.changePage('lobbyPage');
-		}, 700);
-	}, 1000);
 }
 
 function moveCamera()
@@ -425,6 +428,11 @@ function moveCamera()
 		const position = initialPosition.clone().lerp(targetPosition, t * t);
 
 		camera.position.copy(position);
+		if (position.equals(targetPosition))
+		{
+			pageRenderer.changePage('lobbyPage');
+			return ;
+		}
 		if (t < 1)
 			requestAnimationFrame(updateCameraPosition);
 	}
