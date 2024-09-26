@@ -513,15 +513,15 @@ class Map
 
 		canvasTextNameLeft = document.createElement('canvas');
 		contextTextNameLeft = canvasTextNameLeft.getContext('2d');
-		canvasTextNameLeft.width = 1920;
-		canvasTextNameLeft.height = 1080;
+		canvasTextNameLeft.width = 960;
+		canvasTextNameLeft.height = 540 / 2;
     	drawName(nameLeft, canvasTextNameLeft, contextTextNameLeft);
 		textureTextNameLeft = new THREE.CanvasTexture(canvasTextNameLeft);
 
 		canvasTextNameRight = document.createElement('canvas');
 		contextTextNameRight = canvasTextNameRight.getContext('2d');
-		canvasTextNameRight.width = 1920;
-		canvasTextNameRight.height = 1080;
+		canvasTextNameRight.width = 960;
+		canvasTextNameRight.height = 540 / 2;
     	drawName(nameRight, canvasTextNameRight, contextTextNameRight);
 		textureTextNameRight = new THREE.CanvasTexture(canvasTextNameRight);
 
@@ -1017,7 +1017,7 @@ function drawName(name, canvas, context)
 {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	context.fillStyle = "white";
-	context.font = "bold 500px Arial";
+	context.font = "bold 175px Poppins";
 	context.textAlign = "center";
 	context.fillText(name, canvas.width / 2, canvas.height - canvas.height / 4);
 }
