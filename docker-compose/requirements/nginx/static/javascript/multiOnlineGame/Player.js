@@ -161,9 +161,9 @@ class Player
 			}, 10);
 			setTimeout(() => {
 				clearInterval(interval);
-				document.getElementsByTagName('canvas')[0].style.animation = null;
-				document.getElementsByTagName('canvas')[0].style.animation = 'fadeIn 0.19s';
-				document.getElementsByTagName('canvas')[0].style.filter = 'brightness(0)';
+				document.getElementsByTagName('canvas')[3].style.animation = null;
+				document.getElementsByTagName('canvas')[3].style.animation = 'fadeInGames 0.99s';
+				document.getElementsByTagName('canvas')[3].style.filter = 'brightness(0)';
 				setTimeout(() => {
 					this.camera = tmp;
 					this.object.material.color.copy(startColor);
@@ -176,9 +176,9 @@ class Player
 							this.object.position.z + 1.5
 						);
 					}
-					document.getElementsByTagName('canvas')[0].style.animation = 'fadeOut 0.199s';
-					document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
-				}, 200);
+					document.getElementsByTagName('canvas')[3].style.animation = 'fadeOutGames 0.99s';
+					document.getElementsByTagName('canvas')[3].style.filter = 'brightness(1)';
+				}, 400);
 			}, 4000);
 		}, 200)
 	}

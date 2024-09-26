@@ -980,14 +980,25 @@ class Map
 		}
 	};
 
-	updateScore(name, score)
+	updateScore(name, score) //  document.getElementsByTagName('canvas')[0]            Si fondu noir marche pas c'est la
 	{
-		if (name == "player")
-			score.player++;
-		else if (name == "opponent")
-			score.opponent++;
-		drawScore(score);
-		textureTextScore.needsUpdate = true;
+		console.log("fadeIN");
+		document.getElementsByTagName('canvas')[3].style.animation = 'fadeInGames 0.99s';
+		document.getElementsByTagName('canvas')[3].style.filter = 'brightness(0)';
+
+		setTimeout(() => {
+			document.getElementsByTagName('canvas')[3].style.animation = 'fadeOutGames 0.99s';
+			document.getElementsByTagName('canvas')[3].style.filter = 'brightness(1)';
+		}, 200);
+
+		setTimeout(() => {
+			if (name == "player")
+				score.player++;
+			else if (name == "opponent")
+				score.opponent++;
+			drawScore(score);
+			textureTextScore.needsUpdate = true;
+		}, 200);
 	}
 
 	reCreate(name)
