@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/27 17:17:23 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/27 17:36:06 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -137,7 +137,7 @@ class Game:
 		self.p2.sync_send({"type":"game", "content":{"action":7, "content":self.obstacles}})
 		self.obstaclesInvLength()
 
-	def join(self, socket, skin):
+	def join(self, socket, skin = 0):
 		try:
 			if(self.p1 == None):
 				print("game created, set as player 1")
@@ -153,8 +153,8 @@ class Game:
 			socket.game = self
 			if(self.p2 != None and self.p1 != None):
 				print("both players here, send opponent to both players")
-				self.p1.sync_send({"type":"game", "content":{"action":1,"id":self.p2.id,"username":self.p2.username}})
-				self.p2.sync_send({"type":"game", "content":{"action":1,"id":self.p1.id,"username":self.p1.username}})
+				self.p1.sync_send({"type":"game", "content":{"action":1,"id":self.p2.id,"username":self.p2.username, "skin":self.p2Skin}})
+				self.p2.sync_send({"type":"game", "content":{"action":1,"id":self.p1.id,"username":self.p1.username, "skin":self.p1Skin}})
 		except Exception as e:
 			socket.sendError("invalid request", 9005, e)
 
