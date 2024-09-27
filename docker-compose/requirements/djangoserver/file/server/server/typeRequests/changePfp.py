@@ -6,28 +6,21 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 23:35:41 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/24 15:53:26 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/27 03:37:33 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from asgiref.sync import sync_to_async
 from ..models import User
+from ..utils import genString
 from random import randint
 import base64
 import json
 
-def	genereateRandomName():
-	chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-	len = 50
-	name = "a"
-	for i in range(0, len):
-		name += chars[randint(0, 61)]
-	return name
-
 @sync_to_async
 def changePfp(socket, content):
 	while True:
-		generate_name = genereateRandomName()
+		generate_name = genString(50) 
 		if (not User.objects.filter(pfp=f"/pfp/{generate_name}.jpg").exists()):
 			break
 	user = User.objects.get(id=socket.id)

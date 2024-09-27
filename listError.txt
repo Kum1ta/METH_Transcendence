@@ -31,7 +31,9 @@
 - 9027 : An unknown error occured
 - 9028 : You must provide exactly one field to update
 - 9029 : Invalid password
+- 9030 : You must provide your current password to it 
 
 - 9100 : Action out of range
 - 9101 : No game started 
 - 9102 : Game already started
+- 9103 : You are not invited to this game

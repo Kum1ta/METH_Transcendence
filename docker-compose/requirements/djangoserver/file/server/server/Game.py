@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/25 17:08:55 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/27 03:54:50 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ class Game:
 	wallsPos = [
 			{ "type":2, "pos": {"x": 1, "y": 0, "z": 1}, "isUp": False},
 			{ "type":2, "pos": {"x": 1, "y": 0, "z": 1}, "isUp": True},
-			{ "type":2, "pos": {"x": -1, "y": 0, "z": 1}, "isUp": False},
+   			{ "type":2, "pos": {"x": -1, "y": 0, "z": 1}, "isUp": False},
 			{ "type":2, "pos": {"x": -1, "y": 0, "z": 1}, "isUp": True}
 	]
 	jumpersPos = [
@@ -56,8 +56,11 @@ class Game:
 		{id: 6, 'color': None, 'texture': '/static/img/skin/3.jpg'},
 		{id: 7, 'color': None, 'texture': '/static/img/skin/4.jpg'},
 	]
+	wallLength = 1
+	wallWidth = 0.05
+	bounceSpeedIncrease = 0.2
 
-	def __init__(self, socket, withBot, skinId):
+	def __init__(self, socket, withBot, skinId = 0, opponent = None):
 		self.p1 = None
 		self.p2 = None
 		self.p1Ready = False
@@ -76,8 +79,16 @@ class Game:
 		self.obstacles = []
 		self.lastWin = 2
 
+		self.p1Skin = 0
+		self.p2Skin = 0
+
+		self.opponentLock = opponent
+
 		if(withBot):
-			self.join(socket)
+			self.join(socket, skinId)
+		elif(opponent != None):
+			self.join(socket, skinId)
+			#send invite to oponnent
 		else:
 			while(Game.waitingForPlayerLock):
 				time.sleep(0.05)
@@ -85,9 +96,9 @@ class Game:
 			if(Game.waitingForPlayer == None):
 				Game.waitingForPlayer = self
 				socket.sync_send({"type":"game","content":{"action":0}})
-				self.join(socket)
+				self.join(socket, skinId)
 			else:
-				Game.waitingForPlayer.join(socket)
+				Game.waitingForPlayer.join(socket, skinId)
 				Game.waitingForPlayer = None
 			Game.waitingForPlayerLock = False
 
@@ -98,25 +109,39 @@ class Game:
 
 	def genObstacles(self):
 		for x in Game.wallsPos:
-			if random.randint(1, 100) < 0:
+			if random.randint(1, 100) < 50:
 				self.obstacles.append(x)
 		i = 0
-		while(i <  len(Game.jumpersPos)):
+		down = False
+		up = False
+		while(i < len(Game.jumpersPos) - 2):
 			if(random.randint(1, 100) < 50):
 				self.obstacles.append(Game.jumpersPos[i])
-				i+=1
-			i+=1
+				down = True
+			else:
+				self.obstacles.append(Game.jumpersPos[i + 1])
+				up = True
+			i+=2
+		if not down:
+			self.obstacles.append(Game.jumperPos[i])
+		if not up:
+			self.obstacles.append(Game.jumperPos[i + 1])
 		self.p1.sync_send({"type":"game", "content":{"action":7, "content":self.obstacles}})
 		self.obstaclesInvLength()
 		self.p2.sync_send({"type":"game", "content":{"action":7, "content":self.obstacles}})
 		self.obstaclesInvLength()
 
-	def join(self, socket):
+	def join(self, socket, skin):
 		try:
 			if(self.p1 == None):
 				self.p1 = socket
+				self.p1Skin = skin
 			else:
+				if(self.opponentLock != socket.id):
+					socket.sendError("You are not invited to this game", 9013)
+					return;
 				self.p2 = socket
+				self.p2Skin = skin
 			socket.game = self
 			if(self.p2 != None and self.p1 != None):
 				self.p1.sync_send({"type":"game", "content":{"action":1,"id":self.p2.id,"username":self.p2.username}})
@@ -192,15 +217,12 @@ class Game:
 		if(disc < 0):
 			return None
 		res = (((-b) + math.sqrt(disc)) / ( 2 * a )) + (((-b) - math.sqrt(disc)) / ( 2 * a ))
-		print("res : ", res/2)
 		return(res / 2)
 
 	def check_jumper_colision(self, jumper):
 		jpos = (jumper["pos"]["x"], jumper["pos"]["z"])
 		pos1 = self.ballPos["pos"]
 		pos2 = self.ballPos["pos"][0] +self.ballVel[0], self.ballPos["pos"][1] + self.ballVel[1]
-		print(pos1)
-		print(pos2)
 		slope = 0
 		if(pos1[0] - pos2[0] == 0):
 			slope=100000
@@ -214,27 +236,59 @@ class Game:
 		c = (((-jpos[0]) ** 2) + (((-jpos[1]) + offset) ** 2)) - (Game.jumperRadius ** 2)
 		return(self.solve_quadratic(a, b ,c))
 
+	def check_wall_colision(self, wall):
+		wpos = wall["pos"]["x"]
+		pos1 = self.ballPos["pos"]
+		pos2 = self.ballPos["pos"][0] +self.ballVel[0], self.ballPos["pos"][1] + self.ballVel[1]
+		slope = 0
+		if(abs(pos1[1]) <= (Game.wallWidth / 2) + Game.ballRadius):
+			print("inside")
+			return(None)
+		if(pos1[0] - pos2[0] == 0):
+			slope=100000
+		else:
+			slope = (pos1[1] - pos2[1])/(pos1[0] - pos2[0])
+		offset = pos1[1] - (slope * pos1[0])
+		
+		if(slope == 0):
+			return(None)
+
+		wallSide = (Game.wallWidth / 2) + Game.ballRadius
+		if(pos1[1] < 0):
+			wallSide *= -1	
+		hitPos = (wallSide - offset) / slope
+		print(f'{hitPos=}')
+		relPos = wpos - hitPos
+		print("relative position : ", relPos)
+		print("max colision : ", (Game.wallLength / 2) + Game.ballRadius)
+		if(abs(relPos) < (Game.wallLength / 2) + Game.ballRadius):
+			return(hitPos)
+		print("not in wall 1")
+		return(None)
+
 	def check_collision_obstacles(self):
 		min_time = -1
 		for x in self.obstacles:
 			if x["isUp"] != self.ballPos["up"]:
 				continue
+			pos = None
 			if x["type"] == 1:
 				pos = self.check_jumper_colision(x)
-				if(pos == None):
-					print("no colision")
-					continue
-				print("pos :", pos)
-				print("ballPos :", self.ballPos["pos"][0])
-				dist = pos - self.ballPos["pos"][0]
-				print("dist : ", dist)
-				time = dist / (self.ballVel[0])
-				if(time > 0):
-					if(min_time == -1):
-						min_time = time
-					else:
-						min_time = (min(min_time, time))
-				print("time :",time)
+			elif x["type"] == 2:
+				pos = self.check_wall_colision(x)
+			if(pos == None):
+				continue
+			dist = pos - self.ballPos["pos"][0]
+			time = 0
+			if(self.ballVel[0] != 0):
+				time = dist / self.ballVel[0]
+			else:
+				time = -1
+			if(time > 0):
+				if(min_time == -1):
+					min_time = time
+				else:
+					min_time = (min(min_time, time))
 		return(min_time)
 
 	def getTimeUntilColision(self, limitNeg, limitPos, position, velocity):
@@ -259,9 +313,6 @@ class Game:
 
 	def getPlayerDistance(self, player, ballPos):
 		playerPos = player["pos"]
-		print("Player pos : ", playerPos)
-		print("chose player :", 2 if ballPos[1] < 0 else 1)
-		print("ball position :", ballPos[0])
 		return(playerPos - ballPos[0])
 	
 	async def scoreGoal(self, player):
@@ -281,14 +332,35 @@ class Game:
 
 	def checkJumpersDistance(self, ballPos):
 		for i in range(0, len(self.obstacles)):
+			if(self.obstacles[i]["type"] != 1):
+				continue;
 			if(self.obstacles[i]["isUp"] != self.ballPos["up"]):
 				continue	
 			if(self.twoPointsDistance((self.obstacles[i]["pos"]["x"], self.obstacles[i]["pos"]["z"]), ballPos) < Game.jumperRadius):
 				self.p1.sync_send({"type":"game", "content":{"action":8,"id":i}})	
 				self.p2.sync_send({"type":"game", "content":{"action":8,"id":i}})	
 				self.ballPos["up"] = not self.ballPos["up"]
+	
+	def checkWallsColision(self, ballPos):
+		for i in range(0, len(self.obstacles)):
+			if(self.obstacles[i]["type"] != 2):
+				continue;
+			if(self.obstacles[i]["isUp"] != self.ballPos["up"]):
+				continue;
+			if(abs(ballPos[1]) < (Game.wallWidth / 2) + Game.ballRadius):
+				if(abs(self.obstacles[i]["pos"]["x"] - ballPos[0]) < (Game.wallLength / 2) + Game.ballRadius):
+					print("not in wall 2")
+					return(True)
+		return(False)
+	
+	def increaseSpeed(self):
+		x = self.ballVel[0] + (Game.bounceSpeedIncrease * (self.ballVel[0] / self.speed))
+		y = self.ballVel[1] + (Game.bounceSpeedIncrease * (self.ballVel[1] / self.speed))
+		self.ballVel = (x, y)
+		self.speed += Game.bounceSpeedIncrease 
 
 	async def updateBall(self):
+		print("AAAAAAAAAAAAAAAAAAAAAAA update")
 		now = time.time()
 		delta = now - self.lastUpdate
 		currentBallPos = self.ballPos["pos"]
@@ -305,19 +377,22 @@ class Game:
 				if(newBallPos[1] > 0):
 					velZ = -velZ
 			else:
-				print("distance :", playerDistance)
 				self.lastWin = 1 if newBallPos[1] < 0 else 2
 				await self.scoreGoal(1 if newBallPos[1] < 0 else 2)
 				return;
 		elif(newBallPos[0] <= Game.limits["left"] or newBallPos[0] >= Game.limits["right"]):
 			velX = -velX
+		elif(self.checkWallsColision(newBallPos)):
+			velZ = -velZ
 		self.checkJumpersDistance(newBallPos)
 		self.ballVel = (velX, velZ)
+		self.increaseSpeed()
 		self.lastUpdate = now
 		self.ballPos["pos"] = newBallPos
 		self.sendNewBallInfo()
 	
 	def prepareGame(self, stop = False):
+		self.speed = Game.startSpeed
 		self.ballPos = {"pos":(0, 0), "up": False}
 		if(stop):
 			self.ballVel = (0, 0)
@@ -333,6 +408,7 @@ class Game:
 	async def gameLoop(self):
 		self.started = True
 		self.sendPlayers({"action":2})
+		self.prepareGame(True)
 		await asyncio.sleep(3)
 		self.prepareGame()
 		while(not self.end):
