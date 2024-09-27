@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/25 23:28:49 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/27 10:57:55 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/27 16:00:05 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,49 +16,63 @@ from ..fieldsVerif import usernameValid, passwordValid, discordValid
 import hashlib
 import json
 
+def changePassword(socket, user, old, new):
+	if(user.id42 == None):
+		socket.sendError("You can't set or change this field if you have a 42 account", 9031)
+		return(False)
+	if (old == None):
+		socket.sendError("You must provide your current password to change it",9030)	
+		return(False)
+	if (hashlib.md5((user.mail + old).encode()).hexdigest() != user.password):
+		socket.sendError("Invalid password", 9029)
+		return(False)
+	if (not passwordValid(new, socket)):
+		return(False)
+	user.password = hashlib.md5((user.mail + new).encode()).hexdigest()
+	socket.sync_send(json.dumps({"type": "change_private_info", "content": "Password successfully updated."}))
+	user.save()
+	return(True)
+
+def changeDiscord(socket, name, user):
+	if (not discordValid(name, socket)):
+		return(False)
+	if (name == ""):
+		user.discord_username = None
+	else:
+		user.discord_username = name 
+	user.save()
+	socket.sync_send(json.dumps({"type": "change_private_info", "content": "Discord successfully updated."}))
+	return(True)
+
+def changeUsername(socket, username, user):
+	if (not usernameValid(username, socket)):
+		return(False)
+	user.username = username
+	socket.username = username
+	socket.scope["session"]['username'] = username
+	user.save()
+	socket.scope["session"].save()
+	socket.sync_send(json.dumps({"type": "change_private_info", "content": "Username successfully updated."}))
+	return(True)
+
+def deleteAccount(socket,user):
+	user.delete()
+	socket.scope["session"].delete()
+	socket.sync_send(json.dumps({"type": "change_private_info", "content": "Successfully deleted."}))
+	socket.close()
+
 @sync_to_async
 def changePrivateInfo(socket, content):
-	whatChanged = ""
 	try:
 		user = User.objects.get(id=socket.id)
 		if ("delete" in content):
-			whatChanged = "Delete"
-			user.delete()
-			socket.scope["session"].delete()
-			socket.sync_send(json.dumps({"type": "change_private_info", "content": "Successfully deleted."}))
-			socket.close()
-			return;
-		elif ("username" in content):
-			whatChanged = "Username"
-			if (not usernameValid(content.get("username"), socket)):
-				return
-			user.username = content["username"]
-			socket.username = content["username"]
-			socket.scope["session"]['username'] = content["username"]
-		elif ("new_password" in content):
-			whatChanged = "Password"
-			if (not passwordValid(content.get("new_password"), socket)):
-				return
-			if (not content.get("old_password")):
-				socket.sendError("You must provide your current password to change it",9030)	
-				return
-			if (hashlib.md5((user.mail + content["old_password"]).encode()).hexdigest() != user.password):
-				socket.sendError("Invalid password", 9029)
-				return
-			user.password = hashlib.md5((user.mail + content["new_password"]).encode()).hexdigest()
-		elif ("discord" in content):
-			whatChanged = "Discord"
-			if (not discordValid(content.get("discord"), socket)):
-				return
-			if (content["discord"] == ""):
-				user.discord_username = None
-			else:
-				user.discord_username = content["discord"]
-		else:
-			socket.sendError("You must provide a field to update", 9028)
-			return;
-		user.save()
-		socket.scope["session"].save()
-		socket.sync_send(json.dumps({"type": "change_private_info", "content": whatChanged + " successfully updated."}))
+			deleteAccount(socket, user)
+			return
+		if ("username" in content):
+			changeUsername(socket, content["username"], user)
+		if ("new_password" in content):
+			changePassword(socket, user, content.get("old_password", None), content["new_password"])
+		if ("discord" in content):
+			changeDiscord(socket,content["discord"], user)
 	except Exception as e:
 		socket.sendError("An unknown error occured", 9027, e)

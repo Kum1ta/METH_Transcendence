@@ -32,6 +32,8 @@
 - 9028 : You must provide exactly one field to update
 - 9029 : Invalid password
 - 9030 : You must provide your current password to it 
+- 9031 : You can't set or change this field if you have a 42 account
+- 9032 : Your opponent isn't online
 
 - 9100 : Action out of range
 - 9101 : No game started 

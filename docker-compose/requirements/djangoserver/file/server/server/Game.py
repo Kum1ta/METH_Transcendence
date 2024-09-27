@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/27 13:59:03 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/27 17:17:23 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,8 +87,14 @@ class Game:
 		if(withBot):
 			self.join(socket, skinId)
 		elif(opponent != None):
-			self.join(socket, skinId)
-			#send invite to oponnent
+			if(opponent not in socket.onlinePlayers):
+				return;
+			opponentGame = socket.onlinePlayers[opponent].game
+			if (opponentGame != None and opponentGame.opponentLock != None and opponentGame.opponentLock == socket.id):
+				socket.onlinePlayers[opponent].game.join(socket, skinId)
+			else:
+				self.join(socket, skinId)
+				socket.onlinePlayers[opponent].sync_send({"type":"invitation","content":{"invitor":socket.id}})
 		else:
 			while(Game.waitingForPlayerLock):
 				time.sleep(0.05)
@@ -123,9 +129,9 @@ class Game:
 				up = True
 			i+=2
 		if not down:
-			self.obstacles.append(Game.jumperPos[i])
+			self.obstacles.append(Game.jumpersPos[i])
 		if not up:
-			self.obstacles.append(Game.jumperPos[i + 1])
+			self.obstacles.append(Game.jumpersPos[i + 1])
 		self.p1.sync_send({"type":"game", "content":{"action":7, "content":self.obstacles}})
 		self.obstaclesInvLength()
 		self.p2.sync_send({"type":"game", "content":{"action":7, "content":self.obstacles}})
@@ -134,16 +140,19 @@ class Game:
 	def join(self, socket, skin):
 		try:
 			if(self.p1 == None):
+				print("game created, set as player 1")
 				self.p1 = socket
 				self.p1Skin = skin
 			else:
-				if(self.opponentLock and self.opponentLock != socket.id):
+				if(self.opponentLock != None and self.opponentLock != socket.id):
 					socket.sendError("You are not invited to this game", 9103)
 					return;
+				print("joined game, set as player 2")
 				self.p2 = socket
 				self.p2Skin = skin
 			socket.game = self
 			if(self.p2 != None and self.p1 != None):
+				print("both players here, send opponent to both players")
 				self.p1.sync_send({"type":"game", "content":{"action":1,"id":self.p2.id,"username":self.p2.username}})
 				self.p2.sync_send({"type":"game", "content":{"action":1,"id":self.p1.id,"username":self.p1.username}})
 		except Exception as e:
