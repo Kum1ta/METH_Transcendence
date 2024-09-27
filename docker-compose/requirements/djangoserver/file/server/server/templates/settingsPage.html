@@ -9,24 +9,27 @@
 		<p>Logout</p>
 	</div>
 </div>
+<div class="popup-background-delete" id="popup-background-delete">
+   <div class="popup-delete">
+    <h1>Are you sure you want to delete tour account ?</h1>
+    <input type="text" id="username-delete" placeholder="Username">
+    <button class="delete-btn" id="deleteButton">Delete the account</button>
+   </div>
+</div>
 <div id="settingsBody">
     <div class="container-settings">
         <div class="left-section">
+            <div class="form-group-settings">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Email">
+            </div>
+
             <div class="form-group-settings">
                 <label for="username">Username</label>
                 <input type="text" id="username" placeholder="Username">
                 <div class="form-footer">
                     <small>Your username allows other players to find you.</small>
                     <button class="save-btn-settings" id="usernameButtonSave">SAVE</button>
-                </div>
-            </div>
-
-            <div class="form-group-settings">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Email">
-                <div class="form-footer">
-                    <small>You have changed your email, you can modify it here.</small>
-                    <button class="save-btn-settings">SAVE</button>
                 </div>
             </div>
 

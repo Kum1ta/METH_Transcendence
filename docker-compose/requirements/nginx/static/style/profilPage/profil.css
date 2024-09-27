@@ -105,7 +105,7 @@
 }
 
 #profil .dashboard {
-    background-color: #D3D3D3;
+    background-color: white;
     width: 48%;
     height: 42vh;
     padding: 20px;
@@ -113,7 +113,7 @@
 }
 
 #profil .history {
-    background-color: #D3D3D3;
+    background-color: white;
     width: 48%;
     height: 42vh;
     padding: 20px;
