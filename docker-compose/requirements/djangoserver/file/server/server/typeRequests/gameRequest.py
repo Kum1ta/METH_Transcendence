@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 16:10:26 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/25 13:20:50 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/27 17:49:42 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ from .gameActions.move import move
 #		- type
 #
 #	8 : jumper colision:
-#		id : index of the jumper
+#		name : name of the jumper
 
 #client actions (actions sent by the client) :
 #	0 : start : starts a game
