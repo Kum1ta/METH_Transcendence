@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 21:20:45 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/27 00:26:12 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 11:26:38 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ class WaitingGamePage
 		{
 			document.body.children[i].style.animation = 'animShowMenuDiv 0.5s';
 		}
-		if (!opponentInfo)
-			opponentInfo = {id: -1}
-		else
+		if (opponentInfo)
 			text = text.replace("other players", opponentInfo.username);
 		intervalPoints = setInterval(() => {
 			if (points.length < 3)
@@ -43,10 +41,10 @@ class WaitingGamePage
 			sentence.innerText = text + points;
 		}, 500);
 		timeout = setTimeout(() => {
-			if (!lastSelected)
-				sendRequest("game", {action: 0, skinId: 0, opponent: opponentInfo.id});
+			if (opponentInfo)
+				sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0, opponent: opponentInfo.id});
 			else
-				sendRequest("game", {action: 0, skinId: lastSelected.id, opponent: opponentInfo.id});
+				sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0});
 			timeout = null;
 		}, 1500);
 		returnButton.addEventListener('click', returnToLobby);

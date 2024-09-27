@@ -3,12 +3,14 @@
 #                                                         :::      ::::::::    #
 #    utils.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
+#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/27 03:36:08 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/27 03:36:42 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/27 11:23:51 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+import random
 
 def genString(length):
 	letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"

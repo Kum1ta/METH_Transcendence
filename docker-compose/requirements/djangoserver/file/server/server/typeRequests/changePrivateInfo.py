@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/25 23:28:49 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/27 03:23:10 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/27 10:57:55 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,21 +18,25 @@ import json
 
 @sync_to_async
 def changePrivateInfo(socket, content):
+	whatChanged = ""
 	try:
 		user = User.objects.get(id=socket.id)
 		if ("delete" in content):
+			whatChanged = "Delete"
 			user.delete()
 			socket.scope["session"].delete()
 			socket.sync_send(json.dumps({"type": "change_private_info", "content": "Successfully deleted."}))
 			socket.close()
 			return;
 		elif ("username" in content):
+			whatChanged = "Username"
 			if (not usernameValid(content.get("username"), socket)):
 				return
 			user.username = content["username"]
 			socket.username = content["username"]
 			socket.scope["session"]['username'] = content["username"]
 		elif ("new_password" in content):
+			whatChanged = "Password"
 			if (not passwordValid(content.get("new_password"), socket)):
 				return
 			if (not content.get("old_password")):
@@ -43,6 +47,7 @@ def changePrivateInfo(socket, content):
 				return
 			user.password = hashlib.md5((user.mail + content["new_password"]).encode()).hexdigest()
 		elif ("discord" in content):
+			whatChanged = "Discord"
 			if (not discordValid(content.get("discord"), socket)):
 				return
 			if (content["discord"] == ""):
@@ -54,6 +59,6 @@ def changePrivateInfo(socket, content):
 			return;
 		user.save()
 		socket.scope["session"].save()
-		socket.sync_send(json.dumps({"type": "change_private_info", "content": "Successfully updated."}))
+		socket.sync_send(json.dumps({"type": "change_private_info", "content": whatChanged + " successfully updated."}))
 	except Exception as e:
 		socket.sendError("An unknown error occured", 9027, e)

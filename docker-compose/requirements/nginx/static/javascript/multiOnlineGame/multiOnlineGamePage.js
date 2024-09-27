@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiOnlineGamePage.js                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/25 18:28:23 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/27 10:35:23 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ Controls :
 	- l : recreate et augmente le score de player
 	- k : recreate et augmente le score de opponent
 */
+
+const	scoreMax		= 5;
 
 let scene				= null;
 let map					= null;
