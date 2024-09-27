@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   global.css                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:57:22 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/19 23:59:46 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 16:35:52 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,5 @@ body {
 	font-family: "Poppins", sans-serif;
 	font-weight: 500;
 	font-style: normal;
+	scroll-behavior: smooth;
 }

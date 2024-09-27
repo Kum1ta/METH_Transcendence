@@ -428,6 +428,7 @@ body {
 .menuSelected {
 	display: flex;
 	flex-direction: row;
+	gap: 12rem;
 }
 
 .menuSelected {
