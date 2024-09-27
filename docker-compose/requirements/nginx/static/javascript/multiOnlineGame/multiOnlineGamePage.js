@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/27 10:35:23 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 21:05:41 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ class MultiOnlineGamePage
 		ambiantLight			= new THREE.AmbientLight(0xffffff, 0.5);
 		ball					= new Ball(scene, map);
 
+		window.addEventListener('resize', windowUpdater);
 		scene.add(player.object);
 		scene.add(opponent.object);
 		scene.add(ambiantLight);
@@ -103,6 +104,7 @@ class MultiOnlineGamePage
 		scene.background = new THREE.Color(0x1a1a1a);
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		document.body.appendChild(renderer.domElement);
+		renderer.domElement.setAttribute('id', 'canvasMultiGameOnline');
 		map.ballObject = ball.object;
 
 		//////////////////////////
@@ -163,6 +165,7 @@ class MultiOnlineGamePage
 
 	static dispose()
 	{
+		window.addEventListener('resize', windowUpdater);
 		if (interval)
 			clearInterval(interval);
 		interval = null;
@@ -216,6 +219,14 @@ function changeBarColor(bar, color)
 {
 	bar.material.color.set(color);
 }
+
+function windowUpdater(e)
+{
+	console.log('udapte');
+	renderer.setSize(window.innerWidth, window.innerHeight);
+	player.camera.aspect = window.innerWidth / window.innerHeight;
+	player.camera.updateProjectionMatrix();
+};
 
 function loop()
 {

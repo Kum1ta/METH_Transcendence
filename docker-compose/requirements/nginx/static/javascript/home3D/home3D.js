@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/27 01:16:28 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 15:08:43 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ function home3D()
 	interval		= null;
 	mouse			= new THREE.Vector2();
 	isInFade		= false;
-	spotLight		= new THREE.SpotLight(0xffffff, 500);
+	spotLight		= new THREE.SpotLight(0xffffff, 1000);
 
 	
 	spotLight.position.set(0, 10, 0);

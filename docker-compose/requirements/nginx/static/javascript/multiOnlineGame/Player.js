@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Player.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/27 17:21:29 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/27 21:16:32 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import { isMobile } from '/static/javascript/main.js'
 import * as THREE from '/static/javascript/three/build/three.module.js'
+
 /*
 	Explication du code :
 		- Un seul joueur peut etre instancié, sinon ça throw une erreur
@@ -69,6 +71,8 @@ class Player
 		this.opponent = opponent;
 		if (playerExist)
 			throw Error("Player is already init.");
+		if (isMobile)
+			showGamePad();
 		playerExist = true;
 		isOnPointAnim = false;
 		pressedButton = [];
@@ -365,6 +369,67 @@ function simplePressKey(e)
 		else
 			this.setCameraPosition(0, 1.5, this.object.position.z + 3);
 	}				
+}
+
+
+function goFullscreen()
+{
+	const	elem	= document.documentElement;
+
+	if (elem.requestFullscreen)
+		elem.requestFullscreen();
+	else if (elem.mozRequestFullScreen)
+		elem.mozRequestFullScreen();
+	else if (elem.webkitRequestFullscreen)
+		elem.webkitRequestFullscreen();
+	else if (elem.msRequestFullscreen)
+		elem.msRequestFullscreen();
+}
+
+function showGamePad()
+{
+	const	gamePad	=	document.getElementsByClassName('gamePad')[0];
+	const	buttons	=	document.getElementsByClassName('buttonGamePad');
+	const	canvas	=	document.getElementById('canvasMultiGameOnline');
+
+	canvas.addEventListener('touchstart', function(e) {
+		e.preventDefault();
+	});
+	canvas.addEventListener('mousedown', function(e) {
+		e.preventDefault();
+	});
+	document.getElementById('fullscreen').addEventListener('click', () => {
+		goFullscreen();
+	});
+	gamePad.style.display = 'flex';
+	for (let i = 0; i < buttons.length; i++)
+	{
+		buttons[i].addEventListener('touchstart', (event) => {
+			const	key	=	event.target.getAttribute("id");
+			
+			if (key == 'padLeft')
+				addKeyInArr({key: 'a'});
+			else if (key == 'padRight')
+				addKeyInArr({key: 'd'});
+			else if (key == 'padTop')
+				addKeyInArr({key: 'w'});
+			else if (key == 'padBottom')
+				addKeyInArr({key: 's'});
+
+		});
+		buttons[i].addEventListener('touchend', (event) => {
+			const	key	=	event.target.getAttribute("id");
+
+			if (key == 'padLeft')
+				remKeyInArr({key: 'a'});
+			else if (key == 'padRight')
+				remKeyInArr({key: 'd'});
+			else if (key == 'padTop')
+				remKeyInArr({key: 'w'});
+			else if (key == 'padBottom')
+				remKeyInArr({key: 's'});
+		});
+	}
 }
 
 export { Player, playerExist, goalAnimation};

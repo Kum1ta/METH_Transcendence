@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:23:41 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/14 01:56:23 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 21:05:45 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,73 @@ body {
 	white-space: nowrap;
 	/* font-weight: 900; */
 	color: rgb(255, 255, 255, 0.1);
+}
+
+.gamePad {
+	display: none;
+	position: absolute;
+	z-index: 800;
+	width: 100%;
+	height: 100%;
+}
+
+.gamePad #fullscreen {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	width: 50px;
+	height: 50px;
+	background-repeat: no-repeat;
+	background-size: 80% 80%;
+	background-position: center;
+	border: none;
+	opacity: 0.5;
+}
+
+.gamePad .gamePadLeft {
+	display: flex;
+	position: absolute;
+	left: 50px;
+	bottom: 50px;
+}
+
+
+.gamePad .gamePadRight {
+	display: flex;
+	position: absolute;
+	flex-direction: column;
+	right: 50px;
+	bottom: 50px;
+}
+
+.gamePad .buttonGamePad
+{
+	width: 100px;
+	height: 100px;
+	background-color: rgba(255, 255, 255, 0.1);
+	background-repeat: no-repeat;
+	background-size: 80% 80%;
+	background-position: center;
+	border: none;
+}
+
+.gamePadLeft #padRight {
+	margin-left: 50px;
+	transform: rotate(180deg);
+}
+
+.gamePadRight #padTop {
+	margin-bottom: 20px;
+	transform: rotate(90deg);
+}
+
+.gamePadRight #padBottom {
+	transform: rotate(270deg);
+}
+
+#canvasMultiGameOnline {
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    touch-action: none;
 }
