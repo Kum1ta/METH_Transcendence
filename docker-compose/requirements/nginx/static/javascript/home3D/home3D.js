@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/27 15:08:43 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 21:57:28 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ class Home3D
 
 	static dispose()
 	{
-		document.removeEventListener('resize', windowUpdater);
+		window.removeEventListener('resize', windowUpdater);
 		document.removeEventListener('mousemove', mouseTracker);
 		document.removeEventListener('click', redirection);
 
@@ -140,7 +140,7 @@ function home3D()
 	createCube();
 	document.body.getElementsByClassName('homeSection')[0].appendChild(renderer.domElement);
 	
-	document.addEventListener('resize', windowUpdater);
+	window.addEventListener('resize', windowUpdater);
 	mouse.x = 9999; 
 	mouse.y = 9999;
 	document.addEventListener('mousemove', mouseTracker);

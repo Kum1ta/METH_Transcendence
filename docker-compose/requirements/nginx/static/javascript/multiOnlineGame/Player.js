@@ -6,11 +6,10 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/27 21:16:32 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 21:21:02 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { isMobile } from '/static/javascript/main.js'
 import * as THREE from '/static/javascript/three/build/three.module.js'
 
 /*
@@ -71,8 +70,6 @@ class Player
 		this.opponent = opponent;
 		if (playerExist)
 			throw Error("Player is already init.");
-		if (isMobile)
-			showGamePad();
 		playerExist = true;
 		isOnPointAnim = false;
 		pressedButton = [];
@@ -90,6 +87,11 @@ class Player
 		document.addEventListener('keydown', addKeyInArr);
 		document.addEventListener('keyup', remKeyInArr);
 		document.addEventListener('keypress', simplePressKey);
+	}
+
+	mobileMode()
+	{
+		showGamePad();
 	}
 
 	dispose()

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/27 21:15:45 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 21:54:19 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -812,31 +812,40 @@ class Map
 		}, 10);
 	};
 
-	listObject = null;
 	placeObject(listObject)
 	{
 		let	nbJumper = 0; 
 		
-		this.listObject = listObject.content;
-		for (let i = 0; i < this.listObject.length; i++ )
+		listObject = listObject.content;
+		for (let i = 0; i < listObject.length; i++ )
 		{
-			if (this.listObject[i].type == 1)
+			if (listObject[i].type == 1)
 			{
-				this.#createGravityChanger(listObject[i].pos.x, listObject[i].pos.y, listObject[i].pos.z, "gravityChanger" + i, listObject[i].isUp ? "jumperTop" : "jumperBottom", listObject[i].isUp);
+				this.#createGravityChanger(listObject[i].pos.x, listObject[i].pos.y, listObject[i].pos.z, listObject[i].name, listObject[i].isUp ? "jumperTop" : "jumperBottom", listObject[i].isUp);
 				nbJumper++;
 			}
-			else if (this.listObject[i].type == 2)
-				scene.add(this.#createWallObstacle(this.listObject[i].pos.x, this.listObject[i].pos.y, this.listObject[i].pos.z, this.listObject[i].isUp));
+			else if (listObject[i].type == 2)
+				scene.add(this.#createWallObstacle(listObject[i].pos.x, listObject[i].pos.y, listObject[i].pos.z, listObject[i].isUp));
 		}
 	}
 
 	activeJumper(name)
 	{
 		ball.changeGravity();
-		if (this.listObject[index].isUp)
-			this.#animationGravityChanger(this.listObject[index].mesh, true);
-		else
-			this.#animationGravityChanger(this.listObject[index].mesh, false);
+		for (let i = 0; this.arrObject && i < this.arrObject.length; i++)
+		{
+			console.log("/////////////");
+			console.log(this.arrObject[i].name);
+			console.log(name);
+			console.log("/////////////");
+			if (this.arrObject[i].name == name)
+			{
+				if (this.arrObject[i].name == "jumperTop")
+					this.#animationGravityChanger(this.arrObject[i].mesh, true);
+				else
+					this.#animationGravityChanger(this.arrObject[i].mesh, false);
+			}
+		}
 	}
 
 	#generateObstacle()

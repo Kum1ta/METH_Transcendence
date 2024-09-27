@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/27 21:05:41 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 21:21:29 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ import { sendRequest } from "/static/javascript/websocket.js";
 import { Player } from '/static/javascript/multiOnlineGame/Player.js'
 import { Map } from '/static/javascript/multiOnlineGame/Map.js'
 import { Ball } from '/static/javascript/multiOnlineGame/Ball.js'
-import { pageRenderer } from '/static/javascript/main.js'
+import { pageRenderer, isMobile } from '/static/javascript/main.js'
 import { Opponent } from '/static/javascript/multiOnlineGame/Opponent.js'
 
 /*
@@ -106,6 +106,8 @@ class MultiOnlineGamePage
 		document.body.appendChild(renderer.domElement);
 		renderer.domElement.setAttribute('id', 'canvasMultiGameOnline');
 		map.ballObject = ball.object;
+		if (isMobile)
+			player.mobileMode();
 
 		//////////////////////////
 		controls = new OrbitControls(cameraTmp, renderer.domElement)
