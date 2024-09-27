@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/27 13:04:59 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/27 13:59:03 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -137,7 +137,7 @@ class Game:
 				self.p1 = socket
 				self.p1Skin = skin
 			else:
-				if(self.opponentLock and dself.opponentLock != socket.id):
+				if(self.opponentLock and self.opponentLock != socket.id):
 					socket.sendError("You are not invited to this game", 9103)
 					return;
 				self.p2 = socket

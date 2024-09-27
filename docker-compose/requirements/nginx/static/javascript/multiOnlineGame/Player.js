@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/25 18:13:50 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/27 13:55:55 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,21 +134,25 @@ class Player
 
 	pointAnimation(map)
 	{
+		const	canvasIndex = document.getElementsByTagName('canvas').length - 1;
 		const	tmpCamera	= new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10000);
 		const	tmp			= this.camera;
 		let		interval	= null;
 		const	startColor	= this.object.material.color.clone();
 		let		hue			= 0;
 
-		document.getElementsByTagName('canvas')[0].style.animation = 'fadeIn 0.199s';
-		document.getElementsByTagName('canvas')[0].style.filter = 'brightness(0)';
+		document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
+		document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeIn 0.199s';
+		document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(0)';
 
 		setTimeout(() => {
-			document.getElementsByTagName('canvas')[0].style.animation = 'fadeOut 0.199s';
-			document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
+			document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
+			document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeOut 0.199s';
+			document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(1)';
 		}, 300)
 
 		setTimeout(() => {
+
 			tmpCamera.position.set(this.limits.left, this.limits.up / 2 + 0.5, map.centerPos.z);
 			isOnPointAnim = true;
 			this.camera = tmpCamera;
@@ -175,9 +179,9 @@ class Player
 
 			setTimeout(() => {
 				clearInterval(interval);
-				document.getElementsByTagName('canvas')[3].style.animation = null;
-				document.getElementsByTagName('canvas')[3].style.animation = 'fadeInGames 0.99s';
-				document.getElementsByTagName('canvas')[3].style.filter = 'brightness(0)';
+				document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
+				document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeInGames 0.99s';
+				document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(0)';
 
 				setTimeout(() => {
 					this.camera = tmp;
@@ -191,8 +195,9 @@ class Player
 							this.object.position.z + 1.5
 						);
 					}
-					document.getElementsByTagName('canvas')[3].style.animation = 'fadeOutGames 0.99s';
-					document.getElementsByTagName('canvas')[3].style.filter = 'brightness(1)';
+					document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
+					document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeOutGames 0.99s';
+					document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(1)';
 				}, 400);
 			}, 4000);
 		}, 200)
@@ -200,17 +205,20 @@ class Player
 
 	pointOpponentAnimation(map, oppponentObject)
 	{
+		const	canvasIndex = document.getElementsByTagName('canvas').length - 1;
 		const	tmpCamera	= new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10000);
 		const	tmp			= this.camera;
 		let		interval	= null;
 		const	startColor	= oppponentObject.material.color.clone();
 		let		hue			= 0;
 
-		document.getElementsByTagName('canvas')[0].style.animation = 'fadeIn 0.199s';
-		document.getElementsByTagName('canvas')[0].style.filter = 'brightness(0)';
+		document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
+		document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeIn 0.199s';
+		document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(0)';
 		setTimeout(() => {
-			document.getElementsByTagName('canvas')[0].style.animation = 'fadeOut 0.199s';
-			document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
+			document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
+			document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeOut 0.199s';
+			document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(1)';
 		}, 300)
 		setTimeout(() => {
 			tmpCamera.position.set(this.limits.left, this.limits.up / 2 + 0.5, map.centerPos.z);
@@ -227,9 +235,9 @@ class Player
 			}, 10);
 			setTimeout(() => {
 				clearInterval(interval);
-				document.getElementsByTagName('canvas')[0].style.animation = null;
-				document.getElementsByTagName('canvas')[0].style.animation = 'fadeIn 0.19s';
-				document.getElementsByTagName('canvas')[0].style.filter = 'brightness(0)';
+				document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
+				document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeIn 0.19s';
+				document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(0)';
 				setTimeout(() => {
 					this.camera = tmp;
 					oppponentObject.material.color.copy(startColor);
@@ -242,8 +250,9 @@ class Player
 							this.object.position.z + 1.5
 						);
 					}
-					document.getElementsByTagName('canvas')[0].style.animation = 'fadeOut 0.199s';
-					document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
+					document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
+					document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeOut 0.199s';
+					document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(1)';
 				}, 200);
 			}, 4000);
 		}, 200)
