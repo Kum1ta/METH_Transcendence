@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 16:10:26 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/27 17:49:42 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/27 23:25:13 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ from .gameActions.start import start
 from .gameActions.ready import ready
 from .gameActions.leave import leave
 from .gameActions.move import move
+from .gameActions.ping import ping
 
 # game request format : {"type":"game", "content":{"action": 1, ...}}
 
@@ -47,6 +48,8 @@ from .gameActions.move import move
 #
 #	8 : jumper colision:
 #		name : name of the jumper
+#
+#	9: pong
 
 #client actions (actions sent by the client) :
 #	0 : start : starts a game
@@ -59,8 +62,10 @@ from .gameActions.move import move
 #	3 : move : when the client moves
 #		- pos :  
 #		- up : True/False(default : False) is the player up
+#
+#	4: ping : test the latency with the server
 
-action_list = [start, ready, leave, move]
+action_list = [start, ready, leave, move, ping]
 async def gameRequest(socket, content):
 	action = content["action"]
 	if(action < 0 or action > len(action_list)):
