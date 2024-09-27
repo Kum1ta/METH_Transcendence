@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/27 17:51:24 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/27 18:21:08 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -119,19 +119,18 @@ class Game:
 				self.obstacles.append(x)
 		i = 0
 		down = False
-		up = False
 		while(i < len(Game.jumpersPos) - 2):
 			if(random.randint(1, 100) < 50):
 				self.obstacles.append(Game.jumpersPos[i])
 				down = True
 			else:
 				self.obstacles.append(Game.jumpersPos[i + 1])
-				up = True
 			i+=2
 		if not down:
 			self.obstacles.append(Game.jumpersPos[i])
-		if not up:
+		else:
 			self.obstacles.append(Game.jumpersPos[i + 1])
+
 		self.p1.sync_send({"type":"game", "content":{"action":7, "content":self.obstacles}})
 		self.obstaclesInvLength()
 		self.p2.sync_send({"type":"game", "content":{"action":7, "content":self.obstacles}})
@@ -346,8 +345,8 @@ class Game:
 			if(self.obstacles[i]["isUp"] != self.ballPos["up"]):
 				continue	
 			if(self.twoPointsDistance((self.obstacles[i]["pos"]["x"], self.obstacles[i]["pos"]["z"]), ballPos) < Game.jumperRadius):
-				self.p1.sync_send({"type":"game", "content":{"action":8,"name":Game.jumpersPos[i]["name"]}})	
-				self.p2.sync_send({"type":"game", "content":{"action":8,"name":Game.jumpersPos[i]["name"]}})	
+				self.p1.sync_send({"type":"game", "content":{"action":8,"name":self.obstacles[i]["name"]}})	
+				self.p2.sync_send({"type":"game", "content":{"action":8,"name":self.obstacles[i]["name"]}})	
 				self.ballPos["up"] = not self.ballPos["up"]
 	
 	def checkWallsColision(self, ballPos):
