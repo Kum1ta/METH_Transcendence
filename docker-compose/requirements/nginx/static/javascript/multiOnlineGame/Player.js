@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/27 13:55:55 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 17:21:29 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,16 +166,9 @@ class Player
 				tmpCamera.updateProjectionMatrix();
 			}, 10);
 
-			///////////////////////
-			// Ici je souhaite savoir ou la camera est oriente : this.playerGoalAnimation soit this.opponent.playerGoalAnimation
-			// Egalement, l'animation se lance uniquement sur 1 seul client (celui qui a marque le point)
 			setTimeout(() => {
-				if (0)
-					map.animationGoal(this.object.position.x, this.object.position.y, this.object.position.z, this.playerGoalAnimation);
-				else
-					map.animationGoal(this.object.position.x, this.object.position.y, this.object.position.z, this.opponent.playerGoalAnimation);
+				map.animationGoal(this.object.position.x, this.object.position.y, this.object.position.z, this.playerGoalAnimation);
 			}, 1000);
-			///////////////////////
 
 			setTimeout(() => {
 				clearInterval(interval);
@@ -215,11 +208,13 @@ class Player
 		document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
 		document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeIn 0.199s';
 		document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(0)';
+		
 		setTimeout(() => {
 			document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
 			document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeOut 0.199s';
 			document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(1)';
 		}, 300)
+
 		setTimeout(() => {
 			tmpCamera.position.set(this.limits.left, this.limits.up / 2 + 0.5, map.centerPos.z);
 			isOnPointAnim = true;
@@ -233,11 +228,18 @@ class Player
 				tmpCamera.fov -= 0.05;
 				tmpCamera.updateProjectionMatrix();
 			}, 10);
+
+			setTimeout(() => {
+				map.animationGoal(this.opponent.object.position.x, this.opponent.object.position.y,
+					this.opponent.object.position.z, this.opponent.playerGoalAnimation);
+			}, 1000);
+			
 			setTimeout(() => {
 				clearInterval(interval);
 				document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
-				document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeIn 0.19s';
+				document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeInGames 0.99s';
 				document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(0)';
+				
 				setTimeout(() => {
 					this.camera = tmp;
 					oppponentObject.material.color.copy(startColor);
@@ -251,9 +253,9 @@ class Player
 						);
 					}
 					document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
-					document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeOut 0.199s';
+					document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeOutGames 0.99s';
 					document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(1)';
-				}, 200);
+				}, 400);
 			}, 4000);
 		}, 200)
 	}

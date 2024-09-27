@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   typeGame.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 12:00:01 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/25 13:38:28 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 17:56:06 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ function typeGame(content)
 	else if (content.action == 7 && pageRenderer.actualPage == MultiOnlineGamePage)
 		map.placeObject(content);
 	else if (content.action == 8 && pageRenderer.actualPage == MultiOnlineGamePage)
-		map.activeJumper(content.index);
+		map.activeJumper(content.name);
 }
 
 export { typeGame };

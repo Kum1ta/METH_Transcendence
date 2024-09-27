@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/27 13:44:33 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 18:21:20 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,8 @@ class Map
 		scene.add(this.#createPlanes(7.5, length, (Math.PI / 2), "planeTop", false, '/static/img/multiOnlineGamePage/pastel.jpg'));
 		scene.add(this.#createWall(-3.5, 0.4, -length/2, "wallLeft"));
 		scene.add(this.#createWall(3.5, 0.4, -length/2, "wallRight"));
-		if (obstacles)
-			this.#generateObstacle();
+		// if (obstacles)
+			// this.#generateObstacle();
 
 		{ // A retirer
 			/* Style de couleur why not
@@ -273,6 +273,7 @@ class Map
 
 		for (let i = 0; i < this.arrObject.length; i++)
 		{
+			console.log(name);
 			if (this.arrObject[i].name == name)
 				throw Error("Name already exist.");
 		}
@@ -820,7 +821,7 @@ class Map
 		{
 			if (listObject[i].type == 1)
 			{
-				this.#createGravityChanger(listObject[i].pos.x, listObject[i].pos.y, listObject[i].pos.z, "gravityChanger" + i, listObject[i].isUp ? "jumperTop" : "jumperBottom", listObject[i].isUp);
+				this.#createGravityChanger(listObject[i].pos.x, listObject[i].pos.y, listObject[i].pos.z, listObject[i].name, listObject[i].isUp ? "jumperTop" : "jumperBottom", listObject[i].isUp);
 				nbJumper++;
 			}
 			else if (listObject[i].type == 2)
@@ -828,13 +829,23 @@ class Map
 		}
 	}
 
-	activeJumper(index)
+	activeJumper(name)
 	{
 		ball.changeGravity();
-		if (this.arrObject[index].isUp)
-			this.#animationGravityChanger(this.arrObject[index].mesh, true);
-		else
-			this.#animationGravityChanger(this.arrObject[index].mesh, false);
+		for (let i = 0; this.arrObject && i < this.arrObject.length; i++)
+		{
+			console.log("/////////////");
+			console.log(this.arrObject[i].name);
+			console.log(name);
+			console.log("/////////////");
+			if (this.arrObject[i].name == name)
+			{
+				if (this.arrObject[i].name == "jumperTop")
+					this.#animationGravityChanger(this.arrObject[i].mesh, true);
+				else
+					this.#animationGravityChanger(this.arrObject[i].mesh, false);
+			}
+		}
 	}
 
 	#generateObstacle()
@@ -884,9 +895,9 @@ class Map
 				// Move the wall with the ball position
 				if (ball.object.position.z < this.mapLength / 2 - 0.35 && ball.object.position.z > -this.mapLength / 2 + 0.35)
 					this.arrObject[i].mesh.position.z = ball.object.position.z;
-				if (ball.object.position.y > 0.4 + 0.1 && ball.object.position.y < 3.2)
+				if (ball.object.position.y >= 0.3 && ball.object.position.y <= 3)
 					this.arrObject[i].mesh.position.y = ball.object.position.y - 0.1;
-
+				
 				// Change the opacity of the wall
 				let	diff = ball.object.position.x - this.arrObject[i].mesh.position.x - 0.1;
 				if (diff > 2)
@@ -899,7 +910,7 @@ class Map
 				// Move the wall with the ball position
 				if (ball.object.position.z < this.mapLength / 2 - 0.35 && ball.object.position.z > -this.mapLength / 2 + 0.35)
 					this.arrObject[i].mesh.position.z = ball.object.position.z;
-				if (ball.object.position.y > 0.4 + 0.1 && ball.object.position.y < 3.2)
+				if (ball.object.position.y >= 0.3 && ball.object.position.y <= 3)
 					this.arrObject[i].mesh.position.y = ball.object.position.y - 0.1;
 
 				// Change the opacity of the wall
@@ -1002,6 +1013,23 @@ class Map
 		}, 200);
 	}
 
+	resetPosWalls()
+	{
+		for (let i = 0; i < this.arrObject.length; i++)
+		{
+			if (this.arrObject[i].type == "wallLeft")
+			{
+				this.arrObject[i].mesh.position.set(-3.5, 0.4, -length/2);
+				this.arrObject[i].mesh.material.opacity = 0.5;
+			}
+			else if (this.arrObject[i].type == "wallRight")
+			{
+				this.arrObject[i].mesh.position.set(3.5, 0.4, -length/2);
+				this.arrObject[i].mesh.material.opacity = 0.5;
+			}
+		}
+	}
+
 	reCreate(name)
 	{
 		this.#clearAnimationGoal();
@@ -1010,6 +1038,7 @@ class Map
 
 		this.updateScore(name, this.score);
 		player.reserCameraPlayer();
+		this.resetPosWalls();
 		ball.resetPosBall();
 		// player.resetPosPlayer();
 		// opponent.resetPosOpponent();
