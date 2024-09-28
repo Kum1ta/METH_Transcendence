@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/26 16:37:29 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/28 02:43:26 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ import { settingsPage } from "/static/javascript/settingsPage/settingsPage.js"
 import { WaitingGamePage } from "/static/javascript/waitingGame/main.js"
 import { ProfilPage } from "/static/javascript/profilPage/main.js";
 import { LobbyPage } from "/static/javascript/lobbyPage/main.js";
+import { sendRequest } from "/static/javascript/websocket.js";
 import { HomePage } from "/static/javascript/homePage/main.js";
 
 class Page
@@ -25,9 +26,9 @@ class Page
 	availablePages = [
 		{suffix: false, url:'/', servUrl: '/homePage', class: HomePage, name: 'homePage', title: 'METH - Home'},
 		{suffix: false, url:'/lobby', servUrl: '/lobbyPage', class: LobbyPage, name: 'lobbyPage', title: 'METH - Lobby'},
+		{suffix: false, url:'/game', servUrl: '/multiOnlineGamePage', class: MultiOnlineGamePage, name: 'multiOnlineGamePage', title: 'METH - Game'},
 		{suffix: false, url:'/game', servUrl: '/multiLocalGamePage', class: multiLocalGamePage, name: 'multiLocalGamePage', title: 'METH - Game'},
 		{suffix: false, url:'/wait_game', servUrl: '/waitingGamePage', class: WaitingGamePage, name: 'waitingGamePage', title: 'METH - Wait for a game'},
-		{suffix: false, url:'/game', servUrl: '/multiOnlineGamePage', class: MultiOnlineGamePage, name: 'multiOnlineGamePage', title: 'METH - Game'},
 		{suffix: true, url:'/profil', servUrl: '/profilPage', class: ProfilPage, name: 'profilPage', title: 'METH - Profil'},
 		{suffix: false, url:'/settings', servUrl: '/settingsPage', class: settingsPage, name: 'settingsPage', title: 'METH - Settings'},
 	]
@@ -43,6 +44,8 @@ class Page
 					let arg = window.location.pathname.slice(thisClass.availablePages[i].url.length + 1);
 					if (arg == "" || !thisClass.availablePages[i].suffix)
 						arg = null;
+					if (thisClass.actualPage == MultiOnlineGamePage)
+						sendRequest("game", {action: 2});
 					thisClass.changePage(thisClass.availablePages[i].name, true, arg, !thisClass.availablePages[i].suffix);
 					return ;
 				}

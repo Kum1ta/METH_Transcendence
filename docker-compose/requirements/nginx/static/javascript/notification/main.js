@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:32:52 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/21 22:25:12 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/28 00:38:44 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,6 @@ function	newNotification(title, message, img, action, timer, actionText)
 
 class notification
 {
-	timer = 5000;
 	defaultIcon = {
 		"warning": "/static/img/notification/ico/warning.png",
 		"error": "/static/img/notification/ico/error.png",
@@ -164,9 +163,9 @@ class notification
 
 	constructor() {}
 
-	new(title, message, img=null, action=null, actionText="Confirm")
+	new(title, message, img=null, action=null, actionText="Confirm", timer=5000)
 	{
-		newNotification(title, message, img, action, this.timer, actionText);
+		newNotification(title, message, img, action, timer, actionText);
 	}
 }
 

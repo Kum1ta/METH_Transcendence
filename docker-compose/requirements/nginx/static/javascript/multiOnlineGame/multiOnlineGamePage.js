@@ -6,11 +6,12 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/27 21:21:29 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/28 03:15:02 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { createNotification as CN } from "/static/javascript/notification/main.js";
+import { availableSkins } from '/static/javascript/lobbyPage/3d.js';
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import Stats from '/static/javascript/three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from '/static/javascript/three/examples/jsm/Addons.js';
@@ -73,12 +74,12 @@ let controls = null;
 
 class MultiOnlineGamePage
 {
-	static create()
+	static create(skin)
 	{
 		document.body.appendChild(stats.dom);
 
-		const bar1		= createBarPlayer(0xed56ea);
-		const bar2		= createBarPlayer(0xf3e11e);
+		const bar1		= createBarPlayer(availableSkins[skin.player]);
+		const bar2		= createBarPlayer(availableSkins[skin.opponent]);
 
 		document.body.setAttribute('style', '');
 		scene					= new THREE.Scene()
@@ -207,10 +208,16 @@ class MultiOnlineGamePage
 	}
 }
 
-function createBarPlayer(color)
+function createBarPlayer(skin)
 {
-	const geometry	= new THREE.BoxGeometry(1, 0.1, 0.1);
-	const material	= new THREE.MeshPhysicalMaterial({color: color});
+	const	geometry	= new THREE.BoxGeometry(1, 0.1, 0.1);
+	let		material	= null;
+
+	console.log(skin)
+	if (skin.color)
+		material = new THREE.MeshPhysicalMaterial({color: skin.color});
+	else
+		material = new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(skin.texture)});
 	const mesh		= new THREE.Mesh(geometry, material);
 
 	mesh.castShadow = true;

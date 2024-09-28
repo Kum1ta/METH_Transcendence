@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 21:20:45 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/27 11:26:38 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/28 02:08:21 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ class WaitingGamePage
 			returnButton.removeEventListener('click', returnToLobby);
 	}
 
-	static showOpponent(username)
+	static showOpponent(content)
 	{
 		const	returnButton	= document.getElementById('returnToLobbyButton');
 		const	sentence		= document.getElementById('sentence');
@@ -75,13 +75,13 @@ class WaitingGamePage
 		sentence.style.animation = 'anim3 0.5s';
 		sentence.style.opacity = 0;
 		setTimeout(() => {
-			sentence.innerText = "Your opponent is " + username;
+			sentence.innerText = "Your opponent is " + content.username;
 			sentence.style.animation = 'animShowMenuDiv 0.5s';
 			sentence.style.opacity = 1;
 			setTimeout(() => {
 				document.body.style.animation = 'anim3 0.5s';
 				document.body.style.opacity = 0;
-				pageRenderer.changePage("multiOnlineGamePage");
+				pageRenderer.changePage("multiOnlineGamePage", false, {player: lastSelected.id, opponent: content.skin});
 			}, 1000);
 		}, 500);
 		document.body.removeChild(returnButton);

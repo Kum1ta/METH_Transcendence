@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/27 21:54:19 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 23:59:18 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -991,18 +991,8 @@ class Map
 		}
 	};
 
-	updateScore(name, score) //  document.getElementsByTagName('canvas')[0]            Si fondu noir marche pas c'est la
+	updateScore(name, score)
 	{
-		const	canvasIndex = document.getElementsByTagName('canvas').length - 1;
-
-		document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeInGames 0.99s';
-		document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(0)';
-
-		setTimeout(() => {
-			document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeOutGames 0.99s';
-			document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(1)';
-		}, 200);
-
 		setTimeout(() => {
 			if (name == "player")
 				score.player++;

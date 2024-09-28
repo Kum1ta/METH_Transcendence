@@ -6,15 +6,25 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/25 14:40:02 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/28 01:53:20 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from '/static/javascript/three/build/three.module.js'
 
-let actualBarSelecor	= null;
-let actualGoalSelecter	= null;
-let	lastSelected		= null;
+let 	actualBarSelecor	= null;
+let 	actualGoalSelecter	= null;
+let		lastSelected		= null;
+const	availableSkins	=	[
+	{id: 0, color: 0xff53aa, texture: null},
+	{id: 1, color: 0xaa24ea, texture: null},
+	{id: 2, color: 0x2c9c49, texture: null},
+	{id: 3, color: 0x101099, texture: null},
+	{id: 4, color: null, texture: '/static/img/skin/1.jpg'},
+	{id: 5, color: null, texture: '/static/img/skin/2.jpg'},
+	{id: 6, color: null, texture: '/static/img/skin/3.jpg'},
+	{id: 7, color: null, texture: '/static/img/skin/4.jpg'},
+];
 
 class barSelecter
 {
@@ -22,17 +32,7 @@ class barSelecter
 	renderer		= null;
 	camera			= null;
 	spotLight		= new THREE.SpotLight(0xffffff, 5);
-	availableSkins	=	[
-		{id: 0, color: 0xff53aa, texture: null},
-		{id: 1, color: 0xaa24ea, texture: null},
-		{id: 2, color: 0x2c9c49, texture: null},
-		{id: 3, color: 0x101099, texture: null},
-		{id: 4, color: null, texture: '/static/img/skin/1.jpg'},
-		{id: 5, color: null, texture: '/static/img/skin/2.jpg'},
-		{id: 6, color: null, texture: '/static/img/skin/3.jpg'},
-		{id: 7, color: null, texture: '/static/img/skin/4.jpg'},
-	];
-	selected		= lastSelected ? lastSelected : this.availableSkins[0];
+	selected		= lastSelected ? lastSelected : availableSkins[0];
 	bar				= this.createBarPlayer(this.selected.color ? this.selected.color : this.selected.texture);
 	boundChangeSkin = this.changeSkin.bind(this);
 
@@ -45,7 +45,7 @@ class barSelecter
 		this.camera		= new THREE.PerspectiveCamera(60, (pos.width - 10) / (pos.height - 10));
 	
 		if (!lastSelected)
-			lastSelected = this.availableSkins[0];
+			lastSelected = availableSkins[0];
 		this.scene.background = new THREE.Color(0x020202);
 		this.renderer.setSize(pos.width - 10, pos.height - 10);
 		this.scene.add(this.spotLight);
@@ -65,11 +65,11 @@ class barSelecter
 			popup.style.display = 'flex';
 			for (let i = 0; i < skins.length; i++)
 			{
-				skins[i].setAttribute('skinId', this.availableSkins[i].id);
-				if (this.availableSkins[i].color != null)
-					skins[i].style.backgroundColor = `#${this.availableSkins[i].color.toString(16)}`;
+				skins[i].setAttribute('skinId', availableSkins[i].id);
+				if (availableSkins[i].color != null)
+					skins[i].style.backgroundColor = `#${availableSkins[i].color.toString(16)}`;
 				else
-					skins[i].style.backgroundImage = `url("${this.availableSkins[i].texture}")`
+					skins[i].style.backgroundImage = `url("${availableSkins[i].texture}")`
 				skins[i].removeEventListener('click', this.boundChangeSkin);
 				skins[i].addEventListener('click', this.boundChangeSkin);
 			}
@@ -94,12 +94,12 @@ class barSelecter
 		popup.style.display = 'none';
 		console.log(this.bar);
 		this.bar.material.dispose();
-		lastSelected = this.availableSkins[id];
-		if (this.availableSkins[id].color != null)
-			this.bar.material = new THREE.MeshPhysicalMaterial({color: this.availableSkins[id].color});
+		lastSelected = availableSkins[id];
+		if (availableSkins[id].color != null)
+			this.bar.material = new THREE.MeshPhysicalMaterial({color: availableSkins[id].color});
 		else
-			this.bar.material = new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(this.availableSkins[id].texture)});
-		this.selected = this.availableSkins[id];
+			this.bar.material = new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(availableSkins[id].texture)});
+		this.selected = availableSkins[id];
 	}
 
 	createBarPlayer(color)
@@ -211,4 +211,4 @@ class goalSelecter
 	}
 }
 
-export { barSelecter, goalSelecter, lastSelected}
+export { barSelecter, goalSelecter, lastSelected, availableSkins}

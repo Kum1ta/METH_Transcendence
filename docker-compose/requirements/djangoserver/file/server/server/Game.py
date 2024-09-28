@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/28 02:15:53 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/28 02:31:10 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,7 +70,7 @@ class Game:
 		self.bot = withBot
 		self.started = False
 		self.end = False
-		slef.left = None
+		self.left = None
 
 		self.p1Pos = {"pos":0, "up": False}
 		self.p2Pos = {"pos":0, "up": False}

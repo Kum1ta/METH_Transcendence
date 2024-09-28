@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/27 21:21:02 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/28 03:13:14 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,12 +148,12 @@ class Player
 		let		hue			= 0;
 
 		document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
-		document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeIn 0.199s';
+		document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeInGames 0.199s';
 		document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(0)';
 
 		setTimeout(() => {
 			document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
-			document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeOut 0.199s';
+			document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeOutGames 0.199s';
 			document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(1)';
 		}, 300)
 
@@ -212,7 +212,7 @@ class Player
 		let		hue			= 0;
 
 		document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
-		document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeIn 0.199s';
+		document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeInGames 0.199s';
 		document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(0)';
 		
 		setTimeout(() => {
@@ -220,7 +220,6 @@ class Player
 			document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeOut 0.199s';
 			document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(1)';
 		}, 300)
-
 		setTimeout(() => {
 			tmpCamera.position.set(this.limits.left, this.limits.up / 2 + 0.5, map.centerPos.z);
 			isOnPointAnim = true;
@@ -390,9 +389,10 @@ function goFullscreen()
 
 function showGamePad()
 {
-	const	gamePad	=	document.getElementsByClassName('gamePad')[0];
-	const	buttons	=	document.getElementsByClassName('buttonGamePad');
-	const	canvas	=	document.getElementById('canvasMultiGameOnline');
+	const	gamePad		=	document.getElementsByClassName('gamePad')[0];
+	const	canvas		=	document.getElementById('canvasMultiGameOnline');
+	const	keyList		=	['padLeft', 'padRight', 'padTop', 'padBottom']
+	const	keyAction	=	['a', 'd', 'w', 's']
 
 	canvas.addEventListener('touchstart', function(e) {
 		e.preventDefault();
@@ -404,34 +404,25 @@ function showGamePad()
 		goFullscreen();
 	});
 	gamePad.style.display = 'flex';
-	for (let i = 0; i < buttons.length; i++)
-	{
-		buttons[i].addEventListener('touchstart', (event) => {
-			const	key	=	event.target.getAttribute("id");
-			
-			if (key == 'padLeft')
-				addKeyInArr({key: 'a'});
-			else if (key == 'padRight')
-				addKeyInArr({key: 'd'});
-			else if (key == 'padTop')
-				addKeyInArr({key: 'w'});
-			else if (key == 'padBottom')
-				addKeyInArr({key: 's'});
+	document.addEventListener('touchstart', (event) => {
+		const	key			=	event.target.getAttribute("id");
+		
 
-		});
-		buttons[i].addEventListener('touchend', (event) => {
-			const	key	=	event.target.getAttribute("id");
+		for (let i = 0; i < keyList.length; i++)
+		{
+			if (keyList[i] == key)
+				addKeyInArr({key: keyAction[i]})
+		}
+	});
+	document.addEventListener('touchend', (event) => {
+		const	key	=	event.target.getAttribute("id");
 
-			if (key == 'padLeft')
-				remKeyInArr({key: 'a'});
-			else if (key == 'padRight')
-				remKeyInArr({key: 'd'});
-			else if (key == 'padTop')
-				remKeyInArr({key: 'w'});
-			else if (key == 'padBottom')
-				remKeyInArr({key: 's'});
-		});
-	}
+		for (let i = 0; i < keyList.length; i++)
+		{
+			if (keyList[i] == key)
+				remKeyInArr({key: keyAction[i]})
+		}
+	});
 }
 
 export { Player, playerExist, goalAnimation};

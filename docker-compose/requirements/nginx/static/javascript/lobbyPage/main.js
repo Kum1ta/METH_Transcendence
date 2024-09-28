@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/26 16:41:52 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/27 23:21:25 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,8 +183,6 @@ function hideGameMode()
 function selectGameModeOne()
 {
 	document.getElementById('loginPopup').style.display = 'none';
-	if (gameMode == 0)
-		return ;
 	document.getElementsByClassName('mode-card')[0].getElementsByTagName('p')[0].innerHTML = listSelectCard[0].innerHTML;
 	const	menuList = document.getElementsByClassName('menuSelected');
 	for (let i = 0; i < menuList.length; i++)
@@ -198,8 +196,6 @@ function selectGameModeOne()
 function selectGameModeTwo()
 {
 	document.getElementById('loginPopup').style.display = 'none';
-	if (gameMode == 1)
-		return ;
 	document.getElementsByClassName('mode-card')[0].getElementsByTagName('p')[0].innerHTML = listSelectCard[1].innerHTML;
 	const	menuList = document.getElementsByClassName('menuSelected');
 	for (let i = 0; i < menuList.length; i++)
@@ -221,8 +217,6 @@ function selectGameModeTwo()
 function selectGameModeThree()
 {
 	document.getElementById('loginPopup').style.display = 'none';
-	if (gameMode == 2)
-		return ;
 	document.getElementsByClassName('mode-card')[0].getElementsByTagName('p')[0].innerHTML = listSelectCard[2].innerHTML;
 	const	menuList = document.getElementsByClassName('menuSelected');
 	for (let i = 0; i < menuList.length; i++)
@@ -236,8 +230,6 @@ function selectGameModeThree()
 function selectGameModeFour()
 {
 	document.getElementById('loginPopup').style.display = 'none';
-	if (gameMode == 3)
-		return ;
 	document.getElementsByClassName('mode-card')[0].getElementsByTagName('p')[0].innerHTML = listSelectCard[3].innerHTML;
 	const	menuList = document.getElementsByClassName('menuSelected');
 	for (let i = 0; i < menuList.length; i++)
