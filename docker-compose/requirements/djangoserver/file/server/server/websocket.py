@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 14:31:30 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/28 03:19:46 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/28 21:03:10 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,16 +32,18 @@ from .typeRequests.getUserInfo import getUserInfo
 from .typeRequests.getPrivateInfo import getPrivateInfo
 from .typeRequests.changePrivateInfo import changePrivateInfo
 from .typeRequests.changePfp import changePfp
+from .typeRequests.statusMessage import statusMessage
+from .typeRequests.readMessage import readMessage
 
 typeRequest = ["login", "get_private_list_user", "get_private_list_message",
 			   "send_private_message", "create_account", "get_all_list_user", "game",
 			   "search_user", "get_user_info", "change_pfp", "change_banner",
-			   "get_private_info", "change_private_info"
+			   "get_private_info", "change_private_info","status_message", "read_message"
 			   ]
 functionRequest = [login, getPrivateListUser, getPrivateListMessage,
 				sendPrivateMessage, createAccount, getAllListUser, gameRequest,
 				searchUser, getUserInfo, changePfp, changeBanner,
-				getPrivateInfo, changePrivateInfo
+				getPrivateInfo, changePrivateInfo, statusMessage, readMessage
 				]
 
 from random import randint
