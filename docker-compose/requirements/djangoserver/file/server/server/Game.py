@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/28 04:10:56 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/28 18:18:51 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,7 @@ class Game:
 		self.end = False
 		self.left = None
 		self.winner = None
+		self.expSleepTime = 0
 
 		self.p1Pos = {"pos":0, "up": False}
 		self.p2Pos = {"pos":0, "up": False}
@@ -396,6 +397,8 @@ class Game:
 		print("AAAAAAAAAAAAAAAAAAAAAAA update")
 		now = time.time()
 		delta = now - self.lastUpdate
+		print("delta :", delta)
+		print("\033[31msleep time diff :", (delta - self.expSleepTime) * 1000, "ms")
 		currentBallPos = self.ballPos["pos"]
 		velX = self.ballVel[0]
 		velZ = self.ballVel[1]
@@ -449,6 +452,7 @@ class Game:
 				break;
 			sleep_time = self.getSleepTime()
 			print("sleep time : " , sleep_time)
+			self.expSleepTime = sleep_time
 			await asyncio.sleep(sleep_time)
 		print("game end")
 		await self.saveResults()

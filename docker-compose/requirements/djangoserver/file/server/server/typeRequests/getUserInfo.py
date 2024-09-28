@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 00:16:57 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/28 04:43:44 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/28 18:35:21 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,14 +18,18 @@ import json
 def getHistory(user, games):
 	res = []
 	for x in games:
-		p1 = {"score":int(x.p1Score), "username":x.player1.username}
-		p2 = {"score":int(x.p2Score), "username":x.player2.username}
-		if(x.player2 == user):
-			p1, p2 = p2, p1
+		player = None
+		opponent = None
+		if(x.player1 == user):
+			player = {"score":int(x.p1Score)}
+			opponent = {"score":int(x.p2Score), "username":x.player2.username, "pfp":x.player2.pfp}
+		else:
+			player = {"score":int(x.p2Score)}
+			opponent = {"score":int(x.p1Score), "username":x.player1.username, "pfp":x.player1.pfp}
 		res.append({
 			"id":x.id,
-			"p1":p1,
-			"p2":p2,
+			"p1":player,
+			"p2":opponent,
 			"won":x.winner == user
 		})	
 	return(res)
