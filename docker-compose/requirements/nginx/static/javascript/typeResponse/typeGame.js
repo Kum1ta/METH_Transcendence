@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 12:00:01 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/28 00:56:23 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/28 21:33:31 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,28 @@ import { pageRenderer } from '/static/javascript/main.js'
 
 function typeGame(content)
 {
-	if (content.action == 1 && pageRenderer.actualPage == WaitingGamePage)
+	if (pageRenderer.actualPage == WaitingGamePage)
 	{
-		WaitingGamePage.showOpponent(content);
+		if (content.action == 1)
+			WaitingGamePage.showOpponent(content);
 	}
-	else if (content.action == 3 && pageRenderer.actualPage == MultiOnlineGamePage)
+	else if (pageRenderer.actualPage == MultiOnlineGamePage)
 	{
-		if (content.is_opponent)
+		if (content.action == 3 && content.is_opponent)
 			opponent.movePlayer(content);
+		else if (content.action == 4)
+			MultiOnlineGamePage.opponentDisconnect();
+		else if (content.action == 5)
+			ball.updatePos(content);
+		else if (content.action == 6)
+			player.makeAnimation(content.is_opponent);
+		else if (content.action == 7)
+			map.placeObject(content);
+		else if (content.action == 8)
+			map.activeJumper(content.name);
+		else if (content.action == 9)
+			MultiOnlineGamePage.ping();
 	}
-	else if (content.action == 4 && pageRenderer.actualPage == MultiOnlineGamePage)
-		MultiOnlineGamePage.opponentDisconnect();
-	else if (content.action == 5 && pageRenderer.actualPage == MultiOnlineGamePage)
-		ball.updatePos(content);
-	else if (content.action == 6 && pageRenderer.actualPage == MultiOnlineGamePage)
-		player.makeAnimation(content.is_opponent);
-	else if (content.action == 7 && pageRenderer.actualPage == MultiOnlineGamePage)
-		map.placeObject(content);
-	else if (content.action == 8 && pageRenderer.actualPage == MultiOnlineGamePage)
-		map.activeJumper(content.name);
 }
 
 export { typeGame };

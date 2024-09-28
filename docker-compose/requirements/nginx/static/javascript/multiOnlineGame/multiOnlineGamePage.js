@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/28 03:15:02 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/28 21:46:40 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,9 @@ let spotLight			= null;
 let ambiantLight		= null;
 let opponent			= null;
 let	interval			= null;
+let	intervalPing		= null;
 let debug				= false;
+let	lastPingTime		= 0;
 
 // ------------------- (need to be remove) -------------------- //
 const stats = new Stats();
@@ -164,6 +166,13 @@ class MultiOnlineGamePage
 				sendRequest('game', {action: 3, pos: player.object.position.x, up: player.isUp});
 			}
 		}, 1000 / 20);
+		intervalPing = setInterval(() => {
+			if (!lastPingTime)
+			{
+				sendRequest('game', {action: 4});
+				lastPingTime = Date.now();
+			}
+		}, 16);
 	}
 
 	static dispose()
@@ -172,6 +181,9 @@ class MultiOnlineGamePage
 		if (interval)
 			clearInterval(interval);
 		interval = null;
+		if (intervalPing)
+			clearInterval(intervalPing);
+		intervalPing = null;
 		if (renderer)
 			renderer.dispose();
 		renderer = null;
@@ -205,6 +217,21 @@ class MultiOnlineGamePage
 	static opponentDisconnect()
 	{
 		pageRenderer.changePage('lobbyPage');
+	}
+
+	static ping()
+	{
+		const	text	=	document.getElementById('ping');
+		const	ping	=	Date.now() - lastPingTime;
+
+		if (ping < 90)
+			text.style.color = 'white';
+		else if (ping >= 90 && ping < 150)
+			text.style.color = 'orange';
+		else
+			text.style.color = 'red';
+		text.innerText = ping + ' ms';
+		lastPingTime = null;
 	}
 }
 
