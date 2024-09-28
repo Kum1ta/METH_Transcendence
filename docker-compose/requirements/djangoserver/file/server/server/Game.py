@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/28 18:18:51 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/28 19:34:44 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -198,8 +198,8 @@ class Game:
 		while(Game.waitingForPlayerLock):
 			time.sleeep(0.05)
 		Game.waitingForPlayerLock = True
-		if(Game.waitingForPlayerLock == socket):
-			Game.waitingForPlayerLock = False;
+		if(Game.waitingForPlayer == self):
+			Game.waitingForPlayer = None;
 		Game.waitingForPlayerLock = False 
 		if(self.started):
 			self.endGame(1 if self.left == 2 else 2)
