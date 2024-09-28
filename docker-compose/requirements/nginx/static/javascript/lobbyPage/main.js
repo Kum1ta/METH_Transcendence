@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/27 23:21:25 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/28 16:58:08 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ function searchUser(event)
 	else
 	{
 		timeout = setTimeout(() => {
-			sendRequest("search_user", {username: event.target.value});
+			sendRequest("search_user", {username: event.target.value.toLowerCase()});
 		}, 10);
 	}
 }

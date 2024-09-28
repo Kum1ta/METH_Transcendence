@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/27 00:54:02 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/28 19:47:17 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ class ProfilPage
 				pageRenderer.changePage('lobbyPage');
 		});
 		waitForUserInfo().then((userInfo) => {
+			console.log(userInfo);
 			if (userInfo == null)
 			{
 				pageRenderer.changePage('homePage');
@@ -74,8 +75,8 @@ class ProfilPage
 			banner.style.backgroundSize = "cover";
 			banner.style.backgroundRepeat = "no-repeat";
 			externButtons(userInfo);
-			createGraph(ctx, {win: 10, lose: 1});
-			console.warn("Graph values are settled in code, please change it with data request")
+			createGraph(ctx, {win: userInfo.nbWin, lose: userInfo.nbLoss});
+			showHistory(userInfo);
 			if (userInfo.id == userMeInfo.id)
 			{
 				inviteButton.remove();
@@ -202,6 +203,37 @@ function createGraph(ctx, data)
 		}
 	});
 }
+
+function showHistory(userInfo)
+{
+	const	divHistory	=	document.getElementById('history');
+	const	history		=	userInfo.history;
+
+	history.forEach(element => {
+		const	div	=	document.createElement('div');
+
+		div.setAttribute('class', 'history-card');
+		if (element.won)
+			div.style.backgroundColor = '#11ad11';
+		div.innerHTML = `
+		<div id="user-1">
+			<div class="profile-img-history">
+				<img src="${userInfo.pfp}">
+			</div>
+			<p>${userInfo.username}</p>
+		</div>
+		<p id="score-history">${element.p1.score} - ${element.p2.score}</p>
+		<div id="user-2">
+			<div class="profile-img-history">
+				<img src="${element.p2.pfp}">
+			</div>
+			<p>${element.p2.username}</p>
+		</div>`
+		divHistory.appendChild(div);
+	});
+}
+
+                   
 
 
 export { ProfilPage };

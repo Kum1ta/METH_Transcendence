@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/28 02:43:26 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/28 19:48:30 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ class Page
 				document.body.innerHTML = text;
 				this.actualPage = null;
 				document.title = 'METH - Page not found';
-				history.pushState({}, this.availablePages[i].title, this.availablePages[i].url);
+				history.pushState({}, document.title, window.location.pathname);
 			})
 		})
 		.catch(error => {

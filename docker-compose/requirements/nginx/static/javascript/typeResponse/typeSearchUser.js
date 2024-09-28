@@ -6,12 +6,14 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 08:12:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/20 00:23:27 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/28 17:49:07 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { LobbyPage } from "/static/javascript/lobbyPage/main.js";
 import { pageRenderer } from '/static/javascript/main.js'
+
+let	enterActivated = false;
 
 function typeSearchUser(userList)
 {
@@ -21,7 +23,8 @@ function typeSearchUser(userList)
 
 	if (pageRenderer.actualPage !== LobbyPage)
 		return ;
-	document.body.addEventListener('click', removeAlluser)
+	document.body.removeEventListener('click', removeAlluser);
+	document.body.addEventListener('click', removeAlluser);
 	pos = searchInputUser.getBoundingClientRect();
 	searchResult.style.width = pos.width + 'px';
 	searchResult.style.top = pos.top + pos.height + 'px';
@@ -35,8 +38,26 @@ function typeSearchUser(userList)
 		searchResult.appendChild(div);
 		div.addEventListener('click', () => {
 			pageRenderer.changePage('profilPage', false, user[1]);
+			if (enterActivated)
+			{
+				document.body.removeEventListener('keypress', enterPressed);
+				enterActivated = false;
+			}
 		})
 	});
+	if (!enterActivated)
+	{
+		document.body.addEventListener('keypress', enterPressed);
+		enterActivated = true;
+	}
+}
+
+function enterPressed(e)
+{
+	const	searchResult	= document.getElementById('searchResult');
+
+	if (e.key == 'Enter' && searchResult.children && searchResult.children[0])
+		searchResult.children[0].click();
 }
 
 function removeAlluser()
@@ -45,6 +66,11 @@ function removeAlluser()
 	const	searchResult	= document.getElementById('searchResult');
 
 	document.body.removeEventListener('click', removeAlluser);
+	if (enterActivated)
+	{
+		document.body.removeEventListener('keypress', enterPressed);
+		enterActivated = false;
+	}
 	searchResult.innerHTML = '';
 	searchInputUser.value = '';
 }
