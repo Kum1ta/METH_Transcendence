@@ -35,6 +35,7 @@
 - 9031 : You can't set or change this field if you have a 42 account
 - 9032 : Your opponent isn't online
 - 9033 : Skin id out of range
+- 9034 : missing field
 
 - 9100 : Action out of range
 - 9101 : No game started 

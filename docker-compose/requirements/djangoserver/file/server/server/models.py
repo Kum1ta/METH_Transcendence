@@ -18,6 +18,7 @@ class Message(models.Model):
 	date = models.DateTimeField(auto_now_add=True)
 	sender = models.ForeignKey("User",on_delete=models.SET_NULL, null=True, related_name="sender")
 	to = models.ForeignKey("User", on_delete=models.CASCADE, related_name="to")
+	read = models.BooleanField(default=False)
 	content = models.TextField() 
 
 class GameResults(models.Model):
