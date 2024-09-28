@@ -6,11 +6,12 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/28 02:31:10 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/28 03:48:09 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from asgiref.sync import sync_to_async
+from .models import GameResults, User
 import time
 import json
 import asyncio
@@ -71,6 +72,7 @@ class Game:
 		self.started = False
 		self.end = False
 		self.left = None
+		self.winner = None
 
 		self.p1Pos = {"pos":0, "up": False}
 		self.p2Pos = {"pos":0, "up": False}
@@ -173,26 +175,29 @@ class Game:
 			print("obstacles generated :", self.obstacles)
 			asyncio.create_task(self.gameLoop())
 		return(1)
+
+	def endGame(self, winner):
+		self.p1.sync_send({"action":"game","content":{"action":10,"won":winner==1}})
+		self.p2.sync_send({"action":"game","content":{"action":10,"won":winner==2}})
+		self.winner = winner
+		self.end = True
 	
 	def leave(self, socket):
 		socket.game = None
 		if (socket == self.p1):
-			self.p1 = None
 			self.left = 1
-		else:
-			self.p2 = None
-		if(self.p1 != None):
-			self.p1.sync_send({"type":"game","content":{"action":4}})
-			self.leave(self.p1)
-		if(self.p2 != None):
 			self.p2.sync_send({"type":"game","content":{"action":4}})
-			self.leave(self.p2)
+		else:
+			self.left = 2
+			self.p1.sync_send({"type":"game","content":{"action":4}})
 		while(Game.waitingForPlayerLock):
 			time.sleeep(0.05)
 		Game.waitingForPlayerLock = True
 		if(Game.waitingForPlayerLock == socket):
 			Game.waitingForPlayerLock = False;
 		Game.waitingForPlayerLock = False 
+		if(self.started):
+			self.endGame(1 if self.left == 2 else 2)
 		self.end=True
 
 	def sendPlayers(self, data):
@@ -330,10 +335,10 @@ class Game:
 	def checkGameEndGoal(self):
 		if(self.score[0] < Game.maxScore and self.score[1] < Game.maxScore):
 			return(False)
+		print("someone won the game")
 		winner = 1 if self.score[0] == Game.maxScore else 2 
-		self.p1.sync_send({"action":"game","content":{"action":10,"won":winner==1}})
-		self.p2.sync_send({"action":"game","content":{"action":10,"won":winner==2}})
-		self.end = True
+		print("player", winner,"won the game")
+		self.endGame(winner)
 		return(True)
 
 	async def scoreGoal(self, player):
@@ -437,13 +442,31 @@ class Game:
 		while(not self.end):
 			await self.updateBall()
 			if(self.end):
-				return;
+				break;
 			sleep_time = self.getSleepTime()
 			print("sleep time : " , sleep_time)
 			await asyncio.sleep(sleep_time)
 		print("game end")
+		await self.saveResults()
 	
 	@sync_to_async
-	def saveGame(self, winner):
-		print("nope")
-
+	def saveResults(self):
+		try:
+			if(self.winner == None):
+				print("unkown winner, settings to 1")
+				self.winner = 1
+			print("saving results")
+			p1DbUser = User.objects.get(id=self.p1.id)
+			p2DbUser = User.objects.get(id=self.p2.id)
+			results = GameResults.objects.create(
+				player1 = p1DbUser,
+				player2 = p2DbUser,
+				p1Score = self.score[0],
+				p2Score = self.score[1],
+				winner = p1DbUser if self.winner == 1 else p2DbUser
+			)
+			results.save()
+			print("results saved")
+		except Exception as e:
+			self.p1.sendError("Couldn't save last game results", 9104, e)
+			self.p2.sendError("Couldn't save last game results", 9104, e)

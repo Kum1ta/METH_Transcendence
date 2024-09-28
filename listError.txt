@@ -40,3 +40,4 @@
 - 9101 : No game started 
 - 9102 : Game already started
 - 9103 : You are not invited to this game
+- 9104 : Couldn't save last game results

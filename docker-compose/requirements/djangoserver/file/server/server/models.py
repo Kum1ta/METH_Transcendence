@@ -20,7 +20,7 @@ class Message(models.Model):
 	to = models.ForeignKey("User", on_delete=models.CASCADE, related_name="to")
 	content = models.TextField() 
 
-class Game(models.Model):
+class GameResults(models.Model):
 	id = models.AutoField(primary_key=True)
 	end_date = models.DateTimeField(auto_now_add=True)
 	player1 = models.ForeignKey("User", on_delete=models.SET_NULL, null=True, related_name="p1")

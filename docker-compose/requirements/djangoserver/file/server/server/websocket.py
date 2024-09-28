@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 14:31:30 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/26 00:17:17 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/28 03:19:46 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,6 +94,7 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 		self.game = None
 		self.id = 0
 		self.username = None
+		self.online = True
 		await self.accept()
 		if(await self.session_get("logged_in", False)):
 			if(not self.add_to_online(await self.session_get("id", 0))):
@@ -113,6 +114,7 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 	
 	async def disconnect(self, close_code):
 		print("you can go, i am not mad, we never wanted you anyway")
+		self.online = False
 		if(not self.logged_in):
 			return ;
 		uid = await self.session_get("id", 0)
@@ -142,6 +144,8 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 			self.sendError("Invalid request", 9005, e)
 	
 	def sync_send(self, data: Union[dict,str]):
+		if(not self.online):
+			return
 		txt_data = None	
 		if(type(data) is dict):
 			txt_data = json.dumps(data)
