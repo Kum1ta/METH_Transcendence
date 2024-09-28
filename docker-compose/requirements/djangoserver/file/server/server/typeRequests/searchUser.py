@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/18 07:26:07 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/27 03:48:39 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/28 19:10:09 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ import json
 @sync_to_async
 def searchUser(socket, content):
 	try:
-		users = User.objects.filter(Q(username__contains=content["username"]) & ~Q(id=socket.id))[:10]
+		users = User.objects.filter(Q(username__contains=content["username"].lower()) & ~Q(id=socket.id))[:10]
 		userList = []
 		for user in users:
 			userList.append((user.username, user.id, user.pfp))
