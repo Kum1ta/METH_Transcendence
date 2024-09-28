@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/28 03:48:09 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/28 04:10:56 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -177,6 +177,8 @@ class Game:
 		return(1)
 
 	def endGame(self, winner):
+		if(self.end):
+			return
 		self.p1.sync_send({"action":"game","content":{"action":10,"won":winner==1}})
 		self.p2.sync_send({"action":"game","content":{"action":10,"won":winner==2}})
 		self.winner = winner
@@ -186,10 +188,12 @@ class Game:
 		socket.game = None
 		if (socket == self.p1):
 			self.left = 1
-			self.p2.sync_send({"type":"game","content":{"action":4}})
+			if(self.p2 != None):
+				self.p2.sync_send({"type":"game","content":{"action":4}})
 		else:
 			self.left = 2
-			self.p1.sync_send({"type":"game","content":{"action":4}})
+			if(self.p1 != None):
+				self.p1.sync_send({"type":"game","content":{"action":4}})
 		while(Game.waitingForPlayerLock):
 			time.sleeep(0.05)
 		Game.waitingForPlayerLock = True
@@ -448,6 +452,8 @@ class Game:
 			await asyncio.sleep(sleep_time)
 		print("game end")
 		await self.saveResults()
+		self.p1.game = None
+		self.p2.game = None
 	
 	@sync_to_async
 	def saveResults(self):
