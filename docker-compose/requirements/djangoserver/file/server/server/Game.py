@@ -6,10 +6,11 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/27 18:21:08 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/28 02:15:53 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+from asgiref.sync import sync_to_async
 import time
 import json
 import asyncio
@@ -59,6 +60,7 @@ class Game:
 	wallLength = 1
 	wallWidth = 0.05
 	bounceSpeedIncrease = 0.2
+	maxScore = 5
 
 	def __init__(self, socket, withBot, skinId = 0, opponent = None):
 		self.p1 = None
@@ -68,6 +70,7 @@ class Game:
 		self.bot = withBot
 		self.started = False
 		self.end = False
+		slef.left = None
 
 		self.p1Pos = {"pos":0, "up": False}
 		self.p2Pos = {"pos":0, "up": False}
@@ -94,7 +97,7 @@ class Game:
 				socket.onlinePlayers[opponent].game.join(socket, skinId)
 			else:
 				self.join(socket, skinId)
-				socket.onlinePlayers[opponent].sync_send({"type":"invitation","content":{"invitor":socket.id}})
+				socket.onlinePlayers[opponent].sync_send({"type":"invitation","content":{"invitor":socket.id, "username":socket.username}})
 		else:
 			while(Game.waitingForPlayerLock):
 				time.sleep(0.05)
@@ -175,6 +178,7 @@ class Game:
 		socket.game = None
 		if (socket == self.p1):
 			self.p1 = None
+			self.left = 1
 		else:
 			self.p2 = None
 		if(self.p1 != None):
@@ -322,14 +326,26 @@ class Game:
 	def getPlayerDistance(self, player, ballPos):
 		playerPos = player["pos"]
 		return(playerPos - ballPos[0])
-	
+
+	def checkGameEndGoal(self):
+		if(self.score[0] < Game.maxScore and self.score[1] < Game.maxScore):
+			return(False)
+		winner = 1 if self.score[0] == Game.maxScore else 2 
+		self.p1.sync_send({"action":"game","content":{"action":10,"won":winner==1}})
+		self.p2.sync_send({"action":"game","content":{"action":10,"won":winner==2}})
+		self.end = True
+		return(True)
+
 	async def scoreGoal(self, player):
+		self.lastWin = player 
 		print("a player suffured from a major skill issue")
 		self.score[player-1] += 1
 		print("new score :", self.score)
 		self.p1.sync_send({"type":"game","content":{"action":6, "is_opponent": player == 2}})
 		self.p2.sync_send({"type":"game","content":{"action":6, "is_opponent": player == 1}})
 		await asyncio.sleep(4.5)
+		if(self.checkGameEndGoal()):
+			return
 		self.prepareGame(True)
 		await asyncio.sleep(3)
 		self.prepareGame()
@@ -385,7 +401,6 @@ class Game:
 				if(newBallPos[1] > 0):
 					velZ = -velZ
 			else:
-				self.lastWin = 1 if newBallPos[1] < 0 else 2
 				await self.scoreGoal(1 if newBallPos[1] < 0 else 2)
 				return;
 		elif(newBallPos[0] <= Game.limits["left"] or newBallPos[0] >= Game.limits["right"]):
@@ -421,7 +436,14 @@ class Game:
 		self.prepareGame()
 		while(not self.end):
 			await self.updateBall()
+			if(self.end):
+				return;
 			sleep_time = self.getSleepTime()
 			print("sleep time : " , sleep_time)
 			await asyncio.sleep(sleep_time)
 		print("game end")
+	
+	@sync_to_async
+	def saveGame(self, winner):
+		print("nope")
+
