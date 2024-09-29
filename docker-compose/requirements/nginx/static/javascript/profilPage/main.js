@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/28 19:47:17 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 02:08:41 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ class ProfilPage
 					inputPfp.click();
 				});
 				inputPfp.setAttribute('accept', '.png, .jpeg, .jpg, .gif');
-				inputPfp.addEventListener('change', () => inputChange(true));
+				inputPfp.addEventListener('change', (event) => inputChange(true, event));
 
 				editPenBanner = document.getElementsByClassName('editPen')[0];
 				inputBanner = document.getElementById('inputBanner');
@@ -98,7 +98,7 @@ class ProfilPage
 					inputBanner.click();
 				});
 				inputBanner.setAttribute('accept', '.png, .jpeg, .jpg, .gif');
-				inputBanner.addEventListener('change',  () => inputChange(false));
+				inputBanner.addEventListener('change',  (event) => inputChange(false, event));
 			}
 			if (userInfo.id != userMeInfo.id)
 			{
@@ -142,10 +142,10 @@ function externButtons(userInfo)
 		discordButton.remove();
 }
 
-function inputChange(isPfp)
+function inputChange(isPfp, event)
 {
-	const reader		= new FileReader();
-	const validTypes	=	['image/png', 'image/jpeg', 'image/webp']
+	const reader		=	new FileReader();
+	const validTypes	=	['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
 	const file			=	event.target.files[0];
 
 	function arrayBufferToBase64(buffer) {
