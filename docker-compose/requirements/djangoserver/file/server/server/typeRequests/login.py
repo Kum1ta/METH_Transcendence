@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/15 11:14:32 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/29 03:14:58 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ import hashlib
 import requests
 import json
 import os
+from .statusMessage import getUnreadStatus
 
 @sync_to_async
 def userExists(mail, password):
@@ -37,6 +38,7 @@ async def loginByPass(socket, content):
 				"status":True,
 				"username":u_info["username"],
 				"id": u_info["id"],
+				"haveUnreadMessage": await getUnreadStatus(u_info["id"])
 			}}))
 		else:
 			socket.sendError("An unknown error occured",9027)

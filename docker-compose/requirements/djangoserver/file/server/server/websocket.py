@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 14:31:30 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/28 21:03:10 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/29 03:18:30 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ from .typeRequests.getUserInfo import getUserInfo
 from .typeRequests.getPrivateInfo import getPrivateInfo
 from .typeRequests.changePrivateInfo import changePrivateInfo
 from .typeRequests.changePfp import changePfp
-from .typeRequests.statusMessage import statusMessage
+from .typeRequests.statusMessage import statusMessage,getUnreadStatus
 from .typeRequests.readMessage import readMessage
 
 typeRequest = ["login", "get_private_list_user", "get_private_list_message",
@@ -110,7 +110,8 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 		await self.send(text_data=json.dumps({"type":"logged_in", "content":{
 			"status":await self.session_get("logged_in",False),
 			"username":await self.session_get("username",None),
-			"id":await self.session_get("id",0)
+			"id":await self.session_get("id",0),
+			"haveUnredMessage":await getUnreadStatus(self.id)
 		}}))
 		print("new client")
 	
