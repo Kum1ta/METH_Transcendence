@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/27 21:57:28 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 23:08:50 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ import { GLTFLoader } from '/static/javascript/three/examples/jsm/loaders/GLTFLo
 import { userMeInfo } from "/static/javascript/typeResponse/typeLogin.js";
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { Screen, light } from '/static/javascript/home3D/Screen.js'
+import { files } from '/static/javascript/filesLoader.js';
 import { pageRenderer } from '/static/javascript/main.js'
 
 const	disable3D		= false;
@@ -102,8 +103,8 @@ function home3D()
 	let		globalSpeed		= 0.75;
 	const	ambiantLight	= new THREE.AmbientLight(0xffffff, 35);
 	const	video			= {
-		pong: '/static/video/homePage/pong.mp4',
-		login: '/static/video/homePage/notLogin.webm'
+		pong: files.pongVideo,
+		login: files.notLoginVideo
 	};
 	
 	scene			= new THREE.Scene();
@@ -122,11 +123,11 @@ function home3D()
 	spotLight.rotateX(Math.PI / 2);	
 	scene.add(spotLight);
 	if (Math.random() % 100 > 0.99)
-		video.pong = '/static/video/homePage/easteregg.webm'
+		video.pong = files.easterEggVideo;
 	newBgWall();
-	putObject('/static/models3D/homePage/lamp.glb', -2.5, 0, 2.5, 3, 0, Math.PI + Math.PI / 8, 0);
-	putObject('/static/models3D/homePage/plant.glb', 1.5, 0, 3, 0.5, 0, 0, 0);
-	putObject('/static/models3D/homePage/gameboy.glb', -0.5, -0.075, 0.5, 0.1, 0, 0.4, 0);
+	putObject(files.lampModel, -2.5, 0, 2.5, 3, 0, Math.PI + Math.PI / 8, 0);
+	putObject(files.plantModel, 1.5, 0, 3, 0.5, 0, 0, 0);
+	putObject(files.gameboyModel, -0.5, -0.075, 0.5, 0.1, 0, 0.4, 0);
 	renderer.toneMapping = THREE.LinearToneMapping;
 	renderer.shadowMap.enabled = true;
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap;

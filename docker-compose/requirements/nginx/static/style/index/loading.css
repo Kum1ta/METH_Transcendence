@@ -1,0 +1,45 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   loading.css                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/30 00:34:36 by edbernar          #+#    #+#             */
+/*   Updated: 2024/09/30 00:50:11 by edbernar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#loadingDiv {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100vw;
+	height: 100vh;
+	flex-direction: column;
+	color: white;
+}
+
+#loadingDiv h1 {
+	padding: 0;
+	padding-top: 4px;
+	font-size: 35px;
+	color: white;
+	font-family: 'Poppins';
+	font-style: italic;
+    font-weight: bold;
+}
+
+#loadingDiv .loading {
+	width: 80%;
+	height: 10px;
+	background-color: #fff;
+	border-radius: 5px;
+}
+
+#loadingDiv .loading .loading-bar {
+	width: 0%;
+	height: 100%;
+	background-color: rgb(56, 106, 18);
+	border-radius: 5px;
+}

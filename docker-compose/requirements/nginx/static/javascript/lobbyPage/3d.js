@@ -6,11 +6,12 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/28 01:53:20 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 23:24:39 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from '/static/javascript/three/build/three.module.js'
+import { files } from '/static/javascript/filesLoader.js';
 
 let 	actualBarSelecor	= null;
 let 	actualGoalSelecter	= null;
@@ -20,10 +21,10 @@ const	availableSkins	=	[
 	{id: 1, color: 0xaa24ea, texture: null},
 	{id: 2, color: 0x2c9c49, texture: null},
 	{id: 3, color: 0x101099, texture: null},
-	{id: 4, color: null, texture: '/static/img/skin/1.jpg'},
-	{id: 5, color: null, texture: '/static/img/skin/2.jpg'},
-	{id: 6, color: null, texture: '/static/img/skin/3.jpg'},
-	{id: 7, color: null, texture: '/static/img/skin/4.jpg'},
+	{id: 4, color: null, texture: null},
+	{id: 5, color: null, texture: null},
+	{id: 6, color: null, texture: null},
+	{id: 7, color: null, texture: null},
 ];
 
 class barSelecter
@@ -58,6 +59,10 @@ class barSelecter
 		this.spotLight.target = this.bar;
 		this.spotLight.lookAt(this.bar.position);
 		this.renderer.setAnimationLoop(this.#loop);
+		availableSkins[4].texture = files.skinOneTexture;
+		availableSkins[5].texture = files.skinTwoTexture;
+		availableSkins[6].texture = files.skinThreeTexture;
+		availableSkins[7].texture = files.skinFourTexture;
 		div.addEventListener('click', () => {
 			const	popup	=	document.getElementById('popup-background');
 			const	skins	=	document.getElementsByClassName('color-box');

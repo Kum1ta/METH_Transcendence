@@ -6,15 +6,13 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:13:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/18 20:18:51 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 23:17:04 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import * as THREE from '/static/javascript/three/build/three.module.js'
 import { GLTFLoader } from '/static/javascript/three/examples/jsm/loaders/GLTFLoader.js';
-
-const	tvModel = '/static/models3D/homePage/tv.glb';
-const	sVideo = '/static/video/homePage/pong.mp4';
+import * as THREE from '/static/javascript/three/build/three.module.js'
+import { files } from '/static/javascript/filesLoader.js';
 
 const loader = new GLTFLoader();
 
@@ -37,7 +35,7 @@ class Screen
 	{
 		this.scene = scene;
 		this.screen = this.#createScreen(scene);
-		loader.load(tvModel, (gltf) => {
+		loader.load(files.tvModel, (gltf) => {
 			const tv = gltf.scene.children[0];
 			const boundingBox = new THREE.Box3().setFromObject(tv);
 			const center = boundingBox.getCenter(new THREE.Vector3());
@@ -51,7 +49,7 @@ class Screen
 			tv.castShadow = true;
 			tv.receiveShadow = true;
 			scene.add(tv);
-			this.showVideo(sVideo);
+			this.showVideo(files.pongVideo);
 		}, undefined, function ( error ) {
 			console.error( error );
 			throw Error("Can't open file 'tv.glb'");

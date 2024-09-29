@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/26 16:41:32 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 23:30:25 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,18 +198,6 @@ function	connect(e)
 	
 	e.preventDefault();
 	sendRequest("login", {type: "byPass", mail: mail, password: e.target.password.value});
-	// waitForLogin().then((isConnected) => {
-	// 	if (isConnected)
-	// 	{
-	// 		usernameNode = document.createTextNode(userMeInfo.username);
-	// 		loginButton.replaceChild(usernameNode, pLoginButton);
-	// 		CN.new("Connected successfully", "Welcome " + userMeInfo.username, CN.defaultIcon.success);
-	// 		popout.style.display = 'none';
-	// 	}
-	// }).catch((err) => {
-	// 	console.error(err);
-	// 	CN.new("Error", "An error occured while trying to connect", CN.defaultIcon.error);
-	// });
 }
 
 function closeClickOutsiteGameMode(event)

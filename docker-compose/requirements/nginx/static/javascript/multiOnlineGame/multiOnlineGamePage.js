@@ -6,13 +6,13 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/29 14:17:33 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 22:33:06 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { availableSkins } from '/static/javascript/lobbyPage/3d.js';
 import * as THREE from '/static/javascript/three/build/three.module.js'
-import { OrbitControls } from '/static/javascript/three/examples/jsm/Addons.js';
+import { OrbitControls } from '/static/javascript/three/examples/jsm/controls/OrbitControls.js'
 import { sendRequest } from "/static/javascript/websocket.js";
 import { Player } from '/static/javascript/multiOnlineGame/Player.js'
 import { Map } from '/static/javascript/multiOnlineGame/Map.js'
@@ -174,7 +174,7 @@ class MultiOnlineGamePage
 
 	static dispose()
 	{
-		window.addEventListener('resize', windowUpdater);
+		window.removeEventListener('resize', windowUpdater);
 		if (interval)
 			clearInterval(interval);
 		interval = null;

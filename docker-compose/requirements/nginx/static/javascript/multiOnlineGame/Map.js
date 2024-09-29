@@ -6,15 +6,15 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/29 01:18:23 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 23:10:31 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { GLTFLoader } from '/static/javascript/three/examples/jsm/loaders/GLTFLoader.js';
+import { files } from '/static/javascript/filesLoader.js';
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { Video } from '/static/javascript/multiOnlineGame/Video.js';
-import { GUI } from '/static/javascript/three/examples/jsm/libs/lil-gui.module.min.js';
-import { player, opponent, ball} from '/static/javascript/multiOnlineGame/multiOnlineGamePage.js';
+import { player, ball} from '/static/javascript/multiOnlineGame/multiOnlineGamePage.js';
 // import { Ball } from '/static/javascript/multiOnlineGame/Ball.js'
 
 let loader						= null;
@@ -34,12 +34,12 @@ let animationSpeed				= 0.02;
 let animateGoalObjectUpdate		= null;
 
 let path = [
-	{name: 'goal', 			onChoice: true, src:'/static/video/multiOnlineGamePage/goal2.webm', blob: null},
-	{name: 'easteregg',		onChoice: true, src:'/static/video/multiOnlineGamePage/easteregg.webm', blob: null},
-	{name: 'outstanding', 	onChoice: true, src:'/static/video/multiOnlineGamePage/outstanding.webm', blob: null},
-	{name: 'ping', 			onChoice: false, src:'/static/video/multiOnlineGamePage/pingpong.mp4', blob: null},
-	{name: 'catch', 		onChoice: false, src:'/static/video/multiOnlineGamePage/catch.mp4', blob: null},
-	{name: 'fortnite', 		onChoice: false, src:'/static/video/multiOnlineGamePage/fortnite.mp4', blob: null},
+	{name: 'goal', 			onChoice: true, src: files.goalVideoPub},
+	{name: 'easteregg',		onChoice: true, src: files.easterEggVideoPub},
+	{name: 'outstanding', 	onChoice: true, src: files.outstandingVideoPub},
+	{name: 'ping', 			onChoice: false, src: files.pingVideoPub},
+	{name: 'catch', 		onChoice: false, src: files.catchVideoPub},
+	{name: 'fortnite', 		onChoice: false, src: files.fortniteVideoPub},
 ]
 
 const colorList = [
@@ -54,14 +54,6 @@ const colorList = [
     0xF5F0E1, 0xB1E1FF, 0xFAD4C0, 0xFFC9DE, 0xBFD7EA, // Soft tan, peach, blue, light pink
     0xFFFAE3, 0xE7D3D3, 0xFDE3A7, 0xCDE0C9, 0xF4D9E3  // Soft light peach, pale pink, green, lavender
 ]; // Merci chatGPT
-
-path.forEach(elem => {
-	fetch(elem.src)
-	.then(response => response.blob())
-	.then(blob => {
-		elem.blob = URL.createObjectURL(blob);
-	});
-});
 
 let spacingImages = [
 	100 * 2.33 * 10 - (100 * 2.33),   // 2 images
@@ -140,8 +132,8 @@ class Map
 		this.centerPos.y = 0.15;
 		this.centerPos.z = -length / 2 + length / 2;
 		this.mapLength = length;
-		scene.add(this.#createPlanes(7.5, length, -(Math.PI / 2), "planeBottom", true, '/static/img/multiOnlineGamePage/pastel.jpg'));
-		scene.add(this.#createPlanes(7.5, length, (Math.PI / 2), "planeTop", false, '/static/img/multiOnlineGamePage/pastel.jpg'));
+		scene.add(this.#createPlanes(7.5, length, -(Math.PI / 2), "planeBottom", true, files.planeTexture));
+		scene.add(this.#createPlanes(7.5, length, (Math.PI / 2), "planeTop", false, files.planeTexture));
 		scene.add(this.#createWall(-3.5, 0.4, -length/2, "wallLeft"));
 		scene.add(this.#createWall(3.5, 0.4, -length/2, "wallRight"));
 		// if (obstacles)
@@ -612,7 +604,7 @@ class Map
 				continue ;
 			}
 			let videoTmp = null;
-			videoTmp = new Video(path[i].blob).video;
+			videoTmp = new Video(path[i].src).video;
 			videoTmp.addEventListener('loadeddata', () => {
 				videoTmp.play();
 				drawVideoOnCanvas();
@@ -656,7 +648,7 @@ class Map
 		materialCanvas	= new THREE.MeshBasicMaterial({ map: videoCanvasTexture, side: THREE.BackSide , transparent: true});
 
 		// Load the banner
-		loader.load( '/static/models3D/multiOnlineGame/banner.glb', (gltf) => {
+		loader.load(files.bannerModel, (gltf) => {
 			this.banner = gltf.scene.children[0];
 			gltf = null;
 			this.banner.material = materialCanvas;
@@ -832,10 +824,6 @@ class Map
 		ball.changeGravity();
 		for (let i = 0; this.arrObject && i < this.arrObject.length; i++)
 		{
-			console.log("/////////////");
-			console.log(this.arrObject[i].name);
-			console.log(name);
-			console.log("/////////////");
 			if (this.arrObject[i].name == name)
 			{
 				if (this.arrObject[i].name == "jumperTop")

@@ -6,11 +6,10 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/25 13:47:32 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 23:31:12 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import * as CANNON from '/static/javascript/cannon-es/dist/cannon-es.js'
 import * as THREE from '/static/javascript/three/build/three.module.js'
 
 const	timeStep		=	1 / 60;
@@ -100,13 +99,9 @@ class Ball
 
 	updatePos(content)
 	{
-		// {action: 5, pos: [ball.object.position.x, ball.object.position.z], velocity: [ball.object.velocity.x, ball.object.velocity.z]}
 		this.lastTime = new Date().getTime();
-		// this.ballBody.position.x = content.pos[0];
-		// this.ballBody.position.z = content.pos[1];
 		this.lastPos = [content.pos[0], this.object.position.y, content.pos[1]];
 		this.velocity = content.velocity;
-		// this.ballBody.velocity.set(content.velocity[0], 0, content.velocity[1]);
 	}
 
 	update()
@@ -115,8 +110,6 @@ class Ball
 		const	x = this.lastPos[0] + (deltaTime * this.velocity[0]);
 		const	z = this.lastPos[2] + (deltaTime * this.velocity[1]);
 		this.object.position.set(x, this.object.position.y, z);
-		// this.object.position.copy(this.ballBody.position);
-		// this.world.step(timeStep);
 	}
 
 	dispose()
