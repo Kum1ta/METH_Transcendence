@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:23:41 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/28 21:38:24 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 01:11:55 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,14 +193,60 @@ body {
 
 .pingDiv {
 	position: absolute;
-	top: 100px;
-	left: 100px;
+	left: 10px;
+	top: 10px;
 	font-size: 20px;
 	color: white;
 	z-index: 800;
+	display: flex;
+	flex-direction: row;
+	background-color: rgba(0, 0, 0, 0.329);
+	user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    touch-action: none;
 }
 
 #ping {
 	font-size: 20px;
 	color: white;
+	border: 1px solid rgba(255, 255, 255, 0.123);
+	padding: 5px 10px 5px 10px;
+}
+
+#fps {
+	padding: 5px 10px 5px 10px;
+	border: 1px solid rgba(255, 255, 255, 0.123);
+	border-right: none;
+}
+
+#endGameDiv {
+	display: none;
+	flex-direction: column;
+	position: absolute;
+	justify-content: center;
+	align-items: center;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.9);
+	backdrop-filter: blur(5px);
+	z-index: 900;
+	transition: all 0.5s;
+	animation: fadeOutGames 0.5s;
+}
+
+#endGameText {
+	font-size: 100px;
+	color: white;
+}
+
+#endGameScore {
+	font-size: 75px;
+	color: white;
+}
+
+#endGameSimpleText {
+	font-size: 25px;
+	color: white;
+	margin-top: 50px;
 }

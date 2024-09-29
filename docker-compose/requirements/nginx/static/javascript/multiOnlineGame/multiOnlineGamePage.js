@@ -6,14 +6,12 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/28 21:46:40 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 01:35:50 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { createNotification as CN } from "/static/javascript/notification/main.js";
 import { availableSkins } from '/static/javascript/lobbyPage/3d.js';
 import * as THREE from '/static/javascript/three/build/three.module.js'
-import Stats from '/static/javascript/three/examples/jsm/libs/stats.module.js'
 import { OrbitControls } from '/static/javascript/three/examples/jsm/Addons.js';
 import { sendRequest } from "/static/javascript/websocket.js";
 import { Player } from '/static/javascript/multiOnlineGame/Player.js'
@@ -65,11 +63,10 @@ let	interval			= null;
 let	intervalPing		= null;
 let debug				= false;
 let	lastPingTime		= 0;
+let	lastFpsTime			= 0;
+let lastFpsDisplayed	= 0;
 
 // ------------------- (need to be remove) -------------------- //
-const stats = new Stats();
-stats.showPanel(0);
-
 const cameraTmp = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight);
 let controls = null;
 // ------------------------------------------------------------ //
@@ -78,11 +75,12 @@ class MultiOnlineGamePage
 {
 	static create(skin)
 	{
-		document.body.appendChild(stats.dom);
-
+		if (!skin)
+			skin = {player: 0, opponent: 0};
 		const bar1		= createBarPlayer(availableSkins[skin.player]);
 		const bar2		= createBarPlayer(availableSkins[skin.opponent]);
 
+		console.log(document.body.getAttribute('style'));
 		document.body.setAttribute('style', '');
 		scene					= new THREE.Scene()
 		map						= new Map(scene, 13, false);
@@ -172,7 +170,7 @@ class MultiOnlineGamePage
 				sendRequest('game', {action: 4});
 				lastPingTime = Date.now();
 			}
-		}, 16);
+		}, 800);
 	}
 
 	static dispose()
@@ -233,6 +231,29 @@ class MultiOnlineGamePage
 		text.innerText = ping + ' ms';
 		lastPingTime = null;
 	}
+
+	static endGame(win)
+	{
+		const	endGameDiv	=	document.getElementById('endGameDiv');
+		const	scoreText	=	document.getElementById('endGameScore');
+		const	simpleText	=	document.getElementById('endGameSimpleText');
+		let		intervalEnd	=	null;
+		let		time		=	4;
+
+		endGameScore.innerText = `${map.score.player} - ${map.score.opponent}`;
+		if (win)
+			endGameText.innerText = "You win !"
+		endGameDiv.style.display = 'flex';
+		intervalEnd = setInterval(() => {
+			simpleText.innerText = `You will be redirected to the lobby in ${time} seconds`
+			time--;
+			if (time == -1)
+			{
+				clearInterval(intervalEnd);
+				setTimeout(() => pageRenderer.changePage('lobbyPage'), 500);
+			}
+		}, 1000);
+	}
 }
 
 function createBarPlayer(skin)
@@ -240,7 +261,6 @@ function createBarPlayer(skin)
 	const	geometry	= new THREE.BoxGeometry(1, 0.1, 0.1);
 	let		material	= null;
 
-	console.log(skin)
 	if (skin.color)
 		material = new THREE.MeshPhysicalMaterial({color: skin.color});
 	else
@@ -251,14 +271,8 @@ function createBarPlayer(skin)
 	return (mesh);
 }
 
-function changeBarColor(bar, color)
+function windowUpdater()
 {
-	bar.material.color.set(color);
-}
-
-function windowUpdater(e)
-{
-	console.log('udapte');
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	player.camera.aspect = window.innerWidth / window.innerHeight;
 	player.camera.updateProjectionMatrix();
@@ -266,10 +280,7 @@ function windowUpdater(e)
 
 function loop()
 {
-	/////////////
-	stats.begin();
-	/////////////
-
+	showFps();
 	player.update();
 	opponent.update();
 	ball.update();
@@ -281,10 +292,24 @@ function loop()
 	}
 	else
 		renderer.render(scene, player.camera);
+}
 
-	/////////////
-	stats.end();
-	////////////
+let	lastFpsArr = [10, 3, 5];
+
+function showFps()
+{
+	const	fps		=	document.getElementById('fps')
+	const	now		=	Date.now();
+
+	if (now > lastFpsDisplayed + 800)
+	{
+		fps.innerText = Math.round(lastFpsArr.reduce((a, b) => a + b, 0) / lastFpsArr.length) + ' fps';
+		lastFpsDisplayed = now;
+		lastFpsArr = [];
+	}
+	else
+		lastFpsArr.push(Math.floor(1000 / (now - lastFpsTime)));
+	lastFpsTime = now;
 }
 
 export { MultiOnlineGamePage, player, opponent, ball, map};

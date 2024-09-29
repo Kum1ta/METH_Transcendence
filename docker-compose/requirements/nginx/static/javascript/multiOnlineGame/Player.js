@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/28 03:13:14 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 01:37:45 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ class Player
 		document.removeEventListener('keypress', simplePressKey);
 		pressedButton = [];
 		if (this.interval)
-			clearInterval(interval);
+			clearInterval(this.interval);
 	}
 
 	resetPosPlayer()
@@ -333,21 +333,23 @@ class Player
 
 function addKeyInArr(e)
 {
-	let i;
+	const	key	= e.key.toLowerCase();
+	let		i;
 
 	i = 0;
-	while (i < pressedButton.length && e.key != pressedButton[i])
+	while (i < pressedButton.length && key != pressedButton[i])
 		i++;
 	if (i == pressedButton.length)
-		pressedButton.push(e.key);
+		pressedButton.push(e.key.toLowerCase());
 }
 
 function remKeyInArr(e)
 {
-	let i;
+	const	key	= e.key.toLowerCase();
+	let		i;
 
 	i = 0;
-	while (i < pressedButton.length && e.key != pressedButton[i])
+	while (i < pressedButton.length && key != pressedButton[i])
 		i++;
 	if (i != pressedButton.length)
 		pressedButton.splice(i, 1);

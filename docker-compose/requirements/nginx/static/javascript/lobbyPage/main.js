@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/28 16:58:08 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 01:34:41 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ class LobbyPage
 		const	inputUser		= document.getElementById('searchInputUser');
 		const	func			= [selectGameModeOne, selectGameModeTwo, selectGameModeThree, selectGameModeFour];
 
+		document.body.style.opacity = 1;
 		if (userMeInfo.id == -1)
 			waitForLogin().then(() => usernameP.innerHTML = userMeInfo.username);
 		else
@@ -145,7 +146,6 @@ function startMode()
 function startMultiLocal()
 {
 	document.body.style.animation = "none";
-	document.body.offsetHeight;
 	document.body.style.animation = "startGameAnim 0.5s";
 	document.body.style.opacity = 0;
 	setTimeout(() => {
@@ -156,7 +156,6 @@ function startMultiLocal()
 function startMatchmaking()
 {
 	document.body.style.animation = "none";
-	document.body.offsetHeight;
 	document.body.style.animation = "startGameAnim 0.5s";
 	document.body.style.opacity = 0;
 	setTimeout(() => {

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/27 23:59:18 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 01:18:23 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ let materialCanvas				= null;
 let textureLoaderPlane			= null;
 let texturePlane				= null;
 let ctx							= null;
-let fireworkMixer				= null;
 let canvasTextScore				= null;
 let contextTextScore			= null;
 let textureTextScore			= null;
@@ -614,7 +613,6 @@ class Map
 			}
 			let videoTmp = null;
 			videoTmp = new Video(path[i].blob).video;
-			console.log(videoTmp.src);
 			videoTmp.addEventListener('loadeddata', () => {
 				videoTmp.play();
 				drawVideoOnCanvas();

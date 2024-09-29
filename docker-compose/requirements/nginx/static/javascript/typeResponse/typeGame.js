@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 12:00:01 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/28 21:33:31 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 00:22:13 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ function typeGame(content)
 			map.activeJumper(content.name);
 		else if (content.action == 9)
 			MultiOnlineGamePage.ping();
+		else if (content.action == 10)
+			MultiOnlineGamePage.endGame(content.won)
 	}
 }
 
