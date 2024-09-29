@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/29 02:03:40 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/29 13:21:59 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -180,8 +180,8 @@ class Game:
 	def endGame(self, winner):
 		if(self.end):
 			return
-		self.p1.sync_send({"type":"game","content":{"action":10,"won":winner==1}})
-		self.p2.sync_send({"type":"game","content":{"action":10,"won":winner==2}})
+		self.p1.sync_send({"type":"game","content":{"action":10,"won":winner==1, "opponentLeft":self.left == 2}})
+		self.p2.sync_send({"type":"game","content":{"action":10,"won":winner==2, "opponentLeft":self.left == 1}})
 		self.winner = winner
 		self.end = True
 	

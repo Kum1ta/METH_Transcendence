@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 12:00:01 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/29 00:22:13 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 13:24:06 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ function typeGame(content)
 	{
 		if (content.action == 3 && content.is_opponent)
 			opponent.movePlayer(content);
-		else if (content.action == 4)
-			MultiOnlineGamePage.opponentDisconnect();
 		else if (content.action == 5)
 			ball.updatePos(content);
 		else if (content.action == 6)
@@ -38,7 +36,7 @@ function typeGame(content)
 		else if (content.action == 9)
 			MultiOnlineGamePage.ping();
 		else if (content.action == 10)
-			MultiOnlineGamePage.endGame(content.won)
+			MultiOnlineGamePage.endGame(content)
 	}
 }
 

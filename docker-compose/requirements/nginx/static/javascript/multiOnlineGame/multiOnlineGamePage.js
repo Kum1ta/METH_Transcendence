@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/29 01:35:50 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 14:17:33 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ class MultiOnlineGamePage
 		const bar1		= createBarPlayer(availableSkins[skin.player]);
 		const bar2		= createBarPlayer(availableSkins[skin.opponent]);
 
-		console.log(document.body.getAttribute('style'));
 		document.body.setAttribute('style', '');
 		scene					= new THREE.Scene()
 		map						= new Map(scene, 13, false);
@@ -232,20 +231,24 @@ class MultiOnlineGamePage
 		lastPingTime = null;
 	}
 
-	static endGame(win)
+	static endGame(content)
 	{
-		const	endGameDiv	=	document.getElementById('endGameDiv');
-		const	scoreText	=	document.getElementById('endGameScore');
-		const	simpleText	=	document.getElementById('endGameSimpleText');
-		let		intervalEnd	=	null;
-		let		time		=	4;
+		const	endGameDiv		=	document.getElementById('endGameDiv');
+		const	scoreText		=	document.getElementById('endGameText');
+		const	endGameScore	=	document.getElementById('endGameScore');
+		const	simpleText		=	document.getElementById('endGameSimpleText');
+		let		intervalEnd		=	null;
+		let		time			=	4;
 
 		endGameScore.innerText = `${map.score.player} - ${map.score.opponent}`;
-		if (win)
-			endGameText.innerText = "You win !"
+		if (content.won)
+			scoreText.innerText = "You win !"
 		endGameDiv.style.display = 'flex';
 		intervalEnd = setInterval(() => {
-			simpleText.innerText = `You will be redirected to the lobby in ${time} seconds`
+			if (content.opponentLeft)
+				simpleText.innerText = `Your opponent has given up...\nYou will be redirected to the lobby in ${time} seconds`
+			else
+				simpleText.innerText = `You will be redirected to the lobby in ${time} seconds`
 			time--;
 			if (time == -1)
 			{

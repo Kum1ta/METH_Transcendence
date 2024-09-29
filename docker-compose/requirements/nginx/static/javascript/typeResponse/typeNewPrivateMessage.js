@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:15:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/29 03:45:24 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 14:11:26 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ import { waitForUserInfo } from '/static/javascript/typeResponse/typeUserInfo.js
 import { userMeInfo } from "/static/javascript/typeResponse/typeLogin.js";
 import { sendRequest } from "/static/javascript/websocket.js";
 
+let	interval	= null;
+
 function typeNewPrivateMessage(content)
 {
-	const	notifBadgeChat	= document.getElementsByClassName('notification-badge')[0];
+	let	notifBadgeChat	= document.getElementsByClassName('notification-badge')[0];
 
 	if (infoPanel.isOpen && infoPanel.id === content.channel)
 	{
@@ -35,7 +37,21 @@ function typeNewPrivateMessage(content)
 	}
 	else if (content.from != userMeInfo.id)
 	{
-		notifBadgeChat.style.display = 'flex';
+		if (notifBadgeChat)
+			notifBadgeChat.style.display = 'flex';
+		else
+		{
+			if (interval)
+				clearInterval(interval);
+			interval = setInterval(() => {
+				notifBadgeChat	= document.getElementsByClassName('notification-badge')[0];
+				if (notifBadgeChat)
+				{
+					notifBadgeChat.style.display = 'flex';
+					clearInterval(interval);
+				}
+			}, 1000);
+		}
 		sendRequest("get_user_info", {id: content.from});
 		waitForUserInfo().then((userInfo) => {
 			CN.new("Message", "New message from " + userInfo.username);
