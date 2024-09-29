@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:15:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/21 22:19:26 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 03:45:24 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,12 @@ import { sendRequest } from "/static/javascript/websocket.js";
 
 function typeNewPrivateMessage(content)
 {
+	const	notifBadgeChat	= document.getElementsByClassName('notification-badge')[0];
+
 	if (infoPanel.isOpen && infoPanel.id === content.channel)
 	{
+		if (content.from != userMeInfo.id)
+			sendRequest("read_message", {id: content.from});
 		messageList.push(content);
 		infoPanel.divMessage.insertAdjacentHTML('beforeend', `
 			<div class="${content.from === userMeInfo.id ? "meMessage" : "opponentMessage"}">
@@ -31,6 +35,7 @@ function typeNewPrivateMessage(content)
 	}
 	else if (content.from != userMeInfo.id)
 	{
+		notifBadgeChat.style.display = 'flex';
 		sendRequest("get_user_info", {id: content.from});
 		waitForUserInfo().then((userInfo) => {
 			CN.new("Message", "New message from " + userInfo.username);

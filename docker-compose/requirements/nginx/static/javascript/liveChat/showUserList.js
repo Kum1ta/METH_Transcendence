@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:21:10 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/25 08:50:20 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 03:09:29 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,15 @@ function	showListUser() {
 				user.classList.add("user");
 				user.innerHTML = `
 					<div class="status ${element.status}">
-							<img>
+						<img>
 					</div>
 					<h3></h3>
 				`
+				if (element.haveUnread)
+				{
+					user.innerHTML += `<span></span>`;
+					user.querySelector("span").style.marginLeft = "auto";
+				}
 				user.querySelector("img").src = element.pfp;
 				user.querySelector("h3").innerText = element.name;
 				divMessageListChatHome.appendChild(user);

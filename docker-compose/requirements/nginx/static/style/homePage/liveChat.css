@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   liveChat.css                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:53:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/18 12:20:37 by marvin           ###   ########.fr       */
+/*   Updated: 2024/09/29 03:24:21 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,8 @@
 	transition: transform 0.3s ease;
 }
 
-/* Pour EDDY : Put display none and change on js to display flex when we have notification */
-
 .notification-badge {
-	display: flex;
+	display: none;
 	position: absolute;
 	top: 10px;
 	right: 10px;
@@ -251,4 +249,23 @@
 #infoChat {
 	text-align: center;
 	margin-top: 100px;
+}
+
+.user {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.user span {
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	background-color: #ffffffe4;
+	margin-right: 10px;
+}
+
+.status img {
+	object-fit: cover;
+	object-position: center;
 }

@@ -6,16 +6,15 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:17:54 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/22 17:16:00 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 03:46:37 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { messageList, infoPanel, waitForMessageList } from "/static/javascript/typeResponse/typePrivateListMessage.js";
+import { userListUnread } from "/static/javascript/typeResponse/typePrivateListUser.js";
 import { userMeInfo } from "/static/javascript/typeResponse/typeLogin.js";
 import { showListUser } from "/static/javascript/liveChat/showUserList.js";
 import { sendRequest } from "/static/javascript/websocket.js";
-
-let savedButtons = [];
 
 function	showPrivateChat(user)
 {
@@ -23,13 +22,17 @@ function	showPrivateChat(user)
 
 	sendRequest("get_private_list_message", {id: user.id});
 	waitForMessageList().then(() => {
+		try {
+			userListUnread.splice(userListUnread.indexOf(user.id), 1);
+		}
+		catch (e) {};			
 		infoPanel.id = user.id;
 		infoPanel.isOpen = true;
 		infoPanel.divMessage = divMessageListChatHome;
+		sendRequest("read_message", {id: user.id});
 		changeButton(user);
 		displayAllMessage(divMessageListChatHome);
 		displayInputBar(divMessageListChatHome, user);
-
 	})
 }
 

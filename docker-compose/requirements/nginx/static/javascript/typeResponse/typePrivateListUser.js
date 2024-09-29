@@ -6,13 +6,14 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 01:56:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/21 16:32:42 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/29 03:36:44 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-let userList = [];
-let userListAvailable = false;
-let userListResolve = null;
+let	userListUnread		= [];
+let userList			= [];
+let userListAvailable	= false;
+let userListResolve		= null;
 
 function waitForUserList() {
 	return new Promise((resolve) => {
@@ -28,6 +29,12 @@ function waitForUserList() {
 
 function typePrivateListUser(list) {
 	userList = list;
+	userListUnread = [];
+	userList.forEach(element => {
+		if (element.haveUnread)
+			userListUnread.push(element.id);
+	});
+	console.log(userListUnread);
 	userListAvailable = true;
 	if (userListResolve)
 	{
@@ -37,4 +44,4 @@ function typePrivateListUser(list) {
 	}
 }
 
-export { userList, typePrivateListUser, waitForUserList };
+export { userList, userListUnread, typePrivateListUser, waitForUserList };
