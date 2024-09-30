@@ -10,8 +10,6 @@
     font-style: normal;
 }
 
-/* POUR EDDY : POPUP DELETE ACCOUNT ICI NONE -> FLEX, BE CAREFULL CHANGE DE FUNCTIONNALITY OF THE FIRST BUTTON FOR NOT DELETE THE ACCOUNT */
-
 .popup-background-delete {
 	display: none;
 	position: fixed;
@@ -26,7 +24,7 @@
 }
 
 .popup-delete {
-    display: none;
+    display: flex;
     flex-direction: column;
 	background-color: #020202;
     color: white;

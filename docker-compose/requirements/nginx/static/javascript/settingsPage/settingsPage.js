@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 17:00:35 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/26 22:48:29 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/30 22:47:54 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,18 @@ class settingsPage
 		const	passwordInput			=	document.getElementById('password');
 		const	newPasswordInput		=	document.getElementById('new-password');
 		const	confirmPasswordInput	=	document.getElementById('confirm-password');
+		const	usernameDeleteInput		=	document.getElementById('username-delete');
 
 		const	usernameSaveButton		=	document.getElementById('usernameButtonSave');
 		const	discordSaveButton		=	document.getElementById('discordButtonSave');
 		const	passwordSaveButton		=	document.getElementById('passwordButtonSave');
 		const	deleteButton			=	document.getElementById('deleteButton');
+		const	buttonShowDeleteMenu	=	document.getElementById('buttonShowDeleteMenu');
 
 		const	loginButton				=	document.getElementById('loginButton').getElementsByTagName('p')[0];
-		const	methButton				=	document.getElementById("homeButton");
+		const	methButton				=	document.getElementById('homeButton');
+
+		const	divDeleteAccount		=	document.getElementById('popup-background-delete');
 
 		let		interval				=	null;
 
@@ -60,6 +64,9 @@ class settingsPage
 			{
 				passwordInput.style.backgroundColor = newPasswordInput.style.backgroundColor = confirmPasswordInput.style.backgroundColor = passwordSaveButton.style.backgroundColor = "#bbbbbb";
 				passwordInput.type = newPasswordInput.type = confirmPasswordInput.type = 'text';
+				passwordInput.disabled = true;
+				newPasswordInput.disabled = true;
+				confirmPasswordInput.disabled = true;
 				passwordSaveButton.disabled = true;
 			}
 			discordInput.value = data.discord_username;
@@ -71,7 +78,25 @@ class settingsPage
 			discordSaveButton.addEventListener('click', () => {
 				sendRequest("change_private_info", {discord: discordInput.value});
 			});
+			buttonShowDeleteMenu.addEventListener('click', () => {
+				divDeleteAccount.style.display = 'flex';
+				function hideMenu(e)
+				{
+					if (e.target.getAttribute('class') == "popup-background-delete")
+					{
+						divDeleteAccount.style.display = 'none';
+						usernameDeleteInput.value = 'aaa';
+						buttonShowDeleteMenu.removeEventListener('click', hideMenu);
+					}
+				};
+				divDeleteAccount.addEventListener('click', hideMenu);
+			});
 			deleteButton.addEventListener('click', () => {
+				if (usernameDeleteInput.value != userMeInfo.username)
+				{
+					CN.new("Error", "Username does not match", CN.error);
+					return ;
+				}
 				sendRequest("change_private_info", {delete: true});
 				userMeInfo.id = -1;
 				setTimeout(() => {
