@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/30 19:55:24 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/01 00:46:17 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -461,7 +461,7 @@ class Game:
 	def saveResults(self):
 		try:
 			if(self.winner == None):
-				print("unkown winner, settings to 1")
+				print("unkown winner, setting to 1")
 				self.winner = 1
 			print("saving results")
 			p1DbUser = User.objects.get(id=self.p1.id)
