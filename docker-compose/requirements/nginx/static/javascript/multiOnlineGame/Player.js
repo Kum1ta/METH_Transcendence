@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/29 01:37:45 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/30 16:48:22 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -329,6 +329,33 @@ class Player
 	{
 		this.camera.position.set(x, y, z);
 	}
+
+	scalePlayer(isOpponent)
+	{
+		let object;
+		if (isOpponent)
+			object = this.opponent.object;
+		else
+			object = this.object;
+
+		const value = 0.004;
+
+		for (let i = 1; i < 10; i++)
+		{
+			setTimeout(() => {
+				object.scale.z += value;
+				object.scale.x += value * 2;
+			}, i * 10);
+		}
+
+		for (let i = 10; i < 20; i++)
+		{
+			setTimeout(() => {
+				object.scale.z -= value;
+				object.scale.x -= value * 2;
+			}, i * 10);
+		}
+	}
 };
 
 function addKeyInArr(e)
@@ -373,7 +400,6 @@ function simplePressKey(e)
 			this.setCameraPosition(0, 1.5, this.object.position.z + 3);
 	}				
 }
-
 
 function goFullscreen()
 {

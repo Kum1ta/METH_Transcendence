@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/29 23:10:31 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:13:05 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,9 @@ let contextTextScore			= null;
 let textureTextScore			= null;
 let animationSpeed				= 0.02;
 let animateGoalObjectUpdate		= null;
+let animateGoalObjectUp			= false;
 
-let path = [
-	{name: 'goal', 			onChoice: true, src: files.goalVideoPub},
-	{name: 'easteregg',		onChoice: true, src: files.easterEggVideoPub},
-	{name: 'outstanding', 	onChoice: true, src: files.outstandingVideoPub},
-	{name: 'ping', 			onChoice: false, src: files.pingVideoPub},
-	{name: 'catch', 		onChoice: false, src: files.catchVideoPub},
-	{name: 'fortnite', 		onChoice: false, src: files.fortniteVideoPub},
-]
+let path = [];
 
 const colorList = [
     0xFFB3BA, 0xFFDFBA, 0xFFFFBA, 0xBAFFC9, 0xBAE1FF, // Pastel pink, peach, yellow, green, blue
@@ -94,6 +88,7 @@ class Map
 		loader = null;
 		if (texturePlane)
 			texturePlane.dispose();
+		this.#clearScoreboard();
 		this.arrObject.forEach(elem => {
 			if (elem.mesh instanceof THREE.Group)
 			{
@@ -136,9 +131,6 @@ class Map
 		scene.add(this.#createPlanes(7.5, length, (Math.PI / 2), "planeTop", false, files.planeTexture));
 		scene.add(this.#createWall(-3.5, 0.4, -length/2, "wallLeft"));
 		scene.add(this.#createWall(3.5, 0.4, -length/2, "wallRight"));
-		// if (obstacles)
-			// this.#generateObstacle();
-
 		{ // A retirer
 			/* Style de couleur why not
 			0xFFCCCC
@@ -161,7 +153,14 @@ class Map
 			*/
 		}
 		this.putScoreboard(0xCCCCFF);
-		this.#putNameBoard("Player", "Opponent", 0xCCCCFF);
+		path = [
+			{name: 'goal', 			onChoice: true, src: files.goalVideoPub},
+			{name: 'easteregg',		onChoice: true, src: files.easterEggVideoPub},
+			{name: 'outstanding', 	onChoice: true, src: files.outstandingVideoPub},
+			{name: 'ping', 			onChoice: false, src: files.pingVideoPub},
+			{name: 'catch', 		onChoice: false, src: files.catchVideoPub},
+			{name: 'fortnite', 		onChoice: false, src: files.fortniteVideoPub},
+		];
 	};
 
 	#createPlanes(x, y, rot, name, isBottom, visual)
@@ -199,7 +198,6 @@ class Map
 
 	changePlane(texture)
 	{
-		console.log(this.arrObject);
 		for (let i = 0; i < this.arrObject.length; i++)
 		{
 			if (this.arrObject[i].name == "planeBottom" || this.arrObject[i].name == "planeTop")
@@ -264,7 +262,6 @@ class Map
 
 		for (let i = 0; i < this.arrObject.length; i++)
 		{
-			console.log(name);
 			if (this.arrObject[i].name == name)
 				throw Error("Name already exist.");
 		}
@@ -368,6 +365,7 @@ class Map
 	putScoreboard(color)
 	{
 		this.#clearScoreboard();
+		// this.#putNameBoard("Player", "Opponent", 0xCCCCFF);
 		let materialScoreboard	= null;
 		let geometryScoreboard1	= null;
 		let meshScoreboard1		= null;
@@ -405,10 +403,10 @@ class Map
 
 		meshScoreboard1.rotation.y = Math.PI;
 		meshText1.rotation.y = Math.PI;
-		meshScoreboard1.position.set(0, 1.45, 9.5);
-		meshText1.position.set(0, 1.45, 9.5 - depth / 2 - 0.025);
-		meshScoreboard2.position.set(0, 1.45, -9.5);
-		meshText2.position.set(0, 1.45, - 9.5 + depth / 2 + 0.025);
+		meshScoreboard1.position.set(0, 1.60, 9.5);
+		meshScoreboard2.position.set(0, 1.60, -9.5);
+		meshText1.position.set(0, 1.60, 9.5 - depth / 2 - 0.025);
+		meshText2.position.set(0, 1.60, - 9.5 + depth / 2 + 0.025);
 
 		scene.add(meshScoreboard1);
 		scene.add(meshScoreboard2);
@@ -576,8 +574,8 @@ class Map
 		// Create the canvas for the video
 		videoCanvas = document.createElement('canvas');
 		ctx = videoCanvas.getContext('2d');
-		videoCanvas.width = 100 * 2.33 * 20;
-		videoCanvas.height = 100;
+		videoCanvas.width = 50 * 2.33 * 20;
+		videoCanvas.height = 50;
 
 		// Get the number of videos to display
 		if (vNameNb && typeof(vNameNb) == 'number')
@@ -609,7 +607,7 @@ class Map
 				videoTmp.play();
 				drawVideoOnCanvas();
 			});
-			videoList.push({video: videoTmp, imageWidth: 100 * 2.33, imageHeight: 100});
+			videoList.push({video: videoTmp, imageWidth: 50 * 2.33, imageHeight: 50});
 		}
 
 		// Draw the video on the canvas
@@ -753,6 +751,10 @@ class Map
 		}
 		
 		animateGoalObjectUpdate = true;
+		if (cordY > 1.5)
+			animateGoalObjectUp = true;
+		else
+			animateGoalObjectUp = false;
 	};
 
 	#clearAnimationGoal()
@@ -881,9 +883,9 @@ class Map
 				// Move the wall with the ball position
 				if (ball.object.position.z < this.mapLength / 2 - 0.35 && ball.object.position.z > -this.mapLength / 2 + 0.35)
 					this.arrObject[i].mesh.position.z = ball.object.position.z;
-				if (ball.object.position.y >= 0.3 && ball.object.position.y <= 3)
-					this.arrObject[i].mesh.position.y = ball.object.position.y - 0.1;
-				
+				if (ball.object.position.y >= 0.3 + 0.1 && ball.object.position.y <= 3 - 0.1)
+					this.arrObject[i].mesh.position.y = ball.object.position.y;
+
 				// Change the opacity of the wall
 				let	diff = ball.object.position.x - this.arrObject[i].mesh.position.x - 0.1;
 				if (diff > 2)
@@ -896,8 +898,8 @@ class Map
 				// Move the wall with the ball position
 				if (ball.object.position.z < this.mapLength / 2 - 0.35 && ball.object.position.z > -this.mapLength / 2 + 0.35)
 					this.arrObject[i].mesh.position.z = ball.object.position.z;
-				if (ball.object.position.y >= 0.3 && ball.object.position.y <= 3)
-					this.arrObject[i].mesh.position.y = ball.object.position.y - 0.1;
+				if (ball.object.position.y >= 0.3 + 0.1 && ball.object.position.y <= 3 - 0.1)
+					this.arrObject[i].mesh.position.y = ball.object.position.y;
 
 				// Change the opacity of the wall
 				let	diff = this.arrObject[i].mesh.position.x - ball.object.position.x - 0.1;
@@ -942,37 +944,55 @@ class Map
 		if (object.name == "object0")
 		{
 			object.mesh.position.x += 0.05 * speed;
-			object.mesh.position.y += 0.05 * speed;
+			if (animateGoalObjectUp)
+				object.mesh.position.y -= 0.05 * speed;
+			else
+				object.mesh.position.y += 0.05 * speed;
 			object.mesh.position.z += 0.02 * speed;
 		}
 		else if (object.name == "object1")
 		{
 			object.mesh.position.x -= 0.03 * speed;
-			object.mesh.position.y += 0.04 * speed;
+			if (animateGoalObjectUp)
+				object.mesh.position.y -= 0.04 * speed;
+			else
+				object.mesh.position.y += 0.04 * speed;
 			object.mesh.position.z -= 0.05 * speed;
 		}
 		else if (object.name == "object2")
 		{
 			object.mesh.position.x += 0.04 * speed;
-			object.mesh.position.y += 0.03 * speed;
+			if (animateGoalObjectUp)
+				object.mesh.position.y -= 0.03 * speed;
+			else
+				object.mesh.position.y += 0.03 * speed;
 			object.mesh.position.z += 0.06 * speed;
 		}
 		else if (object.name == "object3")
 		{
 			object.mesh.position.x -= 0.06 * speed;
-			object.mesh.position.y += 0.02 * speed;
+			if (animateGoalObjectUp)
+				object.mesh.position.y -= 0.02 * speed;
+			else
+				object.mesh.position.y += 0.02 * speed;
 			object.mesh.position.z += 0.05 * speed;
 		}
 		else if (object.name == "object4")
 		{
 			object.mesh.position.x += 0.03 * speed;
-			object.mesh.position.y += 0.04 * speed;
+			if (animateGoalObjectUp)
+				object.mesh.position.y -= 0.04 * speed;
+			else
+				object.mesh.position.y += 0.04 * speed;
 			object.mesh.position.z += 0.03 * speed;
 		}
 		else if (object.name == "object5")
 		{
 			object.mesh.position.x -= 0.05 * speed;
-			object.mesh.position.y += 0.03 * speed;
+			if (animateGoalObjectUp)
+				object.mesh.position.y -= 0.03 * speed;
+			else
+				object.mesh.position.y += 0.03 * speed;
 			object.mesh.position.z -= 0.04 * speed;
 		}
 	};
@@ -993,12 +1013,12 @@ class Map
 	{
 		for (let i = 0; i < this.arrObject.length; i++)
 		{
-			if (this.arrObject[i].type == "wallLeft")
+			if (this.arrObject[i].name == "wallLeft")
 			{
 				this.arrObject[i].mesh.position.set(-3.5, 0.4, -length/2);
 				this.arrObject[i].mesh.material.opacity = 0.5;
 			}
-			else if (this.arrObject[i].type == "wallRight")
+			else if (this.arrObject[i].name == "wallRight")
 			{
 				this.arrObject[i].mesh.position.set(3.5, 0.4, -length/2);
 				this.arrObject[i].mesh.material.opacity = 0.5;
@@ -1014,8 +1034,8 @@ class Map
 
 		this.updateScore(name, this.score);
 		player.reserCameraPlayer();
-		this.resetPosWalls();
 		ball.resetPosBall();
+		this.resetPosWalls();
 		// player.resetPosPlayer();
 		// opponent.resetPosOpponent();
 	};

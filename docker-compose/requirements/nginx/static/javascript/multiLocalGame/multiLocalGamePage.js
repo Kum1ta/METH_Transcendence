@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiLocalGamePage.js                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:07:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/14 01:59:38 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/30 15:20:47 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ class multiLocalGamePage
 		}
 		scene = null;
 	}
-
 };
 
 function loop()

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   typeGame.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 12:00:01 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/29 13:24:06 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/30 17:11:10 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ function typeGame(content)
 	{
 		if (content.action == 3 && content.is_opponent)
 			opponent.movePlayer(content);
+		else if (content.action == 4)
+			player.scalePlayer(content.is_opponent);
 		else if (content.action == 5)
 			ball.updatePos(content);
 		else if (content.action == 6)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiOnlineGamePage.js                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/29 22:33:06 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/30 17:30:15 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
