@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 16:10:26 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/28 00:43:45 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/30 15:35:47 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,8 @@ from .gameActions.ping import ping
 #		- pos
 #		- up
 #
-#	4 : leave : when the opponent left the game
+#	4: player hit
+#		is_opponent
 #
 #	5 : ball_move : send new directtion/movement to the client
 #		- pos : [x, z]
@@ -52,7 +53,8 @@ from .gameActions.ping import ping
 #	9: pong
 #
 #	10: game end
-#		- won
+#		- won : true/false
+#		- opponentLeft : true/false
 
 #client actions (actions sent by the client) :
 #	0 : start : starts a game

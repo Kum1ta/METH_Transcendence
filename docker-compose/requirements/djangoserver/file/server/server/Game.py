@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/29 13:21:59 by edbernar         ###   ########.fr        #
+#    Updated: 2024/09/30 15:34:41 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -189,12 +189,8 @@ class Game:
 		socket.game = None
 		if (socket == self.p1):
 			self.left = 1
-			if(self.p2 != None):
-				self.p2.sync_send({"type":"game","content":{"action":4}})
 		else:
 			self.left = 2
-			if(self.p1 != None):
-				self.p1.sync_send({"type":"game","content":{"action":4}})
 		while(Game.waitingForPlayerLock):
 			time.sleeep(0.05)
 		Game.waitingForPlayerLock = True
@@ -412,6 +408,8 @@ class Game:
 				velZ = self.speed - abs(velX)
 				if(newBallPos[1] > 0):
 					velZ = -velZ
+				self.p1.sync_send({"type":"game","content":{"action":4, "is_opponent": newBallPos[1] < 0}})
+				self.p2.sync_send({"type":"game","content":{"action":4, "is_opponent": newBallPos[1] > 0}})
 			else:
 				await self.scoreGoal(1 if newBallPos[1] < 0 else 2)
 				return;
