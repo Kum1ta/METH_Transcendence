@@ -6,13 +6,11 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/29 23:31:12 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/30 13:58:31 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from '/static/javascript/three/build/three.module.js'
-
-const	timeStep		=	1 / 60;
 
 class Ball
 {
@@ -20,8 +18,6 @@ class Ball
 	centerPos	= {};
 	limits		= {};
 	interval	= null;
-	world		= null;
-	ballBody	= null;
 	lastTime	= 0;
 	velocity	= [0, 0];
 	lastPos		= [0, 0, 0];
@@ -34,13 +30,6 @@ class Ball
 		this.limits = map.playerLimits;
 		this.resetPosBall();
 		scene.add(this.object);
-		this.world = new CANNON.World();
-		this.ballBody = new CANNON.Body({
-			shape: new CANNON.Sphere(0.15),
-			mass: 10,
-		});
-		this.ballBody.position.copy(this.object.position);
-		this.world.addBody(this.ballBody);
 	}
 
 	#createBall()

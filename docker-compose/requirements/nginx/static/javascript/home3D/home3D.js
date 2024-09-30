@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/30 02:12:33 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/30 14:01:36 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -430,7 +430,8 @@ function moveCamera()
 		const distance = camera.position.distanceTo(screen.tv.position);
 
 		camera.position.copy(position);
-		if (position.equals(targetPosition) || distance < 0.1)
+		console.log(distance);
+		if (position.equals(targetPosition) || distance < 0.15)
 		{
 			pageRenderer.changePage('lobbyPage');
 			return ;
