@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/29 23:24:39 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/30 23:53:04 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,10 @@ class barSelecter
 	dispose()
 	{
 		if (this.renderer)
+		{
 			this.renderer.dispose();
+			this.renderer.forceContextLoss();
+		}
 		this.renderer = null;
 		if (this.scene)
 		{
@@ -197,7 +200,10 @@ class goalSelecter
 	dispose()
 	{
 		if (this.renderer)
+		{
 			this.renderer.dispose();
+			this.renderer.forceContextLoss();
+		}
 		this.renderer = null;
 		if (this.scene)
 		{

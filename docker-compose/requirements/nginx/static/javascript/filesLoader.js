@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 22:36:43 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/30 00:56:01 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/30 23:08:59 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ async function loadFiles()
 		loadBar.style.width = value;
 		await sleep(50);
 	}
-	console.log(Object.values(files).length * 100 / Object.values(url_files).length + '%'); 
-	console.log('files loaded :', files);
 }
 
 export { files, loadFiles };

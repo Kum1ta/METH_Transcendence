@@ -112,16 +112,20 @@
     text-align: center;
 }
 
-#profil .scroll-match {
+#profil .history #scroll-match {
     overflow-y: auto;
-    height: 100%;
+    width: 100%;
+    height: calc(100% - 60px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #profil .history {
     background-color: white;
     width: 48%;
     height: 42vh;
-    padding: 20px;
+    /* padding: 20px; */
     text-align: center;
 }
 
@@ -131,6 +135,7 @@
     margin-top: 20px;
     background-color: #E74040;
     height: 110px;
+    width: 90%;
     padding: 15px;
     padding-inline: 40px;
     transition: 0.3s ease;
