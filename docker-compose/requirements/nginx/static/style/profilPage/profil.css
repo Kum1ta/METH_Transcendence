@@ -112,6 +112,11 @@
     text-align: center;
 }
 
+#profil .scroll-match {
+    overflow-y: auto;
+    height: 100%;
+}
+
 #profil .history {
     background-color: white;
     width: 48%;
@@ -188,14 +193,16 @@
     cursor: pointer;
 }
 
-#profil .user-1 {
+#profil #user-1 {
     display: flex;
     align-items: center;
+    flex-direction: column;
 }
 
-#profil .user-2 {
+#profil #user-2 {
     display: flex;
     align-items: center;
+    flex-direction: column;
 }
 
 #profil .versus{

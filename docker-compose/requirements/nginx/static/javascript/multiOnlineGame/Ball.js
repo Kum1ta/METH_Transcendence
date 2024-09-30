@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Ball.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/30 16:06:58 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/09/30 19:17:05 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@ class Ball
 		this.limits = map.playerLimits;
 		this.resetPosBall();
 		scene.add(this.object);
+		// this.world = new CANNON.World();
+		// this.ballBody = new CANNON.Body({
+		// 	shape: new CANNON.Sphere(0.15),
+		// 	mass: 10,
+		// });
+		// this.ballBody.position.copy(this.object.position);
+		// this.world.addBody(this.ballBody);
 	}
 
 	#createBall()

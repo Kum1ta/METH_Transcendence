@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:32:52 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/28 00:38:44 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/30 19:07:35 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@ function	createHeader(title, img)
 	const	divHeader		= document.createElement("div");
 	const	icon			= document.createElement("img");
 	const	h1Title			= document.createElement("h1");
-	const	cross			= document.createElement("p");
+	const	cross			= document.createElement("span");
 	const	titleTextNode	= document.createTextNode(title);
 
 	divHeader.classList.add("header");
@@ -30,14 +30,12 @@ function	createHeader(title, img)
 	h1Title.style.textAlign = "center";
 	h1Title.style.width = "100%";
 	h1Title.style.marginTop = "5px";
-	cross.innerHTML = "X";
+	cross.innerHTML = "&times";
 	cross.style.position = 'absolute';
 	cross.style.cursor = 'pointer';
 	cross.style.margin = '0';
 	cross.style.right = '10px';
-	cross.style.marginTop = '5px';
-	cross.style.fontSize = '20px';
-	cross.style.fontWeight = 'bold';
+	cross.style.fontSize = '25px';
 	cross.addEventListener("click", () => {
 		divHeader.parentNode.style.animation = "slideOut 0.21s";
 		setTimeout(() => {
