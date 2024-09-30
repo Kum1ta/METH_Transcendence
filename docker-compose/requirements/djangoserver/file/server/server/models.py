@@ -12,6 +12,7 @@ class User(models.Model):
 	print("A" * 1000)
 	github_link = models.CharField(max_length=1024, null=True, blank=True, default=None)
 	discord_username = models.CharField(max_length=1024, null=True, blank=True, default=None)
+	last_login = models.DateTimeField()
 
 class Message(models.Model):
 	id = models.AutoField(primary_key=True)
@@ -29,6 +30,7 @@ class GameResults(models.Model):
 	p1Score = models.DecimalField(max_digits=3, decimal_places=0)
 	p2Score = models.DecimalField(max_digits=3, decimal_places=0)
 	winner = models.ForeignKey("User", on_delete=models.SET_NULL, null=True, related_name="winner")
+	forfeit = models.BooleanField(default=False)
 
 class MailVerify(models.Model):
 	token = models.CharField(primary_key=True, max_length=200, unique=True)

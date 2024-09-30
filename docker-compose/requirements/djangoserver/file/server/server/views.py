@@ -5,6 +5,7 @@ from .data import UID42, SECRET42, SERVER_URL
 import requests
 import json
 import os
+from django.utils import timezone
 
 
 def index(request):
@@ -114,8 +115,10 @@ def login42(request):
 	if(not db_user.exists()):
 		while(User.objects.filter(username=login42).exists()):
 			login42 += "_"
-		db_user = [User.objects.create(username=login42, id42=id42)]
+		db_user = [User.objects.create(username=login42, id42=id42, last_login=timezone.now())]
 		db_user[0].save()
+	else:
+		User.objects.filter(id=db_user[0].id).update(last_login=timezone.now())
 	request.session["logged_in"] = True
 	request.session["username"] = db_user[0].username
 	request.session["id"] = db_user[0].id

@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 00:16:57 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/28 18:35:21 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/30 19:58:27 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ def getHistory(user, games):
 			"id":x.id,
 			"p1":player,
 			"p2":opponent,
-			"won":x.winner == user
+			"won":x.winner == user,
+			"forfeit":x.forfeit
 		})	
 	return(res)
 

@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/29 03:14:58 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/30 19:43:54 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ async def loginByPass(socket, content):
 			socket.sendError("Account not verified, please verify your account before logging in",9025) 
 			return
 		if(await socket.login(u_info["id"], u_info["username"])):
+			await socket.setLastLogin()
 			socket.sync_send(json.dumps({"type":"logged_in", "content":{
 				"status":True,
 				"username":u_info["username"],

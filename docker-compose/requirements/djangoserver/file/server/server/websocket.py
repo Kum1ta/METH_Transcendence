@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 14:31:30 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/29 03:18:30 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/30 19:42:45 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ import asyncio
 import django
 django.setup()
 
+from .models import User
+from django.utils import timezone
 from .typeRequests.getPrivateListMessage import getPrivateListMessage
 from .typeRequests.getPrivateListUser import getPrivateListUser
 from .typeRequests.sendPrivateMessage import sendPrivateMessage
@@ -65,6 +67,12 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 	@sync_to_async
 	def session_save(self):
 		self.scope["session"].save()
+
+	@sync_to_async
+	def setLastLogin(self):
+		if(self.id == None or self.id == 0):
+			return;
+		User.objects.filter(id=self.id).update(last_login=timezone.now())
 
 	def add_to_online(self, uid):
 		if(not uid):

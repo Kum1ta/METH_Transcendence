@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/30 15:34:41 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/30 19:55:24 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ class Game:
 		"front" : 6.25 - ballRadius
 	}
 	mapLength = 13
-	startSpeed = 4
+	startSpeed = 6
 	jumperRadius = 0.2
 	wallsPos = [
 			{ "type":2, "pos": {"x": 1, "y": 0, "z": 1}, "isUp": False},
@@ -471,7 +471,8 @@ class Game:
 				player2 = p2DbUser,
 				p1Score = self.score[0],
 				p2Score = self.score[1],
-				winner = p1DbUser if self.winner == 1 else p2DbUser
+				winner = p1DbUser if self.winner == 1 else p2DbUser,
+				forfeit = self.left != None
 			)
 			results.save()
 			print("results saved")

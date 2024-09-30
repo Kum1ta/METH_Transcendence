@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 08:08:00 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/27 03:37:05 by tomoron          ###   ########.fr        #
+#    Updated: 2024/09/30 19:41:51 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ from email.mime.image import MIMEImage
 from asgiref.sync import sync_to_async
 from ..fieldsVerif import mailValid, usernameValid, passwordValid
 from ..utils import genString
+from django.utils import timezone
 import smtplib
 import random
 import re
@@ -40,7 +41,7 @@ def createAccount(socket, content):
 		if(not passwordValid(content["password"], socket)):
 			return
 		password = hashlib.md5((content["mail"] + content["password"]).encode()).hexdigest()
-		new_user = User.objects.create(username=content["username"], mail=content["mail"], password=password)
+		new_user = User.objects.create(username=content["username"], mail=content["mail"], password=password, last_login=timezone.now())
 		new_user.save()
 		verif_str = genString(200)
 		MailVerify.objects.create(uid=new_user, token=verif_str).save()
