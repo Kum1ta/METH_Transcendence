@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/10/01 18:45:17 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/10/01 20:27:32 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ class Map
 		loader = null;
 		if (texturePlane)
 			texturePlane.dispose();
-		this.#clearScoreboard();
 		this.arrObject.forEach(elem => {
 			if (elem.mesh instanceof THREE.Group)
 			{
@@ -364,8 +363,8 @@ class Map
 
 	putScoreboard(color)
 	{
-		this.#clearScoreboard();
-		// this.#putNameBoard("Player", "Opponent", 0xCCCCFF);
+		this.#putPlayerProfile("", "", color);
+		
 		let materialScoreboard	= null;
 		let geometryScoreboard1	= null;
 		let meshScoreboard1		= null;
@@ -379,7 +378,7 @@ class Map
 		let meshText2			= null;
 
 		let height = 1.8;
-		let width = 6;
+		let width = 5;
 		let depth = 0.2;
 
 		materialScoreboard	= new THREE.MeshPhysicalMaterial({color: color});
@@ -403,10 +402,10 @@ class Map
 
 		meshScoreboard1.rotation.y = Math.PI;
 		meshText1.rotation.y = Math.PI;
-		meshScoreboard1.position.set(0, 1.60, 9.5);
-		meshScoreboard2.position.set(0, 1.60, -9.5);
-		meshText1.position.set(0, 1.60, 9.5 - depth / 2 - 0.025);
-		meshText2.position.set(0, 1.60, - 9.5 + depth / 2 + 0.025);
+		meshScoreboard1.position.set(0, 1.60, 8.5);
+		meshScoreboard2.position.set(0, 1.60, -8.5);
+		meshText1.position.set(0, 1.60, 8.5 - depth / 2 - 0.01);
+		meshText2.position.set(0, 1.60, - 8.5 + depth / 2 + 0.01);
 
 		scene.add(meshScoreboard1);
 		scene.add(meshScoreboard2);
@@ -418,27 +417,7 @@ class Map
 		this.arrObject.push({mesh: meshText2, name: "", type: "scoreboard"});
 	};
 
-	#clearScoreboard()
-	{
-		for (let i = 0; i < this.arrObject.length; i++)
-		{
-			if (this.arrObject[i].type == "scoreboard")
-			{
-				if (this.arrObject[i].mesh.geometry)
-					this.arrObject[i].mesh.geometry.dispose();
-				if (this.arrObject[i].mesh.material)
-					this.arrObject[i].mesh.material.dispose();
-				scene.remove(this.arrObject[i].mesh);
-				this.arrObject[i].mesh.geometry = null;
-				this.arrObject[i].mesh.material = null;
-				this.arrObject[i].mesh = null;
-				this.arrObject.splice(i, 1);
-				i--;
-			}
-		}
-	};
-
-	#putNameBoard(nameLeft, nameRight, color)
+	#putPlayerProfile(nameLeft, nameRight, color)
 	{
 		let materialBoardLeftFront;
 		let geometryBoardLeftFront;
@@ -456,9 +435,10 @@ class Map
 		let geometryBoardRightBack;
 		let meshBoardRightBack;
 
-		let height = 0.5;
-		let width = 2.95;
+		let height = 1.8;
+		let width = 1.5;
 		let depth = 0.2;
+		let spacing = 2.5;
 
 		materialBoardLeftFront	= new THREE.MeshPhysicalMaterial({color: color});
 		geometryBoardLeftFront	= new THREE.BoxGeometry(width, height, depth);
@@ -476,89 +456,89 @@ class Map
 		geometryBoardRightBack	= new THREE.BoxGeometry(width, height, depth);
 		meshBoardRightBack	= new THREE.Mesh(geometryBoardRightBack, materialBoardRightBack);
 
-		meshBoardLeftFront.position.set(-width / 2 - (3 - width), 2.7, -9.5);
-		meshBoardRightFront.position.set(width / 2 + (3 - width), 2.7, -9.5);
+		meshBoardLeftFront.position.set(-spacing - width / 2 - 0.3, 1.6, -8.5);
+		meshBoardRightFront.position.set(spacing + width / 2 + 0.3, 1.6, -8.5);
 
 		meshBoardLeftBack.rotation.y = Math.PI;
-		meshBoardLeftBack.position.set(-width / 2 - (3 - width), 2.7, 9.5);
+		meshBoardLeftBack.position.set(-spacing - width / 2 - 0.3, 1.6, 8.5);
 		meshBoardRightBack.rotation.y = Math.PI;
-		meshBoardRightBack.position.set(width / 2 + (3 - width), 2.7, 9.5);
+		meshBoardRightBack.position.set(spacing + width / 2 + 0.3, 1.6, 8.5);
 
 		scene.add(meshBoardLeftFront);
 		scene.add(meshBoardRightFront);
 		scene.add(meshBoardLeftBack);
 		scene.add(meshBoardRightBack);
-		this.arrObject.push({mesh: meshBoardLeftFront, name: "", type: "nameBoard"});
-		this.arrObject.push({mesh: meshBoardRightFront, name: "", type: "nameBoard"});
-		this.arrObject.push({mesh: meshBoardLeftBack, name: "", type: "nameBoard"});
-		this.arrObject.push({mesh: meshBoardRightBack, name: "", type: "nameBoard"});
+		this.arrObject.push({mesh: meshBoardLeftFront, name: "", type: "profileBoard"});
+		this.arrObject.push({mesh: meshBoardRightFront, name: "", type: "profileBoard"});
+		this.arrObject.push({mesh: meshBoardLeftBack, name: "", type: "profileBoard"});
+		this.arrObject.push({mesh: meshBoardRightBack, name: "", type: "profileBoard"});
 
-		let canvasTextNameLeft		= null;
-		let contextTextNameLeft		= null;
-		let textureTextNameLeft		= null;
+		let canvasProfileNameLeft		= null;
+		let contextProfileNameLeft		= null;
+		let textureProfileNameLeft		= null;
 
-		let canvasTextNameRight		= null;
-		let contextTextNameRight	= null;
-		let textureTextNameRight	= null;
+		let canvasProfileNameRight		= null;
+		let contextProfileNameRight	= null;
+		let textureProfileNameRight	= null;
 
-		canvasTextNameLeft = document.createElement('canvas');
-		contextTextNameLeft = canvasTextNameLeft.getContext('2d');
-		canvasTextNameLeft.width = 960;
-		canvasTextNameLeft.height = 540 / 2;
-    	drawName(nameLeft, canvasTextNameLeft, contextTextNameLeft);
-		textureTextNameLeft = new THREE.CanvasTexture(canvasTextNameLeft);
+		canvasProfileNameLeft = document.createElement('canvas');
+		contextProfileNameLeft = canvasProfileNameLeft.getContext('2d');
+		canvasProfileNameLeft.width = 960;
+		canvasProfileNameLeft.height = 540 / 2;
+    	drawName(nameLeft, canvasProfileNameLeft, contextProfileNameLeft);
+		textureProfileNameLeft = new THREE.CanvasTexture(canvasProfileNameLeft);
 
-		canvasTextNameRight = document.createElement('canvas');
-		contextTextNameRight = canvasTextNameRight.getContext('2d');
-		canvasTextNameRight.width = 960;
-		canvasTextNameRight.height = 540 / 2;
-    	drawName(nameRight, canvasTextNameRight, contextTextNameRight);
-		textureTextNameRight = new THREE.CanvasTexture(canvasTextNameRight);
+		canvasProfileNameRight = document.createElement('canvas');
+		contextProfileNameRight = canvasProfileNameRight.getContext('2d');
+		canvasProfileNameRight.width = 960;
+		canvasProfileNameRight.height = 540 / 2;
+    	drawName(nameRight, canvasProfileNameRight, contextProfileNameRight);
+		textureProfileNameRight = new THREE.CanvasTexture(canvasProfileNameRight);
 
-		let materialTextLeft		= null;
-		let materialTextRight		= null;
+		let materialProfileLeft		= null;
+		let materialProfileRight		= null;
 		
-		let geometryTextLeftFront	= null;
-		let meshTextLeftFront		= null;
-		let geometryTextRightFront	= null;
-		let meshTextRightFront		= null;
+		let geometryProfileLeftFront	= null;
+		let meshProfileLeftFront		= null;
+		let geometryProfileRightFront	= null;
+		let meshProfileRightFront		= null;
 
-		let geometryTextLeftBack	= null;
-		let meshTextLeftBack		= null;
-		let geometryTextRightBack	= null;
-		let meshTextRightBack		= null;
+		let geometryProfileLeftBack	= null;
+		let meshProfileLeftBack		= null;
+		let geometryProfileRightBack	= null;
+		let meshProfileRightBack		= null;
 		
-		materialTextLeft		= new THREE.MeshBasicMaterial({ map: textureTextNameLeft });
-		materialTextRight		= new THREE.MeshBasicMaterial({ map: textureTextNameRight });
+		materialProfileLeft		= new THREE.MeshBasicMaterial({ map: textureProfileNameLeft });
+		materialProfileRight		= new THREE.MeshBasicMaterial({ map: textureProfileNameRight });
 
-		geometryTextLeftFront	= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
-		meshTextLeftFront		= new THREE.Mesh(geometryTextLeftFront, materialTextLeft);
+		geometryProfileLeftFront	= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
+		meshProfileLeftFront		= new THREE.Mesh(geometryProfileLeftFront, materialProfileLeft);
 
-		geometryTextRightFront	= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
-		meshTextRightFront		= new THREE.Mesh(geometryTextRightFront, materialTextRight);
+		geometryProfileRightFront	= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
+		meshProfileRightFront		= new THREE.Mesh(geometryProfileRightFront, materialProfileRight);
 
-		geometryTextLeftBack	= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
-		meshTextLeftBack		= new THREE.Mesh(geometryTextLeftBack, materialTextLeft);
+		geometryProfileLeftBack	= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
+		meshProfileLeftBack		= new THREE.Mesh(geometryProfileLeftBack, materialProfileLeft);
 
-		geometryTextRightBack	= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
-		meshTextRightBack		= new THREE.Mesh(geometryTextRightBack, materialTextRight);
+		geometryProfileRightBack	= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
+		meshProfileRightBack		= new THREE.Mesh(geometryProfileRightBack, materialProfileRight);
 
-		meshTextLeftFront.position.set(-width / 2 - (3 - width), 2.7, - 9.5 + depth / 2 + 0.025);
-		meshTextRightFront.position.set(width / 2 + (3 - width), 2.7, - 9.5 + depth / 2 + 0.025);
+		meshProfileLeftFront.position.set(-spacing - width / 2 - 0.325, 1.6, - 8.5 + depth / 2 + 0.01);
+		meshProfileRightFront.position.set(spacing + width / 2 + 0.325, 1.6, - 8.5 + depth / 2 + 0.01);
 
-		meshTextLeftBack.rotation.y = Math.PI;
-		meshTextLeftBack.position.set(width / 2 + (3 - width), 2.7, 9.5 - depth / 2 - 0.025);
-		meshTextRightBack.rotation.y = Math.PI;
-		meshTextRightBack.position.set(-width / 2 - (3 - width), 2.7, 9.5 - depth / 2 - 0.025);
+		meshProfileLeftBack.rotation.y = Math.PI;
+		meshProfileLeftBack.position.set(-spacing - width / 2 - 0.325, 1.6, 8.5 - depth / 2 - 0.01);
+		meshProfileRightBack.rotation.y = Math.PI;
+		meshProfileRightBack.position.set(spacing + width / 2 + 0.325, 1.6, 8.5 - depth / 2 - 0.01);
 
-		scene.add(meshTextLeftFront);
-		scene.add(meshTextRightFront);
-		scene.add(meshTextLeftBack);
-		scene.add(meshTextRightBack);
-		this.arrObject.push({mesh: meshTextLeftFront, name: "", type: "nameBoard"});
-		this.arrObject.push({mesh: meshTextRightFront, name: "", type: "nameBoard"});
-		this.arrObject.push({mesh: meshTextLeftBack, name: "", type: "nameBoard"});
-		this.arrObject.push({mesh: meshTextRightBack, name: "", type: "nameBoard"});
+		scene.add(meshProfileLeftFront);
+		scene.add(meshProfileRightFront);
+		scene.add(meshProfileLeftBack);
+		scene.add(meshProfileRightBack);
+		this.arrObject.push({mesh: meshProfileLeftFront, name: "", type: "profileBoard"});
+		this.arrObject.push({mesh: meshProfileRightFront, name: "", type: "profileBoard"});
+		this.arrObject.push({mesh: meshProfileLeftBack, name: "", type: "profileBoard"});
+		this.arrObject.push({mesh: meshProfileRightBack, name: "", type: "profileBoard"});
 	};
 
 	putVideoOnCanvas(nbImage, vNameNb)
