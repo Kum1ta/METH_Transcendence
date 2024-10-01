@@ -6,11 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/10/01 19:42:54 by edbernar         ###   ########.fr       */
-=======
-/*   Updated: 2024/10/01 20:27:32 by hubourge         ###   ########.fr       */
->>>>>>> 3e8bc6071273411d12af866d58550eddebba89ec
+/*   Updated: 2024/10/01 22:10:40 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,7 +266,7 @@ class Map
 		}
 
 		geometry1	= new THREE.TorusGeometry(1, 0.1, 12, 24);
-		material1	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
+		material1	= new THREE.MeshPhysicalMaterial({color: 0x6290C8});
 		ring1		= new THREE.Mesh(geometry1, material1);
 		ring1.rotateX(-Math.PI / 2);
 		ring1.position.set(0, 0, 0);
@@ -279,7 +275,7 @@ class Map
 		material1.opacity = 0.75;
 
 		geometry2	= new THREE.TorusGeometry(1, 0.1, 12, 24);
-		material2	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
+		material2	= new THREE.MeshPhysicalMaterial({color: 0x829CBC});
 		ring2		= new THREE.Mesh(geometry2, material2);
 		ring2.rotateX(-Math.PI / 2);
 		ring2.position.set(0, 0 + 0.1, 0);
@@ -288,7 +284,7 @@ class Map
 		material2.opacity = 0.65;
 
 		geometry3	= new THREE.TorusGeometry(1, 0.1, 12, 24);
-		material3	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
+		material3	= new THREE.MeshPhysicalMaterial({color: 0x376996});
 		ring3		= new THREE.Mesh(geometry3, material3);
 		ring3.rotateX(-Math.PI / 2);
 		ring3.position.set(0, 0 + 0.2, 0);
@@ -297,23 +293,23 @@ class Map
 		material3.opacity = 0.35;
 
 		geometry4	= new THREE.CircleGeometry(0.2, 24);
-		material4	= new THREE.MeshPhysicalMaterial({color: 0xaaffaa});
+		material4	= new THREE.MeshPhysicalMaterial({color: 0x376996});
 		circle1		= new THREE.Mesh(geometry4, material4);
 		circle1.rotateX(-Math.PI / 2);
 		circle1.position.set(0, 0 - 0.048, 0);
 
 		geometry5	= new THREE.CircleGeometry(0.24, 24);
-		material5	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
+		material5	= new THREE.MeshPhysicalMaterial({color: 0x6290C8});
 		circle2		= new THREE.Mesh(geometry5, material5);
 		circle2.rotateX(-Math.PI / 2);
 		circle2.position.set(0, 0 - 0.049, 0);
 
-		geometry6	= new THREE.CylinderGeometry(0.15, 0.15, 0.35);
-		material6	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
-		collider	= new THREE.Mesh(geometry6, material6);
-		collider.position.set(0, 0 + 0.1, 0);
-		material6.transparent = true;
-		material6.opacity = 0.1;
+		// geometry6	= new THREE.CylinderGeometry(0.15, 0.15, 0.35);
+		// material6	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
+		// collider	= new THREE.Mesh(geometry6, material6);
+		// collider.position.set(0, 0 + 0.1, 0);
+		// material6.transparent = true;
+		// material6.opacity = 0.1;
 
 		groupJumper = new THREE.Group();
 		groupJumper.add(ring1);
@@ -321,7 +317,7 @@ class Map
 		groupJumper.add(ring3);
 		groupJumper.add(circle1);
 		groupJumper.add(circle2);
-		groupJumper.add(collider);
+		// groupJumper.add(collider);
 
 		// Set groupJumper position groud / top
 		for (let i = 0; i < groupJumper.children.length && onTop; i++)
@@ -356,7 +352,10 @@ class Map
 		let meshWallObs			= null;
 
 		geometryWallObs	= new THREE.BoxGeometry(size, 0.5, 0.1);
-		materialWallObs = new THREE.MeshPhysicalMaterial({color: 0xaaaafe});
+		
+		// materialWallObs = new THREE.MeshPhysicalMaterial({ map: files.wallTexture });
+		textureLoaderPlane = new THREE.TextureLoader();
+		materialWallObs = new THREE.MeshPhysicalMaterial({ map: textureLoaderPlane.load(files.wallTexture) });
 		meshWallObs		= new THREE.Mesh(geometryWallObs, materialWallObs);
 		if (onTop)
 			meshWallObs.position.set(x, this.playerLimits.up - 0.1, y);
@@ -764,7 +763,7 @@ class Map
 	#animationGravityChanger(group, onTop)
 	{
 		let geometryGC			= new THREE.TorusGeometry(1.5, 0.05, 12, 24);
-		let materialGC			= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
+		let materialGC			= new THREE.MeshPhysicalMaterial({color: 0x829CBC});
 		let ringGC				= new THREE.Mesh(geometryGC, materialGC);
 		let landmarkGC			= group.children[0];
 		let	speed				= 0.1;
@@ -875,7 +874,7 @@ class Map
 				if (diff > 2)
 					this.arrObject[i].mesh.material.opacity = 0;
 				else
-					this.arrObject[i].mesh.material.opacity = 1 - (diff / 2);
+					this.arrObject[i].mesh.material.opacity = 0.7 - (diff / 2);
 			}
 			else if (this.arrObject[i].name == "wallRight")
 			{
@@ -890,7 +889,7 @@ class Map
 				if (diff > 2)
 					this.arrObject[i].mesh.material.opacity = 0;
 				else
-					this.arrObject[i].mesh.material.opacity = 1 - (diff / 2);
+					this.arrObject[i].mesh.material.opacity = 0.7 - (diff / 2);
 			}
 			if (this.arrObject[i].type == 'jumperBottom')
 			{

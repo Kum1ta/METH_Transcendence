@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 22:36:43 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/30 23:08:59 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/01 21:58:57 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ const	url_files = {
 	catchVideoPub: '/static/video/multiOnlineGamePage/catch.mp4',
 	fortniteVideoPub: '/static/video/multiOnlineGamePage/fortnite.mp4',
 
+	wallTexture: '/static/img/multiOnlineGamePage/wallTexture.jpg',
 	planeTexture: '/static/img/multiOnlineGamePage/pastel.jpg',
 	skinOneTexture: '/static/img/skin/1.jpg',
 	skinTwoTexture: '/static/img/skin/2.jpg',
