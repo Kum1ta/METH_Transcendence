@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:13:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/29 23:17:04 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/01 02:34:55 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ class Screen
 			tv.geometry.center();
 			this.tv = tv;
 			tv.position.set(0, 0.99, 2);
-			tv.material = new THREE.MeshPhysicalMaterial({color: 0xaaaaaa});
+			tv.material = new THREE.MeshPhysicalMaterial({color: 0x454545});
 			tv.material.roughness = 1;
 			tv.material.metalness = 1.05;
 			tv.scale.set(0.05, 0.05, 0.05);

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/30 23:46:19 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/01 01:01:09 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,9 @@ function startMode()
 	if (gameMode == 0)
 		startMultiLocal();
 	else if (gameMode == 1)
-		startMatchmaking();
+		startMatchmaking(false);
 	else if (gameMode == 2)
-		alert("Not implemented");
+		startMatchmaking(true);
 	else if (gameMode == 3)
 		alert("Not implemented");
 }
@@ -153,13 +153,13 @@ function startMultiLocal()
 	}, 500);
 }
 
-function startMatchmaking()
+function startMatchmaking(ranked)
 {
 	document.body.style.animation = "none";
 	document.body.style.animation = "startGameAnim 0.5s";
 	document.body.style.opacity = 0;
 	setTimeout(() => {
-		pageRenderer.changePage("waitingGamePage");
+		pageRenderer.changePage("waitingGamePage", false, ranked);
 	}, 500);
 }
 

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/30 23:07:19 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/01 02:34:34 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,15 +116,19 @@ function home3D()
 	mouse			= new THREE.Vector2();
 	isInFade		= false;
 	spotLight		= new THREE.SpotLight(0xffffff, 1000);
-
 	
-	spotLight.position.set(0, 10, 0);
+	spotLight.angle = Math.PI / 6; // angle d'ouverture
+	spotLight.penumbra = 0.5;
+	spotLight.decay = 2;
+	spotLight.distance = 50;
+	spotLight.position.set(0, 3, -4);
 	spotLight.castShadow = true;
-	spotLight.rotateX(Math.PI / 2);	
 	scene.add(spotLight);
+	spotLight.target = screen.screen;
+
 	if (Math.random() % 100 > 0.99)
 		video.pong = files.easterEggVideo;
-	newBgWall();
+	// newBgWall();
 	putObject(files.lampModel, -2.5, 0, 2.5, 3, 0, Math.PI + Math.PI / 8, 0);
 	putObject(files.plantModel, 1.5, 0, 3, 0.5, 0, 0, 0);
 	putObject(files.gameboyModel, -0.5, -0.075, 0.5, 0.1, 0, 0.4, 0);
