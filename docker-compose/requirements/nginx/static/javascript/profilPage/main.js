@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/29 02:08:41 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/01 00:21:50 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,14 +206,16 @@ function createGraph(ctx, data)
 
 function showHistory(userInfo)
 {
-	const	divHistory	=	document.getElementById('history');
+	const	divHistory	=	document.getElementById('scroll-match');
 	const	history		=	userInfo.history;
 
 	history.forEach(element => {
 		const	div	=	document.createElement('div');
 
 		div.setAttribute('class', 'history-card');
-		if (element.won)
+		if (element.forfeit)
+			div.style.backgroundColor = '#c45f0c';
+		else if (element.won)
 			div.style.backgroundColor = '#11ad11';
 		div.innerHTML = `
 		<div id="user-1">

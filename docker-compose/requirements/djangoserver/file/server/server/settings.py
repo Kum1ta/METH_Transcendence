@@ -81,6 +81,14 @@ DATABASES = {
         "NAME":"VAR_DB_NAME",
         "USER":"VAR_DB_USERNAME",
         "PASSWORD":"VAR_DB_PASSWORD"
+    },
+    "second": {
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST":"VAR_DB_HOST",
+        "PORT":5432,
+        "NAME":"VAR_DB_NAME",
+        "USER":"VAR_DB_USERNAME",
+        "PASSWORD":"VAR_DB_PASSWORD"
     }
 }
 
@@ -132,7 +140,7 @@ STATIC_ROOT  = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ASGI_APPLICATION = 'server.asgi.applicatio'
+ASGI_APPLICATION = 'server.asgi.application'
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_COOKIE_NAME = 'sessionid'
 SESSION_COOKIE_SECURE = False 

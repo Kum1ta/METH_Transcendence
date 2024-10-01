@@ -239,7 +239,7 @@ body {
 	align-items: center;
 }
 
-#bar{
+.barSelection{
 	margin: 25px;
 	width: 250px;
 	height: 250px;
@@ -247,11 +247,11 @@ body {
 	transition: transform 0.3s ease;
 }
 
-#bar:hover{
+.barSelection:hover{
 	transform: scale(1.05);
 }
 
-#goal{
+.goalSelection{
 	margin: 25px;
 	width: 250px;
 	height: 250px;
@@ -259,7 +259,7 @@ body {
 	transition: transform 0.3s ease;
 }
 
-#goal:hover{
+.goalSelection:hover{
 	transform: scale(1.05);
 }
 

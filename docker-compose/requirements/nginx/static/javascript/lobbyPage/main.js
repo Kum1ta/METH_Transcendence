@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/09/29 01:34:41 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/09/30 23:46:19 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,13 @@ function selectGameModeTwo()
 		goalSelector.dispose();
 	document.getElementById('bar').innerHTML = '';
 	document.getElementById('goal').innerHTML = '';
+	if (barSelector)
+		barSelector.dispose();
+	if (goalSelector)
+		goalSelector.dispose();
+	barSelector = null;
+	goalSelector = null;
+	window.gc();
 	barSelector = new barSelecter(document.getElementById('bar'));
 	goalSelector = new goalSelecter(document.getElementById('goal'));
 	gameMode = 1;
@@ -222,7 +229,18 @@ function selectGameModeThree()
 	{
 		menuList[i].style.display = 'none';
 	}
+	document.getElementById('bar1').innerHTML = '';
+	document.getElementById('goal1').innerHTML = '';
 	document.getElementsByClassName('menuSelected')[2].style.display = 'flex';
+	if (barSelector)
+		barSelector.dispose();
+	if (goalSelector)
+		goalSelector.dispose();
+	barSelector = null;
+	goalSelector = null;
+	window.gc();
+	barSelector = new barSelecter(document.getElementById('bar1'));
+	goalSelector = new goalSelecter(document.getElementById('goal1'));
 	gameMode = 2;
 }
 
@@ -235,7 +253,15 @@ function selectGameModeFour()
 	{
 		menuList[i].style.display = 'none';
 	}
+	document.getElementById('bar2').innerHTML = '';
+	document.getElementById('goal2').innerHTML = '';
 	document.getElementsByClassName('menuSelected')[3].style.display = 'flex';
+	if (barSelector)
+		barSelector.dispose();
+	if (goalSelector)
+		goalSelector.dispose();
+	barSelector = new barSelecter(document.getElementById('bar2'));
+	goalSelector = new goalSelecter(document.getElementById('goal2'));
 	gameMode = 3;
 }
 
