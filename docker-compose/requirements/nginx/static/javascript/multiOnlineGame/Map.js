@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/30 18:13:05 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/10/01 18:45:17 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1033,11 +1033,10 @@ class Map
 		animationSpeed = 0.02;
 
 		this.updateScore(name, this.score);
-		player.reserCameraPlayer();
 		ball.resetPosBall();
 		this.resetPosWalls();
-		// player.resetPosPlayer();
-		// opponent.resetPosOpponent();
+		player.resetScaleplayers();
+		player.reserCameraPlayer();
 	};
 };
 
