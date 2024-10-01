@@ -1,0 +1,314 @@
+#tournamentPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #020202;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+#tournamentPage .bracket {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 70%;
+  transform: scale(0.8);
+}
+
+#tournamentPage .top-bracket {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+}
+
+#tournamentPage #actuality-tournament {
+  color: white;
+  font-size: 30px;
+  margin: 0;
+}
+
+#tournamentPage #code-tournament {
+  color: #BFBFBF;
+  font-size: 20px;
+  margin: 0;
+}
+
+#tournamentPage p {
+  color: #BFBFBF;
+  margin: 0;
+}
+
+#tournamentPage .left{
+  padding: 82px;
+  /* width: 50%; */
+  height: 100%;
+}
+
+#tournamentPage .right{
+  padding: 82px;
+  padding-top: 120px;
+  /* width: 50%; */
+  height: 100%;
+}
+
+#tournamentPage .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#tournamentPage .mid-container {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  margin-top: 50px;
+}
+
+#tournamentPage .circle {
+  width: 50px;
+  height: 50px;
+  background-color: #D9D9D9;
+  border-radius: 50%;
+}
+
+#tournamentPage .vertical-line {
+  width: 6px;
+  height: 100px;
+  background-color: #BFBFBF;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+#tournamentPage .vertical-line-demi {
+  width: 6px;
+  height: 300px;
+  background-color: #BFBFBF;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+#tournamentPage .horizontal-container {
+  display: flex;
+  position: relative;
+  align-items: center;
+  margin-left: auto;
+  left: 75px;
+}
+
+#tournamentPage .horizontal-container-right {
+  display: flex;
+  position: relative;
+  align-items: center;
+  margin-left: auto;
+  left: 50px;
+}
+
+#tournamentPage .horizontal-container-final {
+  display: flex;
+  position: relative;
+  align-items: center;
+  margin-left: auto;
+  left: 130px;
+  padding-bottom: 50px;
+}
+
+#tournamentPage .horizontal-container-final p {
+  margin-left: 10px;
+}
+
+#tournamentPage .horizontal-line {
+  width: 100px;
+  height: 6px;
+  background-color: #BFBFBF;
+}
+
+#tournamentPage .all-tournament {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 36%;
+  height: 700px;
+  margin-left: 400px;
+  margin-bottom: 20px;
+}
+
+#tournamentPage .info-tournament {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #131313;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+#tournamentPage .info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 95%;
+  height: 100%;
+  background-color: #090909;
+  padding: 20px;
+}
+
+#tournamentPage #info-title {
+  color: white;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+#tournamentPage .alert-info {
+  display: flex;
+  /* flex-direction: row; */
+  justify-content: space-between;
+  width: 90%;
+  height: 10%;
+  background-color: #BFBFBF;
+  padding: 20px;
+}
+
+#tournamentPage .alert-info p{
+  color: #020202;
+  font-size: 15px;
+}
+
+#tournamentPage .alert-info img{
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+#tournamentPage .chat-tournament {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #131313;
+  padding: 20px;
+}
+
+#tournamentPage .chat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(100% - 40px);
+  height: 100%;
+  background-color: #090909;
+  padding: 20px;
+}
+
+#tournamentPage #chat-title {
+  color: white;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+#tournamentPage .message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: purple;
+  padding: 20px;
+}
+
+#tournamentPage .message-user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: orange;
+  padding: 20px;
+}
+
+#tournamentPage #chat-input-tournament {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: red;
+  padding: 20px;
+}
+
+#tournamentPage .inputMessageDiv {
+  margin: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #0B0B0B;
+  bottom: 10px;
+  color: white;
+  display: flex;
+  flex-direction: row;
+}
+
+#tournamentPage #inputMessage {
+  user-select: text;
+  background-color: #0f0f0f;
+  width: 100%;
+  overflow: hidden;
+  resize: none;
+  border: 0;
+  color: white;
+  padding: 15px 5% 15px 5%;
+}
+
+#tournamentPage .inputMessageDiv p {
+  margin: 0;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-family: "Poppins";
+  font-weight: bolder;
+  font-size: 35px;
+  margin-top: -2px;
+}
+
+#tournamentPage .bottom {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	margin-block: 25px;
+}
+
+#tournamentPage .buttonStartGame {
+	background-color: white;
+	padding: 10px;
+	cursor: pointer;
+	width: 150px;
+  height: 30px;
+	text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+	transition: transform 0.3s ease;
+}
+
+#tournamentPage .buttonStartGame p {
+  color: #020202;
+}
+
+#tournamentPage .buttonStartGame:hover {
+	transform: scale(1.1);
+}

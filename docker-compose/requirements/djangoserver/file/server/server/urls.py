@@ -25,7 +25,7 @@ urlpatterns = [
 	path("multiOnlineGamePage", views.multiOnlineGamePage, name='multiOnlineGamePage'),
 	path("waitingGamePage", views.waitingGamePage, name='waitingGamePage'),
 	path("profilPage", views.profilPage, name='profilPage'),
-	# path("game", views.game, name='game'),
+	path("game", views.game, name='game'),
 	path("wait_game", views.game, name='wait_game'),
     path("login42", views.login42, name='login42'),
     path("logout", views.logout, name='logout'),
@@ -34,6 +34,7 @@ urlpatterns = [
 	path("pfp/<str>", views.pfp, name='pfp'),
 	path("banner/<str>", views.banner, name='banner'),
 	path("settingsPage", views.settingsPage, name='settingsPage'),
+	path("tournamentPage", views.tournamentPage, name='tournamentPage'),
 ]
 
 handler404 = "server.views.handler404"

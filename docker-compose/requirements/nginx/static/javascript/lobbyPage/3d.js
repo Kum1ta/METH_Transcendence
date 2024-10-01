@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/01 19:55:19 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/02 00:01:05 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ class barSelecter
 	{
 		const	popup	=	document.getElementById('popup-skin-selector');
 
-		if (event.target.getAttribute('class') == 'popup-skin-selector')
+		console.log("Gros fdp de tes morts")
+		if (event.target.getAttribute('id') == 'popup-skin-selector')
 			popup.style.display = 'none';
 	}
 

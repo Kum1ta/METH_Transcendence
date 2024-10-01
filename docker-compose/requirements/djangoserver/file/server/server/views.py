@@ -158,3 +158,10 @@ def	settingsPage(request):
 	if(not request.session.get("logged_in", False)):
 		return(HttpResponse("you are not logged in",status=403))
 	return render(request, "settingsPage.html", {})
+
+def	tournamentPage(request):
+	if(request.method != "POST"):
+		return index(request)
+	if(not request.session.get("logged_in", False)):
+		return(HttpResponse("you are not logged in",status=403))
+	return render(request, "tournamentPage.html", {})

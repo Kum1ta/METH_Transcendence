@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/01 15:12:50 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/01 23:03:17 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ class Page
 		{suffix: false, url:'/wait_game', servUrl: '/waitingGamePage', class: WaitingGamePage, name: 'waitingGamePage', title: 'METH - Wait for a game'},
 		{suffix: true, url:'/profil', servUrl: '/profilPage', class: ProfilPage, name: 'profilPage', title: 'METH - Profil'},
 		{suffix: false, url:'/settings', servUrl: '/settingsPage', class: settingsPage, name: 'settingsPage', title: 'METH - Settings'},
-		// {suffix: true, url:'/tournament', servUrl: '/tournamentPage', class: TournamentPage, name: 'tournamentPage', title: 'METH - Tournament'},
+		{suffix: true, url:'/tournament', servUrl: '/tournamentPage', class: TournamentPage, name: 'tournamentPage', title: 'METH - Tournament'},
 	]
 
 	constructor()
