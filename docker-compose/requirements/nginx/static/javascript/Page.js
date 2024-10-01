@@ -6,12 +6,13 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/28 19:48:30 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/01 15:12:50 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { MultiOnlineGamePage } from "/static/javascript/multiOnlineGame/multiOnlineGamePage.js"
 import { multiLocalGamePage } from "/static/javascript/multiLocalGame/multiLocalGamePage.js"
+import { TournamentPage } from "/static/javascript/tournamentPage/TournamentPage.js"
 import { settingsPage } from "/static/javascript/settingsPage/settingsPage.js"
 import { WaitingGamePage } from "/static/javascript/waitingGame/main.js"
 import { ProfilPage } from "/static/javascript/profilPage/main.js";
@@ -31,6 +32,7 @@ class Page
 		{suffix: false, url:'/wait_game', servUrl: '/waitingGamePage', class: WaitingGamePage, name: 'waitingGamePage', title: 'METH - Wait for a game'},
 		{suffix: true, url:'/profil', servUrl: '/profilPage', class: ProfilPage, name: 'profilPage', title: 'METH - Profil'},
 		{suffix: false, url:'/settings', servUrl: '/settingsPage', class: settingsPage, name: 'settingsPage', title: 'METH - Settings'},
+		// {suffix: true, url:'/tournament', servUrl: '/tournamentPage', class: TournamentPage, name: 'tournamentPage', title: 'METH - Tournament'},
 	]
 
 	constructor()
@@ -46,6 +48,8 @@ class Page
 						arg = null;
 					if (thisClass.actualPage == MultiOnlineGamePage)
 						sendRequest("game", {action: 2});
+					if (thisClass.actualPage == TournamentPage)
+						sendRequest("tournament", {action: 1});
 					thisClass.changePage(thisClass.availablePages[i].name, true, arg, !thisClass.availablePages[i].suffix);
 					return ;
 				}

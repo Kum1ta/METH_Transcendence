@@ -222,6 +222,7 @@ body {
 	flex-direction: column;
 	margin-block: 25px;
 	max-width: 500px;
+	width: 400px;
 	font-size: 1.5rem;
 }
 
@@ -449,4 +450,9 @@ body {
 	align-items: center;
 	width: 100%;
 	height: 100%;
+}
+
+#tournamentCode {
+	width: 94%;
+	font-size: 0.8rem;
 }

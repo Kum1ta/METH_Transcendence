@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/28 00:22:40 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/01 13:30:48 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ import { typePrivateInfo } from "/static/javascript/typeResponse/typePrivateInfo
 import { createNotification as CN } from "/static/javascript/notification/main.js";
 import { typeSearchUser } from "/static/javascript/typeResponse/typeSearchUser.js";
 import { typeInvitation }from "/static/javascript/typeResponse/typeInvitation.js";
+import { typeTournament } from "/static/javascript/typeResponse/typeTournament.js";
 import { typeChangePfp } from "/static/javascript/typeResponse/typeChangePfp.js";
 import { typeUserInfo } from "/static/javascript/typeResponse/typeUserInfo.js";
 import { typeLogin } from "/static/javascript/typeResponse/typeLogin.js";
@@ -39,8 +40,8 @@ function launchSocket()
 
 	socket = new WebSocket('/ws');
 
-	const	typeResponse		= ["logged_in", "login", "private_list_user", "private_list_message", "new_private_message", "all_list_user", "create_account", "game", "search_user", "user_info", "change_pfp", "private_info", "change_private_info", "invitation"];
-	const	functionResponse	= [typeLogin, typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage, typeAllListUser, typeCreateAccount, typeGame, typeSearchUser, typeUserInfo, typeChangePfp, typePrivateInfo, typeChangePrivateInfo, typeInvitation];
+	const	typeResponse		= ["logged_in", "login", "private_list_user", "private_list_message", "new_private_message", "all_list_user", "create_account", "game", "search_user", "user_info", "change_pfp", "private_info", "change_private_info", "invitation", "tournament"];
+	const	functionResponse	= [typeLogin, typeLogin, typePrivateListUser, typePrivateListMessage, typeNewPrivateMessage, typeAllListUser, typeCreateAccount, typeGame, typeSearchUser, typeUserInfo, typeChangePfp, typePrivateInfo, typeChangePrivateInfo, typeInvitation, typeTournament];
 
 	const	errorCode = [9007, 9010, 9011, 9013];
 	const	errorFunction = [typeErrorInvalidPassword, typeErrorInvalidToken42, typeErrorUnknown42Account, typeErrorConnectedElsewhere];

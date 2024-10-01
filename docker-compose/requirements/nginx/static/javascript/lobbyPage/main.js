@@ -6,11 +6,12 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/10/01 01:01:09 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/01 15:12:03 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { userMeInfo, waitForLogin } from '/static/javascript/typeResponse/typeLogin.js';
+import { createNotification as CN } from "/static/javascript/notification/main.js";
 import { barSelecter, goalSelecter } from '/static/javascript/lobbyPage/3d.js';
 import { LiveChat } from "/static/javascript/liveChat/main.js";
 import { sendRequest } from "/static/javascript/websocket.js";
@@ -140,7 +141,7 @@ function startMode()
 	else if (gameMode == 2)
 		startMatchmaking(true);
 	else if (gameMode == 3)
-		alert("Not implemented");
+		startTournmament();
 }
 
 function startMultiLocal()
@@ -161,6 +162,18 @@ function startMatchmaking(ranked)
 	setTimeout(() => {
 		pageRenderer.changePage("waitingGamePage", false, ranked);
 	}, 500);
+}
+
+function startTournmament()
+{
+	const	code	=	document.getElementById('tournamentCode').value;
+
+	if (code.length != 6 && code.length != 0)
+	{
+		CN.new("Information", "The code must be 6 characters long or empty");
+		return ;
+	}
+	sendRequest("tournament", {action: 0, code: code});
 }
 
 function showGameMode()
@@ -214,7 +227,6 @@ function selectGameModeTwo()
 		goalSelector.dispose();
 	barSelector = null;
 	goalSelector = null;
-	window.gc();
 	barSelector = new barSelecter(document.getElementById('bar'));
 	goalSelector = new goalSelecter(document.getElementById('goal'));
 	gameMode = 1;
@@ -238,7 +250,6 @@ function selectGameModeThree()
 		goalSelector.dispose();
 	barSelector = null;
 	goalSelector = null;
-	window.gc();
 	barSelector = new barSelecter(document.getElementById('bar1'));
 	goalSelector = new goalSelecter(document.getElementById('goal1'));
 	gameMode = 2;

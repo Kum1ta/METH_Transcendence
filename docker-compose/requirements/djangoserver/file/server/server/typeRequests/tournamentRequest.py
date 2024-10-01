@@ -1,0 +1,33 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    tournamentRequest.py                               :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/10/01 13:16:39 by edbernar          #+#    #+#              #
+#    Updated: 2024/10/01 14:00:29 by edbernar         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+# tournament request format : {"type":"tournament", "content":{"action": 1, ...}}
+
+#server actions (actions sent by the server):
+#	0 : start : tell the client if tournament is full or not exist. If not, tell the client can start the tournament
+#		- exist : true/false
+#		- isFull : true/false
+#		- started : true/false
+#		- code : code of the tournament
+#	1 : someoneJoin : tell the client someone join the tournament (considering clients will place selon the order of the join)
+#		- id : id of the player
+#		- name : name of the player
+#		- pfp : pfp of the player
+#	2 : someoneLeave : tell the client someone leave the tournament (if game not started, players will be replaced in the order of the join)
+#		- id : id of the player who leave
+
+#client actions (actions sent by the client) :
+#	0 : start : start a tournament. if code == "", create a new tournament, else join the tournament with the code
+#		- code : code of the tournament
+#	1 : leave : leave the tournament
+
+
