@@ -19,9 +19,10 @@
 #cross-profil{
     color: white;
     position: absolute;
-    font-size: 64px;
-    top: 40px;
+    top: 45px;
     left: 40px;
+    width: 80px;
+    height: 80px;
 }
 
 #profil .container {
