@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/30 23:53:04 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/01 19:55:19 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ class barSelecter
 		availableSkins[6].texture = files.skinThreeTexture;
 		availableSkins[7].texture = files.skinFourTexture;
 		div.addEventListener('click', () => {
-			const	popup	=	document.getElementById('popup-background');
-			const	skins	=	document.getElementsByClassName('color-box');
+			const	popup	=	document.getElementById('popup-skin-selector');
+			const	skins	=	document.getElementsByClassName('color-box-skin');
 		
 			popup.style.display = 'flex';
 			for (let i = 0; i < skins.length; i++)
@@ -80,20 +80,20 @@ class barSelecter
 			}
 			popup.removeEventListener('click', this.hideSkinSelector);
 			popup.addEventListener('click', this.hideSkinSelector);
-		})
+		});
 	}
 
 	hideSkinSelector(event)
 	{
-		const	popup	=	document.getElementById('popup-background');
+		const	popup	=	document.getElementById('popup-skin-selector');
 
-		if (event.target.getAttribute('class') == 'popup-background')
+		if (event.target.getAttribute('class') == 'popup-skin-selector')
 			popup.style.display = 'none';
 	}
 
 	changeSkin (event)
 	{
-		const	popup	=	document.getElementById('popup-background');
+		const	popup	=	document.getElementById('popup-skin-selector');
 	
 		const id = event.target.getAttribute('skinId');
 		popup.style.display = 'none';

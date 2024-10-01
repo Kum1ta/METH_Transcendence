@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/09/30 18:13:05 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/10/01 19:42:54 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1122,4 +1122,4 @@ function createRing(colorO) {
 	return new THREE.Mesh(geometry, material);
 }
 
-export { Map };
+export { Map, createStar, createBox, createRectangle, createRing, colorList };
