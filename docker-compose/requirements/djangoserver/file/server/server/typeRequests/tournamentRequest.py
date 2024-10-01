@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 13:16:39 by edbernar          #+#    #+#              #
-#    Updated: 2024/10/01 14:00:29 by edbernar         ###   ########.fr        #
+#    Updated: 2024/10/01 17:49:33 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,16 +18,22 @@
 #		- isFull : true/false
 #		- started : true/false
 #		- code : code of the tournament
+#
 #	1 : someoneJoin : tell the client someone join the tournament (considering clients will place selon the order of the join)
 #		- id : id of the player
-#		- name : name of the player
+#		- username : name of the player
 #		- pfp : pfp of the player
+#
 #	2 : someoneLeave : tell the client someone leave the tournament (if game not started, players will be replaced in the order of the join)
 #		- id : id of the player who leave
+
 
 #client actions (actions sent by the client) :
 #	0 : start : start a tournament. if code == "", create a new tournament, else join the tournament with the code
 #		- code : code of the tournament
 #	1 : leave : leave the tournament
+#
+#   2 : message tournament : send a message to the tournament chat
+#       - message : message to send
 
 

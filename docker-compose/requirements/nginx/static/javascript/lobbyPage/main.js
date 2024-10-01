@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/10/01 15:12:03 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/01 21:32:33 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,12 @@ class LobbyPage
 		{
 			document.body.children[i].style.animation = 'animShowMenuDiv 0.5s';
 		}
+		setTimeout(() => {
+			for (let i = 0; i < document.body.children.length; i++)
+			{
+				document.body.children[i].style.animation = null;
+			}
+		}, 600);
 		startButton.addEventListener('click', startMode);
 		methButton.addEventListener('click', goBackHome);
 		document.getElementsByClassName('menuSelected')[gameMode].style.display = 'flex';

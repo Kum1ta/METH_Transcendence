@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:34:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/25 15:29:52 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/10/01 15:28:00 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,6 @@ class Opponent
 
 	update()
 	{
-	}
-
-	resetPosOpponent()
-	{
-		this.object.position.set(0, 0.3, -mapLength / 2 + 0.2);
 	}
 
 	movePlayer(content)

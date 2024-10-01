@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/30 16:48:22 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/10/01 18:45:39 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,6 @@ class Player
 			clearInterval(this.interval);
 	}
 
-	resetPosPlayer()
-	{
-		this.object.position.set(0, this.limits.down, mapLength / 2 - 0.2);
-	}
-
 	reserCameraPlayer()
 	{
 		this.setCameraPosition(
@@ -118,6 +113,13 @@ class Player
 			this.object.position.y + 0.7,
 			this.object.position.z + 1.5
 		);
+	}
+
+	resetScaleplayers()
+	{
+		this.object.scale.set(1, 1, 1);
+		if (this.opponent)
+			this.opponent.object.scale.set(1, 1, 1);
 	}
 
 	makeAnimation(isOpponent)

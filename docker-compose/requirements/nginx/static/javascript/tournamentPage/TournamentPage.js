@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/01 14:15:12 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/01 18:36:53 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,21 @@ const	playerList	=	{
 	player15: {id: 0, name: null, pfp: null},
 	player16: {id: 0, name: null, pfp: null},
 };
+let		divInfo	= null;	
 
 class TournamentPage
 {
 	static create(code)
 	{
-		console.log("Code game : ", code);
+		divInfo = document.getElementById('code-tournament');
+
+		document.getElementById('code-tournament').innerText = code;
+		divInfo.innerText = 'Tournament';
 	}
 
 	static dispose()
 	{
-		
+		divInfo = null;
 	}
 
 	static newOpponent(content)
@@ -50,8 +54,8 @@ class TournamentPage
 			console.warn("Tournament is full.");
 			return ;
 		}
-		console.warn('Put pfp on player' + playerNb[i]);
-		console.warn('Put username on player' + playerNb[i]);
+		document.getElementById('user-' + playerNb[i]).innerText = content.username;
+		document.getElementById('pfp-' + playerNb[i]).style.backgroundImage = `url(${content.pfp})`;
 		playerList['player' + playerNb[i]].id = content.id;
 		playerList['player' + playerNb[i]].pfp = content.pfp;
 		playerList['player' + playerNb[i]].username = content.username;
@@ -73,6 +77,8 @@ class TournamentPage
 			console.warn(`Opponent can't be remove cause he is not in this tournament`);
 			return ;
 		}
+		document.getElementById('user-' + playerNb[i]).innerText = "Nobody";
+		document.getElementById('pfp-' + playerNb[i]).style.backgroundImage = null;
 		while (i < playerNb.length - 1)
 		{
 			playerList['player' + playerNb[i]] = playerList['player' + playerNb[i + 1]];
