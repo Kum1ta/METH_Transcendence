@@ -6,46 +6,56 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/01 23:04:34 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/02 04:55:51 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 const	playerNb	=	[1, 2, 4, 5, 13, 14, 15, 16];
 const	playerList	=	{
-	player1: {id: 0, name: null, pfp: null},
-	player2: {id: 0, name: null, pfp: null},
-	player3: {id: 0, name: null, pfp: null},
-	player4: {id: 0, name: null, pfp: null},
-	player13: {id: 0, name: null, pfp: null},
-	player14: {id: 0, name: null, pfp: null},
-	player15: {id: 0, name: null, pfp: null},
-	player16: {id: 0, name: null, pfp: null},
+	player1: {id: 0, username: null, pfp: null},
+	player2: {id: 0, username: null, pfp: null},
+	player4: {id: 0, username: null, pfp: null},
+	player5: {id: 0, username: null, pfp: null},
+	player13: {id: 0, username: null, pfp: null},
+	player14: {id: 0, username: null, pfp: null},
+	player15: {id: 0, username: null, pfp: null},
+	player16: {id: 0, username: null, pfp: null},
 };
-let		divInfo	= null;	
+let		divTopInfo	= null;	
+let		divInfo		= null;
+let		divChat		= null;
 
 class TournamentPage
 {
 	static create(code)
 	{
-		divInfo = document.getElementById('code-tournament');
+		divTopInfo = document.getElementById('actuality-tournament');
+		divInfo = document.getElementsByClassName('infoo')[0];
+		divChat = document.getElementsByClassName('chat')[0];
 
-		document.getElementById('code-tournament').innerText = code;
-		divInfo.innerText = 'Tournament';
+		document.getElementById('code-tournament').innerText = "Code : " + code;
+		divTopInfo.innerText = 'Tournament';
 	}
 
 	static dispose()
 	{
+		divTopInfo = null;
 		divInfo = null;
+		divChat = null;
 	}
 
 	static newOpponent(content)
 	{
-		let	found	=	false;
-		let	i		=	0;
+		let		found				=	false;
+		let		alreadyConnected	=	false;
+		let		i					=	0;
 	
 		Object.values(playerList).forEach((info) => {
-			if (info.id == 0)
+			if (!found && info.id == 0 || info.id == content.id)
+			{
 				found = true;
+				alreadyConnected = info.id == content.id;
+			}
 			if (!found)
 				i++;				
 		});
@@ -54,6 +64,12 @@ class TournamentPage
 			console.warn("Tournament is full.");
 			return ;
 		}
+		if (alreadyConnected)
+		{
+			console.warn("Player is already in game.");
+			return ;
+		}
+		newInfo(`${content.username} joined the tournament.`);
 		document.getElementById('user-' + playerNb[i]).innerText = content.username;
 		document.getElementById('pfp-' + playerNb[i]).style.backgroundImage = `url(${content.pfp})`;
 		playerList['player' + playerNb[i]].id = content.id;
@@ -63,11 +79,11 @@ class TournamentPage
 
 	static leaveOpponent(content)
 	{
-		let	found	=	false;
-		let	i		=	0;
+		let		found	=	false;
+		let		i		=	0;
 	
 		Object.values(playerList).forEach((info) => {
-			if (info.id == content.id)
+			if (!found && info.id == content.id)
 				found = true;
 			if (!found)
 				i++;				
@@ -77,15 +93,38 @@ class TournamentPage
 			console.warn(`Opponent can't be remove cause he is not in this tournament`);
 			return ;
 		}
+		newInfo(`${playerList['player' + playerNb[i]].username} left the tournament.`);
 		document.getElementById('user-' + playerNb[i]).innerText = "Nobody";
 		document.getElementById('pfp-' + playerNb[i]).style.backgroundImage = null;
 		while (i < playerNb.length - 1)
 		{
 			playerList['player' + playerNb[i]] = playerList['player' + playerNb[i + 1]];
+			console.log(playerList['player' + playerNb[i]]);
+			document.getElementById('user-' + playerNb[i]).innerText = playerList['player' + playerNb[i]].username;
+			document.getElementById('pfp-' + playerNb[i]).style.backgroundImage = `url(${playerList['player' + playerNb[i]].pfp})`;
 			i++;
 		}
-		playerList['player' + playerNb[i]] = {id: 0, name: null, pfp: null};
+		playerList['player' + playerNb[i]] = {id: 0, username: null, pfp: null};
+		document.getElementById('user-' + playerNb[i]).innerText = playerList['player' + playerNb[i]].username;
+		document.getElementById('pfp-' + playerNb[i]).style.backgroundImage = `url(${playerList['player' + playerNb[i]].pfp})`;
 	}
+
+	static newMessage(content)
+	{
+		const	newText	= document.createElement('p');
+
+		newText.innerText = `${content.username} : ${content.message}`;
+		divChat.appendChild(newText);
+	}
+}
+
+function newInfo(message)
+{
+	const	newDiv	=	document.createElement('div');
+	
+	newDiv.setAttribute('class', 'alert-info');
+	newDiv.innerHTML = `<p>${message}</p>`
+	divInfo.appendChild(newDiv);
 }
 
 export { TournamentPage }

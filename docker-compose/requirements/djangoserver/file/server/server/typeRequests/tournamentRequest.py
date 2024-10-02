@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 13:16:39 by edbernar          #+#    #+#              #
-#    Updated: 2024/10/01 17:49:33 by edbernar         ###   ########.fr        #
+#    Updated: 2024/10/02 04:48:02 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,10 @@
 #
 #	2 : someoneLeave : tell the client someone leave the tournament (if game not started, players will be replaced in the order of the join)
 #		- id : id of the player who leave
+#	
+#	3 : message : send a message to the tournament chat
+#		- username : name of the player who send the message
+#		- message : message to send
 
 
 #client actions (actions sent by the client) :
