@@ -241,6 +241,70 @@ body {
 	align-items: center;
 }
 
+.keys {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 20px;
+	align-items: center;
+	height: 100px;
+	width: 100%;
+}
+
+.key {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	background-color: transparent;
+	border: 4px solid white;
+	width: 80px;
+	height: 80px;
+	font-size: 1.2em;
+	transition: transform 0.3s ease;
+}
+
+.key img {
+	width: 35px;
+	height: 35px;
+}
+
+#down-key {
+	transform: scaleY(-1);
+}
+
+.select-line {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 20px;
+}
+
+.select-keys {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 20px;
+	height: 35px;
+	width: 45%;
+	background-color: white;
+	color: #020202;
+	margin-top: 20px;
+}
+
+.not-select-keys {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 20px;
+	height: 35px;
+	width: 45%;
+	background-color: transparent;
+	color: white;
+	border: 2px solid white;
+	margin-top: 20px;
+}
+
 .barSelection{
 	margin: 25px;
 	width: 250px;
