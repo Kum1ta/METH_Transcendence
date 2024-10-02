@@ -15,7 +15,8 @@ typeTournament({action: 1, id: 7, username: "NovaBlaze", pfp: "https://encrypted
 typeTournament({action: 1, id: 8, username: "GlitchPhantom", pfp: "https://images.wondershare.com/filmora/article-images/2022/cool-tiktok-pfp.jpg"});
 typeTournament({action: 1, id: 9, username: "FrostBiteX", pfp: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJWyvMlk1053PLnD3PRrz2g_LdQtW2H-M-GQ&s"});
 typeTournament({action: 1, id: 10, username: "LunarEcho", pfp: "https://hypixel.net/attachments/1928357/"});
-typeTournament({action: 2,id: 3});
+typeTournament({action: 2, id: 3});
 
 typeTournament({action: 3, username: "Eddy", message: "Bonsoir"});
-typeTournament({action: 4, username: "Eddy", message: "Bonsoir"});
+
+typeTournament({action: 4, id:4, username: "Zouave"});

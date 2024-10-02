@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Player.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/01 18:45:39 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/10/03 01:09:57 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from '/static/javascript/three/build/three.module.js'
+import { layoutSelected } from '/static/javascript/lobbyPage/main.js'
 
 /*
 	Explication du code :
@@ -48,6 +49,7 @@ let	isOnPointAnim		= false;
 let	pressedButton		= [];
 let mapLength			= 0;
 const goalAnimation		= ["triangle", "cylinder", "star", "box", "rectangle", "ring"];
+let	key					= null;
 
 class Player
 {
@@ -63,7 +65,7 @@ class Player
 	mapVar			= null;
 	opponent		= null;
 	playerGoalAnimation = null;
-
+	
 	constructor (object, map, opponent, indexGoalAnimation)
 	{
 		this.mapVar = map;
@@ -73,6 +75,8 @@ class Player
 		playerExist = true;
 		isOnPointAnim = false;
 		pressedButton = [];
+		console.log(layoutSelected);
+		key			= {up: layoutSelected.US ? "w" : "z", down: "s", left: layoutSelected.US ? "a" : "q", right: "d"};
 		this.object = object;
 		this.limits = map.playerLimits;
 		this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 10000);
@@ -104,6 +108,7 @@ class Player
 		pressedButton = [];
 		if (this.interval)
 			clearInterval(this.interval);
+		key = null;
 	}
 
 	reserCameraPlayer()
@@ -278,7 +283,7 @@ class Player
 		i = 0;
 		while (i < pressedButton.length)
 		{
-			if (pressedButton[i] == 'w' && this.object.position.y < this.limits.up)
+			if (pressedButton[i] == key.up && this.object.position.y < this.limits.up)
 			{
 				this.isUp = true;
 				if (this.interval)
@@ -294,7 +299,7 @@ class Player
 					}
 				}, 5);
 			}
-			if (pressedButton[i] == 's' && this.object.position.y > this.limits.down)
+			if (pressedButton[i] == key.down && this.object.position.y > this.limits.down)
 			{
 				this.isUp = false;
 				if (this.interval)
@@ -311,13 +316,13 @@ class Player
 					}
 				}, 5);
 			}
-			if (pressedButton[i] == 'd' && this.object.position.x < this.limits.right)
+			if (pressedButton[i] == key.right && this.object.position.x < this.limits.right)
 			{
 				this.object.position.x += this.speed * this.deltaTime;
 				if (!this.cameraFixed && !isOnPointAnim)
 					this.camera.position.x += this.speed * this.deltaTime;
 			}
-			if (pressedButton[i] == 'a' && this.object.position.x > this.limits.left)
+			if (pressedButton[i] == key.left && this.object.position.x > this.limits.left)
 			{
 				this.object.position.x -= this.speed * this.deltaTime;
 				if (!this.cameraFixed && !isOnPointAnim)
@@ -422,7 +427,7 @@ function showGamePad()
 	const	gamePad		=	document.getElementsByClassName('gamePad')[0];
 	const	canvas		=	document.getElementById('canvasMultiGameOnline');
 	const	keyList		=	['padLeft', 'padRight', 'padTop', 'padBottom']
-	const	keyAction	=	['a', 'd', 'w', 's']
+	const	keyAction	=	[key.left, key.right, key.up, key.down];
 
 	canvas.addEventListener('touchstart', function(e) {
 		e.preventDefault();

@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 13:16:39 by edbernar          #+#    #+#              #
-#    Updated: 2024/10/02 13:31:25 by edbernar         ###   ########.fr        #
+#    Updated: 2024/10/03 01:29:01 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,5 +44,8 @@
 #
 #   2 : message tournament : send a message to the tournament chat
 #       - message : message to send
+#
+#	3 : fetchAllData : fetch all data of the tournament
+#		--> server will send all the data of the tournament (players, messages, etc...) with his actions
 
 

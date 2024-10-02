@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/10/01 21:32:33 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/03 00:46:01 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ let	gameMode		= 0;
 let barSelector		= null;
 let goalSelector	= null;
 let timeout			= null;
+let	layoutSelected	= {US: false, FR: false};
 
 class LobbyPage
 {
@@ -54,6 +55,7 @@ class LobbyPage
 		window.addEventListener('resize', ajustSearchUserList);
 		movePopMenuLoginButton();
 		initButtonPopMenuLogin();
+		initButtonLaytout();
 		window.addEventListener('click', closePopUpWhenClickOutsite);
 		listSelectCard = document.getElementsByClassName('select-card');
 		document.getElementsByClassName('game-mode')[0].addEventListener('click', showGameMode);
@@ -329,4 +331,38 @@ function initButtonPopMenuLogin()
 	});
 }
 
-export { LobbyPage };
+function initButtonLaytout()
+{
+	const	USkeys	=	document.getElementsByClassName('USButton');
+	const	FRkeys	=	document.getElementsByClassName('FRButton');
+
+	for (let i = 0; i < USkeys.length; i++)
+	{
+		USkeys[i].addEventListener('click', () => {
+			for (let i = 0; i < USkeys.length; i++)
+			{
+				USkeys[i].classList.add('select-keys');
+				USkeys[i].classList.remove('not-select-keys');
+				FRkeys[i].classList.remove('select-keys');
+				FRkeys[i].classList.add('not-select-keys');
+			}
+			layoutSelected	= {US: true, FR: false};
+		});
+	}
+	for (let i = 0; i < FRkeys.length; i++)
+	{
+		FRkeys[i].addEventListener('click', () => {
+			for (let i = 0; i < USkeys.length; i++)
+			{
+				USkeys[i].classList.remove('select-keys');
+				USkeys[i].classList.add('not-select-keys');
+				FRkeys[i].classList.add('select-keys');
+				FRkeys[i].classList.remove('not-select-keys');
+			}
+			layoutSelected	= {US: false, FR: true};
+		});
+	}
+
+}
+
+export { LobbyPage, layoutSelected };

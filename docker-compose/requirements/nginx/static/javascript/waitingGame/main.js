@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 21:20:45 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/02 13:43:43 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/03 01:21:20 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ import { pageRenderer } from '/static/javascript/main.js'
 
 let	intervalPoints	= null;
 let timeout			= null;
+let	waitOpponentId	= 0;
 
 class WaitingGamePage
 {
@@ -23,6 +24,7 @@ class WaitingGamePage
 	{
 		const	returnButton	= document.getElementById('returnToLobbyButton');
 		const	sentence		= document.getElementById('sentence');
+		const	isTournament	= opponentInfo && typeof(opponentInfo) != 'boolean' && opponentInfo.isTournament;
 		let		text			= sentence.innerText;
 		let		points			= "";
 
@@ -46,11 +48,14 @@ class WaitingGamePage
 			else
 				sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0, isRanked: opponentInfo ? true : false});
 			timeout = null;
-		}, (opponentInfo && typeof(opponentInfo) != 'boolean' && !opponentInfo.isTournament) ? 1500 : 500);
-		if (!opponentInfo || typeof(opponentInfo) == 'boolean' || (typeof(opponentInfo) != 'boolean' && !opponentInfo.isTournament))
+		}, isTournament ? 1500 : 500);
+		if (!opponentInfo || !isTournament)
 			returnButton.addEventListener('click', returnToLobby);
 		else
+		{
+			waitOpponentId = opponentInfo.id;
 			returnButton.remove();
+		}
 	}
 
 	static dispose()
@@ -88,6 +93,12 @@ class WaitingGamePage
 			}, 1000);
 		}, 500);
 		document.body.removeChild(returnButton);
+	}
+
+	static opponentHasQuit(opponentId)
+	{
+		if (waitOpponentId == opponentId)
+			pageRenderer.changePage('tournamentPage', false, null);
 	}
 }
 

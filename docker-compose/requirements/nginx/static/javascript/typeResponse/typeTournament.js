@@ -6,12 +6,13 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:29:50 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/02 13:29:36 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/03 01:17:26 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { TournamentPage } from "/static/javascript/tournamentPage/TournamentPage.js"
 import { createNotification as CN } from "/static/javascript/notification/main.js";
+import { WaitingGamePage } from "/static/javascript/waitingGame/main.js";
 import { LobbyPage } from '/static/javascript/lobbyPage/main.js';
 import { pageRenderer } from '/static/javascript/main.js'
 
@@ -21,6 +22,11 @@ function typeTournament(content)
 	{
 		if (content.action == 0)
 			joinTournament(content);
+	}
+	else if (pageRenderer.actualPage == WaitingGamePage)
+	{
+		if (content.action == 2)
+			WaitingGamePage.opponentHasQuit(content.id);
 	}
 	else if (pageRenderer.actualPage == TournamentPage)
 	{

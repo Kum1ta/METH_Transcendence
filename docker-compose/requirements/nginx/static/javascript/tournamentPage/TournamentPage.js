@@ -6,10 +6,11 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/02 13:39:23 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/03 01:31:12 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import { sendRequest } from "/static/javascript/websocket.js";
 import { pageRenderer } from '/static/javascript/main.js';
 
 const	playerNb	=	[1, 2, 4, 5, 13, 14, 15, 16];
@@ -27,6 +28,8 @@ let		divTopInfo	= null;
 let		divInfo		= null;
 let		divChat		= null;
 
+// gerer quand une personne finit sa partie pour remettre tout comme il le faut
+
 class TournamentPage
 {
 	static create(code)
@@ -34,7 +37,6 @@ class TournamentPage
 		divTopInfo = document.getElementById('actuality-tournament');
 		divInfo = document.getElementsByClassName('infoo')[0];
 		divChat = document.getElementsByClassName('chat')[0];
-
 		document.getElementById('code-tournament').innerText = "Code : " + code;
 		divTopInfo.innerText = 'Tournament';
 	}

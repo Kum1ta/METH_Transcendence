@@ -6,16 +6,19 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:12:25 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/14 00:20:51 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/03 01:09:53 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from '/static/javascript/three/build/three.module.js'
+import { layoutSelected } from '/static/javascript/lobbyPage/main.js'
 
 const	speed			=	0.25;
 let		player1			=	null;
 let		player2			=	null;
 let		pressedButton	=	[];
+
+let		key = null;
 
 class Players
 {
@@ -24,6 +27,9 @@ class Players
 		player1	= newBarPlayer(1, 0xffffff);
 		player2	= newBarPlayer(2, 0xffffff);
 
+		key = {
+			up: layoutSelected.US ? "w" : "z",
+		};
 		scene.add(player1);
 		scene.add(player2);
 		document.addEventListener('keydown', addKeyInArr);
@@ -36,6 +42,7 @@ class Players
 		document.removeEventListener('keyup', remKeyInArr);
 		player1	= null;
 		player2	= null;
+		key = null;
 	}
 
 	static update()
@@ -45,9 +52,7 @@ class Players
 
 		while (i < pressedButton.length)
 		{
-			if (pressedButton[i] == 'w' && player1.position.z > -limits)
-				player1.position.z -= speed;
-			if (pressedButton[i] == 'z' && player1.position.z > -limits)
+			if (pressedButton[i] == key.up && player1.position.z > -limits)
 				player1.position.z -= speed;
 			else if (pressedButton[i] == 's' && player1.position.z < limits)
 				player1.position.z += speed;
