@@ -162,8 +162,13 @@
 	display: flex;
 	width: 95%;
 	height: 100%;
+	flex-direction: column;
 	background-color: #090909;
+	align-items: center;
 	padding: 20px;
+	padding-top: 0;
+	padding-bottom: 0;
+	margin-top: 0;
 	overflow-y: auto;
 }
 

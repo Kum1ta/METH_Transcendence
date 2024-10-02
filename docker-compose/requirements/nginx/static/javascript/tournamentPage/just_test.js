@@ -16,3 +16,6 @@ typeTournament({action: 1, id: 8, username: "GlitchPhantom", pfp: "https://image
 typeTournament({action: 1, id: 9, username: "FrostBiteX", pfp: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJWyvMlk1053PLnD3PRrz2g_LdQtW2H-M-GQ&s"});
 typeTournament({action: 1, id: 10, username: "LunarEcho", pfp: "https://hypixel.net/attachments/1928357/"});
 typeTournament({action: 2,id: 3});
+
+typeTournament({action: 3, username: "Eddy", message: "Bonsoir"});
+typeTournament({action: 4, username: "Eddy", message: "Bonsoir"});

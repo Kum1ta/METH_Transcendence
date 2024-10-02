@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/01 00:21:50 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/02 13:34:58 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ class ProfilPage
 						CN.new("Invitation", `Can't invite ${userInfo.username} (offline)`)
 					else
 					{
-						pageRenderer.changePage("waitingGamePage", false, {username: userInfo.username, id: userInfo.id});
+						pageRenderer.changePage("waitingGamePage", false, {username: userInfo.username, id: userInfo.id, isTournament: false});
 					}
 				});
 			}

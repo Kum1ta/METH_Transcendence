@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:29:50 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/02 04:51:32 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/02 13:29:36 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ function typeTournament(content)
 			TournamentPage.leaveOpponent(content);
 		else if (content.action == 3)
 			TournamentPage.newMessage(content);
+		else if (content.action == 4)
+			TournamentPage.startGame(content);
 	}
 	else
 		console.warn("Request tournament not for this page...");

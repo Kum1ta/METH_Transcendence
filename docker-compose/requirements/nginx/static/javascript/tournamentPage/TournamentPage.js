@@ -6,9 +6,11 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/02 04:55:51 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/02 13:39:23 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+import { pageRenderer } from '/static/javascript/main.js';
 
 const	playerNb	=	[1, 2, 4, 5, 13, 14, 15, 16];
 const	playerList	=	{
@@ -115,6 +117,11 @@ class TournamentPage
 
 		newText.innerText = `${content.username} : ${content.message}`;
 		divChat.appendChild(newText);
+	}
+
+	static startGame(content)
+	{
+		pageRenderer.changePage("waitingGamePage", false, {username: content.username, id: content.id, isTournament: true})
 	}
 }
 

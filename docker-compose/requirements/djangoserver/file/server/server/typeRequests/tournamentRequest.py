@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 13:16:39 by edbernar          #+#    #+#              #
-#    Updated: 2024/10/02 04:48:02 by edbernar         ###   ########.fr        #
+#    Updated: 2024/10/02 13:31:25 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,11 @@
 #	3 : message : send a message to the tournament chat
 #		- username : name of the player who send the message
 #		- message : message to send
+#
+#	4 : startGame : tell the client (client will launch a matchmaking like invitation)
+#		- id : id of the player
+#		- username : name of the player
+#
 
 
 #client actions (actions sent by the client) :
