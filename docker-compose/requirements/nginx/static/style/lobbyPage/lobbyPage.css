@@ -356,22 +356,46 @@ body {
 
 .game-mode {
 	display: flex;
+	flex-direction: column;
 	justify-content: flex-start;
+	width: 300px;
+	height: 550px;
 }
 
 .mode-card {
+	width: 100%;
+	height: 100px;
 	background-color: white;
-	color: #000;
+	color: #020202;
 	padding: 20px;
-	width: 300px;
-	height: 550px;
+	margin-block: 20px;
 	display: flex;
 	justify-content: center;
+	align-items: center;
+	font-size: 1.2em;
+	transition: transform 0.3s ease;
+}
+
+.mode-card-ns {
+	width: 100%;
+	height: 100px;
+	background-color: transparent;
+	color: white;
+	border: 5px solid white;
+	padding: 20px;
+	margin-block: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	font-size: 1.2em;
 	transition: transform 0.3s ease;
 }
 
 .mode-card:hover {
+	transform: scale(1.05);
+}
+
+.mode-card-ns:hover {
 	transform: scale(1.05);
 }
 
