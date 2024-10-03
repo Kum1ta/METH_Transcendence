@@ -155,24 +155,6 @@ body {
 	gap: 20px;
 }
 
-.select-card{
-	margin: 30px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	padding: 20px;
-	background-color: #d3d3d3;
-	color: #000;
-	height: 90px;
-	font-size: 1.2em;
-	transition: transform 0.3s ease;
-}
-
-.select-card:hover {
-	transform: scale(1.05);
-}
-
 .switch {
 	position: relative;
 }

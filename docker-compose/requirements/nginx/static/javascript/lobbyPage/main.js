@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/10/03 14:37:14 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/04 00:07:11 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ class LobbyPage
 		initButtonLaytout();
 		window.addEventListener('click', closePopUpWhenClickOutsite);
 		listSelectCard = document.getElementsByClassName('select-card');
-		document.getElementsByClassName('game-mode')[0].addEventListener('click', showGameMode);
-		document.getElementById('closePopupBtn').addEventListener('click', hideGameMode);
 		listSelectCard[0].addEventListener('click', selectGameModeOne);
 		listSelectCard[1].addEventListener('click', selectGameModeTwo);
 		listSelectCard[2].addEventListener('click', selectGameModeThree);
@@ -88,8 +86,6 @@ class LobbyPage
 		window.removeEventListener('click', closePopUpWhenClickOutsite);
 		window.removeEventListener('resize', movePopMenuLoginButton);
 		startButton.removeEventListener('click', startMode);
-		document.getElementsByClassName('game-mode')[0].removeEventListener('click', showGameMode);
-		document.getElementById('closePopupBtn').removeEventListener('click', hideGameMode);
 		window.removeEventListener('resize', ajustSearchUserList);
 		LiveChat.dispose();
 
@@ -202,9 +198,22 @@ function hideGameMode()
 
 function selectGameModeOne()
 {
-	document.getElementById('loginPopup').style.display = 'none';
-	document.getElementsByClassName('mode-card')[0].getElementsByTagName('p')[0].innerHTML = listSelectCard[0].innerHTML;
 	const	menuList = document.getElementsByClassName('menuSelected');
+	const	gameModeDiv	= document.getElementsByClassName('game-mode')[0].children;
+
+	for (let i = 0; i < menuList.length; i++)
+	{
+		menuList[i].style.display = 'none';
+		gameModeDiv[i].classList.remove('mode-card');
+		gameModeDiv[i].classList.remove('mode-card-ns');
+	}
+	document.getElementsByClassName('menuSelected')[0].style.display = 'flex';
+	for (let i = 0; i < gameModeDiv.length; i++)
+	{
+		if (i != 0)
+			gameModeDiv[i].classList.add('mode-card-ns');
+	}
+	gameModeDiv[0].classList.add('mode-card');
 	for (let i = 0; i < menuList.length; i++)
 	{
 		menuList[i].style.display = 'none';
@@ -215,14 +224,22 @@ function selectGameModeOne()
 
 function selectGameModeTwo()
 {
-	document.getElementById('loginPopup').style.display = 'none';
-	document.getElementsByClassName('mode-card')[0].getElementsByTagName('p')[0].innerHTML = listSelectCard[1].innerHTML;
-	const	menuList = document.getElementsByClassName('menuSelected');
+	const	menuList	= document.getElementsByClassName('menuSelected');
+	const	gameModeDiv	= document.getElementsByClassName('game-mode')[0].children;
+
 	for (let i = 0; i < menuList.length; i++)
 	{
 		menuList[i].style.display = 'none';
+		gameModeDiv[i].classList.remove('mode-card');
+		gameModeDiv[i].classList.remove('mode-card-ns');
 	}
 	document.getElementsByClassName('menuSelected')[1].style.display = 'flex';
+	for (let i = 0; i < gameModeDiv.length; i++)
+	{
+		if (i != 1)
+			gameModeDiv[i].classList.add('mode-card-ns');
+	}
+	gameModeDiv[1].classList.add('mode-card');
 	if (barSelector)
 		barSelector.dispose();
 	if (goalSelector)
@@ -242,13 +259,22 @@ function selectGameModeTwo()
 
 function selectGameModeThree()
 {
-	document.getElementById('loginPopup').style.display = 'none';
-	document.getElementsByClassName('mode-card')[0].getElementsByTagName('p')[0].innerHTML = listSelectCard[2].innerHTML;
 	const	menuList = document.getElementsByClassName('menuSelected');
+	const	gameModeDiv	= document.getElementsByClassName('game-mode')[0].children;
+
 	for (let i = 0; i < menuList.length; i++)
 	{
 		menuList[i].style.display = 'none';
+		gameModeDiv[i].classList.remove('mode-card');
+		gameModeDiv[i].classList.remove('mode-card-ns');
 	}
+	document.getElementsByClassName('menuSelected')[2].style.display = 'flex';
+	for (let i = 0; i < gameModeDiv.length; i++)
+	{
+		if (i != 2)
+			gameModeDiv[i].classList.add('mode-card-ns');
+	}
+	gameModeDiv[2].classList.add('mode-card');
 	document.getElementById('bar1').innerHTML = '';
 	document.getElementById('goal1').innerHTML = '';
 	document.getElementsByClassName('menuSelected')[2].style.display = 'flex';
@@ -265,13 +291,22 @@ function selectGameModeThree()
 
 function selectGameModeFour()
 {
-	document.getElementById('loginPopup').style.display = 'none';
-	document.getElementsByClassName('mode-card')[0].getElementsByTagName('p')[0].innerHTML = listSelectCard[3].innerHTML;
 	const	menuList = document.getElementsByClassName('menuSelected');
+	const	gameModeDiv	= document.getElementsByClassName('game-mode')[0].children;
+
 	for (let i = 0; i < menuList.length; i++)
 	{
 		menuList[i].style.display = 'none';
+		gameModeDiv[i].classList.remove('mode-card');
+		gameModeDiv[i].classList.remove('mode-card-ns');
 	}
+	document.getElementsByClassName('menuSelected')[3].style.display = 'flex';
+	for (let i = 0; i < gameModeDiv.length; i++)
+	{
+		if (i != 3)
+			gameModeDiv[i].classList.add('mode-card-ns');
+	}
+	gameModeDiv[3].classList.add('mode-card');
 	document.getElementById('bar2').innerHTML = '';
 	document.getElementById('goal2').innerHTML = '';
 	document.getElementsByClassName('menuSelected')[3].style.display = 'flex';

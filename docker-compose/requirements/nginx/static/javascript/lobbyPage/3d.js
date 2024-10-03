@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/03 14:20:12 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/03 21:15:40 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,8 +171,10 @@ class goalSelecter
 	rendererList			= [];
 	sceneList				= [];
 	cameraList				= [];
+	div						= null;
 	boundChangeGoal			= this.changeGoal.bind(this);
 	boundhideGoalSelector	= this.hideGoalSelector.bind(this);
+	boundshowGoals			= this.showGoals.bind(this);
 
 	constructor(div)
 	{
@@ -181,6 +183,7 @@ class goalSelecter
 		this.renderer	= new THREE.WebGLRenderer({antialias: true});
 		this.camera		= new THREE.PerspectiveCamera(60, (pos.width - 10) / (pos.height - 10));
 	
+		this.div = div;
 		lastSelectedGoal = this.selected;
 		this.scene.background = new THREE.Color(0x020202);
 		this.renderer.setSize(pos.width - 10, pos.height - 10);
@@ -191,22 +194,30 @@ class goalSelecter
 		this.scene.add(this.goal);
 		this.camera.lookAt(actualGoalSelecter.goal.position);
 		this.renderer.setAnimationLoop(this.#loop.bind(this));
-		div.addEventListener('click', () => {
-			const	popup	=	document.getElementById('popup-goal-selector');
-			const	goal	=	document.getElementsByClassName('color-box-goal');
-		
-			popup.style.display = 'flex';
-			for (let i = 0; i < goal.length; i++)
-			{
-				goal[i].setAttribute('goalId', i);
-				goal[i].appendChild(this.showObject(availableGoals[i], goal[i].getBoundingClientRect()));
-				goal[i].removeEventListener('click', this.boundChangeGoal);
-				goal[i].addEventListener('click', this.boundChangeGoal);
-			}
-			popup.removeEventListener('click', this.boundhideGoalSelector);
-			popup.addEventListener('click', this.boundhideGoalSelector);
-		});
+		div.removeEventListener('click', this.boundshowGoals);
+		div.addEventListener('click', this.boundshowGoals);
 	}
+
+	showGoals()
+	{
+		const	popup	=	document.getElementById('popup-goal-selector');
+		const	goal	=	document.getElementsByClassName('color-box-goal');
+	
+		popup.style.display = 'flex';
+		for (let i = 0; i < goal.length; i++)
+		{
+			const	canvas = goal[i].getElementsByTagName('canvas');
+
+			for (let j = 0; j < canvas.length; j++)
+				canvas[j].remove();
+			goal[i].setAttribute('goalId', i);
+			goal[i].appendChild(this.showObject(availableGoals[i], goal[i].getBoundingClientRect()));
+			goal[i].removeEventListener('click', this.boundChangeGoal);
+			goal[i].addEventListener('click', this.boundChangeGoal);
+		}
+		popup.removeEventListener('click', this.boundhideGoalSelector);
+		popup.addEventListener('click', this.boundhideGoalSelector);
+	};
 
 	showObject(func, pos)
 	{
@@ -238,9 +249,12 @@ class goalSelecter
 		popup.style.display = 'none';
 		lastSelectedGoal = availableGoals[id];
 		this.selected = availableGoals[id];
-		this.scene.children[1].geometry.dispose();
-		this.scene.children[1].material.dispose();
-		this.scene.remove(this.scene.children[1]);
+		if (this.scene && this.scene.children && this.scene.children.length > 1)
+		{
+			this.scene.children[1].geometry.dispose();
+			this.scene.children[1].material.dispose();
+			this.scene.remove(this.scene.children[1]);
+		}
 		this.goal = this.selected(colorList[Math.floor(Math.random() * 100 % colorList.length)], true);
 		this.scene.add(this.goal);
 		this.camera.lookAt(this.goal.position);
@@ -265,7 +279,10 @@ class goalSelecter
 
 		for (let i = colorBoxGoal.length - 1; i >= 0; i--)
 		{
-			colorBoxGoal[i].getElementsByTagName('canvas')[0].remove();
+			const	canvas = colorBoxGoal[i].getElementsByTagName('canvas');
+
+			for (let j = 0; j < canvas.length; j++)
+				canvas[j].remove();
 			if (this.rendererList && this.rendererList[i])
 			{
 				this.rendererList[i].dispose();
@@ -301,6 +318,7 @@ class goalSelecter
 
 	dispose()
 	{
+		this.disposeGoalSelector();
 		if (this.renderer)
 		{
 			this.renderer.dispose();
@@ -329,6 +347,7 @@ class goalSelecter
 		}
 		this.scene = null;
 		actualGoalSelecter = null;
+		this.div.removeEventListener('click', this.boundshowGoals);
 	}
 }
 
