@@ -229,6 +229,7 @@ body {
 
 #whatGame p{
 	color: white;
+	text-align: justify;
 }
 
 .line {
