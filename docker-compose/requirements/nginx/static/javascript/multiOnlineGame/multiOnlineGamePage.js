@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   multiOnlineGamePage.js                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/30 17:30:15 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/10/03 14:27:34 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { availableSkins } from '/static/javascript/lobbyPage/3d.js';
+import { availableSkins, lastSelectedGoal } from '/static/javascript/lobbyPage/3d.js';
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { OrbitControls } from '/static/javascript/three/examples/jsm/controls/OrbitControls.js'
 import { sendRequest } from "/static/javascript/websocket.js";
@@ -75,6 +75,7 @@ class MultiOnlineGamePage
 {
 	static create(skin)
 	{
+		console.log(lastSelectedGoal);
 		if (!skin)
 			skin = {player: 0, opponent: 0};
 		const bar1		= createBarPlayer(availableSkins[skin.player]);
@@ -89,7 +90,7 @@ class MultiOnlineGamePage
 		renderer.domElement.style.animation = 'fadeOutStartGames 1s';
 		renderer.domElement.style.filter = 'brightness(1)';
 		opponent				= new Opponent(bar2, map, Math.floor(Math.random() * 100 % 6));
-		player					= new Player(bar1, map, opponent, Math.floor(Math.random() * 100 % 6));
+		player					= new Player(bar1, map, opponent, Math.floor(Math.random() * 100 % 6), skin.goalId);
 		spotLight				= new THREE.SpotLight(0xffffff, 10000, 0, 0.2);
 		spotLight.castShadow	= true;
 		ambiantLight			= new THREE.AmbientLight(0xffffff, 0.5);

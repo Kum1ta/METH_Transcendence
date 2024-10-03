@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/10/03 03:14:28 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/03 14:40:41 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -680,43 +680,14 @@ class Map
 		scene.remove(this.banner);
 	};
 
-	animationGoal(cordX, cordY, cordZ, nameObject)
+	animationGoal(cordX, cordY, cordZ, nameObject, funcCreateObject)
 	{
 		this.#clearAnimationGoal();
 
 		let objectList = [];
 
-		if (nameObject == "triangle")
-		{
-			for (let i = 0; i < 6; i++)
-				objectList.push(createTriangle(colorList[Math.floor(Math.random() * 100 % colorList.length)]));
-		}
-		else if (nameObject == "cylinder")
-		{
-			for (let i = 0; i < 6; i++)
-				objectList.push(createCylinder(colorList[Math.floor(Math.random() * 100 % colorList.length)]));
-		}
-		else if (nameObject == "star")
-		{
-			for (let i = 0; i < 6; i++)
-				objectList.push(createStar(colorList[Math.floor(Math.random() * 100 % colorList.length)]));
-		}
-		else if (nameObject == "box")
-		{
-			for (let i = 0; i < 6; i++)
-				objectList.push(createBox(colorList[Math.floor(Math.random() * 100 % colorList.length)]));
-		}
-		else if (nameObject == "rectangle")
-		{
-			for (let i = 0; i < 6; i++)
-				objectList.push(createRectangle(colorList[Math.floor(Math.random() * 100 % colorList.length)]));
-		}
-		else if (nameObject == "ring")
-		{
-			for (let i = 0; i < 6; i++)
-				objectList.push(createRing(colorList[Math.floor(Math.random() * 100 % colorList.length)]));
-		}
-
+		for (let i = 0; i < 6; i++)
+			objectList.push(funcCreateObject(colorList[Math.floor(Math.random() * 100 % colorList.length)]));
 		for (let i = 0; i < objectList.length; i++)
 		{
 			objectList[i].position.set(cordX, cordY, cordZ);

@@ -6,12 +6,13 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/03 01:09:57 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/03 14:48:51 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { layoutSelected } from '/static/javascript/lobbyPage/main.js'
+import { lastSelectedGoal, availableGoals } from '/static/javascript/lobbyPage/3d.js';
 
 /*
 	Explication du code :
@@ -53,20 +54,21 @@ let	key					= null;
 
 class Player
 {
-	isUp			= false;
-	object			= null;
-	camera			= null;
-	speed			= 4;
-	cameraFixed		= false;
-	interval		= null;
-	limits			= {};
-	previousTime	= Date.now();	
-	deltaTime		= 1;
-	mapVar			= null;
-	opponent		= null;
+	isUp				= false;
+	object				= null;
+	camera				= null;
+	speed				= 4;
+	cameraFixed			= false;
+	interval			= null;
+	limits				= {};
+	previousTime		= Date.now();	
+	deltaTime			= 1;
+	mapVar				= null;
+	opponent			= null;
 	playerGoalAnimation = null;
+	opponentGoal		= null;
 	
-	constructor (object, map, opponent, indexGoalAnimation)
+	constructor (object, map, opponent, indexGoalAnimation, goalIdOppenent)
 	{
 		this.mapVar = map;
 		this.opponent = opponent;
@@ -77,6 +79,9 @@ class Player
 		pressedButton = [];
 		console.log(layoutSelected);
 		key			= {up: layoutSelected.US ? "w" : "z", down: "s", left: layoutSelected.US ? "a" : "q", right: "d"};
+		console.warn("Remettre opponentGoal = availableGoals[goalIdOppenent] qaund le serveur le permettra");
+		this.opponentGoal = availableGoals[0];
+		// opponentGoal = availableGoals[goalIdOppenent];
 		this.object = object;
 		this.limits = map.playerLimits;
 		this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 10000);
@@ -180,7 +185,8 @@ class Player
 			}, 10);
 
 			setTimeout(() => {
-				map.animationGoal(this.object.position.x, this.object.position.y, this.object.position.z, this.playerGoalAnimation);
+				console.log("Player : " + lastSelectedGoal);
+				map.animationGoal(this.object.position.x, this.object.position.y, this.object.position.z, this.playerGoalAnimation, lastSelectedGoal ? lastSelectedGoal : availableGoals[0]);
 			}, 1000);
 
 			setTimeout(() => {
@@ -241,9 +247,9 @@ class Player
 				tmpCamera.updateProjectionMatrix();
 			}, 10);
 
+			console.log("Oppenent : " + this.opponentGoal);
 			setTimeout(() => {
-				map.animationGoal(this.opponent.object.position.x, this.opponent.object.position.y,
-					this.opponent.object.position.z, this.opponent.playerGoalAnimation);
+				map.animationGoal(this.opponent.object.position.x, this.opponent.object.position.y, this.opponent.object.position.z, this.opponent.playerGoalAnimation, this.opponentGoal);
 			}, 1000);
 			
 			setTimeout(() => {
