@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:13:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/01 02:34:55 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/03 02:33:35 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@ import * as THREE from '/static/javascript/three/build/three.module.js'
 import { files } from '/static/javascript/filesLoader.js';
 
 const loader = new GLTFLoader();
-
-let	light = {
-	point: 1,
-};
-
 
 class Screen
 {
@@ -63,7 +58,6 @@ class Screen
 		const	vertices 			= positionAttribute.array;
 		const	material			= new THREE.MeshStandardMaterial({color: 0xbbbbbb});
 		const	mesh				= new THREE.Mesh(geometry, material);
-		const	pointLight			= new THREE.SpotLight(0xffffff, 10 * light.point, 0, Math.PI / 1.6);
 
 		for (let i = 0; i < vertices.length; i += 3)
 		{
@@ -79,21 +73,8 @@ class Screen
 		mesh.rotation.x = Math.PI + 0.05;
 		mesh.rotation.z = Math.PI;
 		scene.add(mesh);
-		pointLight.position.set(-0.05, 1.2, 0.95);
-		pointLight.castShadow = true;
-		pointLight.shadow.mapSize.width = 2048;
-		pointLight.shadow.mapSize.height = 2048;
-		
 		const targetObject = new THREE.Object3D();
 		targetObject.position.set(0, 1.2, 0);
-		pointLight.target = targetObject;
-		pointLight.target.updateMatrixWorld();
-		scene.add(pointLight);
-		this.intervalLight = setInterval(() => {
-			const	intensity = Math.random() * 2 + 10;
-			
-			pointLight.intensity = intensity * light.point > 13 * light.point ? 13 * light.point : intensity * light.point;
-		}, 100);
 		return (mesh);
 	}
 
@@ -185,4 +166,4 @@ class Screen
 
 };
 
-export { Screen, light };
+export { Screen };

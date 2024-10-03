@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/01 02:34:34 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/03 02:39:58 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ import { BokehPass } from '/static/javascript/three/examples/jsm/postprocessing/
 import { GLTFLoader } from '/static/javascript/three/examples/jsm/loaders/GLTFLoader.js';
 import { userMeInfo } from "/static/javascript/typeResponse/typeLogin.js";
 import * as THREE from '/static/javascript/three/build/three.module.js'
-import { Screen, light } from '/static/javascript/home3D/Screen.js'
+import { Screen } from '/static/javascript/home3D/Screen.js'
 import { files } from '/static/javascript/filesLoader.js';
 import { pageRenderer } from '/static/javascript/main.js'
 
@@ -345,7 +345,10 @@ function home3D()
 				clearInterval(fadeOut);
 				return;
 			}
-			light.point -= 0.2;
+			if (spotLight.intensity > 0)
+				spotLight.intensity -= 100;
+			else
+				spotLight.intensity = 0;
 			screen.screen.material.opacity -= 0.05;
 			if (screen.screen.material.opacity <= 0)
 			{
@@ -362,7 +365,7 @@ function home3D()
 					clearInterval(fadeInInterval);
 					return;
 				}
-				light.point += 0.2;
+				spotLight.intensity += 50;
 				screen.screen.material.opacity += 0.05;
 	
 				if (screen.screen.material.opacity >= 1)
@@ -375,9 +378,10 @@ function home3D()
 	
 		function completeFade() {
 			intervalFade = setInterval(() => {
-				light.point += 0.2;
-				if (light.point >= 1)
+				spotLight.intensity += 50;
+				if (spotLight.intensity >= 1000)
 				{
+					spotLight.intensity = 1000;
 					clearInterval(intervalFade);
 					isInFade = false;
 				}

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/10/03 00:46:01 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/03 03:00:53 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -346,6 +346,7 @@ function initButtonLaytout()
 				FRkeys[i].classList.remove('select-keys');
 				FRkeys[i].classList.add('not-select-keys');
 			}
+			changeDisplayedLayout(true);
 			layoutSelected	= {US: true, FR: false};
 		});
 	}
@@ -359,10 +360,33 @@ function initButtonLaytout()
 				FRkeys[i].classList.add('select-keys');
 				FRkeys[i].classList.remove('not-select-keys');
 			}
+			changeDisplayedLayout(false);
 			layoutSelected	= {US: false, FR: true};
 		});
 	}
+}
 
+function changeDisplayedLayout(isUS)
+{
+	const	keys	=	document.getElementsByClassName('keys');
+	const	USkeys	=	['W', 'A', 'S', 'D'];
+	const	FRkeys	=	['Z', 'Q', 'S', 'D'];
+	
+	for (let i = 0; i < keys.length; i++)
+	{
+		for (let j = 0; j < keys[i].children.length; j++)
+		{
+			if (i == 0)
+			{
+				if (j == 0)
+					keys[i].children[j].getElementsByTagName('p')[0].innerText = isUS ? "W" : "Z";
+				else if (j == 1)
+					keys[i].children[j].getElementsByTagName('p')[0].innerText = "S"
+			}
+			else if (keys[i].children[j].getElementsByTagName('p')[0])
+				keys[i].children[j].getElementsByTagName('p')[0].innerText = isUS ? USkeys[j] : FRkeys[j];
+		}
+	}
 }
 
 export { LobbyPage, layoutSelected };

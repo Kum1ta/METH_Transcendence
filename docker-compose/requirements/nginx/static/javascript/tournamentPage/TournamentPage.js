@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/03 01:31:12 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/03 02:27:58 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ let		divTopInfo	= null;
 let		divInfo		= null;
 let		divChat		= null;
 
-// gerer quand une personne finit sa partie pour remettre tout comme il le faut
+// gerer quand la personne finit sa partie pour remettre tout comme il le faut
 
 class TournamentPage
 {
