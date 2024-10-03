@@ -6,16 +6,18 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/02 00:01:05 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/03 04:30:32 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import { createStar, createBox, createRectangle, createRing, colorList } from '/static/javascript/multiOnlineGame/Map.js'
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { files } from '/static/javascript/filesLoader.js';
 
 let 	actualBarSelecor	= null;
 let 	actualGoalSelecter	= null;
 let		lastSelected		= null;
+let		lastSelectedGoal	= null;
 const	availableSkins	=	[
 	{id: 0, color: 0xff53aa, texture: null},
 	{id: 1, color: 0xaa24ea, texture: null},
@@ -26,6 +28,12 @@ const	availableSkins	=	[
 	{id: 6, color: null, texture: null},
 	{id: 7, color: null, texture: null},
 ];
+const	availableGoals	=	[
+	createStar,
+	createBox,
+	createRectangle,
+	createRing
+]
 
 class barSelecter
 {
@@ -87,7 +95,6 @@ class barSelecter
 	{
 		const	popup	=	document.getElementById('popup-skin-selector');
 
-		console.log("Gros fdp de tes morts")
 		if (event.target.getAttribute('id') == 'popup-skin-selector')
 			popup.style.display = 'none';
 	}
@@ -98,7 +105,6 @@ class barSelecter
 	
 		const id = event.target.getAttribute('skinId');
 		popup.style.display = 'none';
-		console.log(this.bar);
 		this.bar.material.dispose();
 		lastSelected = availableSkins[id];
 		if (availableSkins[id].color != null)
@@ -159,8 +165,12 @@ class goalSelecter
 	scene			= null;
 	renderer		= null;
 	camera			= null;
+	selected		= lastSelectedGoal ? lastSelectedGoal : availableGoals[0];
 	ambiantLight	= new THREE.AmbientLight(0xffffff, 35);
-	goal			= this.createGoal(0xffffff);
+	goal			= this.selected(colorList[Math.floor(Math.random() * 100 % colorList.length)], true);
+	rendererList	= [];
+	sceneList		= [];
+	cameraList		= [];
 
 	constructor(div)
 	{
@@ -172,30 +182,85 @@ class goalSelecter
 		this.scene.background = new THREE.Color(0x020202);
 		this.renderer.setSize(pos.width - 10, pos.height - 10);
 		this.scene.add(this.ambiantLight);
-		this.camera.position.set(0.7, 0.5, 0.7);
+		this.camera.position.set(1.5, 0.5, 1.5);
 		div.appendChild(this.renderer.domElement);
 		actualGoalSelecter = this;
 		this.scene.add(this.goal);
 		this.camera.lookAt(actualGoalSelecter.goal.position);
-		this.renderer.setAnimationLoop(this.#loop);
+		this.renderer.setAnimationLoop(this.#loop.bind(this));
+		div.addEventListener('click', () => {
+			const	popup	=	document.getElementById('popup-goal-selector');
+			const	skins	=	document.getElementsByClassName('color-box-goal');
+		
+			popup.style.display = 'flex';
+			for (let i = 0; i < skins.length; i++)
+			{
+				skins[i].setAttribute('goalId', i);
+				skins[i].appendChild(this.showObject(availableGoals[i], skins[i].getBoundingClientRect()));
+				skins[i].removeEventListener('click', this.boundChangeSkin);
+				skins[i].addEventListener('click', this.boundChangeSkin);
+			}
+			popup.removeEventListener('click', this.hideGoalSelector);
+			popup.addEventListener('click', this.hideGoalSelector);
+		});
 	}
 
-	createGoal(color)
+	showObject(func, pos)
 	{
-		const geometry	= new THREE.BoxGeometry(1, 0.1, 0.1);
-		const material	= new THREE.MeshPhysicalMaterial({color: color});
-		const mesh		= new THREE.Mesh(geometry, material);
-
-		mesh.castShadow = true;
-		return (mesh);
+		const	scene		= new THREE.Scene();
+		const	renderer	= new THREE.WebGLRenderer({antialias: true});
+		const	camera		= new THREE.PerspectiveCamera(60, (pos.width - 5) / (pos.height - 5));
+		const	mesh		= func(colorList[Math.floor(Math.random() * 100 % colorList.length)]);
+		const	spotLight	= new THREE.SpotLight(0xffffff, 5000);
+		
+		renderer.setSize(pos.width - 5, pos.height - 5);
+		scene.add(mesh);
+		camera.position.set(1.5, 1.5, 1.5);
+		spotLight.position.set(1.5, 1.5, 1.5);
+		spotLight.target = mesh;
+		camera.lookAt(mesh.position);
+		scene.add(spotLight);
+		scene.background = new THREE.Color(0x1a1a1a);
+		this.sceneList.push(scene);
+		this.rendererList.push(renderer);
+		this.cameraList.push(camera);
+		return (renderer.domElement)
 	}
 
+	changeGoal (event)
+	{
+		const	popup	=	document.getElementById('popup-skin-selector');
+	
+		const id = event.target.getAttribute('goalId');
+		popup.style.display = 'none';
+		this.bar.material.dispose();
+		lastSelectedGoal = availableGoals[id];
+		// if (availableSkins[id].color != null)
+		// 	this.bar.material = new THREE.MeshPhysicalMaterial({color: availableSkins[id].color});
+		// else
+		// 	this.bar.material = new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(availableSkins[id].texture)});
+		this.selected = availableGoals[id];
+	}
+
+	hideGoalSelector(event)
+	{
+		const	popup	=	document.getElementById('popup-skin-selector');
+
+		if (event.target.getAttribute('id') == 'popup-skin-selector')
+			popup.style.display = 'none';
+	}
+	
 	#loop()
 	{
-		actualGoalSelecter.goal.rotation.y += 0.1;
-		actualGoalSelecter.goal.rotation.x += 0.1;
-		actualGoalSelecter.goal.rotation.z += 0.1;
+		actualGoalSelecter.goal.rotation.y += 0.01;
+		actualGoalSelecter.goal.rotation.x += 0.01;
 		actualGoalSelecter.renderer.render(actualGoalSelecter.scene, actualGoalSelecter.camera);
+		for (let i = 0; this.rendererList && i < this.rendererList.length; i++)
+		{
+			this.sceneList[i].children[0].rotation.y -= 0.01;
+			this.sceneList[i].children[0].rotation.x += 0.01;
+			this.rendererList[i].render(this.sceneList[i], this.cameraList[i]);
+		}
 	}
 
 	dispose()
@@ -204,6 +269,14 @@ class goalSelecter
 		{
 			this.renderer.dispose();
 			this.renderer.forceContextLoss();
+		}
+		if (this.rendererList)
+		{
+			for (let i = 0; i < this.rendererList.length; i++)
+			{
+				this.rendererList[i].dispose();
+				this.rendererList[i].forceContextLoss();
+			}
 		}
 		this.renderer = null;
 		if (this.scene)
