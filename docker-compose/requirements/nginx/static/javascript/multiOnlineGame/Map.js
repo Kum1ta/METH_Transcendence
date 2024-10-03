@@ -361,6 +361,7 @@ class Map
 			meshWallObs.position.set(x, this.playerLimits.up - 0.1, y);
 		else
 			meshWallObs.position.set(x, 0.4, y);
+		this.arrObject.push({mesh : meshWallObs, name:"", type:"wallObstacle", isUp:onTop})
 		return (meshWallObs);
 	};
 

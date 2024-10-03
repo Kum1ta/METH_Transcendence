@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 16:10:26 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/30 15:35:47 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/01 16:35:10 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ from .gameActions.ping import ping
 #	5 : ball_move : send new directtion/movement to the client
 #		- pos : [x, z]
 #		- velocity : [x, z]
+#		- game_time : ms since start of game
 #
 #	6 : goal : someone scored a goal
 #		- is_opponent

@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/01 00:46:17 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/03 23:54:53 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,7 @@ class Game:
 		self.end = False
 		self.left = None
 		self.winner = None
+		self.gameStart = 0
 		self.expSleepTime = 0
 
 		self.p1Pos = {"pos":0, "up": False}
@@ -121,7 +122,7 @@ class Game:
 
 	def genObstacles(self):
 		for x in Game.wallsPos:
-			if random.randint(1, 100) < 50:
+			if random.randint(1, 100) < 70:
 				self.obstacles.append(x)
 		i = 0
 		down = False
@@ -217,17 +218,24 @@ class Game:
 		if(opponent != None):
 			opponent.sync_send({"type":"game","content":{"action":3, "pos":-pos, "up":up, "is_opponent":True}})
 
-	def sendNewBallInfo(self):
+	def sendNewBallInfo(self, reset = False):
 		print("send new ball info")
+		if(reset):
+			gameTime = 0
+			self.gameStart = time.time() * 1000
+		else:
+			gameTime = (time.time() * 1000) - self.gameStart
 		if(self.p1):
 			self.p1.sync_send({"type":"game", "content":{"action":5,
 				"pos" : [self.ballPos["pos"][0],self.ballPos["pos"][1]],
-				"velocity":[self.ballVel[0], self.ballVel[1]]
+				"velocity":[self.ballVel[0], self.ballVel[1]],
+				"game_time":gameTime
 			}})
 		if(self.p2):
 			self.p2.sync_send({"type":"game","content":{"action":5,
 				"pos" : [-self.ballPos["pos"][0],-self.ballPos["pos"][1]],
-				"velocity":[-self.ballVel[0], -self.ballVel[1]]
+				"velocity":[-self.ballVel[0], -self.ballVel[1]],
+				"game_time":gameTime
 			}})
 
 	def solve_quadratic(self, a, b, c):
@@ -240,7 +248,7 @@ class Game:
 	def check_jumper_colision(self, jumper):
 		jpos = (jumper["pos"]["x"], jumper["pos"]["z"])
 		pos1 = self.ballPos["pos"]
-		pos2 = self.ballPos["pos"][0] +self.ballVel[0], self.ballPos["pos"][1] + self.ballVel[1]
+		pos2 = self.ballPos["pos"][0] + self.ballVel[0], self.ballPos["pos"][1] + self.ballVel[1]
 		slope = 0
 		if(pos1[0] - pos2[0] == 0):
 			slope=100000
@@ -435,7 +443,7 @@ class Game:
 			if(self.lastWin == 2):
 				velZ = -velZ
 			self.ballVel = (velX, velZ)
-		self.sendNewBallInfo()
+		self.sendNewBallInfo(True)
 		self.lastUpdate = time.time()
 
 	async def gameLoop(self):

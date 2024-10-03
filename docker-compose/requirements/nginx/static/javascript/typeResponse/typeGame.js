@@ -14,8 +14,20 @@ import { MultiOnlineGamePage, opponent, ball, player, map } from "/static/javasc
 import { WaitingGamePage } from "/static/javascript/waitingGame/main.js"
 import { pageRenderer } from '/static/javascript/main.js'
 
+let stopSrvUpdate = false
+
+document.addEventListener('keypress',(e)=>{
+	if(e.key == 'q')
+	{
+		console.log("stopped server updates")
+		stopSrvUpdate = true
+	}
+});
+
 function typeGame(content)
 {
+	if(stopSrvUpdate)
+		return
 	if (pageRenderer.actualPage == WaitingGamePage)
 	{
 		if (content.action == 1)
