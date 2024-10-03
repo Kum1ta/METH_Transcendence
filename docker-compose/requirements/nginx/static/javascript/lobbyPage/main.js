@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/10/03 03:00:53 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/03 14:37:14 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ let	gameMode		= 0;
 let barSelector		= null;
 let goalSelector	= null;
 let timeout			= null;
-let	layoutSelected	= {US: false, FR: false};
+let	layoutSelected	= {US: true, FR: false};
 
 class LobbyPage
 {

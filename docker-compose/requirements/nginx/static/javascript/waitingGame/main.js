@@ -6,11 +6,11 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 21:20:45 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/03 01:21:20 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/03 14:35:54 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { lastSelected } from '/static/javascript/lobbyPage/3d.js';
+import { lastSelected, lastSelectedGoal, availableGoals } from '/static/javascript/lobbyPage/3d.js';
 import { sendRequest } from "/static/javascript/websocket.js";
 import { pageRenderer } from '/static/javascript/main.js'
 
@@ -27,6 +27,7 @@ class WaitingGamePage
 		const	isTournament	= opponentInfo && typeof(opponentInfo) != 'boolean' && opponentInfo.isTournament;
 		let		text			= sentence.innerText;
 		let		points			= "";
+		let		goalId			= goalIdSelect();
 
 		document.body.style.opacity = 1;
 		for (let i = 0; i < document.body.children.length; i++)
@@ -44,9 +45,9 @@ class WaitingGamePage
 		}, 500);
 		timeout = setTimeout(() => {
 			if (opponentInfo && typeof(opponentInfo) != 'boolean')
-				sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0, opponent: opponentInfo.id});
+				sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0, goalId: goalId, opponent: opponentInfo.id});
 			else
-				sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0, isRanked: opponentInfo ? true : false});
+				sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0, goalId: goalId, isRanked: opponentInfo ? true : false});
 			timeout = null;
 		}, isTournament ? 1500 : 500);
 		if (!opponentInfo || !isTournament)
@@ -89,7 +90,7 @@ class WaitingGamePage
 			setTimeout(() => {
 				document.body.style.animation = 'anim3 0.5s';
 				document.body.style.opacity = 0;
-				pageRenderer.changePage("multiOnlineGamePage", false, {player: lastSelected ? lastSelected.id : 0, opponent: content.skin});
+				pageRenderer.changePage("multiOnlineGamePage", false, {player: lastSelected ? lastSelected.id : 0, opponent: content.skin, opponentGoaldId: content.goalId});
 			}, 1000);
 		}, 500);
 		document.body.removeChild(returnButton);
@@ -118,6 +119,16 @@ function returnToLobby()
 	setTimeout(() => {
 		pageRenderer.changePage('lobbyPage');
 	}, 500);
+}
+
+function goalIdSelect()
+{
+	for (let i = 0; i < availableGoals.length; i++)
+	{
+		if (availableGoals[i] == lastSelectedGoal)
+			return (i);
+	}
+	return (0);
 }
 
 export { WaitingGamePage };

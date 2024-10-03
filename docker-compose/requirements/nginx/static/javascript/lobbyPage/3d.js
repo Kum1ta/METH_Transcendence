@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/03 04:30:32 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/03 14:20:12 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,15 +162,17 @@ class barSelecter
 
 class goalSelecter
 {
-	scene			= null;
-	renderer		= null;
-	camera			= null;
-	selected		= lastSelectedGoal ? lastSelectedGoal : availableGoals[0];
-	ambiantLight	= new THREE.AmbientLight(0xffffff, 35);
-	goal			= this.selected(colorList[Math.floor(Math.random() * 100 % colorList.length)], true);
-	rendererList	= [];
-	sceneList		= [];
-	cameraList		= [];
+	scene					= null;
+	renderer				= null;
+	camera					= null;
+	selected				= lastSelectedGoal ? lastSelectedGoal : availableGoals[0];
+	ambiantLight			= new THREE.AmbientLight(0xffffff, 35);
+	goal					= this.selected(colorList[Math.floor(Math.random() * 100 % colorList.length)], true);
+	rendererList			= [];
+	sceneList				= [];
+	cameraList				= [];
+	boundChangeGoal			= this.changeGoal.bind(this);
+	boundhideGoalSelector	= this.hideGoalSelector.bind(this);
 
 	constructor(div)
 	{
@@ -179,6 +181,7 @@ class goalSelecter
 		this.renderer	= new THREE.WebGLRenderer({antialias: true});
 		this.camera		= new THREE.PerspectiveCamera(60, (pos.width - 10) / (pos.height - 10));
 	
+		lastSelectedGoal = this.selected;
 		this.scene.background = new THREE.Color(0x020202);
 		this.renderer.setSize(pos.width - 10, pos.height - 10);
 		this.scene.add(this.ambiantLight);
@@ -190,18 +193,18 @@ class goalSelecter
 		this.renderer.setAnimationLoop(this.#loop.bind(this));
 		div.addEventListener('click', () => {
 			const	popup	=	document.getElementById('popup-goal-selector');
-			const	skins	=	document.getElementsByClassName('color-box-goal');
+			const	goal	=	document.getElementsByClassName('color-box-goal');
 		
 			popup.style.display = 'flex';
-			for (let i = 0; i < skins.length; i++)
+			for (let i = 0; i < goal.length; i++)
 			{
-				skins[i].setAttribute('goalId', i);
-				skins[i].appendChild(this.showObject(availableGoals[i], skins[i].getBoundingClientRect()));
-				skins[i].removeEventListener('click', this.boundChangeSkin);
-				skins[i].addEventListener('click', this.boundChangeSkin);
+				goal[i].setAttribute('goalId', i);
+				goal[i].appendChild(this.showObject(availableGoals[i], goal[i].getBoundingClientRect()));
+				goal[i].removeEventListener('click', this.boundChangeGoal);
+				goal[i].addEventListener('click', this.boundChangeGoal);
 			}
-			popup.removeEventListener('click', this.hideGoalSelector);
-			popup.addEventListener('click', this.hideGoalSelector);
+			popup.removeEventListener('click', this.boundhideGoalSelector);
+			popup.addEventListener('click', this.boundhideGoalSelector);
 		});
 	}
 
@@ -227,29 +230,62 @@ class goalSelecter
 		return (renderer.domElement)
 	}
 
-	changeGoal (event)
+	changeGoal(event)
 	{
-		const	popup	=	document.getElementById('popup-skin-selector');
+		const	popup	=	document.getElementById('popup-goal-selector');
 	
-		const id = event.target.getAttribute('goalId');
+		const id = event.target.parentElement.getAttribute('goalId');
 		popup.style.display = 'none';
-		this.bar.material.dispose();
 		lastSelectedGoal = availableGoals[id];
-		// if (availableSkins[id].color != null)
-		// 	this.bar.material = new THREE.MeshPhysicalMaterial({color: availableSkins[id].color});
-		// else
-		// 	this.bar.material = new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(availableSkins[id].texture)});
 		this.selected = availableGoals[id];
+		this.scene.children[1].geometry.dispose();
+		this.scene.children[1].material.dispose();
+		this.scene.remove(this.scene.children[1]);
+		this.goal = this.selected(colorList[Math.floor(Math.random() * 100 % colorList.length)], true);
+		this.scene.add(this.goal);
+		this.camera.lookAt(this.goal.position);
+		this.disposeGoalSelector();
 	}
 
 	hideGoalSelector(event)
 	{
-		const	popup	=	document.getElementById('popup-skin-selector');
+		const	popup	=	document.getElementById('popup-goal-selector');
 
-		if (event.target.getAttribute('id') == 'popup-skin-selector')
+		if (event.target.getAttribute('id') == 'popup-goal-selector')
+		{
+			this.disposeGoalSelector();
 			popup.style.display = 'none';
+		}
 	}
 	
+	disposeGoalSelector()
+	{
+		const	colorBoxGoal	=	document.getElementsByClassName('color-box-goal');
+
+
+		for (let i = colorBoxGoal.length - 1; i >= 0; i--)
+		{
+			colorBoxGoal[i].getElementsByTagName('canvas')[0].remove();
+			if (this.rendererList && this.rendererList[i])
+			{
+				this.rendererList[i].dispose();
+				this.rendererList[i].forceContextLoss();
+				this.sceneList[i].children.forEach(child => {
+					if (child.geometry)
+						child.geometry.dispose();
+					if (child.material)
+						child.material.dispose();
+					if (child.texture)
+						child.texture.dispose();
+					this.scene.remove(child);
+				});
+				this.rendererList.splice(i, 1);
+				this.sceneList.splice(i, 1);
+				this.cameraList.splice(i, 1);
+			}
+		}
+	}
+
 	#loop()
 	{
 		actualGoalSelecter.goal.rotation.y += 0.01;
@@ -296,4 +332,4 @@ class goalSelecter
 	}
 }
 
-export { barSelecter, goalSelecter, lastSelected, availableSkins}
+export { barSelecter, goalSelecter, lastSelected, availableSkins, lastSelectedGoal, availableGoals };
