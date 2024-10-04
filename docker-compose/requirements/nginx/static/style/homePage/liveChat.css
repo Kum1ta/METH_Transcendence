@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   liveChat.css                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:53:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/29 03:24:21 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/04 18:03:56 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,4 +268,10 @@
 .status img {
 	object-fit: cover;
 	object-position: center;
+}
+
+@media (max-width: 700px){
+	#chatButton {
+		left: 40px;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/01 17:17:24 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/10/04 19:40:55 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -399,6 +399,7 @@ button {
 	position: absolute;
 	bottom: 65px;
 	left: 50%;
+	text-align: center;
 	transform: translateX(-50%);
 	font-size: 24px;
 	color: white;
@@ -477,4 +478,59 @@ footer {
 #popMenuLoginButton p:hover {
 	background-color: #020202;
 	color: white;
+}
+
+@media (max-width: 700px){
+	#topButton {
+		display: none;
+	}
+	#firstText{
+		font-size: 30px;
+		padding-inline: 20px;
+		padding-top: 70px;
+	}
+	#secondText{
+		font-size: 30px;
+		padding-inline: 20px;
+		padding-top: 140px;
+	}
+	#firstBall{
+		position: absolute;
+		width: 250px;
+		transform-origin: center;
+		transform: translateX(-50%);
+		left: 0;
+	}
+	#secondBall{
+		position: absolute;
+		width: 250px;
+		transform-origin: center;
+		transform: translateX(50%);
+		top: 650px;
+		right: 0;
+	}
+	.containerHomePage {
+		width: 100%;
+		height: 100%;
+	}
+	.right-side {
+		padding-inline: 30px;
+	}
+	.right-side-register {
+		padding-inline: 30px;
+	}
+	.left-side {
+		display: none;
+	}
+
+	.team {
+		padding-inline: 30px;
+		padding-block: 50px;
+	}
+
+	.team-member {
+		max-width: 250px;
+		width: 100%;
+		height: auto;
+	}
 }
