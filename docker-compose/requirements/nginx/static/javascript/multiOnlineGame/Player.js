@@ -6,13 +6,16 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/03 14:48:51 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/05 01:06:19 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import { fetchProfile, MotionController } from '/static/javascript/three/examples/jsm/libs/motion-controllers.module.js'
+import { XRControllerModelFactory } from '/static/javascript/three/examples/jsm/webxr/XRControllerModelFactory.js'
+import { scene, renderer, isInVrMode } from '/static/javascript/multiOnlineGame/multiOnlineGamePage.js'
+import { lastSelectedGoal, availableGoals } from '/static/javascript/lobbyPage/3d.js';
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { layoutSelected } from '/static/javascript/lobbyPage/main.js'
-import { lastSelectedGoal, availableGoals } from '/static/javascript/lobbyPage/3d.js';
 
 /*
 	Explication du code :
@@ -45,12 +48,16 @@ import { lastSelectedGoal, availableGoals } from '/static/javascript/lobbyPage/3
 		- Ajouter une fonction pour l'animation de point marqué (OK)
 */
 
-let	playerExist			= false;
-let	isOnPointAnim		= false;
-let	pressedButton		= [];
-let mapLength			= 0;
-const goalAnimation		= ["triangle", "cylinder", "star", "box", "rectangle", "ring"];
-let	key					= null;
+let	playerExist					= false;
+let	isOnPointAnim				= false;
+let	pressedButton				= [];
+let mapLength					= 0;
+const goalAnimation				= ["triangle", "cylinder", "star", "box", "rectangle", "ring"];
+const controllerModelFactory	= new XRControllerModelFactory();
+let	motionController			= null;
+let	key							= null;
+let controller1					= null;
+let controller2					= null;
 
 class Player
 {
@@ -67,6 +74,8 @@ class Player
 	opponent			= null;
 	playerGoalAnimation = null;
 	opponentGoal		= null;
+	controller1			= null;
+	controller2			= null;
 	
 	constructor (object, map, opponent, indexGoalAnimation, goalIdOppenent)
 	{
@@ -280,6 +289,7 @@ class Player
 
 	update()
 	{
+		const gamepads = navigator.getGamepads();
 		const currentTime = Date.now();
 		this.deltaTime = (currentTime - this.previousTime) / 1000;
 		this.previousTime = currentTime;
@@ -287,6 +297,23 @@ class Player
 		let i;
 
 		i = 0;
+		for (let i = 0; i< gamepads.length; i++)
+		{
+			if (gamepads[i])
+			{
+				const xAxis = gamepads[i].axes[0];
+				const yAxis = gamepads[i].axes[1];
+				if (!gamepads[i].buttons[0].touched)
+					this.buttonACheck = false;
+				else if (this.buttonACheck == false && gamepads[i].buttons[0].touched)
+				{
+					this.buttonACheck = true;
+					this.buttonAAction = true;
+				}
+				this.joysticksMove(xAxis, yAxis);
+				this.buttonAAction = false;
+			}
+		}
 		while (i < pressedButton.length)
 		{
 			if (pressedButton[i] == key.up && this.object.position.y < this.limits.up)
@@ -336,6 +363,40 @@ class Player
 			}
 			i++;
 		}
+		if (isInVrMode)
+		{
+			if (controller1.userData.inputSource && controller1.userData.inputSource.gamepad)
+			{
+				const gamepad = controller1.userData.inputSource.gamepad;
+				const [a, b, xAxis, yAxis] = gamepad.axes;
+
+				this.joysticksMove(xAxis, yAxis);
+			}
+		
+		}
+	}
+
+	buttonACheck = false;
+	buttonAAction = false;
+
+	joysticksMove(xAxis, yAxis)
+	{
+		if (yAxis > 0.75 || this.buttonAAction)
+			addKeyInArr({key: key.down})
+		else
+			remKeyInArr({key: key.down});
+		if (yAxis < -0.75 || this.buttonAAction)
+			addKeyInArr({key: key.up})
+		else
+			remKeyInArr({key: key.up});
+		if (xAxis > 0.5)
+			addKeyInArr({key: key.right})
+		else
+			remKeyInArr({key: key.right});
+		if (xAxis < -0.5)
+			addKeyInArr({key: key.left})
+		else
+			remKeyInArr({key: key.left});
 	}
 
 	setCameraPosition(x, y, z)
@@ -368,6 +429,37 @@ class Player
 				object.scale.x -= value * 2;
 			}, i * 10);
 		}
+	}
+
+	configureVrController()
+	{
+		controller1 = renderer.xr.getController(0);
+		controller2 = renderer.xr.getController(1);
+
+		scene.add(controller1);
+		scene.add(controller2);
+		
+		for (let i = 0; i < scene.children.length; i++)
+		{
+			if (scene.children[i].name === 'vrHeadset')
+			{
+				const controllerGrip1 = renderer.xr.getControllerGrip(0);
+				controllerGrip1.add(controllerModelFactory.createControllerModel(controllerGrip1));
+				scene.children[i].add(controllerGrip1);
+		
+				const controllerGrip2 = renderer.xr.getControllerGrip(1);
+				controllerGrip2.add(controllerModelFactory.createControllerModel(controllerGrip2));
+				scene.children[i].add(controllerGrip2);
+			}
+		}
+
+		controller1.addEventListener('connected', (event) => {
+			controller1.userData.inputSource = event.data;
+		});
+		
+		controller2.addEventListener('connected', (event) => {
+			controller2.userData.inputSource = event.data;
+		});
 	}
 };
 

@@ -150,14 +150,14 @@ function findNodes( motionController, scene ) {
 				// If the extents cannot be found, skip this animation
 				if ( ! visualResponse.minNode ) {
 
-					console.warn( `Could not find ${minNodeName} in the model` );
+					// console.warn( `Could not find ${minNodeName} in the model` );
 					return;
 
 				}
 
 				if ( ! visualResponse.maxNode ) {
 
-					console.warn( `Could not find ${maxNodeName} in the model` );
+					// console.warn( `Could not find ${maxNodeName} in the model` );
 					return;
 
 				}
