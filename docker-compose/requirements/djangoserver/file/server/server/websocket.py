@@ -6,12 +6,13 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 14:31:30 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/30 19:42:45 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/04 21:06:20 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
+from multimethod import multimethod
 from typing import Union
 import json
 import asyncio
@@ -36,16 +37,17 @@ from .typeRequests.changePrivateInfo import changePrivateInfo
 from .typeRequests.changePfp import changePfp
 from .typeRequests.statusMessage import statusMessage,getUnreadStatus
 from .typeRequests.readMessage import readMessage
+from .typeRequests.tournamentRequest import tournamentRequest
 
 typeRequest = ["login", "get_private_list_user", "get_private_list_message",
-			   "send_private_message", "create_account", "get_all_list_user", "game",
-			   "search_user", "get_user_info", "change_pfp", "change_banner",
-			   "get_private_info", "change_private_info","status_message", "read_message"
+			   "send_private_message", "create_account", "get_all_list_user",
+			   "game", "search_user", "get_user_info", "change_pfp", "change_banner",
+			   "get_private_info", "change_private_info","status_message", "read_message", "tournament"
 			   ]
 functionRequest = [login, getPrivateListUser, getPrivateListMessage,
 				sendPrivateMessage, createAccount, getAllListUser, gameRequest,
 				searchUser, getUserInfo, changePfp, changeBanner,
-				getPrivateInfo, changePrivateInfo, statusMessage, readMessage
+				getPrivateInfo, changePrivateInfo, statusMessage, readMessage, tournamentRequest
 				]
 
 from random import randint
@@ -83,7 +85,7 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 		print("\033[32monline : ", self.onlinePlayers)
 		return(0)
 
-	async def login(self, uid: int, username: str) -> int:
+	async def login(self, uid: int, username: str, pfp : str) -> int:
 		if(await self.session_get("logged_in", False)):
 			print("already logged in")
 			return(0)
@@ -93,15 +95,18 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 		await self.session_set("logged_in",True)
 		await self.session_set("id",uid)
 		await self.session_set("username",username)
+		await self.session_set("pfp", pfp)
 		await self.session_save()
 		self.logged_in = True
 		self.id = uid
 		self.username = username
+		self.pfp = pfp
 		return(1)
 
 	async def connect(self):
 		self.logged_in = False
 		self.game = None
+		self.tournament = None
 		self.id = 0
 		self.username = None
 		self.online = True
@@ -114,6 +119,7 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 				return;
 			self.id = await self.session_get("id",0)
 			self.username = await self.session_get("username", None)
+			self.pfp = await self.session_get("pfp",None)
 			self.logged_in = True
 		await self.send(text_data=json.dumps({"type":"logged_in", "content":{
 			"status":await self.session_get("logged_in",False),
@@ -133,6 +139,8 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 			del self.onlinePlayers[uid]
 		if(self.game !=None):
 			self.game.leave(self)
+		if(self.tournament !=None):
+			self.tournament.leave(self)
 	
 	async def receive(self, text_data):
 		try:
@@ -153,7 +161,12 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 				self.sendError("Invalid type", 9004)
 		except Exception as e:
 			self.sendError("Invalid request", 9005, e)
-	
+
+	@multimethod
+	def sync_send(self, reqType : str, content:dict):
+		self.sync_send({"type":reqType,"content":content})
+
+	@multimethod
 	def sync_send(self, data: Union[dict,str]):
 		if(not self.online):
 			return

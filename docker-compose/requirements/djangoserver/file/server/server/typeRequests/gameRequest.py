@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 16:10:26 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/01 16:35:10 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/04 17:10:39 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,9 @@ from .gameActions.ping import ping
 
 action_list = [start, ready, leave, move, ping]
 async def gameRequest(socket, content):
+	if("action" not in content):
+		socket.sendError("missing action parameter",9035)
+		return
 	action = content["action"]
 	if(action < 0 or action > len(action_list)):
 		socket.sendError("Action out of range", 9100)	
