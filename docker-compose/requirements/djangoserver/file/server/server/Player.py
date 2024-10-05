@@ -1,17 +1,18 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    utils.py                                           :+:      :+:    :+:    #
+#    Player.py                                          :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
+#    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/09/27 03:36:08 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/04 18:59:25 by tomoron          ###   ########.fr        #
+#    Created: 2024/10/05 03:22:32 by tomoron           #+#    #+#              #
+#    Updated: 2024/10/05 03:46:24 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-import random
-import string
-
-def genString(length, letters=string.ascii_letters+string.digits):
-	return(''.join(random.choice(letters) for i in range(length)))
+class Player():
+	def __init__(self):
+		self.socket = None 
+		self.ready = False
+		self.pos = {"pos":0, "up": False}
+		self.skin = 0

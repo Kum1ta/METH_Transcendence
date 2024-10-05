@@ -6,20 +6,20 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/03 14:27:34 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/04 21:47:35 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { availableSkins, lastSelectedGoal } from '/static/javascript/lobbyPage/3d.js';
-import * as THREE from '/static/javascript/three/build/three.module.js'
 import { OrbitControls } from '/static/javascript/three/examples/jsm/controls/OrbitControls.js'
-import { sendRequest } from "/static/javascript/websocket.js";
-import { Player } from '/static/javascript/multiOnlineGame/Player.js'
-import { Map } from '/static/javascript/multiOnlineGame/Map.js'
-import { Ball } from '/static/javascript/multiOnlineGame/Ball.js'
-import { pageRenderer, isMobile } from '/static/javascript/main.js'
+import { availableSkins, lastSelectedGoal } from '/static/javascript/lobbyPage/3d.js';
+import { VRButton } from "/static/javascript/three/examples/jsm/webxr/VRButton.js"
 import { Opponent } from '/static/javascript/multiOnlineGame/Opponent.js'
-
+import * as THREE from '/static/javascript/three/build/three.module.js'
+import { Player } from '/static/javascript/multiOnlineGame/Player.js'
+import { pageRenderer, isMobile } from '/static/javascript/main.js'
+import { Ball } from '/static/javascript/multiOnlineGame/Ball.js'
+import { Map } from '/static/javascript/multiOnlineGame/Map.js'
+import { sendRequest } from "/static/javascript/websocket.js";
 /*
 Controls :
 	- w : monter
@@ -49,22 +49,32 @@ Controls :
 	- k : recreate et augmente le score de opponent
 */
 
-const	scoreMax		= 5;
+let 	scene				= null;
+let 	map					= null;
+let 	ball				= null;
+let		renderer			= null;
+let		player				= null;
+let		spotLight			= null;
+let 	ambiantLight		= null;
+let 	opponent			= null;
+let		interval			= null;
+let		intervalPing		= null;
+let 	debug				= false;
+let		lastPingTime		= 0;
+let		lastFpsTime			= 0;
+let 	lastFpsDisplayed	= 0;
+let		lastFpsArr			= [60];
+let		VrButton			= null;
+let		isInVrMode			= false;
 
-let scene				= null;
-let map					= null;
-let ball				= null;
-let renderer			= null;
-let player				= null;
-let spotLight			= null;
-let ambiantLight		= null;
-let opponent			= null;
-let	interval			= null;
-let	intervalPing		= null;
-let debug				= false;
-let	lastPingTime		= 0;
-let	lastFpsTime			= 0;
-let lastFpsDisplayed	= 0;
+const	observer = new MutationObserver((mutationsList) => {
+	mutationsList.forEach((mutation) => {
+		if (VrButton.innerText == 'VR NOT SUPPORTED')
+			document.getElementById('newButtonVr').style.display = 'none';
+		if (mutation.attributeName === 'style')
+			VrButton.style.display = 'none';
+	});
+});
 
 // ------------------- (need to be remove) -------------------- //
 const cameraTmp = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight);
@@ -75,7 +85,6 @@ class MultiOnlineGamePage
 {
 	static create(skin)
 	{
-		console.log(lastSelectedGoal);
 		if (!skin)
 			skin = {player: 0, opponent: 0};
 		const bar1		= createBarPlayer(availableSkins[skin.player]);
@@ -89,6 +98,8 @@ class MultiOnlineGamePage
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		renderer.domElement.style.animation = 'fadeOutStartGames 1s';
 		renderer.domElement.style.filter = 'brightness(1)';
+		
+		vrMode();
 		opponent				= new Opponent(bar2, map, Math.floor(Math.random() * 100 % 6));
 		player					= new Player(bar1, map, opponent, Math.floor(Math.random() * 100 % 6), skin.goalId);
 		spotLight				= new THREE.SpotLight(0xffffff, 10000, 0, 0.2);
@@ -175,6 +186,8 @@ class MultiOnlineGamePage
 
 	static dispose()
 	{
+		observer.disconnect();
+		VrButton = null;
 		window.removeEventListener('resize', windowUpdater);
 		if (interval)
 			clearInterval(interval);
@@ -298,7 +311,6 @@ function loop()
 		renderer.render(scene, player.camera);
 }
 
-let	lastFpsArr = [10, 3, 5];
 
 function showFps()
 {
@@ -316,4 +328,40 @@ function showFps()
 	lastFpsTime = now;
 }
 
-export { MultiOnlineGamePage, player, opponent, ball, map};
+function vrMode()
+{
+	const	supportsXR	=	'xr' in window.navigator;
+	const	newButton	=	configButton();
+
+	if (!supportsXR)
+		return ;
+	renderer.xr.enabled = true;
+	document.body.appendChild( VRButton.createButton(renderer) );
+	VrButton = document.getElementById('VRButton');
+	observer.observe(VrButton, { attributes: true });
+	if (VrButton.innerText !== 'VR NOT SUPPORTED')
+		document.body.append(newButton);
+}
+
+function configButton()
+{
+	const	newButton = document.createElement('button');
+	const	cameraGroup	=	new THREE.Group();
+
+	cameraGroup.name = "vrHeadset";
+	newButton.innerText = "Vr mode";
+	newButton.setAttribute('id', 'newButtonVr');
+	newButton.addEventListener('click', () => {
+		VrButton.click();
+		scene.add(cameraGroup);
+		scene.remove(player.camera);
+		player.configureVrController();
+		cameraGroup.add(player.camera);
+		cameraGroup.position.set(0, 0.5, 7.5);
+		isInVrMode = true;
+	});
+	return (newButton);
+}
+
+
+export { MultiOnlineGamePage, player, opponent, ball, map, scene, renderer, isInVrMode };

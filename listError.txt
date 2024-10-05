@@ -36,6 +36,10 @@
 - 9032 : Your opponent isn't online
 - 9033 : Skin id out of range
 - 9034 : missing field
+- 9035 : missing action parameter
+- 9036 : already in a tournament
+- 9037 : you're not in a tournament
+- 9038 : missing message field
 
 - 9100 : Action out of range
 - 9101 : No game started 

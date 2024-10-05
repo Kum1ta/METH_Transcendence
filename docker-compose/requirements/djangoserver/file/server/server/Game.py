@@ -6,11 +6,12 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/03 23:54:53 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/05 03:50:25 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from asgiref.sync import sync_to_async
+from .Player import Player
 from .models import GameResults, User
 import time
 import json
@@ -64,33 +65,22 @@ class Game:
 	maxScore = 5
 
 	def __init__(self, socket, withBot, skinId = 0, opponent = None):
-		self.p1 = None
-		self.p2 = None
-		self.p1Ready = False
-		self.p2Ready = False
-		self.bot = withBot
+		self.p1 = Player()
+		self.p2 = Player()
 		self.started = False
 		self.end = False
 		self.left = None
 		self.winner = None
 		self.gameStart = 0
-		self.expSleepTime = 0
 
-		self.p1Pos = {"pos":0, "up": False}
-		self.p2Pos = {"pos":0, "up": False}
-		
 		self.ballPos = {"pos":(0, 0), "up": False}
+		self.ballVel = (0, 0)
 		self.speed = Game.startSpeed
-		self.ballVel = (self.speed, 0)
 		self.score = [0, 0]
 		self.obstacles = []
 		self.lastWin = 2
 
-		self.p1Skin = 0
-		self.p2Skin = 0
-
 		self.opponentLock = opponent
-
 		if(withBot):
 			self.join(socket, skinId)
 		elif(opponent != None):
@@ -138,40 +128,40 @@ class Game:
 		else:
 			self.obstacles.append(Game.jumpersPos[i + 1])
 
-		self.p1.sync_send({"type":"game", "content":{"action":7, "content":self.obstacles}})
+		self.p1.socket.sync_send({"type":"game", "content":{"action":7, "content":self.obstacles}})
 		self.obstaclesInvLength()
-		self.p2.sync_send({"type":"game", "content":{"action":7, "content":self.obstacles}})
+		self.p2.socket.sync_send({"type":"game", "content":{"action":7, "content":self.obstacles}})
 		self.obstaclesInvLength()
 
 	def join(self, socket, skin = 0):
 		try:
-			if(self.p1 == None):
+			if(self.p1.socket == None):
 				print("game created, set as player 1")
-				self.p1 = socket
-				self.p1Skin = skin
+				self.p1.socket = socket
+				self.p1.skin = skin
 			else:
 				if(self.opponentLock != None and self.opponentLock != socket.id):
 					socket.sendError("You are not invited to this game", 9103)
 					return;
 				print("joined game, set as player 2")
-				self.p2 = socket
-				self.p2Skin = skin
+				self.p2.socket = socket
+				self.p2.skin = skin
 			socket.game = self
-			if(self.p2 != None and self.p1 != None):
+			if(self.p2.socket != None and self.p1.socket != None):
 				print("both players here, send opponent to both players")
-				self.p1.sync_send({"type":"game", "content":{"action":1,"id":self.p2.id,"username":self.p2.username, "skin":self.p2Skin}})
-				self.p2.sync_send({"type":"game", "content":{"action":1,"id":self.p1.id,"username":self.p1.username, "skin":self.p1Skin}})
+				self.p1.socket.sync_send({"type":"game", "content":{"action":1,"id":self.p2.socket.id,"username":self.p2.socket.username, "skin":self.p2.skin}})
+				self.p2.socket.sync_send({"type":"game", "content":{"action":1,"id":self.p1.socket.id,"username":self.p1.socket.username, "skin":self.p1.skin}})
 		except Exception as e:
 			socket.sendError("invalid request", 9005, e)
 
 	async def setReady(self, socket):
-		if(socket == self.p1):
-			self.p1Ready = True
-		elif (socket == self.p2):
-			self.p2Ready = True
+		if(socket == self.p1.socket):
+			self.p1.ready = True
+		elif (socket == self.p2.socket):
+			self.p2.ready = True
 		else:
 			return(0)
-		if(self.p1Ready and self.p2Ready):
+		if(self.p1.ready and self.p2.ready):
 			print("both players are ready, starting game")
 			self.genObstacles()
 			print("obstacles generated :", self.obstacles)
@@ -181,14 +171,14 @@ class Game:
 	def endGame(self, winner):
 		if(self.end):
 			return
-		self.p1.sync_send({"type":"game","content":{"action":10,"won":winner==1, "opponentLeft":self.left == 2}})
-		self.p2.sync_send({"type":"game","content":{"action":10,"won":winner==2, "opponentLeft":self.left == 1}})
+		self.p1.socket.sync_send({"type":"game","content":{"action":10,"won":winner==1, "opponentLeft":self.left == 2}})
+		self.p2.socket.sync_send({"type":"game","content":{"action":10,"won":winner==2, "opponentLeft":self.left == 1}})
 		self.winner = winner
 		self.end = True
 	
 	def leave(self, socket):
 		socket.game = None
-		if (socket == self.p1):
+		if (socket == self.p1.socket):
 			self.left = 1
 		else:
 			self.left = 2
@@ -204,17 +194,17 @@ class Game:
 
 	def sendPlayers(self, data):
 		data_raw = json.dumps({"type":"game","content":data})
-		self.p1.sync_send(data_raw)
-		self.p2.sync_send(data_raw)
+		self.p1.socket.sync_send(data_raw)
+		self.p2.socket.sync_send(data_raw)
 
 	def move(self, socket, pos, up):
-		opponent = self.p1 if socket != self.p1 else self.p2
-		if(socket == self.p1):
-			self.p1Pos["pos"] = pos
-			self.p1Pos["up"] = up;
+		opponent = self.p1.socket if socket != self.p1.socket else self.p2.socket
+		if(socket == self.p1.socket):
+			self.p1.pos["pos"] = pos
+			self.p1.pos["up"] = up;
 		else:
-			self.p2Pos["pos"] = -pos;
-			self.p2Pos["up"] = up
+			self.p2.pos["pos"] = -pos;
+			self.p2.pos["up"] = up
 		if(opponent != None):
 			opponent.sync_send({"type":"game","content":{"action":3, "pos":-pos, "up":up, "is_opponent":True}})
 
@@ -225,14 +215,14 @@ class Game:
 			self.gameStart = time.time() * 1000
 		else:
 			gameTime = (time.time() * 1000) - self.gameStart
-		if(self.p1):
-			self.p1.sync_send({"type":"game", "content":{"action":5,
+		if(self.p1.socket):
+			self.p1.socket.sync_send({"type":"game", "content":{"action":5,
 				"pos" : [self.ballPos["pos"][0],self.ballPos["pos"][1]],
 				"velocity":[self.ballVel[0], self.ballVel[1]],
 				"game_time":gameTime
 			}})
-		if(self.p2):
-			self.p2.sync_send({"type":"game","content":{"action":5,
+		if(self.p2.socket):
+			self.p2.socket.sync_send({"type":"game","content":{"action":5,
 				"pos" : [-self.ballPos["pos"][0],-self.ballPos["pos"][1]],
 				"velocity":[-self.ballVel[0], -self.ballVel[1]],
 				"game_time":gameTime
@@ -355,8 +345,8 @@ class Game:
 		print("a player suffured from a major skill issue")
 		self.score[player-1] += 1
 		print("new score :", self.score)
-		self.p1.sync_send({"type":"game","content":{"action":6, "is_opponent": player == 2}})
-		self.p2.sync_send({"type":"game","content":{"action":6, "is_opponent": player == 1}})
+		self.p1.socket.sync_send({"type":"game","content":{"action":6, "is_opponent": player == 2}})
+		self.p2.socket.sync_send({"type":"game","content":{"action":6, "is_opponent": player == 1}})
 		await asyncio.sleep(4.5)
 		if(self.checkGameEndGoal()):
 			return
@@ -375,8 +365,8 @@ class Game:
 			if(self.obstacles[i]["isUp"] != self.ballPos["up"]):
 				continue	
 			if(self.twoPointsDistance((self.obstacles[i]["pos"]["x"], self.obstacles[i]["pos"]["z"]), ballPos) < Game.jumperRadius):
-				self.p1.sync_send({"type":"game", "content":{"action":8,"name":self.obstacles[i]["name"]}})	
-				self.p2.sync_send({"type":"game", "content":{"action":8,"name":self.obstacles[i]["name"]}})	
+				self.p1.socket.sync_send({"type":"game", "content":{"action":8,"name":self.obstacles[i]["name"]}})	
+				self.p2.socket.sync_send({"type":"game", "content":{"action":8,"name":self.obstacles[i]["name"]}})	
 				self.ballPos["up"] = not self.ballPos["up"]
 	
 	def checkWallsColision(self, ballPos):
@@ -402,22 +392,21 @@ class Game:
 		now = time.time()
 		delta = now - self.lastUpdate
 		print("delta :", delta)
-		print("\033[31msleep time diff :", (delta - self.expSleepTime) * 1000, "ms")
 		currentBallPos = self.ballPos["pos"]
 		velX = self.ballVel[0]
 		velZ = self.ballVel[1]
 		newBallPos = (round(currentBallPos[0] + (delta * velX), 5),
 		round(currentBallPos[1] + (delta * velZ), 5))
 		if(newBallPos[1] <= Game.limits["back"] or newBallPos[1] >= Game.limits["front"]):
-			player = self.p2Pos if newBallPos[1] < 0 else self.p1Pos
+			player = self.p2.pos if newBallPos[1] < 0 else self.p1.pos
 			playerDistance = self.getPlayerDistance(player, newBallPos)
 			if(playerDistance >= -(Game.playerLength / 2) and playerDistance <= Game.playerLength / 2 and player["up"] == self.ballPos["up"]):
 				velX = -((self.speed * 0.80) * (playerDistance / (Game.playerLength / 2)))
 				velZ = self.speed - abs(velX)
 				if(newBallPos[1] > 0):
 					velZ = -velZ
-				self.p1.sync_send({"type":"game","content":{"action":4, "is_opponent": newBallPos[1] < 0}})
-				self.p2.sync_send({"type":"game","content":{"action":4, "is_opponent": newBallPos[1] > 0}})
+				self.p1.socket.sync_send({"type":"game","content":{"action":4, "is_opponent": newBallPos[1] < 0}})
+				self.p2.socket.sync_send({"type":"game","content":{"action":4, "is_opponent": newBallPos[1] > 0}})
 			else:
 				await self.scoreGoal(1 if newBallPos[1] < 0 else 2)
 				return;
@@ -458,12 +447,11 @@ class Game:
 				break;
 			sleep_time = self.getSleepTime()
 			print("sleep time : " , sleep_time)
-			self.expSleepTime = sleep_time
 			await asyncio.sleep(sleep_time)
 		print("game end")
 		await self.saveResults()
-		self.p1.game = None
-		self.p2.game = None
+		self.p1.socket.game = None
+		self.p2.socket.game = None
 	
 	@sync_to_async
 	def saveResults(self):
@@ -472,8 +460,8 @@ class Game:
 				print("unkown winner, setting to 1")
 				self.winner = 1
 			print("saving results")
-			p1DbUser = User.objects.get(id=self.p1.id)
-			p2DbUser = User.objects.get(id=self.p2.id)
+			p1DbUser = User.objects.get(id=self.p1.socket.id)
+			p2DbUser = User.objects.get(id=self.p2.socket.id)
 			results = GameResults.objects.create(
 				player1 = p1DbUser,
 				player2 = p2DbUser,
@@ -485,5 +473,5 @@ class Game:
 			results.save()
 			print("results saved")
 		except Exception as e:
-			self.p1.sendError("Couldn't save last game results", 9104, e)
-			self.p2.sendError("Couldn't save last game results", 9104, e)
+			self.p1.socket.sendError("Couldn't save last game results", 9104, e)
+			self.p2.socket.sendError("Couldn't save last game results", 9104, e)

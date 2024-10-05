@@ -1,17 +1,15 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    utils.py                                           :+:      :+:    :+:    #
+#    Bot.py                                             :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
+#    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/09/27 03:36:08 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/04 18:59:25 by tomoron          ###   ########.fr        #
+#    Created: 2024/10/05 03:54:20 by tomoron           #+#    #+#              #
+#    Updated: 2024/10/05 03:55:31 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-import random
-import string
-
-def genString(length, letters=string.ascii_letters+string.digits):
-	return(''.join(random.choice(letters) for i in range(length)))
+class Bot(Player):
+	def __init__(self):
+		print("I am a bot boop boop beep boop")

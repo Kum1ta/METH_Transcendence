@@ -172,11 +172,6 @@ function startTournmament()
 {
 	const	code	=	document.getElementById('tournamentCode').value;
 
-	if (code.length != 6 && code.length != 0)
-	{
-		CN.new("Information", "The code must be 6 characters long or empty");
-		return ;
-	}
 	sendRequest("tournament", {action: 0, code: code});
 }
 

@@ -122,6 +122,8 @@ def login42(request):
 	request.session["logged_in"] = True
 	request.session["username"] = db_user[0].username
 	request.session["id"] = db_user[0].id
+	request.session["pfp"] = db_user[0].pfp
+	request.session.save()
 	return redirect("/")
 
 def logout(request):
@@ -165,3 +167,6 @@ def	tournamentPage(request):
 	if(not request.session.get("logged_in", False)):
 		return(HttpResponse("you are not logged in",status=403))
 	return render(request, "tournamentPage.html", {})
+
+def tournament(request):
+	return redirect("/lobby")
