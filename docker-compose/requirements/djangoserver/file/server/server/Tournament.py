@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Tournament.py                                      :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
+#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/05 03:30:00 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/05 03:33:17 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,7 @@ class Tournament:
 		self.messages.append({"username":socket.username, "message":message})		
 		if(len(self.messages) > 20):
 			self.messages.pop(0)
-		self.broadcast({"action":3, "username":socket.username, "message":socket.message})
+		self.broadcast({"action":3, "username":socket.username, "message":message})
 
 	def leave(self, socket):
 		if(socket not in self.players):

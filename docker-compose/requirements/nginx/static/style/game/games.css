@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:23:41 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/04 17:35:50 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/05 02:14:49 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,8 @@ body {
 .gamePad .gamePadLeft {
 	display: flex;
 	position: absolute;
-	left: 50px;
-	bottom: 50px;
+	left: 30px;
+	bottom: 30px;
 	user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
@@ -135,8 +135,8 @@ body {
 	display: flex;
 	position: absolute;
 	flex-direction: column;
-	right: 50px;
-	bottom: 50px;
+	right: 30px;
+	bottom: 30px;
 	user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
@@ -159,7 +159,7 @@ body {
 }
 
 .gamePadLeft #padRight {
-	margin-left: 50px;
+	margin-left: 10px;
 	transform: rotate(180deg);
 	user-select: none;
     -webkit-user-select: none;
@@ -168,7 +168,7 @@ body {
 }
 
 .gamePadRight #padTop {
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 	transform: rotate(90deg);
 	user-select: none;
     -webkit-user-select: none;

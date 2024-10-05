@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/03 02:27:58 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/05 03:48:19 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ class TournamentPage
 		divInfo = document.getElementsByClassName('infoo')[0];
 		divChat = document.getElementsByClassName('chat')[0];
 		document.getElementById('code-tournament').innerText = "Code : " + code;
+		sendRequest("tournament", {action: 3});
 		divTopInfo.innerText = 'Tournament';
+		initTournamentChat();
 	}
 
 	static dispose()
@@ -103,7 +105,6 @@ class TournamentPage
 		while (i < playerNb.length - 1)
 		{
 			playerList['player' + playerNb[i]] = playerList['player' + playerNb[i + 1]];
-			console.log(playerList['player' + playerNb[i]]);
 			document.getElementById('user-' + playerNb[i]).innerText = playerList['player' + playerNb[i]].username;
 			document.getElementById('pfp-' + playerNb[i]).style.backgroundImage = `url(${playerList['player' + playerNb[i]].pfp})`;
 			i++;
@@ -121,6 +122,14 @@ class TournamentPage
 		divChat.appendChild(newText);
 	}
 
+	static fetchAllData(content)
+	{
+		for (let i = 0; i < content.messages.length; i++)
+			this.newMessage(content.messages[i]);
+		for (let i = 0; i < content.players.length; i++)
+			this.newOpponent(content.players[i]);
+	}
+
 	static startGame(content)
 	{
 		pageRenderer.changePage("waitingGamePage", false, {username: content.username, id: content.id, isTournament: true})
@@ -134,6 +143,32 @@ function newInfo(message)
 	newDiv.setAttribute('class', 'alert-info');
 	newDiv.innerHTML = `<p>${message}</p>`
 	divInfo.appendChild(newDiv);
+}
+
+function initTournamentChat()
+{
+	const	inputMessage	= document.getElementById('inputMessage');
+	const	sendButton		= document.getElementById("sendButton");
+
+	sendButton.style.cursor = "pointer";
+	sendButton.addEventListener("click", () => {
+		sendRequest("tournament", {action: 2, message: inputMessage.value});
+		inputMessage.value = "";
+		inputMessage.focus();
+	});
+	inputMessage.addEventListener("keyup", (event) => {
+		if (event.key === "Enter" && inputMessage.value.trim() !== "")
+		{
+			event.preventDefault();
+			sendRequest("tournament", {action: 2, message: inputMessage.value});
+			inputMessage.value = "";
+			inputMessage.focus();
+		}
+	});
+	inputMessage.addEventListener("keydown", (event) => {
+		if (event.key === "Enter")
+			event.preventDefault();
+	});
 }
 
 export { TournamentPage }

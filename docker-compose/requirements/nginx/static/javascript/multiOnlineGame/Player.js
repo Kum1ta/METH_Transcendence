@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/05 01:06:19 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/05 02:41:30 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -539,7 +539,6 @@ function showGamePad()
 	gamePad.style.display = 'flex';
 	document.addEventListener('touchstart', (event) => {
 		const	key			=	event.target.getAttribute("id");
-		
 
 		for (let i = 0; i < keyList.length; i++)
 		{
