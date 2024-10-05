@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/05 02:58:08 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/05 03:30:00 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,9 +52,9 @@ class Tournament:
 		socket.sync_send("tournament",{"action":5, "players":players, "messages" : self.messages})
 		
 	def sendMessage(self, socket, message):
-		messages.append({"username":socket.username, "message":message})		
-		if(len(messages) > 20):
-			messages.pop(0)
+		self.messages.append({"username":socket.username, "message":message})		
+		if(len(self.messages) > 20):
+			self.messages.pop(0)
 		self.broadcast({"action":3, "username":socket.username, "message":socket.message})
 
 	def leave(self, socket):
