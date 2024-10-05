@@ -6,7 +6,7 @@
 /*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/04 19:40:55 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/10/05 22:09:37 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,8 @@
     width: 70%;
     height: 80%;
     background-color: #020202;
+	overflow: hidden;
+	overflow-y: hidden;
 }
 
 .left-side {
@@ -526,11 +528,17 @@ footer {
 	.team {
 		padding-inline: 30px;
 		padding-block: 50px;
+		flex-wrap: nowrap;
+		overflow-x: auto;
 	}
 
 	.team-member {
 		max-width: 250px;
 		width: 100%;
 		height: auto;
+	}
+
+	form input {
+		width: calc(100% - 40px);
 	}
 }

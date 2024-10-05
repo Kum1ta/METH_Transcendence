@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/29 23:30:25 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/05 22:32:01 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class Login
 		let		usernameNode		= null;
 		let		nodeText			= null;
 
+		document.body.style.overflow = 'auto';
 		registerButton.addEventListener('click', changeWindowLogin);
 		loginBackButton.addEventListener('click', changeWindowLoginBack);
 		button42.addEventListener('click', redirection);
@@ -114,6 +115,7 @@ function hideMenu()
 	const	popMenuLoginButton 	= document.getElementById('popMenuLoginButton');
 	
 	popMenuLoginButton.style.display = 'none';
+	document.body.style.overflow = 'auto';
 	document.removeEventListener('click', hideMenu);
 	loginButton.addEventListener('click', showMenu);
 }
@@ -183,9 +185,15 @@ function	showLoginDiv()
 	const popout = document.getElementById('loginPopup');
 
 	if (popout.style.display === 'flex')
+	{		
+		document.body.style.overflow = 'auto';
 		popout.style.display = 'none';
+	}
 	else
+	{
+		document.body.style.overflow = 'hidden';
 		popout.style.display = 'flex';
+	}
 }
 
 function	connect(e)
@@ -203,7 +211,10 @@ function	connect(e)
 function closeClickOutsiteGameMode(event)
 {
 	if (event.target == document.getElementById('loginPopup'))
+	{
 		document.getElementById('loginPopup').style.display = 'none';
+		document.body.style.overflow = 'auto';	
+	}
 }
 
 export { Login, changeWindowLoginBack };

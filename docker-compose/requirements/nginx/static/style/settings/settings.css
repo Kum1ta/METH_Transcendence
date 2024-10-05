@@ -10,6 +10,47 @@
     font-style: normal;
 }
 
+#topBarSettings {
+    margin-block: 25px;
+	padding: 0;
+	padding-inline: 50px;
+	display: flex;
+	gap: 2rem;
+	align-items: center;
+	position: relative;
+	inset-inline: 0;
+	top: 0;
+	z-index: 500;
+}
+
+#topBarSettings h1 {
+	padding: 0;
+	padding-top: 4px;
+	font-size: 35px;
+	color: white;
+	font-family: 'Poppins';
+	font-style: italic;
+    font-weight: bold;
+}
+
+#topBarSettings #loginButton {
+	font-size: 20px;
+	background-color: white;
+	height: 40px;
+	width: 130px;	
+	color: black;
+	text-align: center;
+	line-height: 40px;
+	margin-left: auto;
+	transition: background-color 0.3s ease;
+}
+
+#topBarSettings #loginButton:hover {
+	background-color: transparent;
+	color: white;
+	cursor: pointer;
+}
+
 .popup-background-delete {
 	display: none;
 	position: fixed;
@@ -154,16 +195,26 @@
 
 
 @media (max-width: 768px) {
+    #settingsBody {
+        align-items: normal;
+    }
     #settingsBody .container-settings {
         display: flex;
         flex-direction: column;
         width: 100%;
-        margin-top: 350px;
         margin-inline: 30px;
     }
 
     #settingsBody .left-section,
     #settingsBody .right-section {
         margin-bottom: 20px;
+    }
+
+    .delete-btn {
+        margin-bottom: 30px;
+    }
+
+    #topBar{
+        position: relative;
     }
 }

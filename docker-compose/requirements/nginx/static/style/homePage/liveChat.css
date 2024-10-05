@@ -6,7 +6,7 @@
 /*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:53:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/04 18:03:56 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/10/04 20:43:32 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,5 +273,17 @@
 @media (max-width: 700px){
 	#chatButton {
 		left: 40px;
+	}
+	
+	#chatDiv {
+		width: 80%;
+	}
+
+	#inputMessageDiv {
+		width: 87%;
+	}
+
+	#inputMessage {
+		width: 100%;
 	}
 }
