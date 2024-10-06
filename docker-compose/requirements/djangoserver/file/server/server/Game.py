@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/05 03:50:25 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/06 03:14:29 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,6 +72,7 @@ class Game:
 		self.left = None
 		self.winner = None
 		self.gameStart = 0
+		self.gameTime = 0
 
 		self.ballPos = {"pos":(0, 0), "up": False}
 		self.ballVel = (0, 0)
@@ -211,21 +212,18 @@ class Game:
 	def sendNewBallInfo(self, reset = False):
 		print("send new ball info")
 		if(reset):
-			gameTime = 0
-			self.gameStart = time.time() * 1000
-		else:
-			gameTime = (time.time() * 1000) - self.gameStart
+			self.gameTime = 0
 		if(self.p1.socket):
 			self.p1.socket.sync_send({"type":"game", "content":{"action":5,
 				"pos" : [self.ballPos["pos"][0],self.ballPos["pos"][1]],
 				"velocity":[self.ballVel[0], self.ballVel[1]],
-				"game_time":gameTime
+				"game_time":self.gameTime * 1000
 			}})
 		if(self.p2.socket):
 			self.p2.socket.sync_send({"type":"game","content":{"action":5,
 				"pos" : [-self.ballPos["pos"][0],-self.ballPos["pos"][1]],
 				"velocity":[-self.ballVel[0], -self.ballVel[1]],
-				"game_time":gameTime
+				"game_time":self.gameTime * 1000
 			}})
 
 	def solve_quadratic(self, a, b, c):
@@ -375,9 +373,8 @@ class Game:
 				continue;
 			if(self.obstacles[i]["isUp"] != self.ballPos["up"]):
 				continue;
-			if(abs(ballPos[1]) < (Game.wallWidth / 2) + Game.ballRadius):
+			if(abs(ballPos[1]) <= (Game.wallWidth / 2) + Game.ballRadius):
 				if(abs(self.obstacles[i]["pos"]["x"] - ballPos[0]) < (Game.wallLength / 2) + Game.ballRadius):
-					print("not in wall 2")
 					return(True)
 		return(False)
 	
@@ -387,11 +384,8 @@ class Game:
 		self.ballVel = (x, y)
 		self.speed += Game.bounceSpeedIncrease 
 
-	async def updateBall(self):
+	async def updateBall(self, delta):
 		print("AAAAAAAAAAAAAAAAAAAAAAA update")
-		now = time.time()
-		delta = now - self.lastUpdate
-		print("delta :", delta)
 		currentBallPos = self.ballPos["pos"]
 		velX = self.ballVel[0]
 		velZ = self.ballVel[1]
@@ -417,7 +411,7 @@ class Game:
 		self.checkJumpersDistance(newBallPos)
 		self.ballVel = (velX, velZ)
 		self.increaseSpeed()
-		self.lastUpdate = now
+		self.lastUpdate = time.time()
 		self.ballPos["pos"] = newBallPos
 		self.sendNewBallInfo()
 	
@@ -433,6 +427,7 @@ class Game:
 				velZ = -velZ
 			self.ballVel = (velX, velZ)
 		self.sendNewBallInfo(True)
+		self.gameStart = time.time()
 		self.lastUpdate = time.time()
 
 	async def gameLoop(self):
@@ -442,12 +437,12 @@ class Game:
 		await asyncio.sleep(3)
 		self.prepareGame()
 		while(not self.end):
-			await self.updateBall()
-			if(self.end):
-				break;
 			sleep_time = self.getSleepTime()
 			print("sleep time : " , sleep_time)
-			await asyncio.sleep(sleep_time)
+			if((time.time() - self.gameStart) - self.gameTime < sleep_time):
+				await asyncio.sleep(sleep_time - ((time.time() - self.gameStart) - self.gameTime))
+			self.gameTime += sleep_time
+			await self.updateBall(sleep_time)
 		print("game end")
 		await self.saveResults()
 		self.p1.socket.game = None
