@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/10/03 14:40:41 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/06 16:12:40 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -678,7 +678,8 @@ class Map
 			clearInterval(interval2);
 			interval2 = null;
 		}
-		scene.remove(this.banner);
+		if (this.banner)
+			scene.remove(this.banner);
 	};
 
 	animationGoal(cordX, cordY, cordZ, nameObject, funcCreateObject)
@@ -714,6 +715,8 @@ class Map
 
 	#clearAnimationGoal()
 	{
+		if (!this.arrObject)
+			return ;
 		for (let i = 0; i < this.arrObject.length; i++)
 		{
 			if (this.arrObject[i].type == "goalObject")

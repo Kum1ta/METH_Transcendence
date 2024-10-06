@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:29:50 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/05 03:02:38 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/06 15:32:04 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,5 @@ function joinTournament(content)
 	else
 		pageRenderer.changePage('tournamentPage', false, content.code);
 }
-
-console.warn("Remove this : window.typeTournament = typeTournament;");
-window.typeTournament = typeTournament;
 
 export { typeTournament };

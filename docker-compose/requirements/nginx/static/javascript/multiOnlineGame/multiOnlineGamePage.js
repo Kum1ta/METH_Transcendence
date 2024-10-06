@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/04 21:47:35 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/06 16:04:20 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,6 @@ class MultiOnlineGamePage
 
 		renderer.setAnimationLoop(loop)
 		sendRequest('game', {action: 1});
-		
 		let lastPosition = player.object.position.x;
 		let lastUp = player.isUp;
 		interval = setInterval(() => {
@@ -254,7 +253,10 @@ class MultiOnlineGamePage
 		let		intervalEnd		=	null;
 		let		time			=	4;
 
-		endGameScore.innerText = `${map.score.player} - ${map.score.opponent}`;
+		if (!map)
+			return ;
+		if (map && map.score)
+			endGameScore.innerText = `${map.score.player} - ${map.score.opponent}`;
 		if (content.won)
 			scoreText.innerText = "You win !"
 		endGameDiv.style.display = 'flex';
