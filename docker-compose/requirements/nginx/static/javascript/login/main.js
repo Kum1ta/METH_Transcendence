@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/05 22:32:01 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/10/06 17:01:31 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ class Login
 		button42.addEventListener('click', redirection);
 		if (userMeInfo.id !== -1)
 		{
-			usernameNode = document.createTextNode(userMeInfo.username);
+			usernameNode = document.createTextNode(userMeInfo.username.lenght > 8 ? userMeInfo.username.substring(0, 8) + '...' : userMeInfo.username);
 			loginButton.replaceChild(usernameNode, pLoginButton);
 			loginButton.addEventListener('click', showMenu);
 			window.addEventListener('resize', movePopMenuLoginButton);

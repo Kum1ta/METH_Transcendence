@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:13:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/03 02:33:35 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/06 16:47:57 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ class Screen
 	screenMaterial = null;
 	canvasVideo = null;
 	interval = null;
-	intervalLight = null;
 
 	constructor(scene)
 	{
@@ -37,9 +36,7 @@ class Screen
 			tv.geometry.center();
 			this.tv = tv;
 			tv.position.set(0, 0.99, 2);
-			tv.material = new THREE.MeshPhysicalMaterial({color: 0x454545});
-			tv.material.roughness = 1;
-			tv.material.metalness = 1.05;
+			tv.material = new THREE.MeshPhysicalMaterial({color: 0x050505});
 			tv.scale.set(0.05, 0.05, 0.05);
 			tv.castShadow = true;
 			tv.receiveShadow = true;
@@ -159,8 +156,6 @@ class Screen
 	dispose()
 	{
 		this.#disposeVideo();
-		if (this.intervalLight)
-			clearInterval(this.intervalLight);
 	}
 	
 

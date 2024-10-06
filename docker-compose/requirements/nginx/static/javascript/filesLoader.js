@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 22:36:43 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/01 21:58:57 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/06 16:42:07 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ const	url_files = {
 	gameboyModel: '/static/models3D/homePage/gameboy.glb',
 	tvModel: '/static/models3D/homePage/tv.glb',
 	bannerModel: '/static/models3D/multiOnlineGame/banner.glb',
+	infinitPlane: '/static/models3D/homePage/infinitPlane.glb',
 
 	pongVideo: '/static/video/homePage/pong.mp4',
 	notLoginVideo: '/static/video/homePage/notLogin.webm',

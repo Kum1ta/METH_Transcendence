@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/02 13:34:58 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/06 16:32:51 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,12 +182,11 @@ function createGraph(ctx, data)
 	new Chart(ctx, {
 		type: 'pie',
 		data: {
-			labels: ['Win', 'Lose'],
+			labels: [' Win ', ' Lose '],
 			datasets: [{
-				label: 'Couleurs',
 				data: [data.win, data.lose],
 				backgroundColor: ['#11ad11', '#E74040'],
-				hoverOffset: 4
+				hoverOffset: 1,
 			}]
 		},
 		options: {

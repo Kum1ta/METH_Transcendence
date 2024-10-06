@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 17:00:35 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/30 22:47:54 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/06 17:02:12 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ class settingsPage
 				interval = setInterval(() => {
 					if (userMeInfo.username != "")
 					{
-						loginButton.innerText = userMeInfo.username;
+						loginButton.innerText = userMeInfo.username.length > 8 ? userMeInfo.username.substring(0, 8) + '...' : userMeInfo.username;
 						clearInterval(interval);
 					}
 				}, 200);
