@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/06 16:58:43 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/06 23:37:28 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ class Home3D
 
 	static dispose()
 	{
+		document.addEventListener('scroll', mouseTracker);
 		window.removeEventListener('resize', windowUpdater);
 		document.removeEventListener('mousemove', mouseTracker);
 		document.removeEventListener('click', redirection);
@@ -131,7 +132,7 @@ function home3D()
 	putObject(files.lampModel, -2.5, 0, 2.5, 3, 0, Math.PI + Math.PI / 8, 0);
 	putObject(files.plantModel, 1.5, 0, 3, 0.5, 0, 0, 0);
 	putObject(files.gameboyModel, -0.5, -0.075, 0.5, 0.1, 0, 0.4, 0);
-	putObject(files.infinitPlane, -1, 0, 0, 10, 0, Math.PI / 2 + 0.5, 0, 0x252525);
+	putObject(files.infinitPlane, -1, 0, 0, 10, 0, Math.PI / 2 + 0.5, 0, 0x303030);
 	renderer.toneMapping = THREE.LinearToneMapping;
 	renderer.shadowMap.enabled = true;
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -141,14 +142,14 @@ function home3D()
 	scene.background = new THREE.Color(0x020202)
 	scene.add(ambiantLight);
 	
-	// createPlane();
 	createCube();
 	document.body.getElementsByClassName('homeSection')[0].appendChild(renderer.domElement);
 	
 	window.addEventListener('resize', windowUpdater);
-	mouse.x = 9999; 
+	mouse.x = 9999;
 	mouse.y = 9999;
 	document.addEventListener('mousemove', mouseTracker);
+	document.addEventListener('scroll', mouseTracker);
 
 	composer		= new EffectComposer(renderer);
 	renderPass		= new RenderPass(scene, camera);
@@ -240,7 +241,7 @@ function home3D()
 		{
 			if (clickDetect)
 			{
-				document.removeEventListener('click', redirection);
+				document.getElementsByTagName('canvas')[0].removeEventListener('click', redirection);
 				clickDetect = false;
 			}
 			if (playButtonMouseOver || intersects[0].object == screen.screen)
@@ -257,7 +258,7 @@ function home3D()
 				{
 					if (!clickDetect && userMeInfo.id > 0)
 					{
-						document.addEventListener('click', redirection);
+						document.getElementsByTagName('canvas')[0].addEventListener('click', redirection);
 						clickDetect = true;
 					}
 				}

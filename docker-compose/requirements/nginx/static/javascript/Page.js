@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/06 15:31:59 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/06 23:49:15 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,11 @@ class Page
 				.then(data => {
 					data.text().then(text => {
 						document.body.innerHTML = text;
+						for (let i = 0; i < this.availablePages.length; i++)
+						{
+							if (this.actualPage === this.availablePages[i].class)
+								document.precedentPage = this.availablePages[i].name;
+						}
 						this.actualPage = this.availablePages[i].class;
 						document.title = this.availablePages[i].title;
 						if (!isBack && !this.wasRefresh)

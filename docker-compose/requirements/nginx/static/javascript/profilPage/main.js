@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/06 16:32:51 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/06 23:50:01 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,12 @@ class ProfilPage
 		else
 			sendRequest("get_user_info", {id: user});
 		crossProfil.addEventListener('click', () => {
-			if (typeof(user) == 'string')
-				pageRenderer.changePage('homePage');
+			if (document.precedentPage)
+				pageRenderer.changePage(document.precedentPage);
 			else
-				pageRenderer.changePage('lobbyPage');
+				pageRenderer.changePage('homePage');
 		});
 		waitForUserInfo().then((userInfo) => {
-			console.log(userInfo);
 			if (userInfo == null)
 			{
 				pageRenderer.changePage('homePage');
