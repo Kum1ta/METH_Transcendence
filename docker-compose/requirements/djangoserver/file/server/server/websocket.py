@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 14:31:30 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/04 21:06:20 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/06 16:28:47 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -169,6 +169,7 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 	@multimethod
 	def sync_send(self, data: Union[dict,str]):
 		if(not self.online):
+			print("cancel send, socket not online")
 			return
 		txt_data = None	
 		if(type(data) is dict):
@@ -198,6 +199,8 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 	def printDebug(self, request, typeRequest, error=None):
 		try:				
 			if (self.debugMode and typeRequest == 0):
+				if(request["type"] == "game" and request.get("content", {}).get("action", 0) == 4):
+					return
 				print("\033[0;34m|----- New received request -----|\033[0;0m")
 				#print("User          :", self.username)
 				#print("Token         :", self.token)
