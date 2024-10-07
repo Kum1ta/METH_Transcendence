@@ -59,6 +59,7 @@ class Ball
 
 		mesh.receiveShadow = true;
 		mesh.castShadow = true;
+		mesh.material.transparent = true;
 		mesh.position.set(this.centerPos.x, this.centerPos.y, this.centerPos.z);
 		return (mesh);
 	}
@@ -73,6 +74,23 @@ class Ball
 		this.object.scale.set(1, 1, 1);
 	};
 
+	setVisibility(bool)
+	{
+		if (bool)
+			this.object.material.opacity = 1;
+		else
+			this.object.material.opacity = 0;
+	}
+
+	setCastShadow(bool)
+	{
+		if (bool)
+			this.object.castShadow = true;
+		else 
+			this.object.castShadow = false;
+		console.log("this.object.castShadow", bool);
+	}
+
 	setPosition(x, y, z)
 	{
 		this.object.position.set(x, y, z);
@@ -86,7 +104,12 @@ class Ball
 		const	slower	= speed / 3;
 
 		if (diffBot > diffTop)
+		{
 			speed *= -1;
+			this.setCastShadow(true);
+		}
+		else
+			this.setCastShadow(false);
 		if (this.interval)
 			clearInterval(this.interval);
 		this.interval = setInterval(() => {

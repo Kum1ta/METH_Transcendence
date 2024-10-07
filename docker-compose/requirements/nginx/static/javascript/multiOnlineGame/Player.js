@@ -12,7 +12,7 @@
 
 import { fetchProfile, MotionController } from '/static/javascript/three/examples/jsm/libs/motion-controllers.module.js'
 import { XRControllerModelFactory } from '/static/javascript/three/examples/jsm/webxr/XRControllerModelFactory.js'
-import { scene, renderer, isInVrMode } from '/static/javascript/multiOnlineGame/multiOnlineGamePage.js'
+import { scene, renderer, isInVrMode, ball } from '/static/javascript/multiOnlineGame/multiOnlineGamePage.js'
 import { lastSelectedGoal, availableGoals } from '/static/javascript/lobbyPage/3d.js';
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { layoutSelected } from '/static/javascript/lobbyPage/main.js'
@@ -147,6 +147,9 @@ class Player
 		setTimeout(() => {
 			this.mapVar.putVideoOnCanvas(0, null);
 		}, 4000);
+
+		ball.setVisibility(false);
+
 		if (isOpponent)
 		{
 			this.mapVar.reCreate("opponent");
@@ -171,7 +174,7 @@ class Player
 		document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
 		document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeInGames 0.199s';
 		document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(0)';
-
+		
 		setTimeout(() => {
 			document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
 			document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeOutGames 0.199s';
@@ -208,6 +211,9 @@ class Player
 					document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(0)';
 
 					setTimeout(() => {
+						ball.setVisibility(true);
+						ball.setCastShadow(true);
+
 						this.camera = tmp;
 						this.object.material.color.copy(startColor);
 						isOnPointAnim = false;
@@ -246,6 +252,7 @@ class Player
 			document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeOut 0.199s';
 			document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(1)';
 		}, 300)
+
 		setTimeout(() => {
 			tmpCamera.position.set(this.limits.left, this.limits.up / 2 + 0.5, map.centerPos.z);
 			isOnPointAnim = true;
@@ -272,6 +279,9 @@ class Player
 				document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(0)';
 				
 				setTimeout(() => {
+					ball.setVisibility(true);
+					ball.setCastShadow(true);
+
 					this.camera = tmp;
 					oppponentObject.material.color.copy(startColor);
 					isOnPointAnim = false;
