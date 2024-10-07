@@ -1044,7 +1044,7 @@ function createStar(colorO) {
 	const innerRadius = 0.2;
 	const spikes = 5;
 
-	for (let i = 0; i < spikes * 2; i++) {
+	for (let i = 0; i < spikes * 2.2; i++) {
 		const radius = i % 2 === 0 ? outerRadius : innerRadius;
 		const angle = (i / (spikes * 2)) * Math.PI * 2;
 		shape.lineTo(Math.cos(angle) * radius, Math.sin(angle) * radius);
