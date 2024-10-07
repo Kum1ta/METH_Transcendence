@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/06 15:57:46 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/07 14:10:52 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ class Ball
 		this.limits = map.playerLimits;
 		this.resetPosBall();
 		scene.add(this.object);
+		makeParticules(scene);
 	}
 
 	#createBall()
@@ -261,6 +262,34 @@ class Ball
 		let betterPositions = this.getBetterPositions()
 		let newPos = this.calcNewPos(lastPosDelta,betterPositions, ballPos, ballVel, ballUp)
 		this.object.position.set(newPos[0], this.object.position.y, newPos[1]);
+		this.updateTrail();
+	}
+
+
+	updateTrail()
+	{
+		const trailColors = trailGeometry.attributes.customColor.array;
+
+		for (let i = trailPositions.length - 3; i >= 3; i--)
+			trailPositions[i] = trailPositions[i - 3];
+		trailPositions[0] = this.object.position.x;
+		trailPositions[1] = this.object.position.y;
+		trailPositions[2] = this.object.position.z;
+	
+		for (let i = 0; i < 33; i++)
+			trailSizes[i] = Math.max(0.5 * (1 - i / 33), 0.1);
+		for (let i = 0; i < 33; i++) {
+			const alpha = Math.max(1 - i / 33, 0);
+			trailColors[i * 4] = 1.0 / Math.max(this.srvPos.vel[0] < 0 ? - this.srvPos.vel[0] : this.srvPos.vel[0], 0.3);
+			trailColors[i * 4 + 1] = 1.0 / Math.max(this.srvPos.vel[1] < 0 ? - this.srvPos.vel[1] : this.srvPos.vel[1], 0.3);
+			trailColors[i * 4 + 2] = 1.0 / Math.max((this.srvPos.vel[0] < 0 ? - this.srvPos.vel[0] : this.srvPos.vel[0]) + this.srvPos.vel[1] < 0 ? - this.srvPos.vel[1] : this.srvPos.vel[1], 0.3);
+			trailColors[i * 4 + 3] = alpha;
+		}
+
+	
+		trailGeometry.attributes.position.needsUpdate = true;
+		trailGeometry.attributes.size.needsUpdate = true;
+		trailGeometry.attributes.customColor.needsUpdate = true;
 	}
 
 	dispose()
@@ -279,6 +308,54 @@ class Ball
 		}
 		this.object = null;
 	}
+}
+
+let trailGeometry = null;
+let trailPositions = null;
+let trailMaterial = null;
+let trailSizes = null;
+let trail = null;
+
+const vertexShader = `
+	attribute float size;
+	attribute vec4 customColor;
+	varying vec4 vColor;
+	void main() {
+		vColor = customColor; // Envoie la couleur de la particule
+		vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+		gl_PointSize = size * (300.0 / -mvPosition.z);
+		gl_Position = projectionMatrix * mvPosition;
+	}
+`;
+
+const fragmentShader = `
+	varying vec4 vColor; // Reçoit la couleur et l'alpha du vertex shader
+	void main() {
+		gl_FragColor = vColor; // Utilise la couleur avec l'alpha
+	}
+`;
+
+function makeParticules(scene) {
+	trailGeometry = new THREE.BufferGeometry();
+
+	trailPositions = new Float32Array(99);
+	trailGeometry.setAttribute('position', new THREE.BufferAttribute(trailPositions, 3));
+
+	trailSizes = new Float32Array(33);
+	trailGeometry.setAttribute('size', new THREE.BufferAttribute(trailSizes, 1));
+
+	const trailColors = new Float32Array(132);
+    trailGeometry.setAttribute('customColor', new THREE.BufferAttribute(trailColors, 4));
+
+	trailMaterial = new THREE.ShaderMaterial({
+		vertexShader: vertexShader,
+		fragmentShader: fragmentShader,
+		transparent: true,
+        blending: THREE.AdditiveBlending
+	});
+
+	trail = new THREE.Points(trailGeometry, trailMaterial);
+	scene.add(trail);
 }
 
 
