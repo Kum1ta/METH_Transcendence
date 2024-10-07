@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/10/05 22:12:30 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/10/06 17:00:12 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ class LobbyPage
 			waitForLogin().then(() => usernameP.innerHTML = userMeInfo.username);
 		else
 			usernameP.innerHTML = userMeInfo.username;
+		if (usernameP.length > 8)
+			usernameP.innerHTML = usernameP.innerHTML.substring(0, 8) + '...';
 		LiveChat.create();
 		inputUser.addEventListener('input', searchUser);
 		loginButton.addEventListener('click', showMenu);

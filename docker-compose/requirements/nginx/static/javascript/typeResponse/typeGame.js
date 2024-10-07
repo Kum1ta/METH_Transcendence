@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   typeGame.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 12:00:01 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/30 17:11:10 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/10/06 15:32:02 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ function typeGame(content)
 			opponent.movePlayer(content);
 		else if (content.action == 4)
 			player.scalePlayer(content.is_opponent);
-		else if (content.action == 5)
+		else if (content.action == 5 && ball)
 			ball.updatePos(content);
 		else if (content.action == 6)
 			player.makeAnimation(content.is_opponent);

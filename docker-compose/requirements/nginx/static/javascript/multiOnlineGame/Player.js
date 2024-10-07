@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/05 02:41:30 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/06 16:15:27 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,32 +194,36 @@ class Player
 			}, 10);
 
 			setTimeout(() => {
-				console.log("Player : " + lastSelectedGoal);
 				map.animationGoal(this.object.position.x, this.object.position.y, this.object.position.z, this.playerGoalAnimation, lastSelectedGoal ? lastSelectedGoal : availableGoals[0]);
 			}, 1000);
 
 			setTimeout(() => {
-				clearInterval(interval);
-				document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
-				document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeInGames 0.99s';
-				document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(0)';
-
-				setTimeout(() => {
-					this.camera = tmp;
-					this.object.material.color.copy(startColor);
-					isOnPointAnim = false;
-					if (!this.cameraFixed)
-					{
-						this.setCameraPosition(
-							this.object.position.x,
-							this.object.position.y - (this.object.position.y >= this.limits.up ? 0.7 : -0.7),
-							this.object.position.z + 1.5
-						);
-					}
+				if (interval)
+					clearInterval(interval);
+				interval = null;
+				if (document.getElementsByTagName('canvas') && document.getElementsByTagName('canvas')[canvasIndex])
+				{
 					document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
-					document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeOutGames 0.99s';
-					document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(1)';
-				}, 400);
+					document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeInGames 0.99s';
+					document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(0)';
+
+					setTimeout(() => {
+						this.camera = tmp;
+						this.object.material.color.copy(startColor);
+						isOnPointAnim = false;
+						if (!this.cameraFixed)
+						{
+							this.setCameraPosition(
+								this.object.position.x,
+								this.object.position.y - (this.object.position.y >= this.limits.up ? 0.7 : -0.7),
+								this.object.position.z + 1.5
+							);
+						}
+						document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
+						document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeOutGames 0.99s';
+						document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(1)';
+					}, 400);
+				}
 			}, 4000);
 		}, 200)
 	}
