@@ -88,7 +88,6 @@ class Ball
 			this.object.castShadow = true;
 		else 
 			this.object.castShadow = false;
-		console.log("this.object.castShadow", bool);
 	}
 
 	setPosition(x, y, z)
