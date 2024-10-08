@@ -68,6 +68,7 @@ body {
 	display: flex;
 	flex-direction: row;
 	gap: 9vw;
+	align-items: center;
 }
 
 .skin-select{
@@ -330,7 +331,7 @@ body {
 	margin-block: 25px;
 	padding: 0;
 	padding-inline: 50px;
-	gap: 5rem;
+	gap: 2rem;
 	align-items: center;
 	justify-content: space-between;
 	inset-inline: 0;
