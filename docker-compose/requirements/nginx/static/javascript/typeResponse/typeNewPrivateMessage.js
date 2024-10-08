@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:15:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/29 14:11:26 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/08 02:53:30 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,18 @@ function typeNewPrivateMessage(content)
 
 	if (infoPanel.isOpen && infoPanel.id === content.channel)
 	{
+		const	div	= document.createElement('div');
+
 		if (content.from != userMeInfo.id)
 			sendRequest("read_message", {id: content.from});
 		messageList.push(content);
-		infoPanel.divMessage.insertAdjacentHTML('beforeend', `
-			<div class="${content.from === userMeInfo.id ? "meMessage" : "opponentMessage"}">
-			<p class="content">${content.content}</p>
+		div.className = content.from === userMeInfo.id ? "meMessage" : "opponentMessage";
+		div.innerHTML = `
+			<p class="content"></p>
 			<p class="time">${content.date}</p>
-			</div>
-		`);
+		`;
+		div.getElementsByClassName('content')[0].innerText = content.content;
+		infoPanel.divMessage.appendChild(div);
 		infoPanel.divMessage.scrollTop = infoPanel.divMessage.scrollHeight;
 	}
 	else if (content.from != userMeInfo.id)

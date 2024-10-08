@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/01 13:30:48 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/08 03:12:29 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ function	sendRequest(type, content) {
 		console.warn('Not connected');
 		return ;
 	}
+	console.log(`Send request ${type} content: `, content);
 	if (content instanceof Object)
 		coc = JSON.stringify(content);
 	else

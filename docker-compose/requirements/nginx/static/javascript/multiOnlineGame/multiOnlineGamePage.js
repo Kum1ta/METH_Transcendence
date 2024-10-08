@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/06 16:04:20 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/08 03:10:55 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,10 @@ class MultiOnlineGamePage
 
 	static dispose()
 	{
+		const session = renderer.xr.getSession();
+
+		if (session)
+			session.end();
 		observer.disconnect();
 		VrButton = null;
 		window.removeEventListener('resize', windowUpdater);
@@ -253,6 +257,8 @@ class MultiOnlineGamePage
 		let		intervalEnd		=	null;
 		let		time			=	4;
 
+		if (renderer && renderer.xr && renderer.xr.getSession())
+			renderer.xr.getSession().end();
 		if (!map)
 			return ;
 		if (map && map.score)

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 12:00:01 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/06 15:32:02 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/08 03:07:37 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,10 @@ import { MultiOnlineGamePage, opponent, ball, player, map } from "/static/javasc
 import { WaitingGamePage } from "/static/javascript/waitingGame/main.js"
 import { pageRenderer } from '/static/javascript/main.js'
 
-let stopSrvUpdate = false
-
-document.addEventListener('keypress',(e)=>{
-	if(e.key == 'q')
-	{
-		console.log("stopped server updates")
-		stopSrvUpdate = true
-	}
-});
 
 function typeGame(content)
 {
-	if(stopSrvUpdate)
-		return
+	console.log(`New game ${content.action} content: `, content);
 	if (pageRenderer.actualPage == WaitingGamePage)
 	{
 		if (content.action == 1)
