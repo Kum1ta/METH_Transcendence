@@ -6,11 +6,12 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 00:39:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/29 03:35:43 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/08 23:32:12 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { createNotification as CN } from "/static/javascript/notification/main.js";
+import { Login } from '/static/javascript/login/main.js'
 
 let userMeInfo = {
 	username: "",
@@ -65,6 +66,7 @@ function	typeLogin(content)
 			loginButton.replaceChild(usernameNode, pLoginButton);
 			CN.new("Connected successfully", "Welcome " + userMeInfo.username, CN.defaultIcon.success);
 			popout.style.display = 'none';
+			Login.changeEventLoginButton();
 		}
 	}
 	loginAvailable = true;

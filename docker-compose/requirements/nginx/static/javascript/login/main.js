@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/06 17:01:31 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/08 23:32:11 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,17 @@ class Login
 			form.addEventListener('submit', connect);
 			registerForm.addEventListener('submit', createAccount);
 		}
+	}
+
+	static changeEventLoginButton()
+	{
+		const	loginButton			= document.getElementById('loginButton');
+
+		loginButton.removeEventListener('click', showLoginDiv);
+		loginButton.addEventListener('click', showMenu);
+		window.addEventListener('resize', movePopMenuLoginButton);
+		movePopMenuLoginButton();
+		initButtonPopMenuLogin();
 	}
 
 	static dispose()
