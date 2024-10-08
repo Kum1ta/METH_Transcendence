@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/06 17:40:23 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/08 10:50:47 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ from asgiref.sync import sync_to_async
 from .Player import Player
 from .models import GameResults, User
 from .GameSettings import GameSettings
+from .Bot import Bot
 from .Ball import Ball
 import time
 import json
@@ -22,12 +23,11 @@ import random
 import math
 
 class Game:
-	waitingForPlayerLock = False
 	waitingForPlayer = None
 
 	def __init__(self, socket, withBot, skinId = 0, opponent = None):
-		self.p1 = None 
-		self.p2 = None 
+		self.p1 = None
+		self.p2 = None
 		self.started = False
 		self.end = False
 		self.left = None
@@ -43,10 +43,11 @@ class Game:
 
 		self.opponentLock = opponent
 		if(withBot):
+			self.p1 = Bot(self)
 			self.join(socket, skinId)
 		elif(opponent != None):
 			if(opponent not in socket.onlinePlayers):
-				return;
+				return
 			opponentGame = socket.onlinePlayers[opponent].game
 			if (opponentGame != None and opponentGame.opponentLock != None and opponentGame.opponentLock == socket.id):
 				socket.onlinePlayers[opponent].game.join(socket, skinId)
@@ -54,9 +55,6 @@ class Game:
 				self.join(socket, skinId)
 				socket.onlinePlayers[opponent].sync_send({"type":"invitation","content":{"invitor":socket.id, "username":socket.username}})
 		else:
-			while(Game.waitingForPlayerLock):
-				continue
-			Game.waitingForPlayerLock = True
 			if(Game.waitingForPlayer == None):
 				Game.waitingForPlayer = self
 				socket.sync_send({"type":"game","content":{"action":0}})
@@ -64,7 +62,6 @@ class Game:
 			else:
 				Game.waitingForPlayer.join(socket, skinId)
 				Game.waitingForPlayer = None
-			Game.waitingForPlayerLock = False
 
 	def __del__(self):
 		print("game destroy")
@@ -107,7 +104,7 @@ class Game:
 			else:
 				if(self.opponentLock != None and self.opponentLock != socket.id):
 					socket.sendError("You are not invited to this game", 9103)
-					return;
+					return
 				print("joined game, set as player 2")
 				self.p2 = Player(socket, self)
 				self.p2.skin = skin
@@ -139,20 +136,16 @@ class Game:
 		self.p2.socket.sync_send({"type":"game","content":{"action":10,"won":winner==2, "opponentLeft":self.left == 1}})
 		self.winner = winner
 		self.end = True
-	
+
 	def leave(self, socket):
 		socket.game = None
 		if (socket == self.p1.socket):
 			self.left = 1
 		else:
 			self.left = 2
-		while(Game.waitingForPlayerLock):
-			time.sleeep(0.05)
-		Game.waitingForPlayerLock = True
 		if(Game.waitingForPlayer == self):
-			Game.waitingForPlayer = None;
-		Game.waitingForPlayerLock = False 
-		if(self.started):
+			Game.waitingForPlayer = None
+		if(self.p2 != None):
 			self.endGame(1 if self.left == 2 else 2)
 		self.end=True
 
@@ -165,9 +158,9 @@ class Game:
 		opponent = self.p1.socket if socket != self.p1.socket else self.p2.socket
 		if(socket == self.p1.socket):
 			self.p1.pos["pos"] = pos
-			self.p1.pos["up"] = up;
+			self.p1.pos["up"] = up
 		else:
-			self.p2.pos["pos"] = -pos;
+			self.p2.pos["pos"] = -pos
 			self.p2.pos["up"] = up
 		if(opponent != None):
 			opponent.sync_send({"type":"game","content":{"action":3, "pos":-pos, "up":up, "is_opponent":True}})
@@ -193,13 +186,13 @@ class Game:
 		if(self.score[0] < GameSettings.maxScore and self.score[1] < GameSettings.maxScore):
 			return(False)
 		print("someone won the game")
-		winner = 1 if self.score[0] == GameSettings.maxScore else 2 
+		winner = 1 if self.score[0] == GameSettings.maxScore else 2
 		print("player", winner,"won the game")
 		self.endGame(winner)
 		return(True)
 
 	async def scoreGoal(self, player):
-		self.lastWin = player 
+		self.lastWin = player
 		print("a player suffured from a major skill issue")
 		self.score[player-1] += 1
 		print("new score :", self.score)
@@ -211,7 +204,7 @@ class Game:
 		self.prepareGame(True)
 		await asyncio.sleep(3)
 		self.prepareGame()
-		return;
+		return
 
 	def prepareGame(self, stop = False):
 		self.speed = GameSettings.startSpeed
@@ -247,7 +240,7 @@ class Game:
 			self.p2.socket.game = None
 		await self.saveResults()
 		del self
-	
+
 	@sync_to_async
 	def saveResults(self):
 		try:

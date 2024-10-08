@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/06 03:24:10 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/06 17:22:46 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/08 10:00:22 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,7 @@ class Ball:
 		offset = pos1[1] - (slope * pos1[0])
 
 		#salagadou la menchikabou la bibidi bobidi bou
-		a = 1 + (slope ** 2) 
+		a = 1 + (slope ** 2)
 		b = ((-jpos[0]) * 2) + (2 * (slope * (-jpos[1] + offset)))
 		c = (((-jpos[0]) ** 2) + (((-jpos[1]) + offset) ** 2)) - (GameSettings.jumperRadius ** 2)
 		return(self.solve_quadratic(a, b ,c))
@@ -65,28 +65,23 @@ class Ball:
 		pos2 = self.pos[0] +self.vel[0], self.pos[1] + self.vel[1]
 		slope = 0
 		if(abs(pos1[1]) <= (GameSettings.wallWidth / 2) + GameSettings.ballRadius):
-			print("inside")
 			return(None)
 		if(pos1[0] - pos2[0] == 0):
 			slope=100
 		else:
 			slope = (pos1[1] - pos2[1])/(pos1[0] - pos2[0])
 		offset = pos1[1] - (slope * pos1[0])
-		
+
 		if(slope == 0):
 			return(None)
 
 		wallSide = (GameSettings.wallWidth / 2) + GameSettings.ballRadius
 		if(pos1[1] < 0):
-			wallSide *= -1	
+			wallSide *= -1
 		hitPos = (wallSide - offset) / slope
-		print(f'{hitPos=}')
 		relPos = wpos - hitPos
-		print("relative position : ", relPos)
-		print("max colision : ", (GameSettings.wallLength / 2) + GameSettings.ballRadius)
 		if(abs(relPos) < (GameSettings.wallLength / 2) + GameSettings.ballRadius):
 			return(hitPos)
-		print("not in wall 1")
 		return(None)
 
 	def check_collision_obstacles(self):
@@ -117,7 +112,7 @@ class Ball:
 	def getTimeUntilColision(self, limitNeg, limitPos, position, velocity):
 		if(not velocity):
 			return(-1)
-		limit = GameSettings.limits[limitNeg] if velocity < 0 else GameSettings.limits[limitPos] 
+		limit = GameSettings.limits[limitNeg] if velocity < 0 else GameSettings.limits[limitPos]
 		wallDistance = max(limit, position) - min(limit, position)
 		colision_time = wallDistance / abs(velocity)
 		return(colision_time)
@@ -141,55 +136,60 @@ class Ball:
 	def twoPointsDistance(self, pos1, pos2):
 		return(math.sqrt(((pos2[0] - pos1[0]) ** 2) + ((pos2[1] - pos1[1]) ** 2)))
 
-	def checkJumpersDistance(self, ballPos, p1, p2):
+	def checkJumpersDistance(self, ballPos, p1, p2, noMsg):
 		for i in range(0, len(self.obstacles)):
 			if(self.obstacles[i]["type"] != 1):
-				continue;
+				continue
 			if(self.obstacles[i]["isUp"] != self.up):
-				continue	
+				continue
 			if(self.twoPointsDistance((self.obstacles[i]["pos"]["x"], self.obstacles[i]["pos"]["z"]), ballPos) < GameSettings.jumperRadius):
-				p1.socket.sync_send({"type":"game", "content":{"action":8,"name":self.obstacles[i]["name"]}})	
-				p2.socket.sync_send({"type":"game", "content":{"action":8,"name":self.obstacles[i]["name"]}})	
+				if(p1.socket != None and not noMsg):
+					p1.socket.sync_send({"type":"game", "content":{"action":8,"name":self.obstacles[i]["name"]}})
+				if(p2.socket != None and not noMsg):
+					p2.socket.sync_send({"type":"game", "content":{"action":8,"name":self.obstacles[i]["name"]}})
 				self.up = not self.up
-	
+
 	def checkWallsColision(self, ballPos):
 		for i in range(0, len(self.obstacles)):
 			if(self.obstacles[i]["type"] != 2):
-				continue;
+				continue
 			if(self.obstacles[i]["isUp"] != self.up):
-				continue;
-			if(abs(ballPos[1]) <= (GameSettings.wallWidth / 2) + GameSettings.ballRadius):
+				continue
+			if(abs(ballPos[1]) <= (GameSettings.wallWidth / 2) + GameSettings.ballRadius + 0.001):
 				if(abs(self.obstacles[i]["pos"]["x"] - ballPos[0]) < (GameSettings.wallLength / 2) + GameSettings.ballRadius):
 					return(True)
 		return(False)
-	
+
 	def increaseSpeed(self):
 		self.vel[0] += (GameSettings.bounceSpeedIncrease * (self.vel[0] / self.speed))
 		self.vel[1] += (GameSettings.bounceSpeedIncrease * (self.vel[1] / self.speed))
-		self.speed += GameSettings.bounceSpeedIncrease 
+		self.speed += GameSettings.bounceSpeedIncrease
 
-	async def update(self, delta, p1, p2):
-		print("AAAAAAAAAAAAAAAAAAAAAAA update")
+	async def update(self, delta, p1, p2, p1Hit = False):
 		self.pos[0] += (delta * self.vel[0])
 		self.pos[1] += (delta * self.vel[1])
-		if(self.pos[1] <= GameSettings.limits["back"] or self.pos[1] >= GameSettings.limits["front"]):
+		if(self.pos[1] <= GameSettings.limits["back"] + 0.001 or self.pos[1] >= GameSettings.limits["front"] - 0.001):
 			player = p2.pos if self.pos[1] < 0 else p1.pos
+			if(self.pos[1] > 0 and p1Hit):
+				return(1)
 			playerDistance = self.getPlayerDistance(player, self.pos)
 			if(playerDistance >= -(GameSettings.playerLength / 2) and playerDistance <= GameSettings.playerLength / 2 and player["up"] == self.up):
 				self.vel[0] = -((self.speed * 0.80) * (playerDistance / (GameSettings.playerLength / 2)))
 				self.vel[1] = self.speed - abs(self.vel[0])
 				if(self.pos[1] > 0):
 					self.vel[1] = -self.vel[1]
-				p1.socket.sync_send({"type":"game","content":{"action":4, "is_opponent": self.pos[1] < 0}})
-				p2.socket.sync_send({"type":"game","content":{"action":4, "is_opponent": self.pos[1] > 0}})
-			else:
+				if(p1.socket != None and not p1Hit):
+					p1.socket.sync_send({"type":"game","content":{"action":4, "is_opponent": self.pos[1] < 0}})
+				if(p2.socket != None and not p1Hit):
+					p2.socket.sync_send({"type":"game","content":{"action":4, "is_opponent": self.pos[1] > 0}})
+			elif(not p1Hit):
 				return(1 if self.pos[1] < 0 else 2)
-		elif(self.pos[0] <= GameSettings.limits["left"] or self.pos[0] >= GameSettings.limits["right"]):
+			else:
+				return(0)
+		elif(self.pos[0] <= GameSettings.limits["left"] + 0.001 or self.pos[0] >= GameSettings.limits["right"] - 0.001):
 			self.vel[0] = -self.vel[0]
 		elif(self.checkWallsColision(self.pos)):
 			self.vel[1] = -self.vel[1]
-		self.checkJumpersDistance(self.pos, p1, p2)
+		self.checkJumpersDistance(self.pos, p1, p2, p1Hit)
 		self.increaseSpeed()
 		return(0)
-
-#AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa
