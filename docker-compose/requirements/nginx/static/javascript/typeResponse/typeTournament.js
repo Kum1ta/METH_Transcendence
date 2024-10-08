@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:29:50 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/06 15:32:04 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/08 13:03:19 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,13 @@ function joinTournament(content)
 	else if (content.started)
 		CN.new("Information", "This tournament has already started");
 	else
-		pageRenderer.changePage('tournamentPage', false, content.code);
+	{
+		document.body.style.animation = "none";
+		document.body.style.animation = "startGameAnim 0.5s";
+		setTimeout(() => {
+			pageRenderer.changePage('tournamentPage', false, content.code);
+		}, 400);
+	}
 }
 
 export { typeTournament };

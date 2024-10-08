@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/08 03:10:55 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/08 18:54:22 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,10 @@ class MultiOnlineGamePage
 		const bar1		= createBarPlayer(availableSkins[skin.player]);
 		const bar2		= createBarPlayer(availableSkins[skin.opponent]);
 
+		console.log('skin : ', skin);
 		document.body.setAttribute('style', '');
 		scene					= new THREE.Scene()
-		map						= new Map(scene, 13, false);
+		map						= new Map(scene, 13, false, skin.pfp, skin.pfpOpponent);
 		renderer				= new THREE.WebGLRenderer({antialias: true});
 		renderer.shadowMap.enabled = true;
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -264,7 +265,7 @@ class MultiOnlineGamePage
 		if (map && map.score)
 			endGameScore.innerText = `${map.score.player} - ${map.score.opponent}`;
 		if (content.won)
-			scoreText.innerText = "You win !"
+			scoreText.innerText = "You won !"
 		endGameDiv.style.display = 'flex';
 		intervalEnd = setInterval(() => {
 			if (content.opponentLeft)

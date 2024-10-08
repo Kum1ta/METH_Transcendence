@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/10/06 17:00:12 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/08 12:55:12 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@ class LobbyPage
 {
 	static create()
 	{
-		const	methButton		= document.getElementById("homeButton");
-		const	startButton		= document.getElementsByClassName('buttonStartGame')[0];
-		const	usernameP		= document.getElementById('loginButton').getElementsByTagName('p')[0];
-		const	loginButton 	= document.getElementById('loginButton');
-		const	inputUser		= document.getElementById('searchInputUser');
-		const	func			= [selectGameModeOne, selectGameModeTwo, selectGameModeThree, selectGameModeFour];
+		const	methButton			= document.getElementById("homeButton");
+		const	startButton			= document.getElementsByClassName('buttonStartGame')[0];
+		const	usernameP			= document.getElementById('loginButton').getElementsByTagName('p')[0];
+		const	loginButton 		= document.getElementById('loginButton');
+		const	inputUser			= document.getElementById('searchInputUser');
+		const	tournamentCodeInput	= document.getElementById('tournamentCode');
+		const	func				= [selectGameModeOne, selectGameModeTwo, selectGameModeThree, selectGameModeFour];
 
 		document.body.style.opacity = 1;
 		if (userMeInfo.id == -1)
@@ -59,6 +60,10 @@ class LobbyPage
 		initButtonPopMenuLogin();
 		initButtonLaytout();
 		window.addEventListener('click', closePopUpWhenClickOutsite);
+		tournamentCodeInput.addEventListener('keypress', () => {
+			if (event.key == 'Enter')
+				startTournmament();
+		});
 		listSelectCard = document.getElementsByClassName('select-card');
 		listSelectCard[0].addEventListener('click', selectGameModeOne);
 		listSelectCard[1].addEventListener('click', selectGameModeTwo);
@@ -175,11 +180,6 @@ function startTournmament()
 	const	code	=	document.getElementById('tournamentCode').value;
 
 	sendRequest("tournament", {action: 0, code: code});
-}
-
-function showGameMode()
-{
-	document.getElementById('loginPopup').style.display = 'flex';
 }
 
 function closePopUpWhenClickOutsite (event)

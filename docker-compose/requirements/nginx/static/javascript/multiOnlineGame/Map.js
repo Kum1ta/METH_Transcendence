@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/10/06 16:12:40 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/08 20:06:46 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ let textureTextScore			= null;
 let animationSpeed				= 0.02;
 let animateGoalObjectUpdate		= null;
 let animateGoalObjectUp			= false;
-const sourceImageLeft = "/static/img/default_pfp.jpg";
-const sourceImageRight = "/static/img/default_pfp.jpg";
+let sourceImageLeft 			= null;
+let sourceImageRight			= null;
 
 let path = [];
 
@@ -119,7 +119,7 @@ class Map
 		scene = null;
 	}
 
-	constructor(sceneToSet, length, obstacles)
+	constructor(sceneToSet, length, obstacles, pfpSelf, pfpOpponent)
 	{
 		loader	= new GLTFLoader();
 		scene	= sceneToSet;
@@ -153,6 +153,8 @@ class Map
 			0x0000CC
 			*/
 		}
+		sourceImageLeft = pfpSelf;
+		sourceImageRight = pfpOpponent;
 		this.putScoreboard(0xCCCCFF);
 		path = [
 			{name: 'goal', 			onChoice: true, src: files.goalVideoPub},
@@ -456,10 +458,12 @@ class Map
 		meshBoardLeftBack		= new THREE.Mesh(geometryBoardLeftBack, materialBoardLeftBack);
 		materialBoardRightBack	= new THREE.MeshPhysicalMaterial({color: color});
 		geometryBoardRightBack	= new THREE.BoxGeometry(width, height, depth);
-		meshBoardRightBack	= new THREE.Mesh(geometryBoardRightBack, materialBoardRightBack);
+		meshBoardRightBack		= new THREE.Mesh(geometryBoardRightBack, materialBoardRightBack);
 
-		meshBoardLeftFront.position.set(-spacing - width / 2 - 0.3, 1.6, -8.5);
-		meshBoardRightFront.position.set(spacing + width / 2 + 0.3, 1.6, -8.5);
+		meshBoardLeftFront.position.set(-spacing - width / 2 - 0.3, 1.6, -8.2);
+		meshBoardLeftFront.rotation.y = Math.PI + 0.4;
+		meshBoardRightFront.position.set(spacing + width / 2 + 0.3, 1.6, -8.2);
+		meshBoardRightFront.rotation.y = Math.PI - 0.4;
 
 		meshBoardLeftBack.rotation.y = Math.PI;
 		meshBoardLeftBack.position.set(-spacing - width / 2 - 0.3, 1.6, 8.5);
@@ -488,14 +492,12 @@ class Map
 		canvasImageLeft.width = 960;
 		canvasImageLeft.height = 960;
 		textureImageLeft = new THREE.CanvasTexture(canvasImageLeft);
-
+		textureImageLeft.imageSmoothingEnabled = false;
 		contextImageLeft.clearRect(0, 0, canvasImageLeft.width, canvasImageLeft.height);
 		const imageLeft = new Image();
 		imageLeft.src = sourceImageLeft;
-		imageLeft.onload = () => {
-			contextImageLeft.drawImage(imageLeft, 0, 0, canvasImageLeft.width, canvasImageLeft.height);
-			textureImageLeft.needsUpdate = true;
-		};
+		canvasImageLeft.classList.add('imgScoreBoard');
+		imageLeft.onload = () => this.#putPlayerPfp(canvasImageLeft, contextImageLeft, textureImageLeft, imageLeft);
 
 		canvasImageRight = document.createElement('canvas');
 		contextImageRight = canvasImageRight.getContext('2d');
@@ -505,11 +507,9 @@ class Map
 
 		contextImageLeft.clearRect(0, 0, canvasImageLeft.width, canvasImageLeft.height);
 		const imageRight = new Image();
+		imageRight.setAttribute('class', 'imgScoreBoard');
 		imageRight.src = sourceImageRight;
-		imageRight.onload = () => {
-			contextImageRight.drawImage(imageRight, 0, 0, canvasImageRight.width, canvasImageRight.height);
-			textureImageRight.needsUpdate = true;
-		};
+		imageRight.onload = () => this.#putPlayerPfp(canvasImageRight, contextImageRight, textureImageRight, imageRight);
 
 		let materialProfileLeft			= null;
 		let materialProfileRight		= null;
@@ -537,8 +537,10 @@ class Map
 		geometryProfileRightBack	= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
 		meshProfileRightBack		= new THREE.Mesh(geometryProfileRightBack, materialProfileRight);
 
-		meshProfileLeftFront.position.set(-spacing - width / 2 - 0.325, 1.6, - 8.5 + depth / 2 + 0.001);
-		meshProfileRightFront.position.set(spacing + width / 2 + 0.325, 1.6, - 8.5 + depth / 2 + 0.01);
+		meshProfileLeftFront.position.set(-spacing - width / 2 - 0.275, 1.6, - 8.15);
+		meshProfileLeftFront.rotation.y = 0.4;
+		meshProfileRightFront.position.set(spacing + width / 2 + 0.275, 1.6, - 8.15);
+		meshProfileRightFront.rotation.y = -0.4;
 
 		meshProfileLeftBack.rotation.y = Math.PI;
 		meshProfileLeftBack.position.set(-spacing - width / 2 - 0.325, 1.6, 8.5 - depth / 2 - 0.001);
@@ -554,6 +556,33 @@ class Map
 		this.arrObject.push({mesh: meshProfileLeftBack, name: "", type: "profileBoard"});
 		this.arrObject.push({mesh: meshProfileRightBack, name: "", type: "profileBoard"});
 	};
+	
+	#putPlayerPfp(canvasImage, contextImage, textureImage, img)
+	{
+		const canvasWidth = canvasImage.width;
+		const canvasHeight = canvasImage.height;
+		const imageWidth = img.width;
+		const imageHeight = img.height;
+		const canvasRatio = canvasWidth / canvasHeight;
+		const imageRatio = imageWidth / imageHeight;
+		let drawWidth, drawHeight;
+	
+		if (imageRatio > canvasRatio)
+		{
+			drawWidth = canvasWidth;
+			drawHeight = canvasWidth / imageRatio;
+		}
+		else
+		{
+			drawWidth = canvasHeight * imageRatio;
+			drawHeight = canvasHeight;
+		}
+		const offsetX = (canvasWidth - drawWidth) / 2;
+		const offsetY = (canvasHeight - drawHeight) / 2;
+		contextImage.clearRect(0, 0, canvasWidth, canvasHeight);
+		contextImage.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+		textureImage.needsUpdate = true;
+	}
 
 	putVideoOnCanvas(nbImage, vNameNb)
 	{

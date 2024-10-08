@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/08 10:50:47 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/08 17:44:34 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -110,8 +110,8 @@ class Game:
 				self.p2.skin = skin
 			if(self.p2 != None and self.p1 != None):
 				print("both players here, send opponent to both players")
-				self.p1.socket.sync_send({"type":"game", "content":{"action":1,"id":self.p2.socket.id,"username":self.p2.socket.username, "skin":self.p2.skin}})
-				self.p2.socket.sync_send({"type":"game", "content":{"action":1,"id":self.p1.socket.id,"username":self.p1.socket.username, "skin":self.p1.skin}})
+				self.p1.socket.sync_send({"type":"game", "content":{"action":1,"id":self.p2.socket.id,"username":self.p2.socket.username, "skin":self.p2.skin, 'pfpOpponent':self.p2.socket.pfp, 'pfpSelf':self.p1.socket.pfp}})
+				self.p2.socket.sync_send({"type":"game", "content":{"action":1,"id":self.p1.socket.id,"username":self.p1.socket.username, "skin":self.p1.skin, 'pfpOpponent':self.p1.socket.pfp, 'pfpSelf':self.p2.socket.pfp}})
 		except Exception as e:
 			socket.sendError("invalid request", 9005, e)
 

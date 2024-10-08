@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/06 16:15:27 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/08 13:26:01 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ let	pressedButton				= [];
 let mapLength					= 0;
 const goalAnimation				= ["triangle", "cylinder", "star", "box", "rectangle", "ring"];
 const controllerModelFactory	= new XRControllerModelFactory();
-let	motionController			= null;
 let	key							= null;
 let controller1					= null;
 let controller2					= null;

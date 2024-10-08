@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 21:20:45 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/03 14:35:54 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/08 17:48:27 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ class WaitingGamePage
 			setTimeout(() => {
 				document.body.style.animation = 'anim3 0.5s';
 				document.body.style.opacity = 0;
-				pageRenderer.changePage("multiOnlineGamePage", false, {player: lastSelected ? lastSelected.id : 0, opponent: content.skin, opponentGoaldId: content.goalId});
+				pageRenderer.changePage("multiOnlineGamePage", false, {player: lastSelected ? lastSelected.id : 0, opponent: content.skin, opponentGoaldId: content.goalId, pfp: content.pfpSelf, pfpOpponent: content.pfpOpponent});
 			}, 1000);
 		}, 500);
 		document.body.removeChild(returnButton);

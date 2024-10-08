@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/05 03:48:19 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/08 13:13:38 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,21 @@ let		divTopInfo	= null;
 let		divInfo		= null;
 let		divChat		= null;
 
-// gerer quand la personne finit sa partie pour remettre tout comme il le faut
-
 class TournamentPage
 {
 	static create(code)
 	{
+		document.body.removeAttribute('style');
+		for (let i = 0; i < document.body.children.length; i++)
+		{
+			document.body.children[i].style.animation = 'animShowMenuDiv 0.5s';
+		}
+		setTimeout(() => {
+			for (let i = 0; i < document.body.children.length; i++)
+			{
+				document.body.children[i].style.animation = 'none';
+			}
+		}, 500);
 		divTopInfo = document.getElementById('actuality-tournament');
 		divInfo = document.getElementsByClassName('infoo')[0];
 		divChat = document.getElementsByClassName('chat')[0];
@@ -48,6 +57,11 @@ class TournamentPage
 		divTopInfo = null;
 		divInfo = null;
 		divChat = null;
+		Object.values(playerList).forEach((info) => {
+			info.id = 0;
+			info.username = null;
+			info.pfp = null;
+		});
 	}
 
 	static newOpponent(content)
