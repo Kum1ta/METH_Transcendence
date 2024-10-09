@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/06 03:24:10 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/09 09:02:37 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/09 09:09:54 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ class Ball:
 			self.vel[1] = -self.vel[1]
 
 	def default(self):
-		self.pos = [-1, 1]
+		self.pos = [0, 0]
 		self.up = False
 		self.vel = [0, 0]
 		self.speed = GameSettings.startSpeed
@@ -104,6 +104,8 @@ class Ball:
 		wallsTime = self.getTimeUntilWallColision("left","right", self.pos[0], self.vel[0])
 		if(wallsTime < 0):
 			return(min_time)
+		if(min_time < 0):
+			return(wallsTime)
 		return(min(min_time, wallsTime))
 
 	def getTimeUntilWallColision(self, limitNeg, limitPos, position, velocity):
@@ -159,7 +161,9 @@ class Ball:
 					min_time = (min(min_time, time))
 		if(min_time < 0):
 			return(wallsTime)
-		return(min(wallsTime,min_time))
+		if(wallsTime < 0):
+			return(min_time)
+		return(min(wallsTime, min_time))
 
 	def getSleepTime(self):
 		try:

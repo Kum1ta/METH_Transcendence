@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/05 03:54:20 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/09 07:24:54 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/09 09:05:42 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,8 @@ class Bot(Player):
 		self.pos = {"pos":0, "up": False}
 		self.objective = {"pos":0, "up": False}
 		self.skin = 0
-		#asyncio.create_task(self.updateLoop())
-		#asyncio.create_task(self.goToObjectiveLoop())
+		asyncio.create_task(self.updateLoop())
+		asyncio.create_task(self.goToObjectiveLoop())
 		print("I am a bot, boop boop beep boop")
 
 	def createTempBall(self):
