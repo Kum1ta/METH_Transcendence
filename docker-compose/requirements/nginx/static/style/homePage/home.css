@@ -6,7 +6,7 @@
 /*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/05 22:09:37 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/10/09 16:23:22 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,18 @@
     font-size: 2rem;
     margin-bottom: 30px;
 	text-align: center;
+}
+
+#cross-login{
+	display: none;
+	position: absolute;
+	top: 20px;
+	/* right: 20px; */
+	left: 20px;
+	width: 70px;
+	height: 70px;
+	cursor: pointer;
+	color: white;
 }
 
 .close {
@@ -510,6 +522,9 @@ footer {
 		transform: translateX(50%);
 		top: 650px;
 		right: 0;
+	}
+	#cross-login{
+		display: block;
 	}
 	.containerHomePage {
 		width: 100%;
