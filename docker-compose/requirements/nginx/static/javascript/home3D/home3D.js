@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/06 23:37:28 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/09 10:51:31 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,11 @@ class Home3D
 
 	static dispose()
 	{
-		document.addEventListener('scroll', mouseTracker);
+		document.removeEventListener('scroll', mouseTracker);
 		window.removeEventListener('resize', windowUpdater);
 		document.removeEventListener('mousemove', mouseTracker);
 		document.removeEventListener('click', redirection);
+		alreadRedirected = false;
 
 		if (!disable3D)
 		{
@@ -127,7 +128,7 @@ function home3D()
 	scene.add(spotLight);
 	spotLight.target = screen.screen;
 
-	if (Math.random() % 100 > 0.99)
+	if (Math.random() % 100 > 0.995)
 		video.pong = files.easterEggVideo;
 	putObject(files.lampModel, -2.5, 0, 2.5, 3, 0, Math.PI + Math.PI / 8, 0);
 	putObject(files.plantModel, 1.5, 0, 3, 0.5, 0, 0, 0);
@@ -223,7 +224,7 @@ function home3D()
 	{
 		raycaster.setFromCamera( mouse, camera );
 		const intersects = raycaster.intersectObjects( scene.children, false );
-		
+
 		if (!screen.canvasVideo)
 		{
 			composer.render();
@@ -398,9 +399,13 @@ function redirection()
 	}
 	moveCamera();
 }
+let	alreadRedirected = false;
 
 function moveCamera()
 {
+	if (alreadRedirected)
+		return ;
+	alreadRedirected = true;
 	const targetPosition = screen.tv.position;
 	const initialPosition = camera.position.clone();
 	const startTime = Date.now();

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/08 03:12:29 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/09 11:03:11 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ import { typeChangePfp } from "/static/javascript/typeResponse/typeChangePfp.js"
 import { typeUserInfo } from "/static/javascript/typeResponse/typeUserInfo.js";
 import { typeLogin } from "/static/javascript/typeResponse/typeLogin.js";
 import { typeGame } from "/static/javascript/typeResponse/typeGame.js"
+import { pageRenderer } from "/static/javascript/main.js";
 
 let socket = null;
 let	status = 0;
@@ -93,6 +94,8 @@ function launchSocket()
 	socket.onclose = () => {
 		status = 0;
 		console.log('Disconnected');
+		if (pageRenderer)
+			pageRenderer.disconnect();
 		if (lastError !=  9013)
 		{
 			setTimeout(() => {
@@ -110,7 +113,6 @@ function	sendRequest(type, content) {
 		console.warn('Not connected');
 		return ;
 	}
-	console.log(`Send request ${type} content: `, content);
 	if (content instanceof Object)
 		coc = JSON.stringify(content);
 	else

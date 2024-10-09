@@ -6,13 +6,14 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/06 23:49:15 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/09 11:12:43 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { MultiOnlineGamePage } from "/static/javascript/multiOnlineGame/multiOnlineGamePage.js"
 import { multiLocalGamePage } from "/static/javascript/multiLocalGame/multiLocalGamePage.js"
 import { TournamentPage } from "/static/javascript/tournamentPage/TournamentPage.js"
+import { createNotification as CN } from "/static/javascript/notification/main.js";
 import { settingsPage } from "/static/javascript/settingsPage/settingsPage.js"
 import { WaitingGamePage } from "/static/javascript/waitingGame/main.js"
 import { ProfilPage } from "/static/javascript/profilPage/main.js";
@@ -144,7 +145,15 @@ class Page
 			window.location.href = '/';
 			throw Error(error);
 		});
+	}
 
+	disconnect()
+	{
+		if (this.actualPage == MultiOnlineGamePage || this.actualPage == WaitingGamePage)
+			this.changePage('lobbyPage');
+		setTimeout(() => {
+			CN.new("Error", "Connection lost");
+		}, 1000)
 	}
 };
 
