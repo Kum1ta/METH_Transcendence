@@ -45,11 +45,10 @@ function createBall()
 	const	material	= new THREE.MeshPhysicalMaterial({color: 0xffffff});
 	const	mesh		= new THREE.Mesh(geometry, material);
 
-	mesh.position.y += 0.3;
 	mesh.castShadow = true;
 	mesh.receiveShadow = true;
 	mesh.material.transparent = true;
-	mesh.position.set (0, mesh.position.y, 0);
+	mesh.position.set (0, 0.3, 0);
 	return (mesh);
 }
 
