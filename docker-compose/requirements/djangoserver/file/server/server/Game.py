@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/08 17:44:34 by edbernar         ###   ########.fr        #
+#    Updated: 2024/10/09 07:06:00 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ class Game:
 		self.lastWin = 2
 
 		self.opponentLock = opponent
-		if(withBot):
+		if(1 or withBot):
 			self.p1 = Bot(self)
 			self.join(socket, skinId)
 		elif(opponent != None):
@@ -73,7 +73,7 @@ class Game:
 
 	def genObstacles(self):
 		for x in GameSettings.wallsPos:
-			if random.randint(1, 100) < 70:
+			if random.randint(1, 100) < 100:
 				self.obstacles.append(x)
 		i = 0
 		down = False

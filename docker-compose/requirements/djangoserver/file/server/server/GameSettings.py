@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/06 16:33:56 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/06 16:34:24 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/09 07:03:19 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,3 +52,5 @@ class GameSettings:
 	wallWidth = 0.05
 	bounceSpeedIncrease = 0.2
 	maxScore = 5
+
+	maxPlayerSpeed = 0.4

@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 16:10:26 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/04 17:10:39 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/09 00:53:25 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,9 @@ from .gameActions.ping import ping
 #	1 : opponent : tell the client the name of the opponent
 #		- id : 0 if it's a bot
 #		- username
+#		- skin : id of the skin
+#		- opponentSkin : eddy is wierd
+#		- selfSkin : eddy is wierd
 #
 #	2 : go : the game started
 # 
