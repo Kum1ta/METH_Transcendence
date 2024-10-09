@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:02:19 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/05 22:24:29 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/10/09 22:43:31 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ class HomePage
 		})
 		document.getElementById('buttonProject').addEventListener('click', () => scrollToSection(0));
 		document.getElementById('buttonAuthors').addEventListener('click', () => scrollToSection(1));
+		document.getElementById('cross-login').addEventListener('click', () => {
+			document.getElementById('loginPopup').style.display = 'none';
+			document.body.style.overflow = 'auto';
+		});
 	}
 
 	static dispose()
@@ -44,6 +48,7 @@ class HomePage
 		LiveChat.dispose();
 		window.removeEventListener('scroll', scrool);
 		document.getElementById('buttonPlay').removeEventListener('click', redirection);
+		document.body.style.overflow = 'auto';
 	}
 };
 
