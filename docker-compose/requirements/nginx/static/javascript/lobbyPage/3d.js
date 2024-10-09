@@ -6,11 +6,12 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/03 21:15:40 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:24:50 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { createStar, createBox, createRectangle, createRing, colorList } from '/static/javascript/multiOnlineGame/Map.js'
+import { createBarPlayer } from '/static/javascript/multiOnlineGame/multiOnlineGamePage.js'
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { files } from '/static/javascript/filesLoader.js';
 
@@ -42,7 +43,7 @@ class barSelecter
 	camera			= null;
 	spotLight		= new THREE.SpotLight(0xffffff, 5);
 	selected		= lastSelected ? lastSelected : availableSkins[0];
-	bar				= this.createBarPlayer(this.selected.color ? this.selected.color : this.selected.texture);
+	bar				= this.createBarPlayer(this.selected);
 	boundChangeSkin = this.changeSkin.bind(this);
 
 
@@ -82,7 +83,7 @@ class barSelecter
 				if (availableSkins[i].color != null)
 					skins[i].style.backgroundColor = `#${availableSkins[i].color.toString(16)}`;
 				else
-					skins[i].style.backgroundImage = `url("${availableSkins[i].texture}")`
+					skins[i].style.backgroundImage = `url("${availableSkins[i].texture.show}")`
 				skins[i].removeEventListener('click', this.boundChangeSkin);
 				skins[i].addEventListener('click', this.boundChangeSkin);
 			}
@@ -105,28 +106,45 @@ class barSelecter
 	
 		const id = event.target.getAttribute('skinId');
 		popup.style.display = 'none';
-		this.bar.material.dispose();
-		lastSelected = availableSkins[id];
-		if (availableSkins[id].color != null)
-			this.bar.material = new THREE.MeshPhysicalMaterial({color: availableSkins[id].color});
+		if (Array.isArray(this.bar.material))
+		{
+			this.bar.material.forEach(material => {
+				if (material.map)
+					material.map.dispose();
+				material.dispose();
+			});
+		}
 		else
-			this.bar.material = new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(availableSkins[id].texture)});
+		{
+			if (this.bar.material.map)
+				this.bar.material.map.dispose();
+			this.bar.material.dispose();
+		}
+		lastSelected = availableSkins[id];
+		if (availableSkins[id].color)
+			this.bar.material = new THREE.MeshPhysicalMaterial({color: skin.color});
+		else
+		{
+			if (typeof availableSkins[id].texture !== 'object')
+				this.bar.material = new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(skin.texture)});
+			else
+			{
+				this.bar.material = [
+					new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(availableSkins[id].texture.left)}),
+					new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(availableSkins[id].texture.right)}),
+					new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(availableSkins[id].texture.top)}),
+					new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(availableSkins[id].texture.bottom)}),
+					new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(availableSkins[id].texture.front)}),
+					new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(availableSkins[id].texture.back)}),
+				]
+			}
+		}
 		this.selected = availableSkins[id];
 	}
 
 	createBarPlayer(color)
 	{
-		const	geometry	= new THREE.BoxGeometry(1, 0.1, 0.1);
-		let		material	= null;
-
-		if (typeof(color) == 'number')
-			material = new THREE.MeshPhysicalMaterial({color: color});
-		else
-			material = new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(color)});
-		const	mesh		= new THREE.Mesh(geometry, material);
-
-		mesh.castShadow = true;
-		return (mesh);
+		return (createBarPlayer(color));
 	}
 
 	#loop()
@@ -204,6 +222,7 @@ class goalSelecter
 		const	goal	=	document.getElementsByClassName('color-box-goal');
 	
 		popup.style.display = 'flex';
+		
 		for (let i = 0; i < goal.length; i++)
 		{
 			const	canvas = goal[i].getElementsByTagName('canvas');
@@ -223,11 +242,11 @@ class goalSelecter
 	{
 		const	scene		= new THREE.Scene();
 		const	renderer	= new THREE.WebGLRenderer({antialias: true});
-		const	camera		= new THREE.PerspectiveCamera(60, (pos.width - 5) / (pos.height - 5));
+		const	camera		= new THREE.PerspectiveCamera(60, (pos.width - 8) / (pos.height - 8));
 		const	mesh		= func(colorList[Math.floor(Math.random() * 100 % colorList.length)]);
 		const	spotLight	= new THREE.SpotLight(0xffffff, 5000);
 		
-		renderer.setSize(pos.width - 5, pos.height - 5);
+		renderer.setSize(pos.width - 8, pos.height - 8);
 		scene.add(mesh);
 		camera.position.set(1.5, 1.5, 1.5);
 		spotLight.position.set(1.5, 1.5, 1.5);
@@ -238,7 +257,7 @@ class goalSelecter
 		this.sceneList.push(scene);
 		this.rendererList.push(renderer);
 		this.cameraList.push(camera);
-		return (renderer.domElement)
+		return (renderer.domElement);
 	}
 
 	changeGoal(event)

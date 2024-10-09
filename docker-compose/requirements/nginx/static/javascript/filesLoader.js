@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 22:36:43 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/06 16:42:07 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/09 14:40:52 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,42 @@ const	url_files = {
 
 	wallTexture: '/static/img/multiOnlineGamePage/wallTexture.jpg',
 	planeTexture: '/static/img/multiOnlineGamePage/pastel.jpg',
-	skinOneTexture: '/static/img/skin/1.jpg',
-	skinTwoTexture: '/static/img/skin/2.jpg',
-	skinThreeTexture: '/static/img/skin/3.jpg',
-	skinFourTexture: '/static/img/skin/4.jpg',
+	skinOneTexture: {
+		left: '/static/img/skin/1/left.jpg',
+		right: '/static/img/skin/1/right.jpg',
+		top: '/static/img/skin/1/top.jpg',
+		bottom: '/static/img/skin/1/bottom.jpg',
+		front: '/static/img/skin/1/front.jpg',
+		back: '/static/img/skin/1/back.jpg',
+		show: '/static/img/skin/1/back.jpg',
+	},
+	skinTwoTexture: {
+		left: '/static/img/skin/1/left.jpg',
+		right: '/static/img/skin/1/right.jpg',
+		top: '/static/img/skin/1/top.jpg',
+		bottom: '/static/img/skin/1/bottom.jpg',
+		front: '/static/img/skin/1/front.jpg',
+		back: '/static/img/skin/1/back.jpg',
+		show: '/static/img/skin/1/back.jpg',
+	},
+	skinThreeTexture: {
+		left: '/static/img/skin/1/left.jpg',
+		right: '/static/img/skin/1/right.jpg',
+		top: '/static/img/skin/1/top.jpg',
+		bottom: '/static/img/skin/1/bottom.jpg',
+		front: '/static/img/skin/1/front.jpg',
+		back: '/static/img/skin/1/back.jpg',
+		show: '/static/img/skin/1/back.jpg',
+	},
+	skinFourTexture: {
+		left: '/static/img/skin/1/left.jpg',
+		right: '/static/img/skin/1/right.jpg',
+		top: '/static/img/skin/1/top.jpg',
+		bottom: '/static/img/skin/1/bottom.jpg',
+		front: '/static/img/skin/1/front.jpg',
+		back: '/static/img/skin/1/back.jpg',
+		show: '/static/img/skin/1/back.jpg',
+	},
 }
 
 let	files = {
@@ -56,6 +88,18 @@ async function loadFiles()
 		});
 	});
 	Object.entries(url_files).forEach(([key, value]) => {
+		if (typeof value === 'object')
+		{
+			files[key] = {};
+			Object.entries(value).forEach(([k, v]) => {
+				fetch(v)
+				.then(response => response.blob())
+				.then(blob => {
+					files[key][k] = URL.createObjectURL(blob);
+				});
+			});
+			return;
+		}
 		fetch(value)
 		.then(response => response.blob())
 		.then(blob => {

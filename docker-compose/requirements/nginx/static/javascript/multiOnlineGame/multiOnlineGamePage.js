@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/08 18:54:22 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/09 14:47:25 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ import { pageRenderer, isMobile } from '/static/javascript/main.js'
 import { Ball } from '/static/javascript/multiOnlineGame/Ball.js'
 import { Map } from '/static/javascript/multiOnlineGame/Map.js'
 import { sendRequest } from "/static/javascript/websocket.js";
+import { files } from '/static/javascript/filesLoader.js';
 /*
 Controls :
 	- w : monter
@@ -86,11 +87,16 @@ class MultiOnlineGamePage
 	static create(skin)
 	{
 		if (!skin)
-			skin = {player: 0, opponent: 0};
+		{
+			skin = {player: 4, opponent: 0};
+			availableSkins[4].texture = files.skinOneTexture;
+			availableSkins[5].texture = files.skinTwoTexture;
+			availableSkins[6].texture = files.skinThreeTexture;
+			availableSkins[7].texture = files.skinFourTexture;
+		}
 		const bar1		= createBarPlayer(availableSkins[skin.player]);
 		const bar2		= createBarPlayer(availableSkins[skin.opponent]);
 
-		console.log('skin : ', skin);
 		document.body.setAttribute('style', '');
 		scene					= new THREE.Scene()
 		map						= new Map(scene, 13, false, skin.pfp, skin.pfpOpponent);
@@ -284,13 +290,27 @@ class MultiOnlineGamePage
 
 function createBarPlayer(skin)
 {
-	const	geometry	= new THREE.BoxGeometry(1, 0.1, 0.1);
-	let		material	= null;
+	const	geometry		= new THREE.BoxGeometry(1, 0.1, 0.1);
+	let		material		= null;
 
 	if (skin.color)
 		material = new THREE.MeshPhysicalMaterial({color: skin.color});
 	else
-		material = new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(skin.texture)});
+	{
+		if (typeof skin.texture !== 'object')
+			material = new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(skin.texture)});
+		else
+		{
+			material = [
+				new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(skin.texture.left)}),
+				new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(skin.texture.right)}),
+				new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(skin.texture.top)}),
+				new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(skin.texture.bottom)}),
+				new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(skin.texture.front)}),
+				new THREE.MeshPhysicalMaterial({map: new THREE.TextureLoader().load(skin.texture.back)}),
+			]
+		}
+	}
 	const mesh		= new THREE.Mesh(geometry, material);
 
 	mesh.castShadow = true;
@@ -373,4 +393,4 @@ function configButton()
 }
 
 
-export { MultiOnlineGamePage, player, opponent, ball, map, scene, renderer, isInVrMode };
+export { MultiOnlineGamePage, player, opponent, ball, map, scene, renderer, isInVrMode, createBarPlayer };
