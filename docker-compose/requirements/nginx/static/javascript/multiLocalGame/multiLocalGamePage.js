@@ -16,8 +16,6 @@ import * as THREE from '/static/javascript/three/build/three.module.js'
 import { Ball } from '/static/javascript/multiLocalGame/Ball.js'
 import { pageRenderer } from '/static/javascript/main.js'
 
-
-
 let	scene		=	null;
 let	renderer	=	null;
 let	camera		=	null;
