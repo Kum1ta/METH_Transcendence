@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/05 03:54:20 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/09 09:05:42 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/10 02:24:08 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ from .Ball import Ball
 from .Player import Player
 from .DummySocket import DummySocket
 from .GameSettings import GameSettings
+import random
 import asyncio
 import time
 
@@ -23,6 +24,7 @@ class Bot(Player):
 		self.game = game
 		self.ready = True
 		self.pos = {"pos":0, "up": False}
+		self.lastCalculated = {"pos":0, "up":False}
 		self.objective = {"pos":0, "up": False}
 		self.skin = 0
 		asyncio.create_task(self.updateLoop())
@@ -38,6 +40,18 @@ class Bot(Player):
 		res.speed = self.game.ball.speed
 		return(res)
 
+	def genRandomBallDirection(self, pos, up, center):
+		if(self.lastCalculated["pos"] == pos and self.lastCalculated["up"] == up):
+			return(self.objective)
+		self.lastCalculated = {"pos":pos, "up" : up}
+		if(not center):
+			offset = random.randint(-100, 100) / 100
+			if(offset == 0):
+				offset = 0.1
+			pos += offset * (GameSettings.playerLength / 2)
+		return({"pos":pos, "up":up})
+
+
 	async def getExpectedPos(self):
 		tempBall = self.createTempBall()
 		hit = 0
@@ -47,8 +61,9 @@ class Bot(Player):
 			hit = await tempBall.update(sleepTime, self, self.game.p2, True)
 			i += 1
 			if(i == 50):
+				self.objective = self.genRandomBallDirection(0, 0, True) 
 				return
-		self.objective = {"pos":tempBall.pos[0], "up":tempBall.up}
+		self.objective = self.genRandomBallDirection(tempBall.pos[0], tempBall.up, False)
 
 	async def updateLoop(self):
 		while not self.game.end:

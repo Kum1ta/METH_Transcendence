@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/06 03:24:10 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/09 09:09:54 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/10 01:25:42 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,14 +20,15 @@ class Ball:
 		self.obstacles = []
 
 	def setStartVel(self, inv):
-		self.speed = GameSettings.startSpeed
-		self.vel[0] = self.speed * (random.randint(-50, 50) / 100)
-		self.vel[1] = self.speed - abs(self.vel[0])
-		if(inv == 2):
-			self.vel[1] = -self.vel[1]
+	#	self.speed = GameSettings.startSpeed
+	#	self.vel[0] = self.speed * (random.randint(-50, 50) / 100)
+	#	self.vel[1] = self.speed - abs(self.vel[0])
+	#	if(inv == 2):
+	#		self.vel[1] = -self.vel[1]
+		self.vel = [0, -3]
 
 	def default(self):
-		self.pos = [0, 0]
+		self.pos = [1, 5]
 		self.up = False
 		self.vel = [0, 0]
 		self.speed = GameSettings.startSpeed
@@ -69,7 +70,7 @@ class Ball:
 			return(None)
 
 		wallSide = (GameSettings.wallWidth / 2) + GameSettings.ballRadius
-		if(pos1[1] < 0):
+		if(self.vel[1] > 0):
 			wallSide *= -1
 		hitPos = (wallSide - offset) / slope
 		relPos = wpos - hitPos
@@ -118,7 +119,7 @@ class Ball:
 
 	def wallColisionDistanceY(self, wall):
 		wallSide = (GameSettings.wallWidth / 2) + GameSettings.ballRadius
-		if(self.pos[1] < 0):
+		if(self.vel[1] > 0):
 			wallSide *= -1
 		relPos = wall["pos"]["x"] - self.pos[0] 
 		if(abs(relPos) < (GameSettings.wallLength / 2) + GameSettings.ballRadius):
@@ -130,7 +131,6 @@ class Ball:
 		if(abs(relPos) <= GameSettings.jumperRadius):
 			return(jumper["pos"]["z"])
 		return(None)
-
 
 	def colisionTimeY(self, checkObstacles):
 		wallsTime = self.getTimeUntilWallColision("back","front", self.pos[1], self.vel[1])
