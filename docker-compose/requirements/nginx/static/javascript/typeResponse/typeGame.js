@@ -22,6 +22,8 @@ function typeGame(content)
 	{
 		if (content.action == 1)
 			WaitingGamePage.showOpponent(content);
+		else if (content.action == 10)
+			WaitingGamePage.opponentLeft(content)
 	}
 	else if (pageRenderer.actualPage == MultiOnlineGamePage)
 	{

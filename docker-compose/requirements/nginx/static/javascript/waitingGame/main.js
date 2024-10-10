@@ -83,11 +83,11 @@ class WaitingGamePage
 		intervalPoints = null;
 		sentence.style.animation = 'anim3 0.5s';
 		sentence.style.opacity = 0;
-		setTimeout(() => {
+		timeout = setTimeout(() => {
 			sentence.innerText = "Your opponent is " + content.username;
 			sentence.style.animation = 'animShowMenuDiv 0.5s';
 			sentence.style.opacity = 1;
-			setTimeout(() => {
+			timeout = setTimeout(() => {
 				document.body.style.animation = 'anim3 0.5s';
 				document.body.style.opacity = 0;
 				pageRenderer.changePage("multiOnlineGamePage", false, {player: lastSelected ? lastSelected.id : 0, opponent: content.skin, opponentGoaldId: content.goalId, pfp: content.pfpSelf, pfpOpponent: content.pfpOpponent});
@@ -100,6 +100,11 @@ class WaitingGamePage
 	{
 		if (waitOpponentId == opponentId)
 			pageRenderer.changePage('tournamentPage', false, null);
+	}
+
+	static opponentLeft(content)
+	{
+		pageRenderer.changePage('lobbyPage');	
 	}
 }
 
