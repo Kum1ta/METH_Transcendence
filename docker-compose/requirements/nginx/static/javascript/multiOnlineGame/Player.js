@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/08 13:26:01 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/10 13:46:36 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ class Player
 		this.mapVar.putVideoOnCanvas(3, 'goal');
 		setTimeout(() => {
 			this.mapVar.putVideoOnCanvas(0, null);
+			this.mapVar.putVideoOnCanvas(2, 3);
 		}, 4000);
 
 		ball.setVisibility(false);

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/09 14:47:25 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/10 13:47:22 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,28 +149,11 @@ class MultiOnlineGamePage
 			}
 			if (e.key == 'c')
 				debug = !debug;
-			if (e.key == 'p')
-				map.putVideoOnCanvas(0, null);
-			if (e.key == 'o')
-			{
-				map.putVideoOnCanvas(3, 'goal');
-			}
-			if (e.key == 'i')
-				map.putVideoOnCanvas(3, 'outstanding');
-			if (e.key == 'u')
-				map.putVideoOnCanvas(3, 3);
-			if (e.key == 'y')
-				map.putVideoOnCanvas(2, 3);
-			if (e.key == 't')
-				map.putVideoOnCanvas(1, 3);
-			if (e.key == 'l')
-				map.reCreate("player");
-			if (e.key == 'k')
-				map.reCreate("opponent");
 		})
 
 		renderer.setAnimationLoop(loop)
 		sendRequest('game', {action: 1});
+		map.putVideoOnCanvas(2, 3);
 		let lastPosition = player.object.position.x;
 		let lastUp = player.isUp;
 		interval = setInterval(() => {
@@ -197,6 +180,7 @@ class MultiOnlineGamePage
 		if (session)
 			session.end();
 		observer.disconnect();
+		map.putVideoOnCanvas(0, null);
 		VrButton = null;
 		window.removeEventListener('resize', windowUpdater);
 		if (interval)

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/10/08 12:55:12 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/10 14:36:51 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ class LobbyPage
 		const	inputUser			= document.getElementById('searchInputUser');
 		const	tournamentCodeInput	= document.getElementById('tournamentCode');
 		const	func				= [selectGameModeOne, selectGameModeTwo, selectGameModeThree, selectGameModeFour];
+		const	nbBot				= document.getElementById('nbBot');
 
 		document.body.style.opacity = 1;
 		if (userMeInfo.id == -1)
@@ -60,9 +61,15 @@ class LobbyPage
 		initButtonPopMenuLogin();
 		initButtonLaytout();
 		window.addEventListener('click', closePopUpWhenClickOutsite);
-		tournamentCodeInput.addEventListener('keypress', () => {
+		tournamentCodeInput.addEventListener('keypress', (event) => {
 			if (event.key == 'Enter')
 				startTournmament();
+		});
+		tournamentCodeInput.addEventListener('input', () => {
+			if (tournamentCodeInput.value.length == 0)
+				nbBot.style.display = 'flex';
+			else
+				nbBot.style.display = 'none';
 		});
 		listSelectCard = document.getElementsByClassName('select-card');
 		listSelectCard[0].addEventListener('click', selectGameModeOne);
@@ -178,8 +185,17 @@ function startMatchmaking(ranked)
 function startTournmament()
 {
 	const	code	=	document.getElementById('tournamentCode').value;
+	const	nbBot	=	document.getElementById('nbBot').value;
 
-	sendRequest("tournament", {action: 0, code: code});
+	if (code != '')
+		sendRequest("tournament", {action: 0, code: code});
+	else if (nbBot != '')
+	{
+		if (parseInt(nbBot) >= 0 && parseInt(nbBot) <= 7)
+			sendRequest("tournament", {action: 0, code: '', nbBot: parseInt(nbBot)});
+		else
+			CN.new("Error", "You must enter a valid number of bot");
+	}
 }
 
 function closePopUpWhenClickOutsite (event)

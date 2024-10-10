@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 12:00:01 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/08 03:07:37 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/10 13:51:15 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ import { pageRenderer } from '/static/javascript/main.js'
 
 function typeGame(content)
 {
-	console.log(`New game ${content.action} content: `, content);
 	if (pageRenderer.actualPage == WaitingGamePage)
 	{
 		if (content.action == 1)

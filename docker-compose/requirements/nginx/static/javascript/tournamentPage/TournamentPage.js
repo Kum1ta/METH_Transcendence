@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/08 13:13:38 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/10 12:57:56 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,10 @@ class TournamentPage
 		sendRequest("tournament", {action: 3});
 		divTopInfo.innerText = 'Tournament';
 		initTournamentChat();
+		document.getElementById('quitButton').addEventListener('click', () => {
+			sendRequest("tournament", {action: 1});
+			pageRenderer.changePage("lobbyPage", false);
+		});
 	}
 
 	static dispose()
