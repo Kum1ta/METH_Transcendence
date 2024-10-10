@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/10/10 14:36:51 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/10 17:30:36 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ import { barSelecter, goalSelecter } from '/static/javascript/lobbyPage/3d.js';
 import { LiveChat } from "/static/javascript/liveChat/main.js";
 import { sendRequest } from "/static/javascript/websocket.js";
 import { pageRenderer } from '/static/javascript/main.js'
+import { isMobile } from '/static/javascript/main.js';
 
 /* 
 	Information :
@@ -152,8 +153,10 @@ function goBackHome()
 
 function startMode()
 {
-	if (gameMode == 0)
+	if (gameMode == 0 && !isMobile)
 		startMultiLocal();
+	else if (gameMode == 0 && isMobile)
+		CN.new("Error", "You can't play multiplayer local on mobile");
 	else if (gameMode == 1)
 		startMatchmaking(false);
 	else if (gameMode == 2)
@@ -203,11 +206,6 @@ function closePopUpWhenClickOutsite (event)
     if (event.target == document.getElementById('loginPopup'))
         document.getElementById('loginPopup').style.display = 'none';
 };
-
-function hideGameMode()
-{
-	document.getElementById('loginPopup').style.display = 'none';
-}
 
 function selectGameModeOne()
 {
