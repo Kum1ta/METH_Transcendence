@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/11 17:07:08 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/06 16:39:52 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/10 03:52:54 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,5 +25,9 @@ async def start(socket, content):
 	if(skinId < 0 or skinId >= len(GameSettings.skins)):
 		socket.sendError("Skin id out of range", 9033)
 		return;
-	Game(socket, content.get("with_bot", False),skinId ,opponent)
+	goalId = content.get("goalId",0)
+	if(goalId < 0 or goalId >= GameSettings.nbGoals):
+		socket.sendError("Goal id out of range", 9039)
+		return;
+	Game(socket, False,skinId, goalId,opponent)
 

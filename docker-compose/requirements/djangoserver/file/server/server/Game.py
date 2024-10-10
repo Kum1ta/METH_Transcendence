@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/09 07:06:00 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/10 19:24:02 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ import math
 class Game:
 	waitingForPlayer = None
 
-	def __init__(self, socket, withBot, skinId = 0, opponent = None):
+	def __init__(self, socket, withBot, skinId = 0, goalId = 0, opponent = None):
 		self.p1 = None
 		self.p2 = None
 		self.started = False
@@ -34,6 +34,7 @@ class Game:
 		self.winner = None
 		self.gameStart = 0
 		self.gameTime = 0
+		self.withBot = withBot
 
 		self.ball = Ball()
 		self.speed = GameSettings.startSpeed
@@ -44,7 +45,7 @@ class Game:
 		self.opponentLock = opponent
 		if(1 or withBot):
 			self.p1 = Bot(self)
-			self.join(socket, skinId)
+			self.join(socket, skinId, goalId)
 		elif(opponent != None):
 			if(opponent not in socket.onlinePlayers):
 				return
@@ -52,15 +53,15 @@ class Game:
 			if (opponentGame != None and opponentGame.opponentLock != None and opponentGame.opponentLock == socket.id):
 				socket.onlinePlayers[opponent].game.join(socket, skinId)
 			else:
-				self.join(socket, skinId)
+				self.join(socket, skinId, goalId)
 				socket.onlinePlayers[opponent].sync_send({"type":"invitation","content":{"invitor":socket.id, "username":socket.username}})
 		else:
 			if(Game.waitingForPlayer == None):
 				Game.waitingForPlayer = self
 				socket.sync_send({"type":"game","content":{"action":0}})
-				self.join(socket, skinId)
+				self.join(socket, skinId, goalId)
 			else:
-				Game.waitingForPlayer.join(socket, skinId)
+				Game.waitingForPlayer.join(socket, skinId, goalId)
 				Game.waitingForPlayer = None
 
 	def __del__(self):
@@ -95,12 +96,13 @@ class Game:
 		self.p2.socket.sync_send({"type":"game", "content":{"action":7, "content":self.obstacles}})
 		self.obstaclesInvLength()
 
-	def join(self, socket, skin = 0):
+	def join(self, socket, skin = 0, goal = 0):
 		try:
 			if(self.p1 == None):
 				print("game created, set as player 1")
 				self.p1 = Player(socket, self)
 				self.p1.skin = skin
+				self.p1.goal = goal
 			else:
 				if(self.opponentLock != None and self.opponentLock != socket.id):
 					socket.sendError("You are not invited to this game", 9103)
@@ -108,10 +110,11 @@ class Game:
 				print("joined game, set as player 2")
 				self.p2 = Player(socket, self)
 				self.p2.skin = skin
+				self.p2.goal = goal
 			if(self.p2 != None and self.p1 != None):
 				print("both players here, send opponent to both players")
-				self.p1.socket.sync_send({"type":"game", "content":{"action":1,"id":self.p2.socket.id,"username":self.p2.socket.username, "skin":self.p2.skin, 'pfpOpponent':self.p2.socket.pfp, 'pfpSelf':self.p1.socket.pfp}})
-				self.p2.socket.sync_send({"type":"game", "content":{"action":1,"id":self.p1.socket.id,"username":self.p1.socket.username, "skin":self.p1.skin, 'pfpOpponent':self.p1.socket.pfp, 'pfpSelf':self.p2.socket.pfp}})
+				self.p1.socket.sync_send({"type":"game", "content":{"action":1,"id":self.p2.socket.id,"username":self.p2.socket.username, "skin":self.p2.skin, "goal":self.p2.goal, 'pfpOpponent':self.p2.socket.pfp, 'pfpSelf':self.p1.socket.pfp}})
+				self.p2.socket.sync_send({"type":"game", "content":{"action":1,"id":self.p1.socket.id,"username":self.p1.socket.username, "skin":self.p1.skin, "goal":self.p1.goal, 'pfpOpponent':self.p1.socket.pfp, 'pfpSelf':self.p2.socket.pfp}})
 		except Exception as e:
 			socket.sendError("invalid request", 9005, e)
 
@@ -238,7 +241,8 @@ class Game:
 			self.p1.socket.game = None
 		if(self.p2.socket.game == self):
 			self.p2.socket.game = None
-		await self.saveResults()
+		if(not self.withBot):
+			await self.saveResults()
 		del self
 
 	@sync_to_async

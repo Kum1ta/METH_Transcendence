@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/06 16:33:56 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/09 07:03:19 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/10 03:48:00 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ class GameSettings:
 		{id: 6, 'color': None, 'texture': '/static/img/skin/3.jpg'},
 		{id: 7, 'color': None, 'texture': '/static/img/skin/4.jpg'},
 	]
+	nbGoals = 4
 	wallLength = 1
 	wallWidth = 0.05
 	bounceSpeedIncrease = 0.2

@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/06 03:24:10 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/10 01:25:42 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/10 03:31:32 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,15 +20,14 @@ class Ball:
 		self.obstacles = []
 
 	def setStartVel(self, inv):
-	#	self.speed = GameSettings.startSpeed
-	#	self.vel[0] = self.speed * (random.randint(-50, 50) / 100)
-	#	self.vel[1] = self.speed - abs(self.vel[0])
-	#	if(inv == 2):
-	#		self.vel[1] = -self.vel[1]
-		self.vel = [0, -3]
+		self.speed = GameSettings.startSpeed
+		self.vel[0] = self.speed * (random.randint(-50, 50) / 100)
+		self.vel[1] = self.speed - abs(self.vel[0])
+		if(inv == 2):
+			self.vel[1] = -self.vel[1]
 
 	def default(self):
-		self.pos = [1, 5]
+		self.pos = [0, 0]
 		self.up = False
 		self.vel = [0, 0]
 		self.speed = GameSettings.startSpeed
@@ -70,7 +69,7 @@ class Ball:
 			return(None)
 
 		wallSide = (GameSettings.wallWidth / 2) + GameSettings.ballRadius
-		if(self.vel[1] > 0):
+		if(self.pos[1] < 0):
 			wallSide *= -1
 		hitPos = (wallSide - offset) / slope
 		relPos = wpos - hitPos

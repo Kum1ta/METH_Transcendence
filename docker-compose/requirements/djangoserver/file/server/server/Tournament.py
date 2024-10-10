@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/05 04:31:00 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/10 06:12:28 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ class Tournament:
 		nbIter = 0
 		while(self.code in Tournament.currentTournaments):
 			if(nbIter == 100):
-				nbInter = 0
+				nbIter = 0
 				nbChar += 1
 			self.code = genString(nbChar, string.ascii_uppercase)
 			nbIter += 1

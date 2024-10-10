@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/05 03:54:20 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/10 02:24:08 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/10 19:25:56 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ class Bot(Player):
 		self.lastCalculated = {"pos":0, "up":False}
 		self.objective = {"pos":0, "up": False}
 		self.skin = 0
+		self.goal = 0
 		asyncio.create_task(self.updateLoop())
 		asyncio.create_task(self.goToObjectiveLoop())
 		print("I am a bot, boop boop beep boop")
