@@ -439,6 +439,7 @@ class Player
 				object.scale.x -= value * 2;
 			}, i * 10);
 		}
+		object.scale.set(1, 1, 1);
 	}
 
 	configureVrController()
