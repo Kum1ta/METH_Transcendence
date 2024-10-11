@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/07 14:10:52 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/11 10:43:04 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,11 +287,9 @@ class Ball
 		this.updateTrail();
 	}
 
-
-	updateTrail()
-	{
+	updateTrail() {
 		const trailColors = trailGeometry.attributes.customColor.array;
-
+	
 		for (let i = trailPositions.length - 3; i >= 3; i--)
 			trailPositions[i] = trailPositions[i - 3];
 		trailPositions[0] = this.object.position.x;
@@ -300,19 +298,35 @@ class Ball
 	
 		for (let i = 0; i < 33; i++)
 			trailSizes[i] = Math.max(0.5 * (1 - i / 33), 0.1);
+	
+		const velocityMagnitude = Math.sqrt(
+			this.srvPos.vel[0] * this.srvPos.vel[0] +
+			this.srvPos.vel[1] * this.srvPos.vel[1]
+		);
+		
+		// Normalisation de la vitesse entre 0 (lente) et 1 (rapide)
+		const speedFactor = Math.min(velocityMagnitude / 10, 1); // Divisé par 10 pour ajuster l'échelle
 		for (let i = 0; i < 33; i++) {
 			const alpha = Math.max(1 - i / 33, 0);
-			trailColors[i * 4] = 1.0 / Math.max(this.srvPos.vel[0] < 0 ? - this.srvPos.vel[0] : this.srvPos.vel[0], 0.3);
-			trailColors[i * 4 + 1] = 1.0 / Math.max(this.srvPos.vel[1] < 0 ? - this.srvPos.vel[1] : this.srvPos.vel[1], 0.3);
-			trailColors[i * 4 + 2] = 1.0 / Math.max((this.srvPos.vel[0] < 0 ? - this.srvPos.vel[0] : this.srvPos.vel[0]) + this.srvPos.vel[1] < 0 ? - this.srvPos.vel[1] : this.srvPos.vel[1], 0.3);
+			
+			// Couleur entre blanc et rouge selon la vitesse
+			const r = 1; // Rouge maximum
+			const g = 1 - speedFactor; // Moins de vert avec l'augmentation de la vitesse
+			const b = 1 - speedFactor; // Moins de bleu avec l'augmentation de la vitesse
+	
+			// Appliquer la couleur
+			trailColors[i * 4] = r;
+			trailColors[i * 4 + 1] = g;
+			trailColors[i * 4 + 2] = b;
 			trailColors[i * 4 + 3] = alpha;
 		}
-
 	
+		// Marquer les attributs comme nécessitant une mise à jour
 		trailGeometry.attributes.position.needsUpdate = true;
 		trailGeometry.attributes.size.needsUpdate = true;
 		trailGeometry.attributes.customColor.needsUpdate = true;
 	}
+	
 
 	dispose()
 	{

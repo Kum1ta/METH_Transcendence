@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/10 13:46:36 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/11 11:08:30 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,7 @@ class Player
 		pressedButton = [];
 		console.log(layoutSelected);
 		key			= {up: layoutSelected.US ? "w" : "z", down: "s", left: layoutSelected.US ? "a" : "q", right: "d"};
-		console.warn("Remettre opponentGoal = availableGoals[goalIdOppenent] qaund le serveur le permettra");
-		this.opponentGoal = availableGoals[0];
-		// opponentGoal = availableGoals[goalIdOppenent];
+		this.opponentGoal = availableGoals[goalIdOppenent];
 		this.object = object;
 		this.limits = map.playerLimits;
 		this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 10000);
@@ -266,8 +264,6 @@ class Player
 				tmpCamera.fov -= 0.05;
 				tmpCamera.updateProjectionMatrix();
 			}, 10);
-
-			console.log("Oppenent : " + this.opponentGoal);
 			setTimeout(() => {
 				map.animationGoal(this.opponent.object.position.x, this.opponent.object.position.y, this.opponent.object.position.z, this.opponent.playerGoalAnimation, this.opponentGoal);
 			}, 1000);

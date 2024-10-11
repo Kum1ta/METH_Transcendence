@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/10 13:47:22 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/11 10:56:51 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ class MultiOnlineGamePage
 {
 	static create(skin)
 	{
+		console.log('skin', skin);
 		if (!skin)
 		{
 			skin = {player: 4, opponent: 0};
@@ -108,7 +109,7 @@ class MultiOnlineGamePage
 		
 		vrMode();
 		opponent				= new Opponent(bar2, map, Math.floor(Math.random() * 100 % 6));
-		player					= new Player(bar1, map, opponent, Math.floor(Math.random() * 100 % 6), skin.goalId);
+		player					= new Player(bar1, map, opponent, Math.floor(Math.random() * 100 % 6), skin.opponentGoaldId);
 		spotLight				= new THREE.SpotLight(0xffffff, 10000, 0, 0.2);
 		spotLight.castShadow	= true;
 		ambiantLight			= new THREE.AmbientLight(0xffffff, 0.5);
