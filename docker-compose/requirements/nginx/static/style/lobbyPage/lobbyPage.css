@@ -409,6 +409,12 @@ body {
 	min-width: 200px;
 }
 
+#nbBot {
+	margin-top: 15px;
+	width: 94%;
+	font-size: 0.8rem;
+}
+
 .search-input:focus {
 	border-color: white;
 }
@@ -580,11 +586,11 @@ body {
 }
 
 input:checked + .slider {
-	background-color: #2196F3;
+	background-color: #21f356;
 }
 
 input:focus + .slider {
-	box-shadow: 0 0 1px #2196F3;
+	box-shadow: 0 0 1px #21f356;
 }
 
 input:checked + .slider:before {

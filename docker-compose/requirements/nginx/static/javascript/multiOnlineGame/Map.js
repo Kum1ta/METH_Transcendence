@@ -533,9 +533,9 @@ class Map
 		meshProfileRightFront		= new THREE.Mesh(geometryProfileRightFront, materialProfileRight);
 
 		geometryProfileLeftBack		= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
-		meshProfileLeftBack			= new THREE.Mesh(geometryProfileLeftBack, materialProfileLeft);
+		meshProfileLeftBack			= new THREE.Mesh(geometryProfileLeftBack, materialProfileRight);
 		geometryProfileRightBack	= new THREE.PlaneGeometry(width - 0.15, height - 0.15);
-		meshProfileRightBack		= new THREE.Mesh(geometryProfileRightBack, materialProfileRight);
+		meshProfileRightBack		= new THREE.Mesh(geometryProfileRightBack, materialProfileLeft);
 
 		meshProfileLeftFront.position.set(-spacing - width / 2 - 0.275, 1.6, - 8.15);
 		meshProfileLeftFront.rotation.y = 0.4;
@@ -1025,6 +1025,9 @@ class Map
 
 	reCreate(name)
 	{
+		player.resetScaleplayers();
+		player.reserCameraPlayer();
+		
 		this.#clearAnimationGoal();
 		animateGoalObjectUpdate = false;
 		animationSpeed = 0.02;
@@ -1032,8 +1035,6 @@ class Map
 		this.updateScore(name, this.score);
 		ball.resetPosBall();
 		this.resetPosWalls();
-		player.resetScaleplayers();
-		player.reserCameraPlayer();
 	};
 };
 

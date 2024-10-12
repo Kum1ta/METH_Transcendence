@@ -27,7 +27,7 @@ let		score			=	{player1: 0, player2: 0};
 let		onUpdate		=	false;
 let		scoreElement	=	null;
 let		initialSpeed	=	0;
-let		speed			=	0;
+let		speed			=	1;
 let		gameEndStatus	=	false;
 const	scoreToWin		=	2; //+1 for real score to win
 
@@ -54,16 +54,16 @@ class Map
 		wallTop = createWall(true);
 		scene.add(wallTop);
 
-		speed = 0.2;
+		initialSpeed = 0.2;
 		if (Math.random() > 0.5)
 		{
-			vec2.z = (Math.random() * 0.8 - 0.4) * speed;
-			vec2.x = Math.sqrt(speed * speed - vec2.z * vec2.z);
+			vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
+			vec2.x = Math.sqrt(initialSpeed * initialSpeed - vec2.z * vec2.z);
 		}
 		else
 		{
-			vec2.z = (Math.random() * 0.8 - 0.4) * speed;
-			vec2.x = Math.sqrt(speed * speed - vec2.z * vec2.z);
+			vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
+			vec2.x = Math.sqrt(initialSpeed * initialSpeed - vec2.z * vec2.z);
 		}
 
 		setTimeout(() => {
@@ -98,42 +98,64 @@ class Map
 		if (onUpdate)
 			return ;
 		
+		// collision wall top and bottom
 		if (ball.position.z > 5.7 || ball.position.z < -5.7)
 			vec2.z *= -1;
 
+		// collision player2 left
 		if (ball.position.x > 11.45 && ball.position.x < 12.2)
 		{
 			if (ball.position.z < player2.position.z + 1.25 && ball.position.z > player2.position.z - 1.25)
 			{
 				Map.scalePlayer(player2);
-				initialSpeed = Math.sqrt(vec2.x * vec2.x + vec2.z * vec2.z);
-				vec2.z -= (player2.position.z - ball.position.z) / (10 / speed) * 4;
-				vec2.x = -Math.sqrt(initialSpeed * initialSpeed - vec2.z * vec2.z);
+				vec2.x *= -1;
+				// Ca bug donc je le laisse en commentaire
+				// if (ball.position.z < player2.position.z + 0.5)
+				// {
+				// 	vec2.z -= 0.05;
+				// 	vec2.x += 0.05;
+				// }
+				// else if (ball.position.z > player2.position.z + 0.5)
+				// {
+				// 	vec2.z += 0.05;
+				// 	vec2.x -= 0.05;
+				// }
 			}
-		}
+		} // collision player1 right
 		else if (ball.position.x < -11.45 && ball.position.x > -12.2)
 		{
 			if (ball.position.z < player1.position.z + 1.25 && ball.position.z > player1.position.z - 1.25)
-			{
+			{	
 				Map.scalePlayer(player1);
-				initialSpeed = Math.sqrt(vec2.x * vec2.x + vec2.z * vec2.z);
-				vec2.z -= (player1.position.z - ball.position.z) / (10 / speed) * 4;
-				vec2.x = Math.sqrt(initialSpeed * initialSpeed - vec2.z * vec2.z);
+				vec2.x *= -1;
+				// Ca bug donc je le laisse en commentaire
+				// if (ball.position.z < player1.position.z + 0.5)
+				// {
+				// 	vec2.z -= 0.05;
+				// 	vec2.x += 0.05;
+				// }
+				// else if (ball.position.z > player1.position.z + 0.5)
+				// {
+				// 	vec2.z += 0.05;
+				// 	vec2.x -= 0.05;
+				// }
 			}
 		}
 
 		// velocity
-		ball.position.x += vec2.x;
-		ball.position.z += vec2.z;
+		ball.position.x += vec2.x * speed;
+		ball.position.z += vec2.z * speed;
+		if (speed < 3)
+			speed += 0.005;
 
 		// ball opacity
-		if (ball.position.x > 12)
+		if (ball.position.x > 12.3)
 		{
 			ball.material.opacity -= 0.1;
 			if (ball.position.x > 14)
 				return (Map.reCreate(false));
 		}
-		else if (ball.position.x < -12)
+		else if (ball.position.x < -12.3)
 		{
 			ball.material.opacity -= 0.1;
 			if (ball.position.x < -14)
@@ -184,13 +206,13 @@ class Map
 		setTimeout(() => {
 			if (player1Lose)
 			{
-				initialSpeed = Math.sqrt(vec2.x * vec2.x + vec2.z * vec2.z);
+				initialSpeed = 0.2;
 				vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
 				vec2.x = -Math.sqrt(initialSpeed * initialSpeed - vec2.z * vec2.z);
 			}
 			else
 			{
-				initialSpeed = Math.sqrt(vec2.x * vec2.x + vec2.z * vec2.z);
+				initialSpeed = 0.2;
 				vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
 				vec2.x = Math.sqrt(initialSpeed * initialSpeed - vec2.z * vec2.z);
 			}
@@ -201,7 +223,7 @@ class Map
 		setTimeout(() => {
 			ball.material.opacity = 1;
 			ball.position.set(0, 0.3, 0);
-			initialSpeed = 0.5;
+			speed = 1;
 
 			scoreElement.style.animation = 'fadeOutGames 0.199s';
 			document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
