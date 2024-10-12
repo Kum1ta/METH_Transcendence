@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 21:20:45 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/12 17:10:44 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/12 17:30:41 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ class WaitingGamePage
 			if (opponentInfo && typeof(opponentInfo) != 'boolean')
 				sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0, goalId: goalId, opponent: opponentInfo.id});
 			else
-				sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0, goalId: goalId, isRanked: opponentInfo ? true : false, bot: withBot});
+				sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0, goalId: goalId, isRanked: opponentInfo ? true : false, with_bot: withBot});
 			timeout = null;
 		}, isTournament ? 1500 : 500);
 		if (!opponentInfo || !isTournament)
