@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:29:50 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/08 13:03:19 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/12 16:27:44 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ function typeTournament(content)
 
 function joinTournament(content)
 {
-	if (!content.exist)
+	if (content.exist != 'undefined' && !content.exist)
 		CN.new("Information", "No game for this code");
-	else if (content.isFull)
+	else if (content.isFull != 'undefined' && content.isFull)
 		CN.new("Information", "Cannot join because the game is full");
-	else if (content.started)
+	else if (content.started != 'undefined' && content.started)
 		CN.new("Information", "This tournament has already started");
 	else
 	{

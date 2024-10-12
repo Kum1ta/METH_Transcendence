@@ -6,11 +6,12 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 21:20:45 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/11 10:54:35 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/12 17:30:41 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { lastSelected, lastSelectedGoal, availableGoals } from '/static/javascript/lobbyPage/3d.js';
+import { withBot } from '/static/javascript/lobbyPage/main.js';
 import { sendRequest } from "/static/javascript/websocket.js";
 import { pageRenderer } from '/static/javascript/main.js'
 
@@ -47,7 +48,7 @@ class WaitingGamePage
 			if (opponentInfo && typeof(opponentInfo) != 'boolean')
 				sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0, goalId: goalId, opponent: opponentInfo.id});
 			else
-				sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0, goalId: goalId, isRanked: opponentInfo ? true : false});
+				sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0, goalId: goalId, isRanked: opponentInfo ? true : false, with_bot: withBot});
 			timeout = null;
 		}, isTournament ? 1500 : 500);
 		if (!opponentInfo || !isTournament)

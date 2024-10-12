@@ -124,6 +124,14 @@
 					<div class="select-keys USButton">US</div>
 					<div class="not-select-keys FRButton">FR</div>
 				</div>
+				<span class="line" id="tournament-line1"></span>
+				<div style="display: flex; flex-direction: row; justify-content: space-between; padding-inline: 10px;">
+					<p>Against bot</p>
+					<label class="switch">
+						<input type="checkbox" id="checkBoxBot">
+						<span class="slider round"></span>
+					</label>
+				</div>
 			</div>
 			<div class="skin-select">
 				<div class="barSelection" id="bar">
@@ -194,9 +202,9 @@
 				<span class="line"></span>
 				<p style="text-align: center; margin-bottom: 20px;">Tournament code</p>
 				<input id="tournamentCode" class="search-input" type="text" placeholder="Enter the tournament code (empty for create one)">
+				<input type="number" id="nbBot" class="search-input" placeholder="Number of bots (1-7 | default 0)">
 				<span class="line" id="tournament-line2"></span>
 
-				<input type="number" id="nbBot" class="search-input" placeholder="Number of bots (1-7 | default 0)">
 			</div>
 			<div class="skin-select">
 				<div class="barSelection" id="bar2">

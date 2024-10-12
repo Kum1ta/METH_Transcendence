@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/10/10 17:30:36 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/12 17:08:11 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ let barSelector		= null;
 let goalSelector	= null;
 let timeout			= null;
 let	layoutSelected	= {US: true, FR: false};
+let	withBot			= false;
 
 class LobbyPage
 {
@@ -45,7 +46,9 @@ class LobbyPage
 		const	tournamentCodeInput	= document.getElementById('tournamentCode');
 		const	func				= [selectGameModeOne, selectGameModeTwo, selectGameModeThree, selectGameModeFour];
 		const	nbBot				= document.getElementById('nbBot');
+		const	checkBoxBot			= document.getElementById('checkBoxBot');
 
+		withBot = false;
 		document.body.style.opacity = 1;
 		if (userMeInfo.id == -1)
 			waitForLogin().then(() => usernameP.innerHTML = userMeInfo.username);
@@ -92,6 +95,7 @@ class LobbyPage
 		startButton.addEventListener('click', startMode);
 		methButton.addEventListener('click', goBackHome);
 		document.getElementsByClassName('menuSelected')[gameMode].style.display = 'flex';
+		checkBoxBot.addEventListener('click', () => withBot = !withBot);
 	}
 
 	static dispose()
@@ -188,12 +192,13 @@ function startMatchmaking(ranked)
 function startTournmament()
 {
 	const	code	=	document.getElementById('tournamentCode').value;
-	const	nbBot	=	document.getElementById('nbBot').value;
+	let		nbBot	=	document.getElementById('nbBot').value;
 
 	if (code != '')
 		sendRequest("tournament", {action: 0, code: code});
-	else if (nbBot != '')
+	else
 	{
+		nbBot = nbBot == '' ? 0 : nbBot;
 		if (parseInt(nbBot) >= 0 && parseInt(nbBot) <= 7)
 			sendRequest("tournament", {action: 0, code: '', nbBot: parseInt(nbBot)});
 		else
@@ -435,4 +440,4 @@ function changeDisplayedLayout(isUS)
 	}
 }
 
-export { LobbyPage, layoutSelected };
+export { LobbyPage, layoutSelected, withBot };

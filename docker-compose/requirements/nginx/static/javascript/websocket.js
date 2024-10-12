@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/09 11:03:11 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/12 16:30:37 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ function launchSocket()
 		{
 			setTimeout(() => {
 				launchSocket();
-			}, 500);
+			}, 5000);
 		}
 	};
 }
