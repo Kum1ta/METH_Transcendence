@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 14:31:30 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/06 16:28:47 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/12 02:43:29 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -137,9 +137,9 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 		uid = await self.session_get("id", 0)
 		if(uid in self.onlinePlayers):
 			del self.onlinePlayers[uid]
-		if(self.game !=None):
+		if(self.game != None):
 			self.game.leave(self)
-		if(self.tournament !=None):
+		if(self.tournament != None):
 			self.tournament.leave(self)
 	
 	async def receive(self, text_data):
@@ -148,7 +148,8 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 		except json.JSONDecodeError:
 			self.sendError("Invalid JSON", 9002)
 			return
-		try:
+		#try:
+		if(1):
 			self.printDebug(jsonRequest, 0)
 			if (jsonRequest["type"] in typeRequest):
 				if (jsonRequest["type"] == "login" or jsonRequest["type"] == "create_account"):
@@ -159,8 +160,8 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 					await functionRequest[typeRequest.index(jsonRequest["type"])](self, jsonRequest["content"])
 			else:
 				self.sendError("Invalid type", 9004)
-		except Exception as e:
-			self.sendError("Invalid request", 9005, e)
+#		except Exception as e:
+#			self.sendError("Invalid request", 9005, e)
 
 	@multimethod
 	def sync_send(self, reqType : str, content:dict):

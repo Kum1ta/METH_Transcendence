@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:16:02 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/05 02:28:50 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/11 21:14:54 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,4 +19,8 @@ async def tournamentStart(socket, content):
 		else:
 			socket.sync_send("tournament",{"action":0, "exist":False})
 	else:
-		Tournament(socket)
+		nbBot = content.get("nbBot", 0)
+		if(nbBot < 0 or nbBot > 7):
+			socket.sendError("invalid number of bots", 9040)
+			return;
+		Tournament(socket, nbBot)

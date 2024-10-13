@@ -6,28 +6,29 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/10 06:12:28 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/13 21:11:56 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import string
 import asyncio
+from .Bot import Bot
+from .Player import Player
 from .utils import genString
+from .TournamentGame import TournamentGame
 
 class Tournament:
-	currentTournamentsLock = False
 	currentTournaments = {}
 
 	playerLimit = 8
-	def __init__(self, socket):
+	levels = 3 
+	def __init__(self, socket, nbBot):
 		self.messages = []
 		self.players = []
-		while(Tournament.currentTournamentsLock):
-			continue;
-		Tournament.currentTournamentsLock = True
+		self.nbBot = nbBot
+		self.end = False
 		self.genCode()
 		Tournament.currentTournaments[self.code] = self
-		Tournament.currentTournamentsLock = False
 		self.join(socket)
 
 	def genCode(self):
@@ -43,12 +44,12 @@ class Tournament:
 
 	def broadcast(self, content):
 		for x in self.players:
-			x.sync_send("tournament",content)
+			x.socket.sync_send("tournament",content)
 	
 	def sendAllInfo(self, socket):
 		players = []
 		for x in self.players:
-			players.append({"id":x.id,"username":x.username, "pfp":x.pfp})
+			players.append({"id":x.socket.id,"username":x.socket.username, "pfp":x.socket.pfp})
 		socket.sync_send("tournament",{"action":5, "players":players, "messages" : self.messages})
 		
 	def sendMessage(self, socket, message):
@@ -57,22 +58,56 @@ class Tournament:
 			self.messages.pop(0)
 		self.broadcast({"action":3, "username":socket.username, "message":message})
 
+	def playerFromSocket(self, socket):
+		for x in range(len(self.players)):
+			if(self.players[x].socket == socket):
+				return(x)
+		return(-1)
+
 	def leave(self, socket):
-		if(socket not in self.players):
+		index = self.playerFromSocket(socket)
+		if(index == -1):
 			return;
-		index = self.players.index(socket)
 		self.players.pop(index)
 		socket.tournament = None
 		self.broadcast({"action":2,"id":socket.id})
 
-	def join(self, socket):
-		if(socket.tournament != None):
+	def join(self, socket, isBot=False):
+		if(not isBot and socket.tournament != None):
 			socket.sendError("already in a tournament", 9036)
 			return
-		if(len(self.players) == Tournament.playerLimit):
+		if(not isBot and len(self.players) == Tournament.playerLimit):
 			socket.sync_send("tournament",{"action":0, "isFull":True})
 			return
+		if(isBot):
+			player = Bot(None, self)
+			socket = player.socket
+		else:
+			player = Player(socket)
 		socket.tournament = self 
-		self.players.append(socket)
-		socket.sync_send("tournament",{"action":0,"isFull":False, "isStarted":False,"exist":True, "code":self.code})
+		self.players.append(player)
+		socket.sync_send("tournament",{"action":0, "code":self.code})
 		self.broadcast({"action":1, "id":socket.id, "username": socket.username,"pfp":socket.pfp})
+		if(len(self.players) == Tournament.playerLimit):
+			self.start()
+		if(len(self.players) == Tournament.playerLimit - self.nbBot):
+			for x in range(self.nbBot):
+				self.join(None, True)
+
+	def createGames(self, players, level=1):
+		left = None
+		right = None
+		if(level == Tournament.levels):
+			try:
+				right = players.pop(0)
+				left = players.pop(0)
+			except IndexError:
+				pass
+		else:
+			right = self.createGames(players, level + 1)
+			left = self.createGames(players, level + 1)
+		return(TournamentGame(left, right))
+
+	def start(self):
+		self.started = True
+		self.createGames(self.players.copy())

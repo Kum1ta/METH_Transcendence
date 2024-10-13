@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/05 03:54:20 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/10 19:25:56 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/13 21:24:19 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,10 @@ import asyncio
 import time
 
 class Bot(Player):
-	def __init__(self, game):
+	def __init__(self, game=None, tournament=None):
 		self.socket = DummySocket(game)
 		self.game = game
+		self.tournament = tournament
 		self.ready = True
 		self.pos = {"pos":0, "up": False}
 		self.lastCalculated = {"pos":0, "up":False}
@@ -46,7 +47,7 @@ class Bot(Player):
 			return(self.objective)
 		self.lastCalculated = {"pos":pos, "up" : up}
 		if(not center):
-			offset = random.randint(-100, 100) / 100
+			offset = random.randint(-99, 99) / 100
 			if(offset == 0):
 				offset = 0.1
 			pos += offset * (GameSettings.playerLength / 2)
@@ -65,24 +66,37 @@ class Bot(Player):
 				self.objective = self.genRandomBallDirection(0, 0, True) 
 				return
 		self.objective = self.genRandomBallDirection(tempBall.pos[0], tempBall.up, False)
+	
+	def isEnd(self):
+		if(self.tournament != None):
+			return(self.tournament.end)
+		else:
+			return(self.game.end)
 
 	async def updateLoop(self):
-		while not self.game.end:
-			await self.getExpectedPos()
+		while not self.isEnd():
+			if(self.game):
+				await self.getExpectedPos()
 			await asyncio.sleep(1)
 
 	async def goToObjectiveLoop(self):
 		lastUpdate = time.time()
-		while not self.game.end:
+		while not self.isEnd():
 			if(self.pos["pos"] != self.objective["pos"] or self.pos["up"] != self.objective["up"]):
 				self.pos["up"] = self.objective["up"]
 
 				maxDistance = GameSettings.maxPlayerSpeed * (time.time() - lastUpdate)
-				lastUpdate = time.time()
+				print("maxDistance :", maxDistance)
 				travel = self.objective["pos"] - self.pos["pos"]
 				if(travel >= 0):
-					travel = min(self.objective["pos"] - self.pos["pos"], GameSettings.maxPlayerSpeed)
+					travel = min(self.objective["pos"] - self.pos["pos"], maxDistance)
 				else:
-					travel = max(self.objective["pos"] - self.pos["pos"], -GameSettings.maxPlayerSpeed)
+					travel = max(self.objective["pos"] - self.pos["pos"], -maxDistance)
+				print("travel :", travel)
 				self.game.move(self.socket, self.pos["pos"] + travel, self.pos["up"])
+			lastUpdate = time.time()
 			await asyncio.sleep(1 / 20)
+
+	def setGame(self, game):
+		self.game = game
+		self.socket.game = game

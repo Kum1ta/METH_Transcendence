@@ -41,6 +41,7 @@
 - 9037 : you're not in a tournament
 - 9038 : missing message field
 - 9039 : Goal id out of range
+- 9040 : invalid number of bots
 
 - 9100 : Action out of range
 - 9101 : No game started 

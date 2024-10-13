@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/06 16:33:56 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/10 03:48:00 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/12 23:31:00 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,20 +38,11 @@ class GameSettings:
 			{ "type":1, "name":"J6", "pos":{"x": 1.5, "y": 0.2, "z": -mapLength / 4}, "isUp": False },
 			{ "type":1, "name":"J7", "pos":{"x": 1.5, "y": 3.2, "z": -mapLength / 4}, "isUp": True }
 	]
-	skins = [
-		{id: 0, 'color': 0xff53aa, 'texture': None},
-		{id: 1, 'color': 0xaa24ea, 'texture': None},
-		{id: 2, 'color': 0x2c9c49, 'texture': None},
-		{id: 3, 'color': 0x101099, 'texture': None},
-		{id: 4, 'color': None, 'texture': '/static/img/skin/1.jpg'},
-		{id: 5, 'color': None, 'texture': '/static/img/skin/2.jpg'},
-		{id: 6, 'color': None, 'texture': '/static/img/skin/3.jpg'},
-		{id: 7, 'color': None, 'texture': '/static/img/skin/4.jpg'},
-	]
+	nbSkins = 8
 	nbGoals = 4
 	wallLength = 1
 	wallWidth = 0.05
 	bounceSpeedIncrease = 0.2
 	maxScore = 5
 
-	maxPlayerSpeed = 0.4
+	maxPlayerSpeed = 6

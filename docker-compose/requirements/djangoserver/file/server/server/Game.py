@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/10 19:24:02 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/13 21:50:58 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,31 +16,36 @@ from .models import GameResults, User
 from .GameSettings import GameSettings
 from .Bot import Bot
 from .Ball import Ball
+from typing import Union
 import time
 import json
 import asyncio
 import random
 import math
+from multimethod import multimethod
 
 class Game:
 	waitingForPlayer = None
 
-	def __init__(self, socket, withBot, skinId = 0, goalId = 0, opponent = None):
-		self.p1 = None
-		self.p2 = None
-		self.started = False
-		self.end = False
-		self.left = None
-		self.winner = None
-		self.gameStart = 0
-		self.gameTime = 0
-		self.withBot = withBot
+	@multimethod
+	def __init__(self, p1 , p2 , isTournament = False):
+		self.initAttributes()
+		if(isinstance(p1, Bot) and isinstance(p2, Bot)):
+			self.winner=1
+			self.pWinner=p1
+			return
+		elif(isinstance(p2,Bot)):
+			p2,p1 = p1, p2
+		self.withBot = isinstance(p1,Bot) 
+		self.isTournament = isTournament
+		p1.setGame(self)
+		p2.setGame(self)
+		print("game created with ", p1.socket.username, "vs", p2.socket.username)
 
-		self.ball = Ball()
-		self.speed = GameSettings.startSpeed
-		self.score = [0, 0]
-		self.obstacles = []
-		self.lastWin = 2
+	@multimethod
+	def __init__(self, socket, withBot : bool, skinId = 0, goalId = 0 , opponent = None):
+		self.initAttributes()
+		self.withBot = withBot
 
 		self.opponentLock = opponent
 		if(1 or withBot):
@@ -66,6 +71,24 @@ class Game:
 
 	def __del__(self):
 		print("game destroy")
+
+	def initAttributes(self):
+		self.p1 = None
+		self.p2 = None
+		self.isTournament=False
+		self.started = False
+		self.end = False
+		self.left = None
+		self.winner = None
+		self.pWinner = None
+		self.gameStart = 0
+		self.gameTime = 0
+
+		self.ball = Ball()
+		self.speed = GameSettings.startSpeed
+		self.score = [0, 0]
+		self.obstacles = []
+		self.lastWin = 2
 
 	def obstaclesInvLength(self):
 		for x in self.obstacles:
@@ -100,7 +123,8 @@ class Game:
 		try:
 			if(self.p1 == None):
 				print("game created, set as player 1")
-				self.p1 = Player(socket, self)
+				self.p1 = Player(socket)
+				self.p1.setGame(self)
 				self.p1.skin = skin
 				self.p1.goal = goal
 			else:
@@ -108,7 +132,8 @@ class Game:
 					socket.sendError("You are not invited to this game", 9103)
 					return
 				print("joined game, set as player 2")
-				self.p2 = Player(socket, self)
+				self.p2 = Player(socket)
+				self.p2.setGame(self)
 				self.p2.skin = skin
 				self.p2.goal = goal
 			if(self.p2 != None and self.p1 != None):
@@ -138,14 +163,16 @@ class Game:
 		self.p1.socket.sync_send({"type":"game","content":{"action":10,"won":winner==1, "opponentLeft":self.left == 2}})
 		self.p2.socket.sync_send({"type":"game","content":{"action":10,"won":winner==2, "opponentLeft":self.left == 1}})
 		self.winner = winner
+		self.pWinner = self.p1 if winner == 1 else self.p2
 		self.end = True
 
 	def leave(self, socket):
-		socket.game = None
 		if (socket == self.p1.socket):
 			self.left = 1
+			self.p1.setGame(None)
 		else:
 			self.left = 2
+			self.p2.setGame(None)
 		if(Game.waitingForPlayer == self):
 			Game.waitingForPlayer = None
 		if(self.p2 != None):
@@ -238,9 +265,9 @@ class Game:
 				self.sendNewBallInfo()
 		print("game end")
 		if(self.p1.socket.game == self):
-			self.p1.socket.game = None
+			self.p1.setGame(None)
 		if(self.p2.socket.game == self):
-			self.p2.socket.game = None
+			self.p2.setGame(None)
 		if(not self.withBot):
 			await self.saveResults()
 		del self

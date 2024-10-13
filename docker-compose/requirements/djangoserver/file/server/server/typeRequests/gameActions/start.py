@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/11 17:07:08 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/10 03:52:54 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/12 23:31:22 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ async def start(socket, content):
 		socket.sendError("Your opponent isn't online",9032)
 		return;
 	skinId = content.get("skinId", 0)
-	if(skinId < 0 or skinId >= len(GameSettings.skins)):
+	if(skinId < 0 or skinId >= GameSettings.nbSkins):
 		socket.sendError("Skin id out of range", 9033)
 		return;
 	goalId = content.get("goalId",0)
