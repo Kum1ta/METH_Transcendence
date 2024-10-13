@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/12 17:15:26 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/13 13:44:43 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,12 @@ class barSelecter
 			}
 			popup.removeEventListener('click', this.hideSkinSelector);
 			popup.addEventListener('click', this.hideSkinSelector);
+		});
+		window.addEventListener('resize', () => {
+			const	pos		= div.getBoundingClientRect();
+			this.renderer.setSize(pos.width - 10, pos.height - 10);
+			this.camera.aspect = (pos.width - 10) / (pos.height - 10);
+			this.camera.updateProjectionMatrix();
 		});
 	}
 
@@ -214,7 +220,12 @@ class goalSelecter
 		this.renderer.setAnimationLoop(this.#loop.bind(this));
 		div.removeEventListener('click', this.boundshowGoals);
 		div.addEventListener('click', this.boundshowGoals);
-		console.warn("gerer le resize pour les bar et goal selector");
+		window.addEventListener('resize', () => {
+			const	pos		= div.getBoundingClientRect();
+			this.renderer.setSize(pos.width - 10, pos.height - 10);
+			this.camera.aspect = (pos.width - 10) / (pos.height - 10);
+			this.camera.updateProjectionMatrix();
+		});
 	}
 
 	showGoals()

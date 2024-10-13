@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/10 12:57:56 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/12 23:26:19 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ class TournamentPage
 		while (i < playerNb.length - 1)
 		{
 			playerList['player' + playerNb[i]] = playerList['player' + playerNb[i + 1]];
+			playerList['player' + playerNb[i]].id--;
 			document.getElementById('user-' + playerNb[i]).innerText = playerList['player' + playerNb[i]].username;
 			document.getElementById('pfp-' + playerNb[i]).style.backgroundImage = `url(${playerList['player' + playerNb[i]].pfp})`;
 			i++;
