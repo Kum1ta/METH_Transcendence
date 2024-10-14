@@ -3,14 +3,15 @@
 #                                                         :::      ::::::::    #
 #    TournamentGame.py                                  :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tomoron <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/12 22:49:00 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/14 20:29:06 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/14 21:57:14 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-import asyncio
+
 from .Game import Game
+import asyncio
 
 class TournamentGame:
 	def __init__(self, left, right):
@@ -38,7 +39,8 @@ class TournamentGame:
 			"pfp": r.socket.pfp,
 			"username":r.socket.username,
 			"skin" : r.skin,
-			"goal": r.goal
+			"goal": r.goal,
+			"selfPfp": l.socket.pfp,
 		})
 		r.socket.sync_send("tournament", {
 			"action":4,
@@ -46,7 +48,8 @@ class TournamentGame:
 			"pfp": l.socket.pfp,
 			"username": l.socket.username,
 			"skin" : l.skin,
-			"goal": l.goal
+			"goal": l.goal,
+			"selfPfp": r.socket.pfp,
 		})
 
 	async def loop(self):

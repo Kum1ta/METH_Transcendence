@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/12 16:58:41 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/14 22:08:12 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ import { scene, renderer, isInVrMode, ball } from '/static/javascript/multiOnlin
 import { lastSelectedGoal, availableGoals } from '/static/javascript/lobbyPage/3d.js';
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { layoutSelected } from '/static/javascript/lobbyPage/main.js'
+import { isMobile } from '/static/javascript/main.js'
 
 /*
 	Explication du code :
@@ -143,7 +144,8 @@ class Player
 		this.mapVar.putVideoOnCanvas(3, 'goal');
 		setTimeout(() => {
 			this.mapVar.putVideoOnCanvas(0, null);
-			this.mapVar.putVideoOnCanvas(2, 3);
+			if (!isMobile)
+				this.mapVar.putVideoOnCanvas(2, 3);
 		}, 4000);
 
 		ball.setVisibility(false);
@@ -551,6 +553,7 @@ function showGamePad()
 		goFullscreen();
 	});
 	gamePad.style.display = 'flex';
+	console.warn("change listener for touchstart and touchend because can't be removed");
 	document.addEventListener('touchstart', (event) => {
 		const	key			=	event.target.getAttribute("id");
 

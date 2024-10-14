@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 21:20:45 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/12 17:30:41 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/14 22:09:18 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,17 @@ class WaitingGamePage
 			sentence.innerText = text + points;
 		}, 500);
 		timeout = setTimeout(() => {
-			if (opponentInfo && typeof(opponentInfo) != 'boolean')
-				sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0, goalId: goalId, opponent: opponentInfo.id});
+			if (!isTournament)
+			{
+				if (opponentInfo && typeof(opponentInfo) != 'boolean')
+					sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0, goalId: goalId, opponent: opponentInfo.id});
+				else
+					sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0, goalId: goalId, isRanked: opponentInfo ? true : false, with_bot: withBot});
+			}
 			else
-				sendRequest("game", {action: 0, skinId: lastSelected ? lastSelected.id : 0, goalId: goalId, isRanked: opponentInfo ? true : false, with_bot: withBot});
+			{
+				this.showOpponent(opponentInfo);
+			}
 			timeout = null;
 		}, isTournament ? 1500 : 500);
 		if (!opponentInfo || !isTournament)
@@ -91,10 +98,14 @@ class WaitingGamePage
 			timeout = setTimeout(() => {
 				document.body.style.animation = 'anim3 0.5s';
 				document.body.style.opacity = 0;
-				pageRenderer.changePage("multiOnlineGamePage", false, {player: lastSelected ? lastSelected.id : 0, opponent: content.skin, opponentGoaldId: content.goal, pfp: content.pfpSelf, pfpOpponent: content.pfpOpponent});
+				if (content.isTournament)
+					pageRenderer.changePage("multiOnlineGamePage", false, {player: lastSelected ? lastSelected.id : 0, opponent: content.id, opponentGoaldId: content.content.goal, pfp: content.content.selfPfp, pfpOpponent: content.content.pfp});
+				else
+					pageRenderer.changePage("multiOnlineGamePage", false, {player: lastSelected ? lastSelected.id : 0, opponent: content.skin, opponentGoaldId: content.goal, pfp: content.pfpSelf, pfpOpponent: content.pfpOpponent});
 			}, 1000);
 		}, 500);
-		document.body.removeChild(returnButton);
+		if (returnButton)
+			document.body.removeChild(returnButton);
 	}
 
 	static opponentHasQuit(opponentId)

@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 13:16:39 by edbernar          #+#    #+#              #
-#    Updated: 2024/10/14 19:57:12 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/14 21:41:33 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,8 @@ from .tournamentActions.fetchAllData import fetchAllData
 #	0 : start : start a tournament. if code == "", create a new tournament, else join the tournament with the code
 #		- code : code of the tournament
 #		- nbBot : number of bot in the tournament
+#		- skin : skin id of the player
+#		- goal : goal id of the player
 #
 #	1 : leave : leave the tournament
 #

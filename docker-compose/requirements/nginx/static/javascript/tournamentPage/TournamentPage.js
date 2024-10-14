@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/12 23:26:19 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/14 21:49:04 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,11 @@ class TournamentPage
 			console.warn("Tournament is full.");
 			return ;
 		}
-		if (alreadyConnected)
-		{
-			console.warn("Player is already in game.");
-			return ;
-		}
+		// if (alreadyConnected)
+		// {
+		// 	console.warn("Player is already in game.");
+		// 	return ;
+		// }
 		newInfo(`${content.username} joined the tournament.`);
 		document.getElementById('user-' + playerNb[i]).innerText = content.username;
 		document.getElementById('pfp-' + playerNb[i]).style.backgroundImage = `url(${content.pfp})`;
@@ -151,7 +151,9 @@ class TournamentPage
 
 	static startGame(content)
 	{
-		pageRenderer.changePage("waitingGamePage", false, {username: content.username, id: content.id, isTournament: true})
+		console.log("Game is starting...");
+		console.log(content);
+		pageRenderer.changePage("waitingGamePage", false, {username: content.username, id: content.id, isTournament: true, content: content});
 	}
 }
 

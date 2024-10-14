@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/13 13:44:43 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/13 23:25:15 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,15 @@ const	availableGoals	=	[
 
 class barSelecter
 {
-	scene			= null;
-	renderer		= null;
-	camera			= null;
-	spotLight		= new THREE.SpotLight(0xffffff, 5);
-	selected		= lastSelected ? lastSelected : availableSkins[0];
-	bar				= this.createBarPlayer(this.selected);
-	boundChangeSkin = this.changeSkin.bind(this);
+	scene					= null;
+	renderer				= null;
+	camera					= null;
+	spotLight				= new THREE.SpotLight(0xffffff, 5);
+	selected				= lastSelected ? lastSelected : availableSkins[0];
+	bar						= this.createBarPlayer(this.selected);
+	boundChangeSkin			= this.changeSkin.bind(this);
+	boundSkinSelector		= this.resizeSelector.bind(this);
+	div						= null;
 
 
 	constructor(div)
@@ -54,6 +56,7 @@ class barSelecter
 		this.renderer	= new THREE.WebGLRenderer({antialias: true});
 		this.camera		= new THREE.PerspectiveCamera(60, (pos.width - 10) / (pos.height - 10));
 	
+		this.div = div;
 		if (!lastSelected)
 			lastSelected = availableSkins[0];
 		this.scene.background = new THREE.Color(0x020202);
@@ -90,12 +93,15 @@ class barSelecter
 			popup.removeEventListener('click', this.hideSkinSelector);
 			popup.addEventListener('click', this.hideSkinSelector);
 		});
-		window.addEventListener('resize', () => {
-			const	pos		= div.getBoundingClientRect();
-			this.renderer.setSize(pos.width - 10, pos.height - 10);
-			this.camera.aspect = (pos.width - 10) / (pos.height - 10);
-			this.camera.updateProjectionMatrix();
-		});
+		window.addEventListener('resize', this.boundSkinSelector);
+	}
+
+	resizeSelector()
+	{
+		const	pos		= this.div.getBoundingClientRect();
+		this.renderer.setSize(pos.width - 10, pos.height - 10);
+		this.camera.aspect = (pos.width - 10) / (pos.height - 10);
+		this.camera.updateProjectionMatrix();
 	}
 
 	hideSkinSelector(event)
@@ -181,6 +187,7 @@ class barSelecter
 		}
 		this.scene = null;
 		actualBarSelecor = null;
+		window.removeEventListener('resize', this.boundSkinSelector);
 	}
 }
 
@@ -199,6 +206,7 @@ class goalSelecter
 	boundChangeGoal			= this.changeGoal.bind(this);
 	boundhideGoalSelector	= this.hideGoalSelector.bind(this);
 	boundshowGoals			= this.showGoals.bind(this);
+	boundresizeSelector		= this.resizeSelector.bind(this);
 
 	constructor(div)
 	{
@@ -220,12 +228,15 @@ class goalSelecter
 		this.renderer.setAnimationLoop(this.#loop.bind(this));
 		div.removeEventListener('click', this.boundshowGoals);
 		div.addEventListener('click', this.boundshowGoals);
-		window.addEventListener('resize', () => {
-			const	pos		= div.getBoundingClientRect();
-			this.renderer.setSize(pos.width - 10, pos.height - 10);
-			this.camera.aspect = (pos.width - 10) / (pos.height - 10);
-			this.camera.updateProjectionMatrix();
-		});
+		window.addEventListener('resize', this.boundresizeSelector);
+	}
+
+	resizeSelector()
+	{
+		const	pos		= this.div.getBoundingClientRect();
+		this.renderer.setSize(pos.width - 10, pos.height - 10);
+		this.camera.aspect = (pos.width - 10) / (pos.height - 10);
+		this.camera.updateProjectionMatrix();
 	}
 
 	showGoals()
@@ -379,6 +390,7 @@ class goalSelecter
 		this.scene = null;
 		actualGoalSelecter = null;
 		this.div.removeEventListener('click', this.boundshowGoals);
+		window.removeEventListener('resize', this.boundresizeSelector);
 	}
 }
 

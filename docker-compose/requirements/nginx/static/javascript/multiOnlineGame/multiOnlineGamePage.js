@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/11 10:56:51 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/14 22:08:37 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ import { Ball } from '/static/javascript/multiOnlineGame/Ball.js'
 import { Map } from '/static/javascript/multiOnlineGame/Map.js'
 import { sendRequest } from "/static/javascript/websocket.js";
 import { files } from '/static/javascript/filesLoader.js';
+
 /*
 Controls :
 	- w : monter
@@ -154,7 +155,8 @@ class MultiOnlineGamePage
 
 		renderer.setAnimationLoop(loop)
 		sendRequest('game', {action: 1});
-		map.putVideoOnCanvas(2, 3);
+		if (!isMobile)
+			map.putVideoOnCanvas(2, 3);
 		let lastPosition = player.object.position.x;
 		let lastUp = player.isUp;
 		interval = setInterval(() => {

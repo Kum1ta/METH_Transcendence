@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/10/12 17:08:11 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/14 21:45:07 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ import { LiveChat } from "/static/javascript/liveChat/main.js";
 import { sendRequest } from "/static/javascript/websocket.js";
 import { pageRenderer } from '/static/javascript/main.js'
 import { isMobile } from '/static/javascript/main.js';
+import { lastSelected } from '/static/javascript/lobbyPage/3d.js';
 
 /* 
 	Information :
@@ -195,12 +196,12 @@ function startTournmament()
 	let		nbBot	=	document.getElementById('nbBot').value;
 
 	if (code != '')
-		sendRequest("tournament", {action: 0, code: code});
+		sendRequest("tournament", {action: 0, code: code, skin: lastSelected ? lastSelected.id : 0, goal: goalSelector ? goalSelector.selected : 0});
 	else
 	{
 		nbBot = nbBot == '' ? 0 : nbBot;
 		if (parseInt(nbBot) >= 0 && parseInt(nbBot) <= 7)
-			sendRequest("tournament", {action: 0, code: '', nbBot: parseInt(nbBot)});
+			sendRequest("tournament", {action: 0, code: '', nbBot: parseInt(nbBot), skin: lastSelected ? lastSelected.id : 0, goal: goalSelector ? goalSelector.selected : 0});
 		else
 			CN.new("Error", "You must enter a valid number of bot");
 	}
