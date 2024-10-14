@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/14 19:54:30 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/14 20:23:18 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,7 @@ class Tournament:
 		socket.tournament = None
 		self.broadcast({"action":2,"id":socket.id})
 
-	def join(self, socket, goal=0, skin=0, isBot=False):
+	def join(self, socket, skin=0, goal=0, isBot=False):
 		if(not isBot and socket.tournament != None):
 			socket.sendError("already in a tournament", 9036)
 			return

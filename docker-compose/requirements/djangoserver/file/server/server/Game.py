@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/14 20:06:12 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/14 20:32:47 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -160,19 +160,21 @@ class Game:
 	def endGame(self, winner):
 		if(self.end):
 			return
-		self.p1.socket.sync_send({"type":"game","content":{"action":10,"won":winner==1, "opponentLeft":self.left == 2}})
+		if(self.p1 != None):
+			self.p1.socket.sync_send({"type":"game","content":{"action":10,"won":winner==1, "opponentLeft":self.left == 2}})
 		self.p2.socket.sync_send({"type":"game","content":{"action":10,"won":winner==2, "opponentLeft":self.left == 1}})
 		self.winner = winner
 		self.pWinner = self.p1 if winner == 1 else self.p2
 		self.end = True
 
 	def leave(self, socket):
-		if (socket == self.p1.socket):
+		if (self.p1 != None and socket == self.p1.socket):
 			self.left = 1
 			self.p1.setGame(None)
 		else:
 			self.left = 2
-			self.p2.setGame(None)
+			if(self.p2 != None):
+				self.p2.setGame(None)
 		if(Game.waitingForPlayer == self):
 			Game.waitingForPlayer = None
 		if(self.p2 != None):

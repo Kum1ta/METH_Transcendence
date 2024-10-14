@@ -6,7 +6,7 @@
 #    By: tomoron <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/12 22:49:00 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/14 20:10:13 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/14 20:29:06 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 import asyncio
@@ -23,29 +23,30 @@ class TournamentGame:
 	def startGame(self):
 		l = None
 		r = None
+		print("start new game")
 		if(isinstance(self.left,TournamentGame)):
 			self.game = Game(self.left.winner, self.right.winner, True)
-			l = self.left.winner.socket
-			r = self.right.winner.socket
+			l = self.left.winner
+			r = self.right.winner
 		else:
 			self.game = Game(self.left, self.right, True)
-			l = self.left.socket
-			r = self.right.socket
-		l.sync_send("tournament", {
+			l = self.left
+			r = self.right
+		l.socket.sync_send("tournament", {
 			"action":4,
-			"id": r.id,
-			"username":r.username,
+			"id": r.socket.id,
+			"pfp": r.socket.pfp,
+			"username":r.socket.username,
 			"skin" : r.skin,
-			"goal": r.goal,
-			"pfp": r.pfp
+			"goal": r.goal
 		})
-		r.sync_send("tournament", {
+		r.socket.sync_send("tournament", {
 			"action":4,
-			"id": l.id,
-			"username": l.username,
+			"id": l.socket.id,
+			"pfp": l.socket.pfp,
+			"username": l.socket.username,
 			"skin" : l.skin,
-			"goal": l.goal,
-			"pfp": l.pfp
+			"goal": l.goal
 		})
 
 	async def loop(self):
@@ -60,5 +61,6 @@ class TournamentGame:
 					self.startGame()
 			else:
 				if(self.game.winner != None):
+					print("game ended, winner is", self.game.pWinner.socket.username)
 					self.winner = self.game.pWinner
 			await asyncio.sleep(1)

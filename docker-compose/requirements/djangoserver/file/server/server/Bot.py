@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/05 03:54:20 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/13 21:24:19 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/14 20:18:58 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,8 +70,10 @@ class Bot(Player):
 	def isEnd(self):
 		if(self.tournament != None):
 			return(self.tournament.end)
-		else:
+		elif(self.game != None):
 			return(self.game.end)
+		else:
+			return(False)
 
 	async def updateLoop(self):
 		while not self.isEnd():

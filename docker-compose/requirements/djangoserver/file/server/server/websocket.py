@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 14:31:30 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/12 02:43:29 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/14 20:33:31 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -148,8 +148,7 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 		except json.JSONDecodeError:
 			self.sendError("Invalid JSON", 9002)
 			return
-		#try:
-		if(1):
+		try:
 			self.printDebug(jsonRequest, 0)
 			if (jsonRequest["type"] in typeRequest):
 				if (jsonRequest["type"] == "login" or jsonRequest["type"] == "create_account"):
@@ -160,8 +159,8 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 					await functionRequest[typeRequest.index(jsonRequest["type"])](self, jsonRequest["content"])
 			else:
 				self.sendError("Invalid type", 9004)
-#		except Exception as e:
-#			self.sendError("Invalid request", 9005, e)
+		except Exception as e:
+			self.sendError("Invalid request", 9005, e)
 
 	@multimethod
 	def sync_send(self, reqType : str, content:dict):
