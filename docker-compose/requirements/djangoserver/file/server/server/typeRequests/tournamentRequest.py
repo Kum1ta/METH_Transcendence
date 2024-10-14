@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 13:16:39 by edbernar          #+#    #+#              #
-#    Updated: 2024/10/10 13:26:17 by edbernar         ###   ########.fr        #
+#    Updated: 2024/10/14 19:57:12 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,8 @@ from .tournamentActions.fetchAllData import fetchAllData
 #	4 : startGame : tell the client (client will launch a matchmaking like invitation)
 #		- id : id of the player
 #		- username : name of the player
+#		- skin : skin id of the player
+#		- goal : goal id of the player
 #
 #	5 : allData : gives tournament data to the client
 #		- players : [{id, username, pfp}, ...]

@@ -6,7 +6,7 @@
 #    By: tomoron <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/12 22:49:00 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/13 22:01:59 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/14 20:10:13 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 import asyncio
@@ -34,12 +34,18 @@ class TournamentGame:
 		l.sync_send("tournament", {
 			"action":4,
 			"id": r.id,
-			"username":r.username
+			"username":r.username,
+			"skin" : r.skin,
+			"goal": r.goal,
+			"pfp": r.pfp
 		})
 		r.sync_send("tournament", {
 			"action":4,
 			"id": l.id,
-			"username": l.username
+			"username": l.username,
+			"skin" : l.skin,
+			"goal": l.goal,
+			"pfp": l.pfp
 		})
 
 	async def loop(self):

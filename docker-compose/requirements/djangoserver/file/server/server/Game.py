@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/13 21:50:58 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/14 20:06:12 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ class Game:
 		self.withBot = withBot
 
 		self.opponentLock = opponent
-		if(1 or withBot):
+		if(withBot):
 			self.p1 = Bot(self)
 			self.join(socket, skinId, goalId)
 		elif(opponent != None):

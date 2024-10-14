@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/13 21:11:56 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/14 19:54:30 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,14 +22,14 @@ class Tournament:
 
 	playerLimit = 8
 	levels = 3 
-	def __init__(self, socket, nbBot):
+	def __init__(self, socket, nbBot, skin, goal):
 		self.messages = []
 		self.players = []
 		self.nbBot = nbBot
 		self.end = False
 		self.genCode()
 		Tournament.currentTournaments[self.code] = self
-		self.join(socket)
+		self.join(socket, skin, goal)
 
 	def genCode(self):
 		nbChar = 4
@@ -72,7 +72,7 @@ class Tournament:
 		socket.tournament = None
 		self.broadcast({"action":2,"id":socket.id})
 
-	def join(self, socket, isBot=False):
+	def join(self, socket, goal=0, skin=0, isBot=False):
 		if(not isBot and socket.tournament != None):
 			socket.sendError("already in a tournament", 9036)
 			return
@@ -84,6 +84,8 @@ class Tournament:
 			socket = player.socket
 		else:
 			player = Player(socket)
+		player.skin = skin
+		player.goal = goal
 		socket.tournament = self 
 		self.players.append(player)
 		socket.sync_send("tournament",{"action":0, "code":self.code})
@@ -92,7 +94,7 @@ class Tournament:
 			self.start()
 		if(len(self.players) == Tournament.playerLimit - self.nbBot):
 			for x in range(self.nbBot):
-				self.join(None, True)
+				self.join(None, 0, 0, True)
 
 	def createGames(self, players, level=1):
 		left = None
