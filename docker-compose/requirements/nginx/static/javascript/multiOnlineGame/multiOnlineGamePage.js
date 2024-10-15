@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/15 14:16:23 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/15 20:47:20 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,9 +262,9 @@ class MultiOnlineGamePage
 		endGameDiv.style.display = 'flex';
 		intervalEnd = setInterval(() => {
 			if (content.opponentLeft)
-				simpleText.innerText = `Your opponent has given up...\nYou will be redirected to the lobby in ${time} seconds`
+				simpleText.innerText = `Your opponent has given up...\nYou will be redirected to the ` + content.tournamentCode ?  "tournamenet" : "lobby" + ` in ${time} seconds`
 			else
-				simpleText.innerText = `You will be redirected to the lobby in ${time} seconds`
+				simpleText.innerText = `You will be redirected to the ` + content.tournamentCode ?  "tournamenet" : "lobby" + ` in ${time} seconds`
 			time--;
 			if (time == -1)
 			{

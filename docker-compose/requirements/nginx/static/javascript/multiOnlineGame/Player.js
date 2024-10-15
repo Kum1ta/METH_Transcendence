@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/14 22:08:12 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/15 21:12:25 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,8 @@ class Player
 		if (this.interval)
 			clearInterval(this.interval);
 		key = null;
+		document.addEventListener('touchstart', addKeyTouch);
+		document.addEventListener('touchend', removeKeyTouch);
 	}
 
 	reserCameraPlayer()
@@ -540,8 +542,6 @@ function showGamePad()
 {
 	const	gamePad		=	document.getElementsByClassName('gamePad')[0];
 	const	canvas		=	document.getElementById('canvasMultiGameOnline');
-	const	keyList		=	['padLeft', 'padRight', 'padTop', 'padBottom']
-	const	keyAction	=	[key.left, key.right, key.up, key.down];
 
 	canvas.addEventListener('touchstart', function(e) {
 		e.preventDefault();
@@ -553,25 +553,35 @@ function showGamePad()
 		goFullscreen();
 	});
 	gamePad.style.display = 'flex';
-	console.warn("change listener for touchstart and touchend because can't be removed");
-	document.addEventListener('touchstart', (event) => {
-		const	key			=	event.target.getAttribute("id");
+	document.addEventListener('touchstart', addKeyTouch);
+	document.addEventListener('touchend', removeKeyTouch);
+}
 
-		for (let i = 0; i < keyList.length; i++)
-		{
-			if (keyList[i] == key)
-				addKeyInArr({key: keyAction[i]})
-		}
-	});
-	document.addEventListener('touchend', (event) => {
-		const	key	=	event.target.getAttribute("id");
+function addKeyTouch(event)
+{
+	const	keyId		=	event.target.getAttribute("id");
+	const	keyAction	=	[key.left, key.right, key.up, key.down];
+	const	keyList		=	['padLeft', 'padRight', 'padTop', 'padBottom'];
 
-		for (let i = 0; i < keyList.length; i++)
-		{
-			if (keyList[i] == key)
-				remKeyInArr({key: keyAction[i]})
-		}
-	});
+	console.log(key);
+	for (let i = 0; i < keyList.length; i++)
+	{
+		if (keyList[i] == keyId)
+			addKeyInArr({key: keyAction[i]})
+	}
+}
+
+function removeKeyTouch(event)
+{
+	const	keyId			=	event.target.getAttribute("id");
+	const	keyAction	=	[key.left, key.right, key.up, key.down];
+	const	keyList		=	['padLeft', 'padRight', 'padTop', 'padBottom'];
+
+	for (let i = 0; i < keyList.length; i++)
+	{
+		if (keyList[i] == keyId)
+			remKeyInArr({key: keyAction[i]})
+	}
 }
 
 export { Player, playerExist, goalAnimation};
