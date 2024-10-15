@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    GameSettings.py                                    :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
+#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/06 16:33:56 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/12 23:31:00 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/16 01:24:44 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

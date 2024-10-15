@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/14 21:49:04 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/16 01:10:29 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@ import { pageRenderer } from '/static/javascript/main.js';
 
 const	playerNb	=	[1, 2, 4, 5, 13, 14, 15, 16];
 const	playerList	=	{
-	player1: {id: 0, username: null, pfp: null},
-	player2: {id: 0, username: null, pfp: null},
-	player4: {id: 0, username: null, pfp: null},
-	player5: {id: 0, username: null, pfp: null},
-	player13: {id: 0, username: null, pfp: null},
-	player14: {id: 0, username: null, pfp: null},
-	player15: {id: 0, username: null, pfp: null},
-	player16: {id: 0, username: null, pfp: null},
+	player1: {id: -1, username: null, pfp: null},
+	player2: {id: -1, username: null, pfp: null},
+	player4: {id: -1, username: null, pfp: null},
+	player5: {id: -1, username: null, pfp: null},
+	player13: {id: -1, username: null, pfp: null},
+	player14: {id: -1, username: null, pfp: null},
+	player15: {id: -1, username: null, pfp: null},
+	player16: {id: -1, username: null, pfp: null},
 };
 let		divTopInfo	= null;	
 let		divInfo		= null;
@@ -62,7 +62,7 @@ class TournamentPage
 		divInfo = null;
 		divChat = null;
 		Object.values(playerList).forEach((info) => {
-			info.id = 0;
+			info.id = -1;
 			info.username = null;
 			info.pfp = null;
 		});
@@ -75,11 +75,8 @@ class TournamentPage
 		let		i					=	0;
 	
 		Object.values(playerList).forEach((info) => {
-			if (!found && info.id == 0 || info.id == content.id)
-			{
+			if (!found && info.id == -1 || (info.id == content.id && info.id != 0))
 				found = true;
-				alreadyConnected = info.id == content.id;
-			}
 			if (!found)
 				i++;				
 		});
@@ -88,11 +85,6 @@ class TournamentPage
 			console.warn("Tournament is full.");
 			return ;
 		}
-		// if (alreadyConnected)
-		// {
-		// 	console.warn("Player is already in game.");
-		// 	return ;
-		// }
 		newInfo(`${content.username} joined the tournament.`);
 		document.getElementById('user-' + playerNb[i]).innerText = content.username;
 		document.getElementById('pfp-' + playerNb[i]).style.backgroundImage = `url(${content.pfp})`;
