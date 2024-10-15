@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/14 20:23:18 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/15 13:37:13 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -108,7 +108,7 @@ class Tournament:
 		else:
 			right = self.createGames(players, level + 1)
 			left = self.createGames(players, level + 1)
-		return(TournamentGame(left, right))
+		return(TournamentGame(left, right, self.code))
 
 	def start(self):
 		self.started = True

@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 16:10:26 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/09 00:53:25 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/15 13:43:13 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,7 @@ from .gameActions.ping import ping
 #	10: game end
 #		- won : true/false
 #		- opponentLeft : true/false
+#		- tournamentCode : null if not in a tournament
 
 #client actions (actions sent by the client) :
 #	0 : start : starts a game

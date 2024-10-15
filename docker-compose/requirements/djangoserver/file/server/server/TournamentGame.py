@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/12 22:49:00 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/14 21:57:14 by edbernar         ###   ########.fr        #
+#    Updated: 2024/10/15 13:36:34 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,10 @@ from .Game import Game
 import asyncio
 
 class TournamentGame:
-	def __init__(self, left, right):
+	def __init__(self, left, right, code):
 		self.game = None
 		self.winner = None
+		self.code = code
 		self.right = right
 		self.left = left
 		asyncio.create_task(self.loop())
@@ -26,11 +27,11 @@ class TournamentGame:
 		r = None
 		print("start new game")
 		if(isinstance(self.left,TournamentGame)):
-			self.game = Game(self.left.winner, self.right.winner, True)
+			self.game = Game(self.left.winner, self.right.winner, self.code)
 			l = self.left.winner
 			r = self.right.winner
 		else:
-			self.game = Game(self.left, self.right, True)
+			self.game = Game(self.left, self.right, self.code)
 			l = self.left
 			r = self.right
 		l.socket.sync_send("tournament", {
