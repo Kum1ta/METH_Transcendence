@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/14 22:08:37 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/15 14:16:23 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,7 +269,10 @@ class MultiOnlineGamePage
 			if (time == -1)
 			{
 				clearInterval(intervalEnd);
-				setTimeout(() => pageRenderer.changePage('lobbyPage'), 500);
+				if (content.tournamentCode)
+					setTimeout(() => pageRenderer.changePage('tournamentPage', false, content.tournamentCode), 500);
+				else
+					setTimeout(() => pageRenderer.changePage('lobbyPage'), 500);
 			}
 		}, 1000);
 	}
