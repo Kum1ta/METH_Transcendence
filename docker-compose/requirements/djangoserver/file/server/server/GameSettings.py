@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/06 16:33:56 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/16 01:24:44 by edbernar         ###   ########.fr        #
+#    Updated: 2024/10/16 14:12:50 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ class GameSettings:
 	wallLength = 1
 	wallWidth = 0.05
 	bounceSpeedIncrease = 0.2
-	maxScore = 5
+	maxScore = 2
 
 	maxPlayerSpeed = 6
+	noBotMovement = False

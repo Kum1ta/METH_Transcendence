@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/15 13:37:13 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/15 19:01:39 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,12 +48,12 @@ class Tournament:
 	
 	def sendAllInfo(self, socket):
 		players = []
-		for x in self.players:
-			players.append({"id":x.socket.id,"username":x.socket.username, "pfp":x.socket.pfp})
+		for x in range(len(self.players)):
+			players.append({"id":x,"username":self.players[x].socket.username, "pfp":self.players[x].socket.pfp})
 		socket.sync_send("tournament",{"action":5, "players":players, "messages" : self.messages})
 		
 	def sendMessage(self, socket, message):
-		self.messages.append({"username":socket.username, "message":message})		
+		self.messages.append({"username":socket.username, "message":message})
 		if(len(self.messages) > 20):
 			self.messages.pop(0)
 		self.broadcast({"action":3, "username":socket.username, "message":message})
@@ -70,7 +70,7 @@ class Tournament:
 			return;
 		self.players.pop(index)
 		socket.tournament = None
-		self.broadcast({"action":2,"id":socket.id})
+		self.broadcast({"action":2,"id":index})
 
 	def join(self, socket, skin=0, goal=0, isBot=False):
 		if(not isBot and socket.tournament != None):
@@ -89,7 +89,7 @@ class Tournament:
 		socket.tournament = self 
 		self.players.append(player)
 		socket.sync_send("tournament",{"action":0, "code":self.code})
-		self.broadcast({"action":1, "id":socket.id, "username": socket.username,"pfp":socket.pfp})
+		self.broadcast({"action":1, "id":len(self.players) - 1, "username": socket.username,"pfp":socket.pfp})
 		if(len(self.players) == Tournament.playerLimit):
 			self.start()
 		if(len(self.players) == Tournament.playerLimit - self.nbBot):
@@ -112,4 +112,13 @@ class Tournament:
 
 	def start(self):
 		self.started = True
-		self.createGames(self.players.copy())
+		self.finalGame = self.createGames(self.players.copy())
+		asyncio.create_task(self.tournamentLoop())
+
+	async def tournamentLoop(self):
+		while self.finalGame.winner == None:
+			await asyncio.sleep(1)
+		print("tournament done, winner is ", self.finalGame.winner.socket.username)
+		
+
+
