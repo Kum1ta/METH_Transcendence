@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Bot.py                                             :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
+#    By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/10/05 03:54:20 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/16 14:10:20 by tomoron          ###   ########.fr        #
+#    Created: 2024/10/19 18:29:36 by tomoron           #+#    #+#              #
+#    Updated: 2024/10/19 22:41:25 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ class Bot(Player):
 		self.objective = {"pos":0, "up": False}
 		self.skin = 0
 		self.goal = 0
-		if(gameSettings.noBotMovement):
+		if(GameSettings.BotMovement):
 			asyncio.create_task(self.updateLoop())
 			asyncio.create_task(self.goToObjectiveLoop())
 		print("I am a bot, boop boop beep boop")

@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/15 13:38:03 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/19 22:27:23 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,16 +30,16 @@ class Game:
 	@multimethod
 	def __init__(self, p1 , p2 , tournamentCode):
 		self.initAttributes()
+		self.p1 = p1
+		self.p2 = p2
 		if(isinstance(p1, Bot) and isinstance(p2, Bot)):
 			self.winner=1
 			self.pWinner=p1
 			return
 		elif(isinstance(p2,Bot)):
-			p2,p1 = p1, p2
-		self.withBot = isinstance(p1,Bot) 
+			self.p2,self.p1 = self.p1, self.p2
+		self.withBot = isinstance(self.p1,Bot) 
 		self.tournamentCode = tournamentCode
-		self.p1 = p1
-		self.p2 = p2
 		p1.setGame(self)
 		p2.setGame(self)
 		print("game created with ", p1.socket.username, "vs", p2.socket.username)

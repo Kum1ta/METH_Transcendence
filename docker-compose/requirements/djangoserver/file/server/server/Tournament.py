@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/15 19:01:39 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/19 21:53:02 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ class Tournament:
 	def __init__(self, socket, nbBot, skin, goal):
 		self.messages = []
 		self.players = []
+		self.history = []
 		self.nbBot = nbBot
 		self.end = False
 		self.genCode()
@@ -50,7 +51,7 @@ class Tournament:
 		players = []
 		for x in range(len(self.players)):
 			players.append({"id":x,"username":self.players[x].socket.username, "pfp":self.players[x].socket.pfp})
-		socket.sync_send("tournament",{"action":5, "players":players, "messages" : self.messages})
+		socket.sync_send("tournament",{"action":5, "players":players, "messages" : self.messages, "history": self.history})
 		
 	def sendMessage(self, socket, message):
 		self.messages.append({"username":socket.username, "message":message})
@@ -108,17 +109,18 @@ class Tournament:
 		else:
 			right = self.createGames(players, level + 1)
 			left = self.createGames(players, level + 1)
-		return(TournamentGame(left, right, self.code))
+		return(TournamentGame(left, right, self))
 
 	def start(self):
 		self.started = True
 		self.finalGame = self.createGames(self.players.copy())
 		asyncio.create_task(self.tournamentLoop())
 
+	def addHistory(self, p1, p2, p1Win):
+		self.broadcast({"action":6, "p1" : p1, "p2" : p2, "p1Win": p1Win})
+		self.history.append({"p1": p1, "p2" : p2, "p1Win":p1Win})
+
 	async def tournamentLoop(self):
 		while self.finalGame.winner == None:
 			await asyncio.sleep(1)
 		print("tournament done, winner is ", self.finalGame.winner.socket.username)
-		
-
-

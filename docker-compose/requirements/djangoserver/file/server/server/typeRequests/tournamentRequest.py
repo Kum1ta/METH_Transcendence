@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 13:16:39 by edbernar          #+#    #+#              #
-#    Updated: 2024/10/14 21:41:33 by edbernar         ###   ########.fr        #
+#    Updated: 2024/10/19 22:54:14 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,12 @@ from .tournamentActions.fetchAllData import fetchAllData
 #	5 : allData : gives tournament data to the client
 #		- players : [{id, username, pfp}, ...]
 #		- messages : [{username, message}]
+#		- history : [{p1, p2, p1Win})]
+#
+#	6 : gameUpdate : when a tournament match ends
+#		- p1 : id of the player 1
+#		- p2 : id of the player 2
+#		- p1Win : true/false
 
 
 #client actions (actions sent by the client) :

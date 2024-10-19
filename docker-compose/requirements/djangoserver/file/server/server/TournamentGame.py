@@ -3,8 +3,7 @@
 #                                                         :::      ::::::::    #
 #    TournamentGame.py                                  :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
+#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         # +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/12 22:49:00 by tomoron           #+#    #+#              #
 #    Updated: 2024/10/15 13:36:34 by tomoron          ###   ########.fr        #
 #                                                                              #
@@ -14,10 +13,10 @@ from .Game import Game
 import asyncio
 
 class TournamentGame:
-	def __init__(self, left, right, code):
+	def __init__(self, left, right, tournament):
 		self.game = None
 		self.winner = None
-		self.code = code
+		self.tournament = tournament 
 		self.right = right
 		self.left = left
 		asyncio.create_task(self.loop())
@@ -27,11 +26,11 @@ class TournamentGame:
 		r = None
 		print("start new game")
 		if(isinstance(self.left,TournamentGame)):
-			self.game = Game(self.left.winner, self.right.winner, self.code)
+			self.game = Game(self.left.winner, self.right.winner, self.tournament.code)
 			l = self.left.winner
 			r = self.right.winner
 		else:
-			self.game = Game(self.left, self.right, self.code)
+			self.game = Game(self.left, self.right, self.tournament.code)
 			l = self.left
 			r = self.right
 		l.socket.sync_send("tournament", {
@@ -66,5 +65,8 @@ class TournamentGame:
 			else:
 				if(self.game.winner != None):
 					print("game ended, winner is", self.game.pWinner.socket.username)
+					p1Id = self.tournament.playerFromSocket(self.game.p1.socket)
+					p2Id = self.tournament.playerFromSocket(self.game.p2.socket)
+					self.tournament.addHistory(p1Id, p2Id, self.game.winner == 1)
 					self.winner = self.game.pWinner
 			await asyncio.sleep(1)
