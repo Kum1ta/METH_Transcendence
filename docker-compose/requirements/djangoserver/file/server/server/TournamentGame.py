@@ -21,18 +21,21 @@ class TournamentGame:
 		self.left = left
 		asyncio.create_task(self.loop())
 
-	def startGame(self):
+	async def startGame(self):
 		l = None
 		r = None
 		print("start new game")
 		if(isinstance(self.left,TournamentGame)):
-			self.game = Game(self.left.winner, self.right.winner, self.tournament.code)
 			l = self.left.winner
 			r = self.right.winner
 		else:
-			self.game = Game(self.left, self.right, self.tournament.code)
 			l = self.left
 			r = self.right
+		while (not l.isTournamentReady() or not r.isTournamentReady()):
+			print("waiting for player")
+			await asyncio.sleep(0.1)
+		await asyncio.sleep(3)
+		self.game = Game(l, r, self.tournament.code)
 		l.socket.sync_send("tournament", {
 			"action":4,
 			"id": r.socket.id,
@@ -57,11 +60,9 @@ class TournamentGame:
 			if(self.game == None):
 				if(isinstance(self.left, TournamentGame)):
 					if(self.left.winner != None and self.right.winner != None):
-						await asyncio.sleep(3)
-						self.startGame()	
+						await self.startGame()	
 				else:
-					await asyncio.sleep(3)
-					self.startGame()
+					await self.startGame()
 			else:
 				if(self.game.winner != None):
 					print("game ended, winner is", self.game.pWinner.socket.username)

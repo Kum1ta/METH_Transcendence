@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/19 18:29:36 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/19 22:41:25 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/20 15:36:33 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,9 @@ class Bot(Player):
 			asyncio.create_task(self.updateLoop())
 			asyncio.create_task(self.goToObjectiveLoop())
 		print("I am a bot, boop boop beep boop")
+
+	def isTournamentReady(self):
+		return(True);
 
 	def createTempBall(self):
 		res = Ball()

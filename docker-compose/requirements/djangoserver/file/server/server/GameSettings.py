@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/06 16:33:56 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/19 22:41:38 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/20 15:42:21 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,4 +46,4 @@ class GameSettings:
 	maxScore = 2
 
 	maxPlayerSpeed = 6
-	BotMovement = True 
+	BotMovement = False 

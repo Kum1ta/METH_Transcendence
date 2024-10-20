@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/19 21:53:02 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/20 15:30:13 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ class Tournament:
 	
 	def sendAllInfo(self, socket):
 		players = []
+		self.players[self.playerFromSocket(socket)].tournamentReady = True
 		for x in range(len(self.players)):
 			players.append({"id":x,"username":self.players[x].socket.username, "pfp":self.players[x].socket.pfp})
 		socket.sync_send("tournament",{"action":5, "players":players, "messages" : self.messages, "history": self.history})
