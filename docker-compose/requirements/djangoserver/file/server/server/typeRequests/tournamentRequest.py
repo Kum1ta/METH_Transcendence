@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 13:16:39 by edbernar          #+#    #+#              #
-#    Updated: 2024/10/19 22:54:14 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/20 15:02:51 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,7 +65,7 @@ from .tournamentActions.fetchAllData import fetchAllData
 #   2 : message tournament : send a message to the tournament chat
 #       - message : message to send
 #
-#	3 : fetchAllData : fetch all data of the tournament
+#	3 : fetchAllData and ready : fetch all data of the tournament
 #		--> server will send all the data of the tournament (players, messages, etc...) with his actions
 
 actionList = [tournamentStart, tournamentLeave, sendMessage, fetchAllData]

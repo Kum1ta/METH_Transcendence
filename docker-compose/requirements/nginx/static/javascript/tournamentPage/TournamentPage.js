@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/16 01:10:29 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/20 17:58:40 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,8 @@ class TournamentPage
 			this.newMessage(content.messages[i]);
 		for (let i = 0; i < content.players.length; i++)
 			this.newOpponent(content.players[i]);
+		for (let i = 0; i < content.history.length; i++)
+			this.newEndGame(content.history[i]);
 	}
 
 	static startGame(content)
@@ -146,6 +148,35 @@ class TournamentPage
 		console.log("Game is starting...");
 		console.log(content);
 		pageRenderer.changePage("waitingGamePage", false, {username: content.username, id: content.id, isTournament: true, content: content});
+	}
+
+	static newEndGame(content)
+	{
+		const	player1Nb	=	playerNb[content.p1];
+		const	player2Nb	=	playerNb[content.p2];
+		const	winner		= 	content.p1Win ? playerList['player' + player1Nb].username : playerList['player' + player2Nb].username;
+		const	winnerData	=	content.p1Win ? playerList['player' + player1Nb] : playerList['player' + player2Nb];
+		let		pos			=	0;
+		let		loserPos	=	0;
+
+		newInfo(`${playerList['player' + player1Nb].username} vs ${playerList['player' + player2Nb].username} : <span style="font-weight: bold;">${winner}</span> won.`);
+		if (Math.floor(content.p1 / 2) == Math.floor(content.p2 / 2))
+		{
+			loserPos = content.p1Win ? player2Nb : player1Nb;
+			document.getElementById('pfp-' + loserPos).style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${playerList['player' + (content.p1Win ? player2Nb : player1Nb)].pfp}')`;
+			document.getElementById('pfp-' + (player1Nb + player2Nb)).style.backgroundImage = `url(${winnerData.pfp})`;
+		}
+		else
+		{
+			pos = (player1Nb + (player1Nb % 2 == 0 ? player1Nb - 1 : player1Nb)) + (player2Nb + (player2Nb % 2 == 0 ? player2Nb - 1: player2Nb));
+			if (content.p1Win)
+				loserPos = player2Nb + (player2Nb % 2 == 0 ? player2Nb - 1 : player2Nb);
+			else
+				loserPos = player1Nb + (player1Nb % 2 == 0 ? player1Nb - 1 : player1Nb);
+			document.getElementById('pfp-' + pos).style.backgroundImage = `url(${winnerData.pfp})`;
+			console.log("loserPos : ", loserPos);
+			document.getElementById('pfp-' + loserPos).style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${playerList['player' + (content.p1Win ? player2Nb : player1Nb)].pfp}')`;
+		}
 	}
 }
 
@@ -184,4 +215,4 @@ function initTournamentChat()
 	});
 }
 
-export { TournamentPage }
+export { TournamentPage };
