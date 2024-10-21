@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/20 15:30:13 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/22 01:34:49 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -121,7 +121,18 @@ class Tournament:
 		self.broadcast({"action":6, "p1" : p1, "p2" : p2, "p1Win": p1Win})
 		self.history.append({"p1": p1, "p2" : p2, "p1Win":p1Win})
 
+	def allPlayersReady(self):
+		for x in self.players:
+			if (not x.isTournamentReady()):
+				return False
+		return True
+
 	async def tournamentLoop(self):
 		while self.finalGame.winner == None:
 			await asyncio.sleep(1)
+		nbLoop = 0
+		while not self.allPlayersReady() and nbLoop < GameSettings.maxTimePlayerWait * 10:
+			nbLoop += 1
+			await asyncio.sleep(0.1)
+		self.broadcast({"action":7, "winnerId" : self.players.index(self.finalGame.winner)})
 		print("tournament done, winner is ", self.finalGame.winner.socket.username)

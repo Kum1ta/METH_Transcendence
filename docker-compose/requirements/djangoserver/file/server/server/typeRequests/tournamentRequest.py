@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 13:16:39 by edbernar          #+#    #+#              #
-#    Updated: 2024/10/20 15:02:51 by edbernar         ###   ########.fr        #
+#    Updated: 2024/10/22 01:02:00 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,9 @@ from .tournamentActions.fetchAllData import fetchAllData
 #		- p1 : id of the player 1
 #		- p2 : id of the player 2
 #		- p1Win : true/false
+#
+#	7 : tournament end : when the tournament ends
+#		- winnerId : id of the player who won the game
 
 
 #client actions (actions sent by the client) :

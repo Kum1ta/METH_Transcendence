@@ -3,13 +3,15 @@
 #                                                         :::      ::::::::    #
 #    TournamentGame.py                                  :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         # +#+#+#+#+#+   +#+            #
-#    Created: 2024/10/12 22:49:00 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/15 13:36:34 by tomoron          ###   ########.fr        #
+#    By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/10/22 01:37:00 by tomoron           #+#    #+#              #
+#    Updated: 2024/10/22 01:37:12 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from .Game import Game
+from .GameSettings import GameSettings
 import asyncio
 
 class TournamentGame:
@@ -31,9 +33,15 @@ class TournamentGame:
 		else:
 			l = self.left
 			r = self.right
-		while (not l.isTournamentReady() or not r.isTournamentReady()):
+		nbLoop = 0
+		while (not l.isTournamentReady() or not r.isTournamentReady()) and nbLoop < GameSettings.maxTimePlayerWait * 10:
 			print("waiting for player")
+			nbLoop += 1
 			await asyncio.sleep(0.1)
+		if(not l.socket.online or not r.socket.online):
+			print("player is not online, opponent is winner")
+			self.winner = l if l.socket.online else r
+			return;
 		await asyncio.sleep(3)
 		self.game = Game(l, r, self.tournament.code)
 		l.socket.sync_send("tournament", {
