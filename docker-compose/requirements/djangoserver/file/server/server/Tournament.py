@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 01:34:49 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/22 01:46:59 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ from .Bot import Bot
 from .Player import Player
 from .utils import genString
 from .TournamentGame import TournamentGame
+from .GameSettings import GameSettings
 
 class Tournament:
 	currentTournaments = {}
@@ -67,6 +68,8 @@ class Tournament:
 		return(-1)
 
 	def leave(self, socket):
+		if(self.started):
+			return;
 		index = self.playerFromSocket(socket)
 		if(index == -1):
 			return;
