@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 15:34:32 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/22 16:28:36 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,8 +45,11 @@ class Game:
 		print("game created with ", p1.socket.username, "vs", p2.socket.username)
 
 	@multimethod
-	def __init__(self, socket, withBot : bool, skinId = 0, goalId = 0 , opponent = None):
+	def __init__(self, socket, withBot : bool, skinId : int, goalId :int , ranked = False, opponent = None):
 		self.initAttributes()
+		if(ranked):
+			self.rankedInnit()
+			return;
 		self.withBot = withBot
 
 		self.opponentLock = opponent
@@ -197,7 +200,7 @@ class Game:
 		else:
 			self.p2.pos["pos"] = self.p2.checkMovement(-pos)
 			if(self.p2.pos["pos"] != -pos):
-				self.p2.socket.sync_send("game",{"action":3, "pos":self.p2.pos["pos"], "up":up, "is_opponent":False})
+				self.p2.socket.sync_send("game",{"action":3, "pos":-self.p2.pos["pos"], "up":up, "is_opponent":False})
 			self.p2.pos["up"] = up
 		if(opponent != None):
 			opponent.sync_send({"type":"game","content":{"action":3, "pos":-pos, "up":up, "is_opponent":True}})

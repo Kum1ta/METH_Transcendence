@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 01:46:59 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/22 16:32:35 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -138,4 +138,7 @@ class Tournament:
 			nbLoop += 1
 			await asyncio.sleep(0.1)
 		self.broadcast({"action":7, "winnerId" : self.players.index(self.finalGame.winner)})
+		for x in self.players:
+			x.socket.tournament = None
+		self.players = []
 		print("tournament done, winner is ", self.finalGame.winner.socket.username)

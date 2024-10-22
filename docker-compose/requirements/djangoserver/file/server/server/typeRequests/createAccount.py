@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/09 08:08:00 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/30 19:41:51 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/22 15:57:27 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ import random
 import re
 import json
 import hashlib
+from threading import Thread
 
 URLMAIL = SERVER_URL + "/verify?token="
 
@@ -47,9 +48,8 @@ def createAccount(socket, content):
 		MailVerify.objects.create(uid=new_user, token=verif_str).save()
 		print("send")
 		socket.sync_send(json.dumps({"type": "create_account", "content": "Account created"}))
-		if(not sendVerifMail(verif_str, content["mail"], content["username"])):
-			print("mail error")
-			socket.sendError("An error occured while sending the email, glhf", 9026)
+		thread = Thread(target = sendVerifMail, args = (verif_str, content["mail"], content["username"]))
+		thread.start()
 	except Exception as e:
 		print("error")
 		socket.sendError("An error occured while creating the account", 9024, e)
@@ -139,13 +139,13 @@ def sendVerifMail(verif_str, mail, username):
 	</html>
 	''', 'html'))
 	try:
-		serveur = smtplib.SMTP('smtp.mail.me.com', 587)
-		serveur.ehlo()
-		serveur.starttls()
-		serveur.ehlo()
-		serveur.login(ICLOUD_USER, ICLOUD_PASS)
-		serveur.sendmail(ICLOUD_USER, mail, msg.as_string())
-		serveur.quit()
+		server = smtplib.SMTP('smtp.mail.me.com', 587)
+		server.ehlo()
+		server.starttls()
+		server.ehlo()
+		server.login(ICLOUD_USER, ICLOUD_PASS)
+		server.sendmail(ICLOUD_USER, mail, msg.as_string())
+		server.quit()
 		print("E-mail envoyé avec succès !")
 		return(74725)
 	except Exception as e:

@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/19 18:29:36 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 14:39:52 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/22 16:35:59 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,13 @@ class Bot(Player):
 				self.objective = self.genRandomBallDirection(0, 0, True) 
 				return
 		self.objective = self.genRandomBallDirection(tempBall.pos[0], tempBall.up, False)
+		leftLimit = GameSettings.mapLimits["left"] + (GameSettings.playerLength / 2)
+		rightLimit = GameSettings.mapLimits["right"] - (GameSettings.playerLength / 2)
+		if(self.objective["pos"] < leftLimit or self.objective["pos"] > rightLimit):
+			print("objective out of bound , set objective to limit")
+			print("prev objective : ", self.objective["pos"])
+			self.objective["pos"] = leftLimit if self.objective["pos"] < 0 else rightLimit 
+			print("new objective : ", self.objective["pos"])
 	
 	def isEnd(self):
 		if(self.tournament != None):

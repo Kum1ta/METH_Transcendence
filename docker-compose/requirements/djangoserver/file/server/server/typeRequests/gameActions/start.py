@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/11 17:07:08 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/14 20:04:28 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/22 16:02:51 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,5 +29,5 @@ async def start(socket, content):
 	if(goalId < 0 or goalId >= GameSettings.nbGoals):
 		socket.sendError("Goal id out of range", 9039)
 		return;
-	Game(socket, content.get("with_bot", False), skinId, goalId, opponent)
+	Game(socket, content.get("with_bot", False), skinId, goalId, False, opponent)
 
