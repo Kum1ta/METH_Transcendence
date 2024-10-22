@@ -13,6 +13,7 @@ class User(models.Model):
 	github_link = models.CharField(max_length=1024, null=True, blank=True, default=None)
 	discord_username = models.CharField(max_length=1024, null=True, blank=True, default=None)
 	last_login = models.DateTimeField()
+	elo = models.DecimalField(max_digits=15, decimal_places=0, default=150)
 
 class Message(models.Model):
 	id = models.AutoField(primary_key=True)

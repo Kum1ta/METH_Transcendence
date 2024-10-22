@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/10/04 23:35:03 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/22 17:40:28 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ def userExists(mail, password):
 	if(not user.exists()):
 		return({"found":False})
 	else:
-		return({"found":True, "id":user[0].id, "username":user[0].username, "mail_verified":user[0].mail_verified, "pfp":user[0].pfp})
+		return({"found":True, "id":user[0].id, "username":user[0].username, "mail_verified":user[0].mail_verified, "pfp":user[0].pfp, "elo" : int(user[0].elo)})
 
 async def loginByPass(socket, content):
 	try:
@@ -34,7 +34,7 @@ async def loginByPass(socket, content):
 			if(not u_info["mail_verified"]):
 				socket.sendError("Account not verified, please verify your account before logging in",9025) 
 				return
-			if(await socket.login(u_info["id"], u_info["username"], u_info["pfp"])):
+			if(await socket.login(u_info["id"], u_info["username"], u_info["pfp"], u_info["elo"])):
 				await socket.setLastLogin()
 				socket.sync_send(json.dumps({"type":"logged_in", "content":{
 					"status":True,

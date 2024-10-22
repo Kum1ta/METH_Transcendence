@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 14:31:30 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/14 20:33:31 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/22 17:12:14 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,7 +85,7 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 		print("\033[32monline : ", self.onlinePlayers)
 		return(0)
 
-	async def login(self, uid: int, username: str, pfp : str) -> int:
+	async def login(self, uid: int, username: str, pfp : str, elo : int) -> int:
 		if(await self.session_get("logged_in", False)):
 			print("already logged in")
 			return(0)
@@ -96,9 +96,11 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 		await self.session_set("id",uid)
 		await self.session_set("username",username)
 		await self.session_set("pfp", pfp)
+		await self.session_set("elo", elo)
 		await self.session_save()
 		self.logged_in = True
 		self.id = uid
+		self.elo = elo
 		self.username = username
 		self.pfp = pfp
 		return(1)
@@ -120,6 +122,7 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 			self.id = await self.session_get("id",0)
 			self.username = await self.session_get("username", None)
 			self.pfp = await self.session_get("pfp",None)
+			self.elo = await self.session_get("elo", 0)
 			self.logged_in = True
 		await self.send(text_data=json.dumps({"type":"logged_in", "content":{
 			"status":await self.session_get("logged_in",False),

@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 16:28:36 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/22 18:40:03 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ from multimethod import multimethod
 
 class Game:
 	waitingForPlayer = None
+	rankedWaitingForPlayer = []
 
 	@multimethod
 	def __init__(self, p1 , p2 , tournamentCode):
@@ -43,12 +44,28 @@ class Game:
 		p1.setGame(self)
 		p2.setGame(self)
 		print("game created with ", p1.socket.username, "vs", p2.socket.username)
+	
+	def lookForRankedGame(self, socket):
+		for x in Game.rankedWaitingForPlayer:
+			if(abs(x.p1.socket.elo - socket.elo) < GameSettings.maxEloDiff):
+				return(x)
+		return(None)
+
+
+	def rankedInit(self, socket, skinId, goalId):
+		existingGame = self.lookForRankedGame(socket)
+		self.ranked = True
+		if(existingGame != None):
+			existingGame.join(socket, skinId, goalId)
+		else:
+			self.join(socket, skinId, goalId)
+			Game.rankedWaitingForPlayer.append(self)
 
 	@multimethod
 	def __init__(self, socket, withBot : bool, skinId : int, goalId :int , ranked = False, opponent = None):
 		self.initAttributes()
 		if(ranked):
-			self.rankedInnit()
+			self.rankedInit(socket, skinId, goalId)
 			return;
 		self.withBot = withBot
 
@@ -80,14 +97,17 @@ class Game:
 	def initAttributes(self):
 		self.p1 = None
 		self.p2 = None
+		self.ranked = False
 		self.tournamentCode = None
 		self.started = False
 		self.end = False
 		self.left = None
 		self.winner = None
 		self.pWinner = None
+		self.withBot = False
 		self.gameStart = 0
 		self.gameTime = 0
+		self.opponentLock = None
 
 		self.ball = Ball()
 		self.speed = GameSettings.startSpeed
@@ -280,7 +300,48 @@ class Game:
 			self.p2.setGame(None)
 		if(not self.withBot):
 			await self.saveResults()
+		if(self.ranked):
+			await self.updateElo()
 		del self
+
+
+	def calcElo(self, playerElo, opponentElo, playerScore):
+		expectedScore = 1 / 1 + (10**((opponentElo - playerElo) / 400))
+		k = GameSettings.ratingAdjustmentHigh if playerElo < GameSettings.experiencedThreshold else GameSettings.ratingAdjustmentLow
+		playerElo = playerElo + k * ((playerScore / GameSettings.maxScore) - expectedScore)
+		return(playerElo)
+
+	@sync_to_async
+	def updateElo(self):
+		try:
+			if(self.winner == None):
+				print("unkown winner, setting to 1")
+				self.winner = 1
+			if(self.left != None):
+				self.score[self.left - 1] = 0
+				self.score[1 if self.left == 2 else 2] = 5
+
+			p1Elo = self.calcElo(self.p1.socket.elo, self.p2.socket.elo, self.score[0])
+			p2Elo = self.calcElo(self.p2.socket.elo, self.p1.socket.elo, self.score[1])	
+			
+			p1DbUser = User.objects.get(id=self.p1.socket.id)
+			p1DbUser.elo = p1Elo
+			p1DbUser.save()
+			self.p1.socket.elo = p1Elo
+			self.p1.socket.scope["session"].elo = p1Elo
+			self.p1.socket.scope["session"].save()
+
+			p2DbUser = User.objects.get(id=self.p2.socket.id)
+			p2DbUser.elo = p2Elo
+			p2DbUser.save()
+			self.p2.socket.elo = p2Elo
+			self.p2.socket.scope["session"].elo = p2Elo
+			self.p2.socket.scope["session"].save()
+		except Exception as e:
+			self.p1.socket.sendError("Couldn't update elo", 9104, e)
+			self.p2.socket.sendError("Couldn't update elo", 9104, e)
+
+
 
 	@sync_to_async
 	def saveResults(self):

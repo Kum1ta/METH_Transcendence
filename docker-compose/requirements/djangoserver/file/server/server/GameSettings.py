@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/06 16:33:56 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 16:33:39 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/22 18:40:34 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,3 +52,8 @@ class GameSettings:
 	maxTimePlayerWait = 10
 
 	OOBTolerance = 0.01
+
+	maxEloDiff = 100
+	ratingAdjustmentHigh = 30 
+	ratingAdjustmentLow = 10
+	experiencedThreshold = 500 
