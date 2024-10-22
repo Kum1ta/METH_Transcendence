@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 12:00:01 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/10 13:51:15 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/22 16:05:38 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ function typeGame(content)
 	{
 		if (content.action == 3 && content.is_opponent)
 			opponent.movePlayer(content);
+		else if (content.action == 3 && !content.is_opponent)
+			player.movePlayer(content);
 		else if (content.action == 4)
 			player.scalePlayer(content.is_opponent);
 		else if (content.action == 5 && ball)
