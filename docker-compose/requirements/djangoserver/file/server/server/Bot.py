@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/19 18:29:36 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 01:19:12 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/22 14:39:52 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,9 @@ class Bot(Player):
 	def isTournamentReady(self):
 		return(True);
 
+	def checkMovement(self, newPos):
+		return(newPos)
+
 	def createTempBall(self):
 		res = Ball()
 		res.setObstacles(self.game.obstacles)
@@ -57,7 +60,6 @@ class Bot(Player):
 				offset = 0.1
 			pos += offset * (GameSettings.playerLength / 2)
 		return({"pos":pos, "up":up})
-
 
 	async def getExpectedPos(self):
 		tempBall = self.createTempBall()

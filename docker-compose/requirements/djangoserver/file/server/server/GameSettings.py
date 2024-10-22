@@ -6,18 +6,19 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/06 16:33:56 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 01:30:44 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/22 15:15:02 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 class GameSettings:
 	ballRadius = 0.15
-	playerLength = 1 + (ballRadius * 4)
-	limits = {
-		"left" : -3.5 + ballRadius,
-		"right" : 3.5 - ballRadius,
-		"back" : -6.25 + ballRadius,
-		"front" : 6.25 - ballRadius
+	playerLength = 1
+	ballPlayerLength = playerLength + (ballRadius * 4)
+	mapLimits = {
+		"left" : -3.5,
+		"right" : 3.5,
+		"back" : -6.25,
+		"front" : 6.25
 	}
 	mapLength = 13
 	startSpeed = 6
@@ -43,8 +44,11 @@ class GameSettings:
 	wallLength = 1
 	wallWidth = 0.05
 	bounceSpeedIncrease = 0.2
-	maxScore = 1
+	maxScore = 3
 
-	maxPlayerSpeed = 6
+	maxPlayerSpeed = 4
+	playerSpeedTolerance = 0.15
 	BotMovement = True 
 	maxTimePlayerWait = 10
+
+	OOBTolerance = 0.01

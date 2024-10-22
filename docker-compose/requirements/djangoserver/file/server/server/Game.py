@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/19 22:27:23 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/22 15:34:32 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -190,10 +190,14 @@ class Game:
 	def move(self, socket, pos, up):
 		opponent = self.p1.socket if socket != self.p1.socket else self.p2.socket
 		if(socket == self.p1.socket):
-			self.p1.pos["pos"] = pos
+			self.p1.pos["pos"] = self.p1.checkMovement(pos)
+			if(self.p1.pos["pos"] != pos):
+				self.p1.socket.sync_send("game",{"action":3, "pos":self.p1.pos["pos"], "up":up, "is_opponent":False})
 			self.p1.pos["up"] = up
 		else:
-			self.p2.pos["pos"] = -pos
+			self.p2.pos["pos"] = self.p2.checkMovement(-pos)
+			if(self.p2.pos["pos"] != -pos):
+				self.p2.socket.sync_send("game",{"action":3, "pos":self.p2.pos["pos"], "up":up, "is_opponent":False})
 			self.p2.pos["up"] = up
 		if(opponent != None):
 			opponent.sync_send({"type":"game","content":{"action":3, "pos":-pos, "up":up, "is_opponent":True}})

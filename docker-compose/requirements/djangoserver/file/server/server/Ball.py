@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/06 03:24:10 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/10 03:31:32 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/22 14:53:55 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -111,7 +111,7 @@ class Ball:
 	def getTimeUntilWallColision(self, limitNeg, limitPos, position, velocity):
 		if(not velocity):
 			return(-1)
-		limit = GameSettings.limits[limitNeg] if velocity < 0 else GameSettings.limits[limitPos]
+		limit = GameSettings.mapLimits[limitNeg] + GameSettings.ballRadius if velocity < 0 else GameSettings.mapLimits[limitPos] - GameSettings.ballRadius
 		wallDistance = max(limit, position) - min(limit, position)
 		colision_time = wallDistance / abs(velocity)
 		return(colision_time)
@@ -215,13 +215,13 @@ class Ball:
 	async def update(self, delta, p1, p2, p1Hit = False):
 		self.pos[0] += (delta * self.vel[0])
 		self.pos[1] += (delta * self.vel[1])
-		if(self.pos[1] <= GameSettings.limits["back"] + 0.001 or self.pos[1] >= GameSettings.limits["front"] - 0.001):
+		if(self.pos[1] <= GameSettings.mapLimits["back"] + GameSettings.ballRadius + 0.001 or self.pos[1] >= (GameSettings.mapLimits["front"] - GameSettings.ballRadius) - 0.001):
 			player = p2.pos if self.pos[1] < 0 else p1.pos
 			if(self.pos[1] > 0 and p1Hit):
 				return(1)
 			playerDistance = self.getPlayerDistance(player, self.pos)
-			if(playerDistance >= -(GameSettings.playerLength / 2) and playerDistance <= GameSettings.playerLength / 2 and player["up"] == self.up):
-				self.vel[0] = -((self.speed * 0.80) * (playerDistance / (GameSettings.playerLength / 2)))
+			if(playerDistance >= -(GameSettings.ballPlayerLength / 2) and playerDistance <= GameSettings.ballPlayerLength / 2 and player["up"] == self.up):
+				self.vel[0] = -((self.speed * 0.80) * (playerDistance / (GameSettings.ballPlayerLength / 2)))
 				self.vel[1] = self.speed - abs(self.vel[0])
 				if(self.pos[1] > 0):
 					self.vel[1] = -self.vel[1]
@@ -233,7 +233,7 @@ class Ball:
 				return(1 if self.pos[1] < 0 else 2)
 			else:
 				return(0)
-		elif(self.pos[0] <= GameSettings.limits["left"] + 0.001 or self.pos[0] >= GameSettings.limits["right"] - 0.001):
+		elif(self.pos[0] <= GameSettings.mapLimits["left"] + GameSettings.ballRadius + 0.001 or self.pos[0] >= (GameSettings.mapLimits["right"] - GameSettings.ballRadius) - 0.001):
 			self.vel[0] = -self.vel[0]
 		elif(self.checkWallsColision(self.pos)):
 			self.vel[1] = -self.vel[1]
