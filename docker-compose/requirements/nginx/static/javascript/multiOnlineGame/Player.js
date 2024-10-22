@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/22 16:14:43 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/22 16:23:11 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -377,7 +377,10 @@ class Player
 				if (!this.cameraFixed && !isOnPointAnim)
 					this.camera.position.x += this.speed * this.deltaTime;
 				if (this.object.position.x > this.limits.right)
+				{
 					this.object.position.x = this.limits.right;
+					this.camera.position.x = this.limits.right;
+				}
 			}
 			if (pressedButton[i] == key.left && this.object.position.x > this.limits.left)
 			{
@@ -385,7 +388,10 @@ class Player
 				if (!this.cameraFixed && !isOnPointAnim)
 					this.camera.position.x -= this.speed * this.deltaTime;
 				if (this.object.position.x < this.limits.left)
+				{
 					this.object.position.x = this.limits.left;
+					this.camera.position.x = this.limits.left;
+				}
 			}
 			i++;
 		}
