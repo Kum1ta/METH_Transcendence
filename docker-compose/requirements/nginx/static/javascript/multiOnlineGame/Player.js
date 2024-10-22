@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/22 16:23:11 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/22 16:24:58 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ class Player
 	movePlayer(content)
 	{
 		this.object.position.x = content.pos;
+		this.camera.position.x = content.pos;
 	}
 
 	dispose()
