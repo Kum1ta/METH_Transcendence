@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/20 17:58:40 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/27 23:40:49 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ const	playerList	=	{
 let		divTopInfo	= null;	
 let		divInfo		= null;
 let		divChat		= null;
+let		timeout		= null;
 
 class TournamentPage
 {
@@ -66,6 +67,9 @@ class TournamentPage
 			info.username = null;
 			info.pfp = null;
 		});
+		if (timeout)
+			clearTimeout(timeout);
+		timeout = null;
 	}
 
 	static newOpponent(content)
@@ -177,6 +181,15 @@ class TournamentPage
 			console.log("loserPos : ", loserPos);
 			document.getElementById('pfp-' + loserPos).style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${playerList['player' + (content.p1Win ? player2Nb : player1Nb)].pfp}')`;
 		}
+	}
+
+	end(content)
+	{
+		console.log("Tournament is over. The winner is : ", playerList['player' + playerNb[content.winnerId]]);
+		newInfo(`The winner is : ${playerList['player' + playerNb[content.winnerId]].username}`);
+		timeout = setTimeout(() => {
+			pageRenderer.changePage("lobbyPage", false);
+		});
 	}
 }
 
