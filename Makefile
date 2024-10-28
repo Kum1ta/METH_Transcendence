@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
+#    By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/07/13 16:18:56 by tomoron           #+#    #+#              #
-#    Updated: 2024/09/24 00:03:51 by edbernar         ###   ########.fr        #
+#    Created: 2024/10/28 19:26:13 by tomoron           #+#    #+#              #
+#    Updated: 2024/10/28 19:26:16 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,17 +16,13 @@ COMPOSE = docker compose -f $(FILE)
 
 all: up
 
-build:
-	# mkdir -p ~/METH_data
-	$(COMPOSE) build
-
-up: build
-	$(COMPOSE) up -d
-up_att: build
-	$(COMPOSE) up
+up: 
+	$(COMPOSE) up  --build -d
+up_att: 
+	$(COMPOSE) up --build
 
 watch:
-	$(COMPOSE) watch
+	$(COMPOSE) watch 
 down:
 	$(COMPOSE) down -v
 
@@ -38,4 +34,4 @@ fclean:clean
 
 re: fclean all
 
-.PHONY: all build up up_att down fclean re
+.PHONY: all up up_att down fclean re

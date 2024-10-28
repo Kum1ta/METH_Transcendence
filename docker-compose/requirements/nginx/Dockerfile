@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM nginx:stable 
 
 RUN apt update
 RUN apt upgrade -y
