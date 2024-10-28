@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 00:16:57 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/30 19:58:27 by tomoron          ###   ########.fr        #
+#    Updated: 2024/10/28 22:10:32 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,6 +61,7 @@ def getUserInfo(socket, content):
 			'online': online,
 			'github': user.github_link,
 			'discord': user.discord_username,
+			'elo': int(user.elo),
 			'nbWin':nbWin,
 			'nbLoss':nbGames - nbWin,
 			'history':history
