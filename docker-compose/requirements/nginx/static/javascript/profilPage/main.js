@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/06 23:50:01 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/10/28 22:56:32 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ class ProfilPage
 		const	inviteButton	=	document.getElementById('invite');
 		const	crossProfil		=	document.getElementById('cross-profil');
 		let		ctx				=	document.getElementById('stats').getContext('2d');
+		const	elo				=	document.getElementById('player-elo');
 		let		editPenPfpBg	=	null;
 		let		inputPfp		=	null;
 		let		editPenBanner	=	null;
@@ -73,6 +74,7 @@ class ProfilPage
 			banner.style.backgroundImage = `url("${userInfo.banner}")`
 			banner.style.backgroundSize = "cover";
 			banner.style.backgroundRepeat = "no-repeat";
+			elo.innerHTML = `Elo: ${userInfo.elo}`;
 			externButtons(userInfo);
 			createGraph(ctx, {win: userInfo.nbWin, lose: userInfo.nbLoss});
 			showHistory(userInfo);
