@@ -24,4 +24,5 @@ RUN sh /root/setup.sh
 EXPOSE 5432
 STOPSIGNAL SIGKILL
 
-ENTRYPOINT ["/bin/sh","/root/start.sh"]
+ENTRYPOINT ["pg_ctlcluster", "13", "main", "start", "--foreground"]
+#ENTRYPOINT ["/bin/sh","/root/start.sh"]
