@@ -10,4 +10,6 @@ RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/ngin
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY static /var/www/static 
 
+STOPSIGNAL SIGKILL
+
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

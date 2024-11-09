@@ -137,19 +137,10 @@ def handler404(request, exception):
 def err404(request):
 	return(render(request, "err404.html"))
 
-def	pfp(request, str):
+def	getStorage(request, str):
 	ret = None
 	try:
-		image_path = os.path.join('/var/www/djangoserver/pfp/', str)
-		ret = FileResponse(open(image_path, 'rb'), content_type='image/png')
-	except Exception:
-		pass
-	return ret
-
-def	banner(request, str):
-	ret = None
-	try:
-		image_path = os.path.join('/var/www/djangoserver/banner/', str)
+		image_path = os.path.join('/var/www/djangoserver/storage/', str)
 		ret = FileResponse(open(image_path, 'rb'), content_type='image/png')
 	except Exception:
 		ret = FileResponse("banner not found", status=404)

@@ -32,8 +32,7 @@ urlpatterns = [
     path("logout", views.logout, name='logout'),
 	path("verify", views.verify, name='verify'),
 	path("404", views.err404, name='err404'),
-	path("pfp/<str>", views.pfp, name='pfp'),
-	path("banner/<str>", views.banner, name='banner'),
+	path("storage/<str>", views.getStorage, name='getStorage'),
 	path("settingsPage", views.settingsPage, name='settingsPage'),
 	path("tournamentPage", views.tournamentPage, name='tournamentPage'),
 ]

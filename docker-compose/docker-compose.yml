@@ -19,8 +19,8 @@ services:
 
   djangoserver:
     container_name: djangoserver
-    # volumes:
-    #   - website_data:/var/www/djangoserver
+    volumes:
+      - django_storage:/var/www/djangoserver/storage
     networks:
       - transcendence
     develop:
@@ -55,6 +55,8 @@ services:
         DB_PASSWORD: ${DB_PASSWORD}
     networks:
       - transcendence
+    volumes:
+      - postgres:/var/lib/postgresql/13/main
     restart: always 
   
   adminer: 
@@ -65,12 +67,8 @@ services:
       - transcendence 
 
 volumes:
-  website_data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: '~/METH_data'
+  postgres:
+  django_storage:
 
 networks:
   transcendence:
