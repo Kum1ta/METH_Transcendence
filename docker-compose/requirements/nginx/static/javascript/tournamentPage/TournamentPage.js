@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/27 23:40:49 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/11 11:41:30 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,19 +177,23 @@ class TournamentPage
 				loserPos = player2Nb + (player2Nb % 2 == 0 ? player2Nb - 1 : player2Nb);
 			else
 				loserPos = player1Nb + (player1Nb % 2 == 0 ? player1Nb - 1 : player1Nb);
+			if (playerNb.indexOf(pos) == -1)
+			{
+				pos = playerNb[0] + playerNb[1] + playerNb[2] + playerNb[3];
+				loserPos = playerNb[4] + playerNb[5] + playerNb[6] + playerNb[7];
+			}
 			document.getElementById('pfp-' + pos).style.backgroundImage = `url(${winnerData.pfp})`;
-			console.log("loserPos : ", loserPos);
 			document.getElementById('pfp-' + loserPos).style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${playerList['player' + (content.p1Win ? player2Nb : player1Nb)].pfp}')`;
 		}
 	}
 
-	end(content)
+	static end(content)
 	{
 		console.log("Tournament is over. The winner is : ", playerList['player' + playerNb[content.winnerId]]);
 		newInfo(`The winner is : ${playerList['player' + playerNb[content.winnerId]].username}`);
 		timeout = setTimeout(() => {
 			pageRenderer.changePage("lobbyPage", false);
-		});
+		}, 4000);
 	}
 }
 

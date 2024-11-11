@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:29:50 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/27 23:30:11 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/11 11:41:31 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,87 +69,3 @@ function joinTournament(content)
 }
 
 export { typeTournament };
-
-
-
-document.addEventListener('keydown', (event) => {
-	if (event.key === "a")
-	{
-
-		typeTournament(
-			{
-			    "action": 5,
-			    "players": [
-			        // {
-			        //     "id": 0,
-			        //     "username": "edbernar",
-			        //     "pfp": "/static/img/default_pfp.jpg"
-			        // },
-			        {
-			            "id": 1,
-			            "username": "bot",
-			            "pfp": "/static/img/robot_pfp.jpg"
-			        },
-			        {
-			            "id": 2,
-			            "username": "bot",
-			            "pfp": "/static/img/robot_pfp.jpg"
-			        },
-			        {
-			            "id": 3,
-			            "username": "bot",
-			            "pfp": "/static/img/robot_pfp.jpg"
-			        },
-			        {
-			            "id": 4,
-			            "username": "bot",
-			            "pfp": "/static/img/robot_pfp.jpg"
-			        },
-			        {
-			            "id": 5,
-			            "username": "bot",
-			            "pfp": "/static/img/robot_pfp.jpg"
-			        },
-			        {
-			            "id": 6,
-			            "username": "bot",
-			            "pfp": "/static/img/robot_pfp.jpg"
-			        },
-			        {
-			            "id": 7,
-			            "username": "bot",
-			            "pfp": "/static/img/robot_pfp.jpg"
-			        }
-			    ],
-			    "messages": [],
-			    "history": [
-			        {
-			            "p1": 3,
-			            "p2": 2,
-			            "p1Win": true
-			        },
-			        {
-			            "p1": 5,
-			            "p2": 4,
-			            "p1Win": true
-			        },
-			        {
-			            "p1": 7,
-			            "p2": 6,
-			            "p1Win": true
-			        },
-			        {
-			            "p1": 7,
-			            "p2": 5,
-			            "p1Win": true
-			        },
-			        {
-			            "p1": 1,
-			            "p2": 0,
-			            "p1Win": false
-			        }
-			    ]
-			}
-		);
-	}
-});
