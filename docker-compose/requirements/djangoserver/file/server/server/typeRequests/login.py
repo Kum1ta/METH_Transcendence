@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/03 08:10:38 by edbernar          #+#    #+#              #
-#    Updated: 2024/10/22 17:40:28 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/11 15:48:44 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ def userExists(mail, password):
 	if(not user.exists()):
 		return({"found":False})
 	else:
-		return({"found":True, "id":user[0].id, "username":user[0].username, "mail_verified":user[0].mail_verified, "pfp":user[0].pfp, "elo" : int(user[0].elo)})
+		return({"found":True, "id":int(user[0].id), "username":user[0].username, "mail_verified":user[0].mail_verified, "pfp":user[0].pfp, "elo" : int(user[0].elo)})
 
 async def loginByPass(socket, content):
 	try:

@@ -121,9 +121,9 @@ def login42(request):
 		User.objects.filter(id=db_user[0].id).update(last_login=timezone.now())
 	request.session["logged_in"] = True
 	request.session["username"] = db_user[0].username
-	request.session["id"] = db_user[0].id
+	request.session["id"] = int(db_user[0].id)
 	request.session["pfp"] = db_user[0].pfp
-	request.session["elo"] = db_user[0].elo
+	request.session["elo"] = int(db_user[0].elo)
 	request.session.save()
 	return redirect("/")
 
