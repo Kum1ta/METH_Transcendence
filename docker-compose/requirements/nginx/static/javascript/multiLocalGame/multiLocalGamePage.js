@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiLocalGamePage.js                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:07:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/03 00:48:19 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/11 15:42:23 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,6 @@ class multiLocalGamePage
 		Players.create(scene);
 
 		camera.position.set(0, 22, 0);
-
-		document.addEventListener('keypress', (e) => {
-			if (e.key == 'a')
-				Map.reCreate(true);
-		})
 
 		renderer.setAnimationLoop(loop);
 		document.body.style.opacity = 1;

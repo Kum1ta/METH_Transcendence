@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/10/08 20:06:46 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/11 18:13:57 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -489,8 +489,8 @@ class Map
 
 		canvasImageLeft = document.createElement('canvas');
 		contextImageLeft = canvasImageLeft.getContext('2d');
-		canvasImageLeft.width = 960;
-		canvasImageLeft.height = 960;
+		canvasImageLeft.width = 960 * 0.5;
+		canvasImageLeft.height = 960 * 0.5;
 		textureImageLeft = new THREE.CanvasTexture(canvasImageLeft);
 		textureImageLeft.imageSmoothingEnabled = false;
 		contextImageLeft.clearRect(0, 0, canvasImageLeft.width, canvasImageLeft.height);
@@ -501,8 +501,8 @@ class Map
 
 		canvasImageRight = document.createElement('canvas');
 		contextImageRight = canvasImageRight.getContext('2d');
-		canvasImageRight.width = 960;
-		canvasImageRight.height = 960;
+		canvasImageRight.width = 960 * 0.5;
+		canvasImageRight.height = 960 * 0.5;
 		textureImageRight = new THREE.CanvasTexture(canvasImageRight);
 
 		contextImageLeft.clearRect(0, 0, canvasImageLeft.width, canvasImageLeft.height);

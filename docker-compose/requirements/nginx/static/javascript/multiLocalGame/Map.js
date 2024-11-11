@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/11 10:26:38 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/11 18:02:49 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ let		score			=	{player1: 0, player2: 0};
 let		onUpdate		=	false;
 let		scoreElement	=	null;
 let		initialSpeed	=	0;
-let		speed			=	1;
+let		speed			=	0;
 let		gameEndStatus	=	false;
 const	scoreToWin		=	2; //+1 for real score to win
 
@@ -54,7 +54,8 @@ class Map
 		wallTop = createWall(true);
 		scene.add(wallTop);
 
-		initialSpeed = 0.2;
+		initialSpeed = 0.15;
+		speed = 1;
 		if (Math.random() > 0.5)
 		{
 			vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
@@ -146,7 +147,7 @@ class Map
 		ball.position.x += vec2.x * speed;
 		ball.position.z += vec2.z * speed;
 		if (speed < 3)
-			speed += 0.005;
+			speed += 0.0025;
 
 		// ball opacity
 		if (ball.position.x > 12.3)
