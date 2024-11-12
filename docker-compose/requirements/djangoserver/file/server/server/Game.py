@@ -1,13 +1,13 @@
 # **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Game.py                                            :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/09/13 16:20:58 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 18:40:03 by tomoron          ###   ########.fr        #
-#                                                                              #
+#																			  #
+#														 :::	  ::::::::	#
+#	Game.py											:+:	  :+:	:+:	#
+#													 +:+ +:+		 +:+	  #
+#	By: edbernar <edbernar@student.42angouleme.	+#+  +:+	   +#+		 #
+#												 +#+#+#+#+#+   +#+			#
+#	Created: 2024/09/13 16:20:58 by tomoron		   #+#	#+#			  #
+#	Updated: 2024/10/22 18:40:03 by tomoron		  ###   ########.fr		#
+#																			  #
 # **************************************************************************** #
 
 from asgiref.sync import sync_to_async
@@ -201,6 +201,8 @@ class Game:
 				self.p2.setGame(None)
 		if(Game.waitingForPlayer == self):
 			Game.waitingForPlayer = None
+		if(self in Game.waitingForPlayerRanked):
+			Game.waitingForPlayerRanked.remove(self)
 		if(self.p2 != None):
 			self.endGame(1 if self.left == 2 else 2)
 		self.end=True
