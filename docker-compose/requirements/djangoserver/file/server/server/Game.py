@@ -1,13 +1,13 @@
 # **************************************************************************** #
-#																			  #
-#														 :::	  ::::::::	#
-#	Game.py											:+:	  :+:	:+:	#
-#													 +:+ +:+		 +:+	  #
-#	By: edbernar <edbernar@student.42angouleme.	+#+  +:+	   +#+		 #
-#												 +#+#+#+#+#+   +#+			#
-#	Created: 2024/09/13 16:20:58 by tomoron		   #+#	#+#			  #
-#	Updated: 2024/10/22 18:40:03 by tomoron		  ###   ########.fr		#
-#																			  #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Game.py                                            :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/11/13 16:21:18 by tomoron           #+#    #+#              #
+#    Updated: 2024/11/13 16:30:41 by tomoron          ###   ########.fr        #
+#                                                                              #
 # **************************************************************************** #
 
 from asgiref.sync import sync_to_async
@@ -288,6 +288,11 @@ class Game:
 		self.prepareGame()
 		while(not self.end):
 			sleep_time = self.ball.getSleepTime()
+			if(sleep_time <= 0):
+				self.prepareGame(True)
+				await asyncio.sleep(3)
+				self.prepareGame()
+				continue
 			print("sleep time : " , sleep_time)
 			if((time.time() - self.gameStart) - self.gameTime < sleep_time):
 				await asyncio.sleep(sleep_time - ((time.time() - self.gameStart) - self.gameTime))
