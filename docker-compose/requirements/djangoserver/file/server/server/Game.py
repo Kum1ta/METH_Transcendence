@@ -201,8 +201,8 @@ class Game:
 				self.p2.setGame(None)
 		if(Game.waitingForPlayer == self):
 			Game.waitingForPlayer = None
-		if(self in Game.waitingForPlayerRanked):
-			Game.waitingForPlayerRanked.remove(self)
+		if(self in Game.rankedWaitingForPlayer):
+			Game.rankedWaitingForPlayer.remove(self)
 		if(self.p2 != None):
 			self.endGame(1 if self.left == 2 else 2)
 		self.end=True
@@ -260,6 +260,8 @@ class Game:
 		print("new score :", self.score)
 		self.p1.socket.sync_send({"type":"game","content":{"action":6, "is_opponent": player == 2}})
 		self.p2.socket.sync_send({"type":"game","content":{"action":6, "is_opponent": player == 1}})
+		self.prepareGame(True);
+		self.sendNewBallInfo(True);
 		await asyncio.sleep(4.5)
 		if(self.checkGameEndGoal()):
 			return
