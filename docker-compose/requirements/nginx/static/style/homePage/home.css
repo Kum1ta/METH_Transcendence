@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/09 16:23:22 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/11/13 23:33:35 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@
 }
 
 .popup {
-    display: none; /* La popup est masquée par défaut */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;

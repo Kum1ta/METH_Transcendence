@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/13 11:40:25 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/13 23:29:05 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@ import { userMeInfo, waitForLogin } from "/static/javascript/typeResponse/typeLo
 import { createNotification as CN } from "/static/javascript/notification/main.js";
 import { sendRequest } from "/static/javascript/websocket.js";
 import { pageRenderer } from '/static/javascript/main.js'
-import { main3d } from '/static/javascript/login/3d.js'
+import { main3d, dispose3d } from '/static/javascript/login/3d.js'
 
 class Login
 {
@@ -200,6 +200,7 @@ function	showLoginDiv()
 	{		
 		document.body.style.overflow = 'auto';
 		popout.style.display = 'none';
+		dispose3d();
 	}
 	else
 	{
@@ -225,6 +226,7 @@ function closeClickOutsiteGameMode(event)
 {
 	if (event.target == document.getElementById('loginPopup'))
 	{
+		dispose3d();
 		document.getElementById('loginPopup').style.display = 'none';
 		document.body.style.overflow = 'auto';	
 	}
