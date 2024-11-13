@@ -29,7 +29,10 @@ let		scoreElement	=	null;
 let		initialSpeed	=	0;
 let		speed			=	0;
 let		gameEndStatus	=	false;
-const	scoreToWin		=	2; //+1 for real score to win
+const	scoreToWin		=	3;
+let 	collided		=	false;
+let 	deltaTime		=	1;
+let 	previousTime	=	Date.now();
 
 class Map
 {
@@ -98,17 +101,18 @@ class Map
 	{
 		if (onUpdate)
 			return ;
-		
+
 		// collision wall top and bottom
 		if (ball.position.z > 5.7 || ball.position.z < -5.7)
 			vec2.z *= -1;
 
 		// collision player2 left
-		if (ball.position.x > 11.45 && ball.position.x < 12.2)
+		if (ball.position.x > 11.45 && ball.position.x < 12.2 && !collided)
 		{
 			if (ball.position.z < player2.position.z + 1.25 && ball.position.z > player2.position.z - 1.25)
 			{
 				Map.scalePlayer(player2);
+				collided = true;
 				vec2.x *= -1;
 				// Ca bug donc je le laisse en commentaire
 				// if (ball.position.z < player2.position.z + 0.5)
@@ -123,11 +127,12 @@ class Map
 				// }
 			}
 		} // collision player1 right
-		else if (ball.position.x < -11.45 && ball.position.x > -12.2)
+		else if (ball.position.x < -11.45 && ball.position.x > -12.2 && !collided)
 		{
 			if (ball.position.z < player1.position.z + 1.25 && ball.position.z > player1.position.z - 1.25)
 			{	
 				Map.scalePlayer(player1);
+				collided = true;
 				vec2.x *= -1;
 				// Ca bug donc je le laisse en commentaire
 				// if (ball.position.z < player1.position.z + 0.5)
@@ -143,9 +148,13 @@ class Map
 			}
 		}
 
+		// accept new players collision if ball cross the middle map
+		if (collided && ball.position.x < 3 && ball.position.x > -3)
+			collided = false;
+
 		// velocity
-		ball.position.x += vec2.x * speed;
-		ball.position.z += vec2.z * speed;
+		ball.position.x += vec2.x * speed * deltaTime;
+		ball.position.z += vec2.z * speed * deltaTime;
 		if (speed < 3)
 			speed += 0.0025;
 
@@ -162,6 +171,11 @@ class Map
 			if (ball.position.x < -14)
 				return (Map.reCreate(true));
 		}
+
+		const currentTime = Date.now();
+		deltaTime = (currentTime - previousTime) / 100 * 6.5;
+		previousTime = currentTime;
+		deltaTime = deltaTime < 0.5 ? 0.5 : deltaTime > 2.5 ? 2.5 : deltaTime;
 	}
 
 	static scalePlayer(player)
@@ -199,21 +213,21 @@ class Map
 			else
 				score.player1++;
 			scoreElement.innerHTML = score.player1 + '-' +score.player2;
+
+			if ((player1Lose && score.player2 >= scoreToWin) || (!player1Lose && score.player1 >= scoreToWin))
+				return (this.#endGame());
 		}, 500);
 
-		if ((player1Lose && score.player2 >= scoreToWin) || (!player1Lose && score.player1 >= scoreToWin))
-			return (this.#endGame());
 
 		setTimeout(() => {
+			initialSpeed = 0.15;
 			if (player1Lose)
 			{
-				initialSpeed = 0.2;
 				vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
 				vec2.x = -Math.sqrt(initialSpeed * initialSpeed - vec2.z * vec2.z);
 			}
 			else
 			{
-				initialSpeed = 0.2;
 				vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
 				vec2.x = Math.sqrt(initialSpeed * initialSpeed - vec2.z * vec2.z);
 			}
@@ -249,14 +263,13 @@ class Map
 
 	static #endGame()
 	{
+		ball.material.opacity = 0;
 		setTimeout(() => {
-			ball.material.opacity = 1;
-
 			scoreElement.style.animation = 'fadeOutGames 0.199s';
 			document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';
 			scoreElement.style.animation = 'fadeOutTextGames 0.399s';
 			scoreElement.style.color = 'rgb(255, 255, 255, 0.1)';
-			onUpdate = false;
+			onUpdate = true;
 			gameEndStatus = true;
 		}, 1200);
 	}

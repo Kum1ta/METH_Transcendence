@@ -79,19 +79,33 @@ class multiLocalGamePage
 		scene = null;
 	}
 };
+// /////////////
+// const fps = 10; // change to 30 for 30 fps
+// const frameDuration = 1000 / fps;
+// let lastTime = 0;
+// /////////////
 
-function loop()
+function loop(timestamp) // retirer timestamp
 {
 	if (gameEndStatus)
 	{
 		renderer.setAnimationLoop(null);
 		gameFinish()
 	}
-	Ball.update();
-	Map.update();
-	Players.update();
-	if (renderer)
-		renderer.render(scene, camera);
+	// const deltaTime = timestamp - lastTime; //
+
+    // if (deltaTime >= frameDuration)//
+	// {
+        // lastTime = timestamp;//
+// 
+        Ball.update();
+        Map.update();
+        Players.update();
+        if (renderer) {
+            renderer.render(scene, camera);
+        }
+    // }
+
 }
 
 function gameFinish()
