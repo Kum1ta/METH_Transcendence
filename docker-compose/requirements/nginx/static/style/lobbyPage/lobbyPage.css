@@ -62,7 +62,7 @@ body {
     align-items: center;
 }
 
-.main{
+.main {
 	padding-block: 45px;
 	display: flex;
 	flex-direction: row;
@@ -605,6 +605,10 @@ input:checked + .slider:before {
 
 .slider.round:before {
 	border-radius: 50%;
+}
+
+#canvas-left-side{
+	background-color: #21f356;
 }
 
 @media (max-aspect-ratio: 1/1){

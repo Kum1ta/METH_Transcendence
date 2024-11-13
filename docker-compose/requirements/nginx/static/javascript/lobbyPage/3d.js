@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/13 23:25:15 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/12 19:19:33 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ class barSelecter
 		}
 		lastSelected = availableSkins[id];
 		if (availableSkins[id].color)
-			this.bar.material = new THREE.MeshPhysicalMaterial({color: skin.color});
+			this.bar.material = new THREE.MeshPhysicalMaterial({color: availableSkins[id].color});
 		else
 		{
 			if (typeof availableSkins[id].texture !== 'object')
@@ -256,6 +256,7 @@ class goalSelecter
 			goal[i].appendChild(this.showObject(availableGoals[i], goal[i].getBoundingClientRect()));
 			goal[i].removeEventListener('click', this.boundChangeGoal);
 			goal[i].addEventListener('click', this.boundChangeGoal);
+			goal[i].style.backgroundColor = `#1a1a1a`;
 		}
 		popup.removeEventListener('click', this.boundhideGoalSelector);
 		popup.addEventListener('click', this.boundhideGoalSelector);

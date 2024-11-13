@@ -223,6 +223,10 @@
 	overflow-x: none;
 }
 
+#tournamentPage .chat-tournament .chat p {
+	word-break: break-all;
+}
+
 #tournamentPage #chat-title {
 	color: white;
 	font-size: 20px;

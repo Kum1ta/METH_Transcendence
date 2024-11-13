@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/15 21:10:18 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/13 15:33:26 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ class Ball
 	resetPosBall()
 	{
 		this.setPosition(this.centerPos.x, this.object.geometry.parameters.radius * 2, this.centerPos.z);
+		this.object.material.opacity = 1;
 	}
 
 	resetScaleBall()

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/16 00:55:59 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/13 15:22:43 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ import { VRButton } from "/static/javascript/three/examples/jsm/webxr/VRButton.j
 import { Opponent } from '/static/javascript/multiOnlineGame/Opponent.js'
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { Player } from '/static/javascript/multiOnlineGame/Player.js'
-import { pageRenderer, isMobile } from '/static/javascript/main.js'
+import { pageRenderer, isMobile, isOnChrome } from '/static/javascript/main.js'
 import { Ball } from '/static/javascript/multiOnlineGame/Ball.js'
 import { Map } from '/static/javascript/multiOnlineGame/Map.js'
 import { sendRequest } from "/static/javascript/websocket.js";
@@ -87,7 +87,6 @@ class MultiOnlineGamePage
 {
 	static create(skin)
 	{
-		console.log('skin', skin);
 		if (!skin)
 		{
 			skin = {player: 4, opponent: 0};
@@ -129,7 +128,6 @@ class MultiOnlineGamePage
 		map.ballObject = ball.object;
 		if (isMobile)
 			player.mobileMode();
-
 		//////////////////////////
 		controls = new OrbitControls(cameraTmp, renderer.domElement)
 		cameraTmp.position.set(5, 3, 5);
@@ -155,7 +153,7 @@ class MultiOnlineGamePage
 
 		renderer.setAnimationLoop(loop)
 		sendRequest('game', {action: 1});
-		if (!isMobile)
+		if (!isMobile && isOnChrome)
 			map.putVideoOnCanvas(2, 3);
 		let lastPosition = player.object.position.x;
 		let lastUp = player.isUp;
@@ -212,7 +210,7 @@ class MultiOnlineGamePage
 			scene.children.forEach(child => {
 				if (child.geometry)
 					child.geometry.dispose();
-				if (child.material)
+				if (child.material && child.material.dispose)
 					child.material.dispose();
 				if (child.texture)
 					child.texture.dispose();

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/22 16:24:58 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/13 15:23:47 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ import { scene, renderer, isInVrMode, ball } from '/static/javascript/multiOnlin
 import { lastSelectedGoal, availableGoals } from '/static/javascript/lobbyPage/3d.js';
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { layoutSelected } from '/static/javascript/lobbyPage/main.js'
-import { isMobile } from '/static/javascript/main.js'
+import { isMobile, isOnChrome } from '/static/javascript/main.js'
 
 /*
 	Explication du code :
@@ -152,7 +152,7 @@ class Player
 		this.mapVar.putVideoOnCanvas(3, 'goal');
 		setTimeout(() => {
 			this.mapVar.putVideoOnCanvas(0, null);
-			if (!isMobile)
+			if (!isMobile && isOnChrome)
 				this.mapVar.putVideoOnCanvas(2, 3);
 		}, 4000);
 
@@ -176,8 +176,6 @@ class Player
 		const	tmpCamera	= new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10000);
 		const	tmp			= this.camera;
 		let		interval	= null;
-		const	startColor	= this.object.material.color.clone();
-		let		hue			= 0;
 
 		document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
 		document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeInGames 0.199s';
@@ -196,10 +194,6 @@ class Player
 			this.camera = tmpCamera;
 			interval = setInterval(() => {
 				tmpCamera.lookAt(this.object.position);
-				hue += 0.01;
-				if (hue > 1)
-					hue = 0;
-				this.object.material.color.setHSL(hue, 1, 0.5);
 				tmpCamera.fov -= 0.05;
 				tmpCamera.updateProjectionMatrix();
 			}, 10);
@@ -223,7 +217,6 @@ class Player
 						ball.setCastShadow(true);
 
 						this.camera = tmp;
-						this.object.material.color.copy(startColor);
 						isOnPointAnim = false;
 						if (!this.cameraFixed)
 						{
@@ -248,7 +241,6 @@ class Player
 		const	tmpCamera	= new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10000);
 		const	tmp			= this.camera;
 		let		interval	= null;
-		const	startColor	= oppponentObject.material.color.clone();
 		let		hue			= 0;
 
 		document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
@@ -267,10 +259,6 @@ class Player
 			this.camera = tmpCamera;
 			interval = setInterval(() => {
 				tmpCamera.lookAt(oppponentObject.position);
-				hue += 0.01;
-				if (hue > 1)
-					hue = 0;
-				oppponentObject.material.color.setHSL(hue, 1, 0.5);
 				tmpCamera.fov -= 0.05;
 				tmpCamera.updateProjectionMatrix();
 			}, 10);
@@ -279,7 +267,9 @@ class Player
 			}, 1000);
 			
 			setTimeout(() => {
-				clearInterval(interval);
+				if (interval)
+					clearInterval(interval);
+				interval = null;
 				document.getElementsByTagName('canvas')[canvasIndex].style.animation = null;
 				document.getElementsByTagName('canvas')[canvasIndex].style.animation = 'fadeInGames 0.99s';
 				document.getElementsByTagName('canvas')[canvasIndex].style.filter = 'brightness(0)';
@@ -289,7 +279,6 @@ class Player
 					ball.setCastShadow(true);
 
 					this.camera = tmp;
-					oppponentObject.material.color.copy(startColor);
 					isOnPointAnim = false;
 					if (!this.cameraFixed)
 					{
