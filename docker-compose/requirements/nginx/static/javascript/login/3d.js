@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:36:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/14 10:44:15 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/14 15:17:52 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ function main3d()
 	const	loader		= new GLTFLoader();
 	const	canvas		= document.getElementById('canvas-left-side');
 	const	div			= document.getElementById('left-side');
-	const	objectList	= [files.lampModel, files.plantModel, files.gameboyModel, files.tvModel];
+	const	objectList	= [files.plantModel, files.gameboyModel, files.tvModel];
 
 	renderer = new THREE.WebGLRenderer({canvas: canvas});
 	renderer.setSize(canvas.clientWidth, canvas.clientHeight);
@@ -32,7 +32,7 @@ function main3d()
 	camera.position.z = 5;
 	camera.position.y = 2;
 	scene.add(camera);
-	scene.background = new THREE.Color(0x696969);
+	scene.background = new THREE.Color(0xD3D3D3);
 	scene.add(new THREE.AmbientLight(0xffffff, 0.5));
 	const light = new THREE.DirectionalLight(0xffffff, 1);
 	light.position.set(0, 5, 5);
@@ -40,7 +40,7 @@ function main3d()
 	const nb = Math.floor(Math.random() * objectList.length);
 	loader.load(objectList[nb], (gltf) => {
 		const group = new THREE.Group();
-		const material =  new THREE.MeshPhysicalMaterial({color: 0x2e2e2e});
+		const material =  new THREE.MeshPhysicalMaterial({color: 0x5e5e5e});
 
 		gltf.scene.children.forEach(elem => {
 			elem.traverse((child) => {
@@ -54,12 +54,10 @@ function main3d()
 		});
 
 		if (nb == 0)
-			lampSettings(group);
-		else if (nb == 1)
 			plantSettings(group);
-		else if (nb == 2)
+		else if (nb == 1)
 			gameBoySettings(group);
-		else if (nb == 3)
+		else if (nb == 2)
 			tvSettings(group);
 		scene.add(group);
 	});
@@ -117,27 +115,34 @@ function loop()
 		scene.children[3].rotation.y += 0.005;
 }
 
-function lampSettings(group)
-{
-	group.scale.set(3, 3, 3);
-}
-
 function plantSettings(group)
 {
-	group.scale.set(0.5, 0.5, 0.5);
+	group.scale.set(0.8, 0.8, 0.8);
+	group.position.set(0, -0.8, 0);
 }
 
 function gameBoySettings(group)
 {
-	group.scale.set(0.7, 0.7, 0.7);
-	group.rotation.set(0, 0, -1.5);
+	let i = 0;
+
+	group.children[0].children.forEach(elem => {
+		if (i == 0)
+			elem.material = new THREE.MeshPhysicalMaterial({color: 0x3e3e3e});
+		if (i == 4)
+			elem.material = new THREE.MeshPhysicalMaterial({color: 0x9e9e9e});
+		elem.position.x = -20;
+		i++;
+	});
+	group.scale.set(0.9, 0.9, 0.9);
+	group.rotation.set(0, -2, -1.5);
 	group.position.set(0, 2, 0);
 }
 
 function tvSettings(group)
 {
-	group.scale.set(0.25, 0.25, 0.25);
+	group.scale.set(0.34, 0.34, 0.34);
 	group.position.set(0, 1.5, 0);
+	group.rotation.set(0, 2.8, 0);
 }
 
 export { main3d, dispose3d };
