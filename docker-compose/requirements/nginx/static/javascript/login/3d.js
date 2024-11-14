@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:36:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/13 23:34:24 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/14 10:44:15 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ function main3d()
 
 function resizeCanvas()
 {
+	const canvas = document.getElementById('canvas-left-side');
+
 	canvas.style.width = '100%';
 	canvas.style.height = '100%';
 	renderer.setSize(canvas.clientWidth, canvas.clientHeight);
@@ -80,7 +82,6 @@ function resizeCanvas()
 function dispose3d()
 {
 	window.removeEventListener('resize', resizeCanvas);
-	console.log('dispose3d');
 	if (renderer)
 		renderer.dispose();
 	if (scene)
@@ -111,7 +112,6 @@ function dispose3d()
 
 function loop()
 {
-	console.log('loop');
 	renderer.render(scene, camera);
 	if (scene.children[3])
 		scene.children[3].rotation.y += 0.005;
