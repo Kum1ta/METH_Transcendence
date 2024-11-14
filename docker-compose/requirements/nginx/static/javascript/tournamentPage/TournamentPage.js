@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/11 11:41:30 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/14 17:34:36 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,13 @@ class TournamentPage
 		playerList['player' + playerNb[i]].id = content.id;
 		playerList['player' + playerNb[i]].pfp = content.pfp;
 		playerList['player' + playerNb[i]].username = content.username;
+		if (playerList.player16.id != -1)
+		{
+			const quitButton = document.getElementById('quitButton');
+
+			quitButton.style.display = 'none';
+			console.warn("Tournament is full. Removing quit button.");
+		}
 	}
 
 	static leaveOpponent(content)
