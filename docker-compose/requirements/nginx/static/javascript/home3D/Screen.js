@@ -98,6 +98,7 @@ class Screen
 		video.loop = true;
 		video.muted = true;
 		video.crossOrigin = 'anonymous';
+		video.setAttribute("playsinline", "");
 
 		video.addEventListener('loadedmetadata', () => {
 			const texture = this.screen.material.map;
