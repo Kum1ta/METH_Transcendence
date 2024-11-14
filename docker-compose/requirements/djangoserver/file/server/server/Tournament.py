@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/11/14 13:42:03 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/14 13:46:45 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,13 +69,13 @@ class Tournament:
 		return(-1)
 
 	def leave(self, socket):
-		if(self.started):
-			return;
 		index = self.playerFromSocket(socket)
 		if(index == -1):
 			return;
-		self.players.pop(index)
 		socket.tournament = None
+		if(self.started):
+			return;
+		self.players.pop(index)
 		self.broadcast({"action":2,"id":index})
 
 	def join(self, socket, skin=0, goal=0, isBot=False):
