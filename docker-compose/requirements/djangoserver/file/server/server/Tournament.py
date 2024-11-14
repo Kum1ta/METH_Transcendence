@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 16:32:35 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/14 14:35:32 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ class Tournament:
 		self.history = []
 		self.nbBot = nbBot
 		self.end = False
+		self.started = False
 		self.genCode()
 		Tournament.currentTournaments[self.code] = self
 		self.join(socket, skin, goal)
@@ -73,8 +74,8 @@ class Tournament:
 		index = self.playerFromSocket(socket)
 		if(index == -1):
 			return;
-		self.players.pop(index)
 		socket.tournament = None
+		self.players.pop(index)
 		self.broadcast({"action":2,"id":index})
 
 	def join(self, socket, skin=0, goal=0, isBot=False):

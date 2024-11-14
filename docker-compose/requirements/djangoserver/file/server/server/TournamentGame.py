@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/22 01:37:00 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 01:37:12 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/14 13:59:35 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ class TournamentGame:
 			print("waiting for player")
 			nbLoop += 1
 			await asyncio.sleep(0.1)
-		if(not l.socket.online or not r.socket.online):
+		if(not l.socket.tournament == self.tournament  or not r.socket.tournament == self.tournament):
 			print("player is not online, opponent is winner")
 			self.winner = l if l.socket.online else r
 			return;
