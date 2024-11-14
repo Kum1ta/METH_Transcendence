@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/09 10:51:31 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/14 10:49:34 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,7 +242,7 @@ function home3D()
 		{
 			if (clickDetect)
 			{
-				document.getElementsByTagName('canvas')[0].removeEventListener('click', redirection);
+				document.getElementsByTagName('canvas')[1].removeEventListener('click', redirection);
 				clickDetect = false;
 			}
 			if (playButtonMouseOver || intersects[0].object == screen.screen)
@@ -259,7 +259,7 @@ function home3D()
 				{
 					if (!clickDetect && userMeInfo.id > 0)
 					{
-						document.getElementsByTagName('canvas')[0].addEventListener('click', redirection);
+						document.getElementsByTagName('canvas')[1].addEventListener('click', redirection);
 						clickDetect = true;
 					}
 				}
