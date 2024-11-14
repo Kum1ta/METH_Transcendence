@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/13 23:33:35 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:53:15 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -541,10 +541,11 @@ footer {
 	}
 
 	.team {
+		display: grid;
 		padding-inline: 30px;
-		padding-block: 50px;
-		flex-wrap: nowrap;
-		overflow-x: auto;
+		padding-top: 50px;
+		padding-bottom: 70px;
+		gap: 65px;
 	}
 
 	.team-member {
