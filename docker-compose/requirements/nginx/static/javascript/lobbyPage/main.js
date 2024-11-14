@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/10/14 21:45:07 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:48:15 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ class LobbyPage
 		listSelectCard[1].addEventListener('click', selectGameModeTwo);
 		listSelectCard[2].addEventListener('click', selectGameModeThree);
 		listSelectCard[3].addEventListener('click', selectGameModeFour);
-		func[gameMode]();
+		func[gameMode](null, true);
 		document.getElementsByClassName('mode-card')[0].getElementsByTagName('p')[0].innerHTML = listSelectCard[gameMode].innerHTML;
 		for (let i = 0; i < document.body.children.length; i++)
 		{
@@ -213,11 +213,20 @@ function closePopUpWhenClickOutsite (event)
         document.getElementById('loginPopup').style.display = 'none';
 };
 
-function selectGameModeOne()
+function selectGameModeOne(event, disableScroll = false)
 {
 	const	menuList = document.getElementsByClassName('menuSelected');
 	const	gameModeDiv	= document.getElementsByClassName('game-mode')[0].children;
 
+	if (!disableScroll)
+	{
+		setTimeout(() => {
+			window.scroll({
+				top: 100000,
+				behavior: 'smooth'
+			});
+		}, 50);
+	}
 	for (let i = 0; i < menuList.length; i++)
 	{
 		menuList[i].style.display = 'none';
@@ -239,11 +248,20 @@ function selectGameModeOne()
 	gameMode = 0;
 }
 
-function selectGameModeTwo()
+function selectGameModeTwo(event, disableScroll = false)
 {
 	const	menuList	= document.getElementsByClassName('menuSelected');
 	const	gameModeDiv	= document.getElementsByClassName('game-mode')[0].children;
 
+	if (!disableScroll)
+	{
+		setTimeout(() => {
+			window.scroll({
+				top: 100000,
+				behavior: 'smooth'
+			});
+		}, 50);
+	}
 	for (let i = 0; i < menuList.length; i++)
 	{
 		menuList[i].style.display = 'none';
@@ -274,11 +292,20 @@ function selectGameModeTwo()
 	gameMode = 1;
 }
 
-function selectGameModeThree()
+function selectGameModeThree(event, disableScroll = false)
 {
 	const	menuList = document.getElementsByClassName('menuSelected');
 	const	gameModeDiv	= document.getElementsByClassName('game-mode')[0].children;
 
+	if (!disableScroll)
+	{
+		setTimeout(() => {
+			window.scroll({
+				top: 100000,
+				behavior: 'smooth'
+			});
+		}, 50);
+	}
 	for (let i = 0; i < menuList.length; i++)
 	{
 		menuList[i].style.display = 'none';
@@ -306,11 +333,20 @@ function selectGameModeThree()
 	gameMode = 2;
 }
 
-function selectGameModeFour()
+function selectGameModeFour(event, disableScroll = false)
 {
 	const	menuList = document.getElementsByClassName('menuSelected');
 	const	gameModeDiv	= document.getElementsByClassName('game-mode')[0].children;
 
+	if (!disableScroll)
+	{
+		setTimeout(() => {
+			window.scroll({
+				top: 100000,
+				behavior: 'smooth'
+			});
+		}, 50);
+	}
 	for (let i = 0; i < menuList.length; i++)
 	{
 		menuList[i].style.display = 'none';

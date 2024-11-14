@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/28 22:56:32 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/14 15:27:15 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,12 +153,11 @@ function inputChange(isPfp, event)
 		let binary = '';
 		const bytes = new Uint8Array(buffer);
 		const len = bytes.byteLength;
-		for (let i = 0; i < len; i++) {
+		for (let i = 0; i < len; i++)
 		  binary += String.fromCharCode(bytes[i]);
-		}
 		return window.btoa(binary);
-	  }
-	if (validTypes.includes(file.type))
+	}
+	if (file && validTypes.includes(file.type))
 	{
 		reader.onload = (e) => {
 			const arrayBuffer = e.target.result;
