@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 16:32:35 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/14 13:42:03 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ class Tournament:
 		self.history = []
 		self.nbBot = nbBot
 		self.end = False
+		self.started = False
 		self.genCode()
 		Tournament.currentTournaments[self.code] = self
 		self.join(socket, skin, goal)
