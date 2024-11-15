@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiLocalGamePage.js                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:07:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/11 15:42:23 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/11/15 16:36:53 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ class multiLocalGamePage
 		renderer.domElement.style.filter = 'brightness(1)';
 		document.getElementById('score').style.animation = 'fadeOutStartGames 1s';
 
+		window.addEventListener('resize', windowUpdater);
 		renderer.shadowMap.enabled = true;
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		Ball.create(scene);
@@ -121,5 +122,12 @@ function gameFinish()
 		}, 500);
 	}, 3000);
 }
+
+function windowUpdater()
+{
+	renderer.setSize(window.innerWidth, window.innerHeight);
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+};
 
 export { multiLocalGamePage };
