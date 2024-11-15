@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:00:21 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/09 11:12:43 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/15 23:19:38 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ class Page
 			{
 				if (window.location.pathname == thisClass.availablePages[i].url || (thisClass.availablePages[i].suffix && window.location.pathname.startsWith(thisClass.availablePages[i].url)))
 				{
+					if (window.location.pathname == '/game')
+					{
+						history.replaceState({}, '', '/lobby');
+						thisClass.changePage('lobbyPage', true, null, false);
+						return ;
+					}
 					let arg = window.location.pathname.slice(thisClass.availablePages[i].url.length + 1);
 					if (arg == "" || !thisClass.availablePages[i].suffix)
 						arg = null;
