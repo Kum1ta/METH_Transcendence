@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   liveChat.css                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:53:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/04 20:43:32 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/11/15 14:36:36 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@
 }
 
 #buttonTypeChatHome h2 {
-	text-align: center;	
 	font-size: 20px;
 	color: #dfdfdf;
 	padding-top: 5px;
 	padding-bottom: 5px;
+	padding-left: 20px;
 }
 
 #selected {
@@ -144,9 +144,6 @@
 	border-radius: 100%;
 }
 
-
-
-
 #messageListChatHome .opponentMessage {
 	max-width: 80%;
 	padding: 10px;
@@ -187,7 +184,6 @@
 	position: absolute;
 	width: 348px;
 	height: 50px;
-	background-color: #0B0B0B;
 	bottom: 10px;
 	color: white;
 	display: flex;
@@ -196,8 +192,9 @@
 
 #inputMessageDiv p {
 	margin: 0;
-	margin-left: 10px;
-	margin-right: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color: #080808;
 	font-family: "Poppins";
 	font-weight: bolder;
 	font-size: 35px;
@@ -276,14 +273,17 @@
 	}
 	
 	#chatDiv {
-		width: 80%;
+		width: calc(90% - 40px);
+		position: fixed;
+		left: 50%;
+		transform: translateX(-50%);
 	}
 
 	#inputMessageDiv {
-		width: 87%;
+		width: 100%;
 	}
 
 	#inputMessage {
-		width: 100%;
+		width: calc(80% - 20px);
 	}
 }

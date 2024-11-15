@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:19:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/15 13:53:22 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/15 13:56:00 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,7 +261,6 @@ function home3D()
 					{
 						document.getElementsByTagName('canvas')[1].addEventListener('click', redirection);
 						clickDetect = true;
-						console.log('clickDetect');
 					}
 				}
 			}

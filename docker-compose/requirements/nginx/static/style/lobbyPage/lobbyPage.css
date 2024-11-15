@@ -643,9 +643,6 @@ input:checked + .slider:before {
 		height: 150px;
 		margin: 5px;
 	}
-	#chatDiv {
-		width: 80%;
-	}
 	.keys{
 		display: none;
 	}
