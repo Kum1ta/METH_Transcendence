@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/13 15:23:47 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/14 15:31:28 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -436,7 +436,7 @@ class Player
 
 		const value = 0.004;
 
-		for (let i = 1; i < 10; i++)
+		for (let i = 0; i < 10; i++)
 		{
 			setTimeout(() => {
 				object.scale.z += value;
