@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/13 15:22:43 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:07:44 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,7 @@ class MultiOnlineGamePage
 		interval = null;
 		if (intervalPing)
 			clearInterval(intervalPing);
+		lastPingTime = 0;
 		intervalPing = null;
 		if (renderer)
 			renderer.dispose();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/13 14:54:17 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/14 15:33:50 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,17 @@ class Map
 
 		initialSpeed = 0.15;
 		speed = 1;
-		if (Math.random() > 0.5)
-		{
-			vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
+		vec2.z = 0 * initialSpeed;
+		// if (Math.random() > 0.5)
+		// {
+		// 	vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
 			vec2.x = Math.sqrt(initialSpeed * initialSpeed - vec2.z * vec2.z);
-		}
-		else
-		{
-			vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
-			vec2.x = Math.sqrt(initialSpeed * initialSpeed - vec2.z * vec2.z);
-		}
+		// }
+		// else
+		// {
+		// 	vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
+		// 	vec2.x = Math.sqrt(initialSpeed * initialSpeed - vec2.z * vec2.z);
+		// }
 
 		setTimeout(() => {
 			scoreElement.innerHTML = '3';
@@ -182,7 +183,7 @@ class Map
 	{
 		const value = 0.01;
 
-		for (let i = 1; i < 10; i++)
+		for (let i = 0; i < 10; i++)
 		{
 			setTimeout(() => {
 				player.scale.z += value;

@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/13 22:16:05 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/15 15:41:01 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,9 @@ class Ball
 			this.start = performance.now()
 		let gameTime = performance.now() - this.start
 		if(content.game_time > gameTime)
-			this.start -= content.game_time - gameTime 
+			this.start -= content.game_time - gameTime
+		if (content.velocity[0] == 0 && content.velocity[1] == 0)
+			this.object.position.set(content.pos[0], this.limits.down, content.pos[1]);
 		this.srvPos = {
 			time : content.game_time,
 			pos : [content.pos[0], content.pos[1]],
