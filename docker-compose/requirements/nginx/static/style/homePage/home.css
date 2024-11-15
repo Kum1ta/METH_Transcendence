@@ -6,7 +6,7 @@
 /*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/14 16:53:15 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/11/15 14:08:22 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,12 @@ button {
     background-color: #fff;
     margin-bottom: 20px;
 	transition: background-color 0.3s ease;
+	color: black;
+	-webkit-appearance: none;
+}
+
+.login-btn:focus {
+	color: black;
 }
 
 .login-btn:hover {
@@ -301,6 +307,12 @@ button {
     justify-content: center;
     align-items: center;
 	transition: background-color 0.3s ease;
+	color: black;
+	-webkit-appearance: none;
+}
+
+.login-42-btn:focus {
+	color: black;
 }
 
 #logo-ft {
@@ -434,7 +446,7 @@ button {
 }
 
 .team-member:hover .info {
-    transform: translateX(-50%) translateY(25%);
+    transform: translateX(-50%) translateY(55%);
     opacity: 1;
 }
 
