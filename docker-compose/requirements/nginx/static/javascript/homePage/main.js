@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:02:19 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/09 22:43:31 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/15 12:59:15 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@ import { redirection, changePlayButtonMouseOverValue } from "/static/javascript/
 import { LiveChat } from "/static/javascript/liveChat/main.js";
 import { Home3D } from "/static/javascript/home3D/home3D.js"
 import { Login } from "/static/javascript/login/main.js";
+import { dispose3d } from "/static/javascript/login/3d.js";
 
 class HomePage
 {
@@ -36,6 +37,7 @@ class HomePage
 		document.getElementById('buttonProject').addEventListener('click', () => scrollToSection(0));
 		document.getElementById('buttonAuthors').addEventListener('click', () => scrollToSection(1));
 		document.getElementById('cross-login').addEventListener('click', () => {
+			dispose3d();
 			document.getElementById('loginPopup').style.display = 'none';
 			document.body.style.overflow = 'auto';
 		});

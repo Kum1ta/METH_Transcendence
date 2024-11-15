@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:36:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/14 15:17:52 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/15 13:03:41 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ function main3d()
 		scene.add(group);
 	});
 	renderer.setAnimationLoop(loop);
-
 	window.addEventListener('resize', resizeCanvas);
 }
 
@@ -81,7 +80,10 @@ function dispose3d()
 {
 	window.removeEventListener('resize', resizeCanvas);
 	if (renderer)
+	{
+		renderer.setAnimationLoop(null);
 		renderer.dispose();
+	}
 	if (scene)
 	{
 		for (let i = scene.children.length - 1; i >= 0; i--)
@@ -110,6 +112,11 @@ function dispose3d()
 
 function loop()
 {
+	if (!renderer)
+	{
+		dispose3d();
+		return ;
+	}
 	renderer.render(scene, camera);
 	if (scene.children[3])
 		scene.children[3].rotation.y += 0.005;
