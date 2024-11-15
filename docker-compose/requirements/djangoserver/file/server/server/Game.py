@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 16:21:18 by tomoron           #+#    #+#              #
-#    Updated: 2024/11/13 16:30:41 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/15 17:08:23 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -276,7 +276,7 @@ class Game:
 		if(stop):
 			self.ball.vel = [0, 0]
 		else:
-			self.ball.setStartVel(self.lastWin == 2)
+			self.ball.setStartVel(self.lastWin == 1)
 		self.sendNewBallInfo(True)
 		self.gameStart = time.time()
 

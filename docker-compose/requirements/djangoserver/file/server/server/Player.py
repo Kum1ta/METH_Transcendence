@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/05 03:22:32 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 15:35:59 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/15 16:43:28 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,12 +40,13 @@ class Player():
 			newPos = leftLimit if newPos < 0 else rightLimit
 			return(newPos)
 
-		print("speed :", abs(newPos - self.pos["pos"]) * (1 / deltaTime))
 		if(abs(newPos - self.pos["pos"]) * (1 / deltaTime) > GameSettings.maxPlayerSpeed + GameSettings.playerSpeedTolerance):
 			newMove = GameSettings.maxPlayerSpeed * deltaTime
 			if(newPos - self.pos["pos"] < 0):
 				newMove = -newMove
 			print("\033[31mplayer is too fast")
+			print("speed :", abs(newPos - self.pos["pos"]) * (1 / deltaTime))
+			print("time : ", deltaTime)
 			newPos = self.pos["pos"] + newMove
 			return(newPos)
 		print("no problem")
