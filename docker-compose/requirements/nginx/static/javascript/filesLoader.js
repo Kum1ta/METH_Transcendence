@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filesLoader.js                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 22:36:43 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/13 22:35:34 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/15 18:18:07 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ const	url_files = {
 		bottom: '/static/img/skin/1/bottom.jpg',
 		front: '/static/img/skin/1/front.jpg',
 		back: '/static/img/skin/1/back.jpg',
-		show: '/static/img/skin/1/back.jpg',
+		show: '/static/img/skin/1/pre.jpg',
 	},
 	skinTwoTexture: {
 		left: '/static/img/skin/2/left.jpg',
@@ -47,7 +47,7 @@ const	url_files = {
 		bottom: '/static/img/skin/2/bottom.jpg',
 		front: '/static/img/skin/2/front.jpg',
 		back: '/static/img/skin/2/back.jpg',
-		show: '/static/img/skin/2/back.jpg',
+		show: '/static/img/skin/2/pre.jpg',
 	},
 	skinThreeTexture: {
 		left: '/static/img/skin/3/left.jpg',
@@ -56,7 +56,7 @@ const	url_files = {
 		bottom: '/static/img/skin/3/bottom.jpg',
 		front: '/static/img/skin/3/front.jpg',
 		back: '/static/img/skin/3/back.jpg',
-		show: '/static/img/skin/3/back.jpg',
+		show: '/static/img/skin/3/pre.jpg',
 	},
 	skinFourTexture: {
 		left: '/static/img/skin/4/left.jpg',
@@ -65,7 +65,7 @@ const	url_files = {
 		bottom: '/static/img/skin/4/bottom.jpg',
 		front: '/static/img/skin/4/front.jpg',
 		back: '/static/img/skin/4/back.jpg',
-		show: '/static/img/skin/4/back.jpg',
+		show: '/static/img/skin/4/pre.jpg',
 	},
 }
 
