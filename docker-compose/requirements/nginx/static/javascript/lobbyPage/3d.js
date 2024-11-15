@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/12 19:19:33 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/15 15:08:44 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,9 +286,11 @@ class goalSelecter
 
 	changeGoal(event)
 	{
+		if (!this.scene)
+			return ;
 		const	popup	=	document.getElementById('popup-goal-selector');
-	
 		const id = event.target.parentElement.getAttribute('goalId');
+
 		popup.style.display = 'none';
 		lastSelectedGoal = availableGoals[id];
 		this.selected = availableGoals[id];
@@ -318,7 +320,6 @@ class goalSelecter
 	disposeGoalSelector()
 	{
 		const	colorBoxGoal	=	document.getElementsByClassName('color-box-goal');
-
 
 		for (let i = colorBoxGoal.length - 1; i >= 0; i--)
 		{
