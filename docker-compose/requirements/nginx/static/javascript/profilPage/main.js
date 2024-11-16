@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/14 15:27:15 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/17 00:18:32 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ class ProfilPage
 		const	convButton		=	document.getElementById('newConv');
 		const	inviteButton	=	document.getElementById('invite');
 		const	crossProfil		=	document.getElementById('cross-profil');
-		let		ctx				=	document.getElementById('stats').getContext('2d');
 		const	elo				=	document.getElementById('player-elo');
 		let		editPenPfpBg	=	null;
 		let		inputPfp		=	null;
@@ -76,8 +75,8 @@ class ProfilPage
 			banner.style.backgroundRepeat = "no-repeat";
 			elo.innerHTML = `Elo: ${userInfo.elo}`;
 			externButtons(userInfo);
-			createGraph(ctx, {win: userInfo.nbWin, lose: userInfo.nbLoss});
 			showHistory(userInfo);
+			buttonDashboard(userInfo);
 			if (userInfo.id == userMeInfo.id)
 			{
 				inviteButton.remove();
@@ -234,6 +233,44 @@ function showHistory(userInfo)
 	});
 }
 
+function buttonDashboard(userInfo)
+{
+	const	buttonLeft		=	document.getElementById('leftArrowDashboard');
+	const	buttonRight		=	document.getElementById('rightArrowDashboard');
+	const	contentStats	=	document.getElementsByClassName('contentStats')[0];
+	let		actualPage		=	0;
+
+	function changeDashboard()
+	{
+		contentStats.innerHTML = '';
+		if (actualPage == 0)
+		{
+			contentStats.innerHTML = `<canvas id="stats"></canvas>`;
+			const ctx = document.getElementById('stats').getContext('2d');
+			createGraph(ctx, {win: userInfo.nbWin, lose: userInfo.nbLoss});
+		}
+		else if (actualPage == 1)
+		{
+			contentStats.innerHTML = `
+			<p class="dashboard-line">Winrate<span>100%</span></p>
+			<p class="dashboard-line">Opponent give up rate<span>0%</span></p>
+			<p class="dashboard-line">Average goal number<span>3.5</span></p>
+			<p class="dashboard-line">Number of parties (last 30 days)<span>10</span></p>
+			`;
+		}
+	}
+
+	buttonLeft.addEventListener('click', () => {
+		actualPage = actualPage == 0 ? 1 : 0;
+		changeDashboard();
+	});
+	buttonRight.addEventListener('click', () => {
+		actualPage = actualPage == 0 ? 1 : 0;
+		changeDashboard();
+	});
+
+	changeDashboard();
+}
                    
 
 

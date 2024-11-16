@@ -103,6 +103,7 @@
     display: flex;
     justify-content: space-between;
     margin-top: 100px;
+    position: relative;
 }
 
 #profil .dashboard {
@@ -111,6 +112,7 @@
     height: 42vh;
     padding: 20px;
     text-align: center;
+    position: relative;
 }
 
 #profil .history #scroll-match {
@@ -261,6 +263,36 @@
     cursor: pointer;
 }
 
+#profil .dashboard h3 {
+    margin-top: 10px;
+}
+
+#profil .dashboard .button-dashboard {
+    background-color: #aeaeae;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+#profil .dashboard .button-dashboard:focus {
+    outline: none;
+}
+
+#profil .contentStats .dashboard-line {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+#profil .contentStats .dashboard-line span {
+    font-weight: bold;
+    position: absolute;
+    right: 0;
+}
 
 @media (max-width: 700px){
     #profil .container {
