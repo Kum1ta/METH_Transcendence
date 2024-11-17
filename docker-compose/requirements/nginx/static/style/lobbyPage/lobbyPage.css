@@ -402,6 +402,12 @@ body {
 	width: 30%;
 }
 
+.search-container-mobile {
+	display: none;
+	align-items: flex-start;
+	width: 30%;
+}
+
 .search-input {
 	width: 100%;
 	padding: 10px;
@@ -617,6 +623,17 @@ input:checked + .slider:before {
 	}
 	.search-container {
 		display: none;
+	}
+	.search-container-mobile {
+		width: 100%;
+		position: absolute;
+		display: flex;
+	}
+	  
+	.search-input input {
+		left: 50%;
+		transform: translate(-50%);
+		width: 90%;
 	}
 	.menuSelected {
 		flex-direction: column;
