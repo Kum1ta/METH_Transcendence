@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/17 00:18:32 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:26:23 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,6 +240,7 @@ function buttonDashboard(userInfo)
 	const	contentStats	=	document.getElementsByClassName('contentStats')[0];
 	let		actualPage		=	0;
 
+	console.log(userInfo);
 	function changeDashboard()
 	{
 		contentStats.innerHTML = '';
@@ -251,11 +252,13 @@ function buttonDashboard(userInfo)
 		}
 		else if (actualPage == 1)
 		{
+			const	winrate = Math.round((userInfo.nbWin / (userInfo.nbWin + userInfo.nbLoss)) * 100);
+
 			contentStats.innerHTML = `
-			<p class="dashboard-line">Winrate<span>100%</span></p>
-			<p class="dashboard-line">Opponent give up rate<span>0%</span></p>
-			<p class="dashboard-line">Average goal number<span>3.5</span></p>
-			<p class="dashboard-line">Number of parties (last 30 days)<span>10</span></p>
+			<p class="dashboard-line">Winrate<span>${winrate}%</span></p>
+			<p class="dashboard-line">Opponent give up rate<span>${userInfo.forfeitRate}%</span></p>
+			<p class="dashboard-line">Average goal number<span>${userInfo.avgGoals}</span></p>
+			<p class="dashboard-line">Number of parties (last 30 days)<span>${userInfo.nbGames30Days}</span></p>
 			`;
 		}
 	}
