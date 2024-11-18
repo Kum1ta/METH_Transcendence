@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 17:00:35 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/06 17:02:12 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/18 23:18:34 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ function movePopMenuLoginButton()
 	const	popMenuLoginButton 	= document.getElementById('popMenuLoginButton');
 
 	popMenuLoginButton.style.left = pos.left + "px";
-	popMenuLoginButton.style.top = pos.top + pos.height + "px";
+	popMenuLoginButton.style.top = pos.top + pos.height - 25 + "px";
 }
 
 function showMenu()
