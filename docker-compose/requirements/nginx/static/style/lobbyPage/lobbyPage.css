@@ -402,19 +402,12 @@ body {
 	width: 30%;
 }
 
-.search-container-mobile {
-	display: none;
-	align-items: flex-start;
-	width: 30%;
-}
-
 .search-input {
 	width: 100%;
 	padding: 10px;
 	border: 2px solid #ccc;
 	font-size: 16px;
 	outline: none;
-	min-width: 200px;
 }
 
 #nbBot {
@@ -620,16 +613,22 @@ input:checked + .slider:before {
 		flex-direction: column;
 		display: unset;
 		padding-inline: inherit;
+		margin-top: 45px;
 	}
 	.search-container {
-		display: none;
-	}
-	.search-container-mobile {
-		width: 100%;
 		position: absolute;
-		display: flex;
+		left: 50%;
+		transform: translateX(-50%);
+		top: 100px;
+		width: 100%;
 	}
-	  
+	.search-container input {
+		min-width: 200px;
+	}
+	.search-input {
+		margin-inline: 50px;
+	}
+
 	.search-input input {
 		left: 50%;
 		transform: translate(-50%);
