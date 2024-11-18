@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 00:16:57 by edbernar          #+#    #+#              #
-#    Updated: 2024/11/18 14:32:21 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/18 14:49:07 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,39 +37,42 @@ def getHistory(user, games):
 		})	
 	return(res)
 
-def getStats(user):
-	games = GameResults.objects.filter(Q(player1=user) | Q(player2=user))
-	nbGames = games.count()
-	nbWin = games.filter(winner=user).count()
-	history = getHistory(user, games.order_by("-end_date")[:10])
-	nbForfeitOpponent = games.filter(Q(winner=user) & Q(forfeit=True))
-	if(nbGames):
-		forfeitRate = (100 / nbGames) * nbForfeitOpponent
-	else:
-		forfeitRate = 0
+def getStats(user, socket):
+	try:
+		games = GameResults.objects.filter(Q(player1=user) | Q(player2=user))
+		nbGames = games.count()
+		nbWin = games.filter(winner=user).count()
+		history = getHistory(user, games.order_by("-end_date")[:10])
+		nbForfeitOpponent = games.filter(Q(winner=user) & Q(forfeit=True)).count()
+		if(nbGames):
+			forfeitRate = (100 / nbGames) * nbForfeitOpponent
+		else:
+			forfeitRate = 0
 
-	averageScorePlayer1 = GameResults.objects.filter(player1=user).aggregate(Avg('p1Score'))["p1Score__avg"]
-	averageScorePlayer2 = GameResults.objects.filter(player2=user).aggregate(Avg('p2Score'))["p2Score__avg"]
-	if(averageScorePlayer1 == None and averageScorePlayer2 == None):
-		avgGoals = 0
-	elif(averageScorePlayer1 == None):
-		avgGoals = averageScorePlayer2
-	elif(averageScorePlayer2 == None):
-		avgGoals = averageScorePlayer1
-	else:
-		avgGoals = (averageScorePlayer1 + averageScorePlayer2) / 2
-	limit = timezone.now() - timedelta(days=30)
-	nbGames30Days = games.filter(end_date__gt=limit).count()
+		averageScorePlayer1 = GameResults.objects.filter(player1=user).aggregate(Avg('p1Score'))["p1Score__avg"]
+		averageScorePlayer2 = GameResults.objects.filter(player2=user).aggregate(Avg('p2Score'))["p2Score__avg"]
+		if(averageScorePlayer1 == None and averageScorePlayer2 == None):
+			avgGoals = 0
+		elif(averageScorePlayer1 == None):
+			avgGoals = averageScorePlayer2
+		elif(averageScorePlayer2 == None):
+			avgGoals = averageScorePlayer1
+		else:
+			avgGoals = (averageScorePlayer1 + averageScorePlayer2) / 2
+		limit = timezone.now() - timedelta(days=30)
+		nbGames30Days = games.filter(end_date__gt=limit).count()
 
 
-	res = {}
-	res["nbLoss"] = nbGames - nbWin
-	res["nbWin"] = nbWin
-	res["forfeitRate"] = forfeitRate
-	res["avgGoals"] = avgGoals
-	res["nbGames30Days"] = nbGames30Days
-	res["history"] = history
-	return(res)
+		res = {}
+		res["nbLoss"] = int(nbGames) - int(nbWin)
+		res["nbWin"] = int(nbWin)
+		res["forfeitRate"] = int(forfeitRate)
+		res["avgGoals"] = int(avgGoals)
+		res["nbGames30Days"] = int(nbGames30Days)
+		res["history"] = history
+		return(res)
+	except Exception as e:
+		socket.sendError("invalid request", 9005, e)
 
 
 @sync_to_async
@@ -85,7 +88,8 @@ def getUserInfo(socket, content):
 			socket.sync_send({"type":"user_info", "content": None})
 			return
 		user = user[0]
-		stats = getStats(user)
+		stats = getStats(user, socket)
+		print(stats)
 		online = True if user.id in socket.onlinePlayers else False
 		socket.sync_send({"type":"user_info", "content":{
 			'username': user.username,
