@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/18 17:02:43 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/18 19:24:56 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ let		initialSpeed	=	0;
 let		speed			=	0;
 let		gameEndStatus	=	false;
 const	scoreToWin		=	3;
-let 	collided		=	false;
+let 	collidedSide	=	false;
+let 	collidedBlock	=	false;
 let 	deltaTime		=	1;
 let 	previousTime	=	Date.now();
 
@@ -56,19 +57,19 @@ class Map
 		wallTop = createWall(true);
 		scene.add(wallTop);
 
-		initialSpeed = 0.15;
-		speed = 1;
-		vec2.z = 0 * initialSpeed;
-		// if (Math.random() > 0.5)
-		// {
-		// 	vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
-			vec2.x = Math.sqrt(initialSpeed * initialSpeed - vec2.z * vec2.z);
-		// }
-		// else
-		// {
-		// 	vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
-		// 	vec2.x = Math.sqrt(initialSpeed * initialSpeed - vec2.z * vec2.z);
-		// }
+		initialSpeed = 0.1;
+		speed = 0.4;
+		// vec2.z = 0 * initialSpeed;
+		if (Math.random() > 0.5)
+		{
+			vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
+			vec2.x = (speed - Math.abs(vec2.z));
+		}
+		else
+		{
+			vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
+			vec2.x = -(speed - Math.abs(vec2.z));
+		}
 
 		setTimeout(() => {
 			scoreElement.innerHTML = '3';
@@ -103,62 +104,49 @@ class Map
 			return ;
 
 		// collision wall top and bottom
-		if (ball.position.z > 5.7 || ball.position.z < -5.7)
+		if ((ball.position.z > 5.7 || ball.position.z < -5.7) && !collidedBlock)
+		{
+			collidedBlock = true;
 			vec2.z *= -1;
+		}
 
 		// collision player2 left
-		if (ball.position.x > 11.45 && ball.position.x < 12.2 && !collided)
+		if (ball.position.x > 11.45 && ball.position.x < 12.2 && !collidedSide)
 		{
 			if (ball.position.z < player2.position.z + 1.25 && ball.position.z > player2.position.z - 1.25)
 			{
 				Map.scalePlayer(player2);
-				collided = true;
-				vec2.x *= -1;
-				// Ca bug donc je le laisse en commentaire
-				// if (ball.position.z < player2.position.z + 0.5)
-				// {
-				// 	vec2.z -= 0.05;
-				// 	vec2.x += 0.05;
-				// }
-				// else if (ball.position.z > player2.position.z + 0.5)
-				// {
-				// 	vec2.z += 0.05;
-				// 	vec2.x -= 0.05;
-				// }
+				collidedSide = true;
+				collidedBlock = false;
+				vec2.z = -((speed * 0.80) * ((player2.position.z - ball.position.z) / 1.25));
+				vec2.x = -(speed - Math.abs( vec2.z));
 			}
 		} // collision player1 right
-		else if (ball.position.x < -11.45 && ball.position.x > -12.2 && !collided)
+		else if (ball.position.x < -11.45 && ball.position.x > -12.2 && !collidedSide)
 		{
 			if (ball.position.z < player1.position.z + 1.25 && ball.position.z > player1.position.z - 1.25)
 			{	
 				Map.scalePlayer(player1);
-				collided = true;
-				vec2.x *= -1;
-				// Ca bug donc je le laisse en commentaire
-				// if (ball.position.z < player1.position.z + 0.5)
-				// {
-				// 	vec2.z -= 0.05;
-				// 	vec2.x += 0.05;
-				// }
-				// else if (ball.position.z > player1.position.z + 0.5)
-				// {
-				// 	vec2.z += 0.05;
-				// 	vec2.x -= 0.05;
-				// }
+				collidedSide = true;
+				collidedBlock = false;
+				vec2.z = -((speed * 0.80) * ((player1.position.z - ball.position.z) / 1.25));
+				vec2.x = (speed - Math.abs( vec2.z));
 			}
 		}
 
-		// accept new players collision if ball cross the middle map
-		if (collided && ball.position.x < 3 && ball.position.x > -3)
-			collided = false;
+		// accept new balls collision if ball cross the middle map
+		if (collidedSide && ball.position.x < 3 && ball.position.x > -3)
+			collidedSide = false;
+		if (collidedBlock && (ball.position.z < 3 && ball.position.z > -3))
+			collidedBlock = false;
 
 		// velocity
 		ball.position.x += vec2.x * speed * deltaTime;
 		ball.position.z += vec2.z * speed * deltaTime;
 		if (speed < 3)
-			speed += 0.0025;
+			speed += 0.00025;
 
-		// ball opacity
+		// ball opacitys
 		if (ball.position.x > 12.3)
 		{
 			ball.material.opacity -= 0.1;
@@ -220,16 +208,16 @@ class Map
 
 
 		setTimeout(() => {
-			initialSpeed = 0.15;
+			initialSpeed = 0.1;
 			if (player1Lose)
 			{
 				vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
-				vec2.x = -Math.sqrt(initialSpeed * initialSpeed - vec2.z * vec2.z);
+				vec2.x = (speed - Math.abs(vec2.z));
 			}
 			else
 			{
 				vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;
-				vec2.x = Math.sqrt(initialSpeed * initialSpeed - vec2.z * vec2.z);
+				vec2.x = -(speed - Math.abs(vec2.z));
 			}
 
 			onUpdate = false;
@@ -238,7 +226,7 @@ class Map
 		setTimeout(() => {
 			ball.material.opacity = 1;
 			ball.position.set(0, 0.3, 0);
-			speed = 1;
+			speed = 0.4;
 
 			scoreElement.style.animation = 'fadeOutGames 0.199s';
 			document.getElementsByTagName('canvas')[0].style.filter = 'brightness(1)';

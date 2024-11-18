@@ -3,12 +3,14 @@
 #                                                         :::      ::::::::    #
 #    DummySocket.py                                     :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
+#    By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 07:33:29 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 17:08:58 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/18 19:07:29 by hubourge         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+from random import randint
 
 class DummySocket:
 	def __init__(self, game):
@@ -16,7 +18,8 @@ class DummySocket:
 		self.online = True
 		self.username = "bot"
 		self.game = game
-		self.pfp = "/static/img/robot_pfp.jpg"
+		pfpList = ["/static/img/robot_pfp1.jpg", "/static/img/robot_pfp2.jpg", "/static/img/robot_pfp3.jpg", "/static/img/robot_pfp4.jpg"]
+		self.pfp = pfpList[randint(0, 3)]
 
 	def sync_send(*args):
 		pass

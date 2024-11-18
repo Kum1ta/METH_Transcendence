@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    GameSettings.py                                    :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
+#    By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/06 16:33:56 by tomoron           #+#    #+#              #
-#    Updated: 2024/11/13 13:15:51 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/18 19:14:37 by hubourge         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,12 +39,13 @@ class GameSettings:
 			{ "type":1, "name":"J6", "pos":{"x": 1.5, "y": 0.2, "z": -mapLength / 4}, "isUp": False },
 			{ "type":1, "name":"J7", "pos":{"x": 1.5, "y": 3.2, "z": -mapLength / 4}, "isUp": True }
 	]
+	# jumpersPos = [{"type":1, "name":"J"+str(i), "pos":{"x": 1.5 if i & 2 else -1.5, "y": 3.2 if i & 1 else 0.2, "z": -mapLength/4 if i & 4 else mapLength/4}, "isUp": True if i & 1 else False} for i in range(8)]
 	nbSkins = 8
 	nbGoals = 4
 	wallLength = 1
 	wallWidth = 0.05
 	bounceSpeedIncrease = 0.2
-	maxScore = 2
+	maxScore = 3
 
 	maxPlayerSpeed = 4
 	playerSpeedTolerance = 0.5
