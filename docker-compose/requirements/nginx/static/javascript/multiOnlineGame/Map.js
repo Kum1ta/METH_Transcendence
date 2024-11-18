@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/11/11 18:13:57 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:02:45 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@ import { files } from '/static/javascript/filesLoader.js';
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { Video } from '/static/javascript/multiOnlineGame/Video.js';
 import { player, ball} from '/static/javascript/multiOnlineGame/multiOnlineGamePage.js';
-// import { Ball } from '/static/javascript/multiOnlineGame/Ball.js'
 
 let loader						= null;
 let	scene						= null;

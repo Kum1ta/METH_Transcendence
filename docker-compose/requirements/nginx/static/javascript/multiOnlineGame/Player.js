@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/14 15:31:28 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:02:43 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ class Player
 		playerExist = true;
 		isOnPointAnim = false;
 		pressedButton = [];
-		console.log(layoutSelected);
 		key			= {up: layoutSelected.US ? "w" : "z", down: "s", left: layoutSelected.US ? "a" : "q", right: "d"};
 		this.opponentGoal = availableGoals[goalIdOppenent];
 		this.object = object;
@@ -568,7 +567,6 @@ function addKeyTouch(event)
 	const	keyAction	=	[key.left, key.right, key.up, key.down];
 	const	keyList		=	['padLeft', 'padRight', 'padTop', 'padBottom'];
 
-	console.log(key);
 	for (let i = 0; i < keyList.length; i++)
 	{
 		if (keyList[i] == keyId)

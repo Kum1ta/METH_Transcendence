@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/18 15:26:23 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:35:44 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,7 +240,6 @@ function buttonDashboard(userInfo)
 	const	contentStats	=	document.getElementsByClassName('contentStats')[0];
 	let		actualPage		=	0;
 
-	console.log(userInfo);
 	function changeDashboard()
 	{
 		contentStats.innerHTML = '';

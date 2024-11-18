@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/14 17:34:36 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:35:55 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,8 +156,6 @@ class TournamentPage
 
 	static startGame(content)
 	{
-		console.log("Game is starting...");
-		console.log(content);
 		pageRenderer.changePage("waitingGamePage", false, {username: content.username, id: content.id, isTournament: true, content: content});
 	}
 

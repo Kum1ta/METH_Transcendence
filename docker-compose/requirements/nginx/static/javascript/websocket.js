@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/12 16:30:37 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:44:34 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ function launchSocket()
 		if (response.code >= 9000 && response.code <= 9999)
 		{
 			lastError = response.code;
+			if (response.code == 9101)
+				return ;
 			if (response.code >= 9014 && response.code <= 9025)
 			{
 				console.log(response);
@@ -96,7 +98,7 @@ function launchSocket()
 		console.log('Disconnected');
 		if (pageRenderer)
 			pageRenderer.disconnect();
-		if (lastError !=  9013)
+		if (lastError != 9013)
 		{
 			setTimeout(() => {
 				launchSocket();

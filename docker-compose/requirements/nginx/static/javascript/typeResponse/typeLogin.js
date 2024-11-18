@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 00:39:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/08 23:32:12 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:36:06 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ function	typeLogin(content)
 
 	if (content && typeof(content) != 'boolean' && content.status == true)
 	{
-		console.log("Welcome " + content.username + "\nYour id is " + content.id);
 		userMeInfo.username = content.username;
 		userMeInfo.id = content.id;
 		
@@ -50,7 +49,6 @@ function	typeLogin(content)
 			notifBadgeChat	= document.getElementsByClassName('notification-badge')[0];
 			if (notifBadgeChat && content.haveUnredMessage)
 			{
-				console.log("You have unread messages");
 				notifBadgeChat.style.display = 'flex';
 				clearInterval(interval);
 			}

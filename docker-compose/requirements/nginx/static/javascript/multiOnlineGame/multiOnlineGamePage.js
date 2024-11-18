@@ -6,11 +6,10 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/15 17:07:44 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:04:49 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { OrbitControls } from '/static/javascript/three/examples/jsm/controls/OrbitControls.js'
 import { availableSkins, lastSelectedGoal } from '/static/javascript/lobbyPage/3d.js';
 import { VRButton } from "/static/javascript/three/examples/jsm/webxr/VRButton.js"
 import { Opponent } from '/static/javascript/multiOnlineGame/Opponent.js'
@@ -21,35 +20,6 @@ import { Ball } from '/static/javascript/multiOnlineGame/Ball.js'
 import { Map } from '/static/javascript/multiOnlineGame/Map.js'
 import { sendRequest } from "/static/javascript/websocket.js";
 import { files } from '/static/javascript/filesLoader.js';
-
-/*
-Controls :
-	- w : monter
-	- s : descendre
-	- a : gauche
-	- d : droite
-
-	- g : animation de point
-	- h : animation de point pour l'adversaire
-	- c : switch entre la vue du joueur et la vue de la caméra
-	- q : lancer animation sur les jumpers
-
-	- 8 : avance la balle
-	- 2 : recule la balle
-	- 4 : balle vers la gauche
-	- 6 : balle vers ladroite
-	- 9 : inversion gravite
-
-	- p : clear video
-	- o : goal video
-	- i : outstanding video
-	- u : 16 video
-	- y : 8 video
-	- t : 4 video
-
-	- l : recreate et augmente le score de player
-	- k : recreate et augmente le score de opponent
-*/
 
 let 	scene				= null;
 let 	map					= null;
@@ -77,11 +47,6 @@ const	observer = new MutationObserver((mutationsList) => {
 			VrButton.style.display = 'none';
 	});
 });
-
-// ------------------- (need to be remove) -------------------- //
-const cameraTmp = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight);
-let controls = null;
-// ------------------------------------------------------------ //
 
 class MultiOnlineGamePage
 {
@@ -128,24 +93,16 @@ class MultiOnlineGamePage
 		map.ballObject = ball.object;
 		if (isMobile)
 			player.mobileMode();
-		//////////////////////////
-		controls = new OrbitControls(cameraTmp, renderer.domElement)
-		cameraTmp.position.set(5, 3, 5);
-		controls.target = new THREE.Vector3(map.centerPos.x, 0, map.centerPos.z);
-		//////////////////////////
-
 		document.addEventListener('keypress', (e) => {
 			if (e.key == 'g')
 			{
 				player.pointAnimation(map);
 				map.animationGoal(ball.object.position.x, ball.object.position.y, ball.object.position.z, player.playerGoalAnimation);
-				console.log('player.playerGoalAnimation', player.playerGoalAnimation);
 			}
 			if (e.key == 'h')
 			{
 				player.pointOpponentAnimation(map, opponent.object);
 				map.animationGoal(ball.object.position.x, ball.object.position.y, ball.object.position.z, opponent.playerGoalAnimation);
-				console.log('player.playerGoalAnimation', opponent.playerGoalAnimation);
 			}
 			if (e.key == 'c')
 				debug = !debug;
@@ -320,13 +277,7 @@ function loop()
 	opponent.update();
 	ball.update();
 	map.update(ball);
-	if (debug)
-	{
-		controls.update();
-		renderer.render(scene, cameraTmp);
-	}
-	else
-		renderer.render(scene, player.camera);
+	renderer.render(scene, player.camera);
 }
 
 

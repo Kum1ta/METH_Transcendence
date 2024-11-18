@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:29:50 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/11 11:41:31 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:36:39 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ import { pageRenderer } from '/static/javascript/main.js'
 
 function typeTournament(content)
 {
-	console.log("New tournament request : ", content);
 	if (pageRenderer.actualPage == LobbyPage)
 	{
 		if (content.action == 0)

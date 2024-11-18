@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/11/18 15:05:34 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:34:25 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ class LobbyPage
 		const	nbBot				= document.getElementById('nbBot');
 		const	checkBoxBot			= document.getElementById('checkBoxBot');
 
+		document.body.style = null;
 		withBot = false;
 		document.body.style.opacity = 1;
 		if (userMeInfo.id == -1)

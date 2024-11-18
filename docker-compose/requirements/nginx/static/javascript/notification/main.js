@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:32:52 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/30 19:07:35 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:35:40 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ function	newNotification(title, message, img, action, timer, actionText)
 	let		intervalLoadBar	= null;
 	let		timeoutInTimout	= null;
 
-	console.log("New notification: " + message);
 	if (divNotification == null)
 	{
 		console.warn("No div for display notification here. Add div in html template for display it.");
