@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/18 16:35:44 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/18 23:53:19 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,28 @@ function externButtons(userInfo)
 	else
 		githubButton.remove();
 	if (userInfo.discord)
+	{
 		discordButton.setAttribute('name', userInfo.discord);
+		discordButton.addEventListener('mouseover', () => {
+			const	bound	= discordButton.getBoundingClientRect();
+			const	div		= document.createElement('div');
+			let		boundDiv;
+
+			div.setAttribute('class', 'discord-username-settings');
+			document.body.appendChild(div);
+			div.style.top = `${bound.top + bound.height + 10}px`;
+			div.style.opacity = 0;
+			setTimeout(() => {
+				boundDiv = div.getBoundingClientRect();
+				div.style.left = `${bound.left - (boundDiv.width / 2) + (bound.width / 2)}px`;
+				div.style.opacity = 1;
+			}, 10);
+			div.innerHTML = userInfo.discord;
+		});
+		discordButton.addEventListener('mouseout', () => {
+			document.getElementsByClassName('discord-username-settings')[0].remove();
+		});
+	}
 	else
 		discordButton.remove();
 }

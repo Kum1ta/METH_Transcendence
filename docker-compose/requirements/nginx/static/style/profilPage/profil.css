@@ -294,6 +294,13 @@
     right: 0;
 }
 
+.discord-username-settings {
+    position: absolute;
+    background-color: rgb(223, 223, 223);
+    color: black;
+    padding: 10px;
+}
+
 @media (max-width: 700px){
     #profil .container {
         width: 90%;
