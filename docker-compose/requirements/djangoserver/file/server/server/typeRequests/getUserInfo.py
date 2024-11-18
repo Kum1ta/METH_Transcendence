@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 00:16:57 by edbernar          #+#    #+#              #
-#    Updated: 2024/11/18 14:49:07 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/18 16:10:54 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,8 +66,8 @@ def getStats(user, socket):
 		res = {}
 		res["nbLoss"] = int(nbGames) - int(nbWin)
 		res["nbWin"] = int(nbWin)
-		res["forfeitRate"] = int(forfeitRate)
-		res["avgGoals"] = int(avgGoals)
+		res["forfeitRate"] = float(forfeitRate)
+		res["avgGoals"] = float(avgGoals)
 		res["nbGames30Days"] = int(nbGames30Days)
 		res["history"] = history
 		return(res)
@@ -89,7 +89,6 @@ def getUserInfo(socket, content):
 			return
 		user = user[0]
 		stats = getStats(user, socket)
-		print(stats)
 		online = True if user.id in socket.onlinePlayers else False
 		socket.sync_send({"type":"user_info", "content":{
 			'username': user.username,
