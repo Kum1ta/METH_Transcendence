@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/05 03:22:32 by tomoron           #+#    #+#              #
-#    Updated: 2024/11/19 16:53:31 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/19 17:16:33 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,6 @@ class Player():
 		self.pos = {"pos":0, "up": False}
 		self.skin = 0
 		self.goal = 0
-
-	def __del__(self):
 
 	def isTournamentReady(self):
 		return(self.tournamentReady)
