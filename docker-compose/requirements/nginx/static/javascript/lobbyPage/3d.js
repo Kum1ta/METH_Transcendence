@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 13:59:46 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/18 17:02:43 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:11:10 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,8 +289,14 @@ class goalSelecter
 		if (!this.scene)
 			return ;
 		const	popup	=	document.getElementById('popup-goal-selector');
-		const id = event.target.parentElement.getAttribute('goalId');
+		let		id		=	event.target.parentElement.getAttribute('goalId');
 
+		if (id == null)
+		{
+			id = event.target.getAttribute('goalId');
+			if (id == null)
+				return ;
+		}
 		popup.style.display = 'none';
 		lastSelectedGoal = availableGoals[id];
 		this.selected = availableGoals[id];
