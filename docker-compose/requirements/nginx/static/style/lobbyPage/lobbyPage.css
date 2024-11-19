@@ -638,7 +638,6 @@ input:checked + .slider:before {
 		flex-direction: column;
 	}
 	#whatGame {
-		/* display: none; */
 		margin-inline: 20px;
 		margin-left: auto;
 		margin-right: auto;

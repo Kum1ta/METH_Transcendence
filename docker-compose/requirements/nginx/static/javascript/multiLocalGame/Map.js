@@ -6,7 +6,7 @@
 /*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:48 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/18 19:24:56 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:06:07 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ class Map
 
 		initialSpeed = 0.1;
 		speed = 0.4;
-		// vec2.z = 0 * initialSpeed;
 		if (Math.random() > 0.5)
 		{
 			vec2.z = (Math.random() * 0.8 - 0.4) * initialSpeed;

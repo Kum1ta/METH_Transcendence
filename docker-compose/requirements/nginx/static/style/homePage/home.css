@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.css                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:00:55 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/15 14:08:22 by madegryc         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:14:21 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@
 }
 
 #topButton p:hover:after {
-	/* color: blue; */
 	width: 100%;
 }
 
@@ -185,7 +184,6 @@
 	display: none;
 	position: absolute;
 	top: 20px;
-	/* right: 20px; */
 	left: 20px;
 	width: 70px;
 	height: 70px;

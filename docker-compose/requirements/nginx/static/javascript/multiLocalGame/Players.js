@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Players.js                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:12:25 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/18 17:02:43 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:07:11 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ const	speed			=	0.25;
 let		player1			=	null;
 let		player2			=	null;
 let		pressedButton	=	[];
-
 let		key = null;
 
 class Players

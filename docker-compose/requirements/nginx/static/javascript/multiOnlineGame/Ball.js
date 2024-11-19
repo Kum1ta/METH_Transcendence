@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Ball.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:02:47 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/18 17:02:43 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:09:24 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,22 +147,15 @@ class Ball
 	getBetterPositions()
 	{
 		let walls = []
-//		let jumpers = []
 		for(let x = 0; x < map.arrObject.length; x++)
 		{
-//			if(map.arrObject[x].type == "jumperBottom" || map.arrObject[x].type == "jumperTop")
-//			{
-//				let jumper = map.arrObject[x]
-//				jumpers.push({pos:[jumper.mesh.children[0].position.x,jumper.mesh.children[0].position.z],
-//				isUp : jumper.type == "jumperTop"})
-//			}
 			if(map.arrObject[x].type == "wallObstacle")
 			{
 				let wall = map.arrObject[x]
 				walls.push({pos:[wall.mesh.position.x, wall.mesh.position.z],isUp:wall.isUp})
 			}
 		}
-		return({walls:walls/*,jumpers:jumpers*/})
+		return({walls:walls})
 	}
 
 	hitPlayer(ballSlope, ballOffset, ballVel)
@@ -252,7 +245,6 @@ class Ball
 
 	calcNewPos(delta,obstacles, ballPos, ballVel, ballUp)
 	{
-		//kill me
 		let iter = 0
 		if((ballVel[0] == 0 && ballVel[1] == 0) || delta <= 0)
 			return(ballPos)
@@ -277,7 +269,6 @@ class Ball
 
 	update()
 	{
-		// TODO: m[ae]th
 		this.object.material.color.set(0xff5555)
 		let gameTime = performance.now() - this.start
 		let lastPosDelta = gameTime - this.srvPos.time
@@ -331,7 +322,6 @@ class Ball
 		trailGeometry.attributes.size.needsUpdate = true;
 		trailGeometry.attributes.customColor.needsUpdate = true;
 	}
-	
 
 	dispose()
 	{
@@ -398,6 +388,5 @@ function makeParticules(scene) {
 	trail = new THREE.Points(trailGeometry, trailMaterial);
 	scene.add(trail);
 }
-
 
 export { Ball };

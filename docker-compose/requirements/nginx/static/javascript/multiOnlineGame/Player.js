@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/18 17:02:43 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:11:45 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,37 +17,6 @@ import { lastSelectedGoal, availableGoals } from '/static/javascript/lobbyPage/3
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { layoutSelected } from '/static/javascript/lobbyPage/main.js'
 import { isMobile, isOnChrome } from '/static/javascript/main.js'
-
-/*
-	Explication du code :
-		- Un seul joueur peut etre instancié, sinon ça throw une erreur
-		- Lorsqu'une touche est pressée, celle-ci sera ajoutée à la variable "pressedButton"
-		  Exemple : w et a sont pressées -> pressedButton =  ['w', 'a']
-		- Les lignes avec cleanup sont l'êquivalent d'un destructeur en CPP
-		- Pour appliquer des actions sur les touches, il suffit de faire ça dans la fonction
-		  update en regardant si la touche voulue est dans la variable "pressedButton"
-		- Par défaut, la caméra est accrochée, si on veut qu'elle ne bouge plus, il faut
-		  modifier "cameraFixed" à true (se fait avec la touche 'm' en jeu)
-		- Si on utilise une touche qui ne sera utilisée que pour un appui simple, il faudra la
-		  mettre dans 'addEventListerner('keypress') et pas dans update() pour eviter les
-		  problèmes de touche non détecté
-		- La variable "limits" sert à délimiter les mouvements de la barre
-*/
-
-/*
-	Todo (Eddy) :
-		- Ajouter une camera sur l'object (OK)
-		- Faire une fonction pour changer le mode de la camera (fix ou accrochée) (OK)
-		- Ajouter une rotation quand la caméra est fixe (OK)
-		- Corriger bug quand changement de caméra (camera qui se remet au dessus
-		  quand on repasse au dessus alors qu'elle devrait être en dessous vu que la
-		  barre est en haut). Mais peut etre faire ça quand la barre aura des mouvements
-		  définis sur la hauteur. (OK)
-		- Ajouter les mouvements définis sur l'axe y (OK)
-		- Faire une fonction qui change de camera quand il y a un but avec un fondu en noir (OK)
-		- Ajouter un zoom sur la camera de la fonction pointAnimation (OK)
-		- Ajouter une fonction pour l'animation de point marqué (OK)
-*/
 
 let	playerExist					= false;
 let	isOnPointAnim				= false;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiLocalGamePage.js                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:07:39 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/18 17:02:43 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:06:49 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,6 @@ let	scene		=	null;
 let	renderer	=	null;
 let	camera		=	null;
 
-/*
-Controls :
-	- w : monter player1
-	- s : descendre player1
-
-	- haut : monter player2
-	- bas : descendre player2
-
-	- a : restart quand score debug
-*/
 class multiLocalGamePage
 {
 	static create()
@@ -80,33 +70,19 @@ class multiLocalGamePage
 		scene = null;
 	}
 };
-// /////////////
-// const fps = 10; // change to 30 for 30 fps
-// const frameDuration = 1000 / fps;
-// let lastTime = 0;
-// /////////////
 
-function loop(timestamp) // retirer timestamp
+function loop()
 {
 	if (gameEndStatus)
 	{
 		renderer.setAnimationLoop(null);
 		gameFinish()
 	}
-	// const deltaTime = timestamp - lastTime; //
-
-    // if (deltaTime >= frameDuration)//
-	// {
-        // lastTime = timestamp;//
-// 
-        Ball.update();
-        Map.update();
-        Players.update();
-        if (renderer) {
-            renderer.render(scene, camera);
-        }
-    // }
-
+	Ball.update();
+	Map.update();
+	Players.update();
+	if (renderer)
+		renderer.render(scene, camera);
 }
 
 function gameFinish()

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   notification.css                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:44:17 by edbernar          #+#    #+#             */
-/*   Updated: 2024/08/07 18:04:17 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:14:12 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@
 	margin-top: auto;
 	margin-bottom: 0;
 	padding: 0;
-	/* position: fixed; */
 }
 
 .progress {

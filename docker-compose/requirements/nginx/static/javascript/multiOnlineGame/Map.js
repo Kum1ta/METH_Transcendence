@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/11/18 17:02:45 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:10:55 by hubourge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ const colorList = [
     0xFCF7DE, 0xDBFFD6, 0xD4E2D4, 0xFFD6E0, 0xFFEDDF, // Soft beige, mint, light rose
     0xF5F0E1, 0xB1E1FF, 0xFAD4C0, 0xFFC9DE, 0xBFD7EA, // Soft tan, peach, blue, light pink
     0xFFFAE3, 0xE7D3D3, 0xFDE3A7, 0xCDE0C9, 0xF4D9E3  // Soft light peach, pale pink, green, lavender
-]; // Merci chatGPT
+];
 
 let spacingImages = [
 	100 * 2.33 * 10 - (100 * 2.33),   // 2 images
@@ -131,27 +131,6 @@ class Map
 		scene.add(this.#createPlanes(7.5, length, (Math.PI / 2), "planeTop", false, files.planeTexture));
 		scene.add(this.#createWall(-3.5, 0.4, -length/2, "wallLeft"));
 		scene.add(this.#createWall(3.5, 0.4, -length/2, "wallRight"));
-		{ // A retirer
-			/* Style de couleur why not
-			0xFFCCCC
-			0xFF9999
-			0xFF6666
-			0xFF3333
-			0xCC0000
-
-			0xCCFFCC
-			0x99FF99
-			0x66FF66
-			0x33FF33
-			0x009900
-
-			0xCCCCFF
-			0x9999FF
-			0x6666FF
-			0x3333FF
-			0x0000CC
-			*/
-		}
 		sourceImageLeft = pfpSelf;
 		sourceImageRight = pfpOpponent;
 		this.putScoreboard(0xCCCCFF);
@@ -307,20 +286,12 @@ class Map
 		circle2.rotateX(-Math.PI / 2);
 		circle2.position.set(0, 0 - 0.049, 0);
 
-		// geometry6	= new THREE.CylinderGeometry(0.15, 0.15, 0.35);
-		// material6	= new THREE.MeshPhysicalMaterial({color: 0x00ff00});
-		// collider	= new THREE.Mesh(geometry6, material6);
-		// collider.position.set(0, 0 + 0.1, 0);
-		// material6.transparent = true;
-		// material6.opacity = 0.1;
-
 		groupJumper = new THREE.Group();
 		groupJumper.add(ring1);
 		groupJumper.add(ring2);
 		groupJumper.add(ring3);
 		groupJumper.add(circle1);
 		groupJumper.add(circle2);
-		// groupJumper.add(collider);
 
 		// Set groupJumper position groud / top
 		for (let i = 0; i < groupJumper.children.length && onTop; i++)
@@ -356,7 +327,6 @@ class Map
 
 		geometryWallObs	= new THREE.BoxGeometry(size, 0.5, 0.1);
 		
-		// materialWallObs = new THREE.MeshPhysicalMaterial({ map: files.wallTexture });
 		textureLoaderPlane = new THREE.TextureLoader();
 		materialWallObs = new THREE.MeshPhysicalMaterial({ map: textureLoaderPlane.load(files.wallTexture) });
 		meshWallObs		= new THREE.Mesh(geometryWallObs, materialWallObs);
@@ -370,7 +340,7 @@ class Map
 
 	putScoreboard(color)
 	{
-		this.#putPlayerProfile(color); //      METTRE NE ARGUMENT LE CHEMIN DES IMAGES              
+		this.#putPlayerProfile(color);         
 		
 		let materialScoreboard	= null;
 		let geometryScoreboard1	= null;
