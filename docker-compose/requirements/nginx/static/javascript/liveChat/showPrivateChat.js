@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:17:54 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/19 15:51:55 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:05:52 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ function	displayInputBar(divMessageListChatHome, user)
 	sendButton = document.getElementById("sendButton");
 	sendButton.style.cursor = "pointer";
 	sendButton.addEventListener("click", () => {
-		if (inputMessage.value === "")
+		if (inputMessage.value === "" || inputMessage.value.trim() === "")
 			return ;
 		sendMessage(user);
 		inputMessage.value = "";
