@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/11/19 15:10:55 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:35:13 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -802,44 +802,6 @@ class Map
 		}
 	}
 
-	#generateObstacle()
-	{
-		const wallPos = [
-			{ x: 1, y: 0, z: 1, onTop: false},
-			{ x: 1, y: 0, z: 1, onTop: true},
-			{ x: -1, y: 0, z: 1, onTop: false},
-			{ x: -1, y: 0, z: 1, onTop: true}
-		];
-		for (let i = 0; i < wallPos.length; i++)
-		{
-			if (Math.random() < 0.5)
-				scene.add(this.#createWallObstacle(wallPos[i].x, wallPos[i].y, wallPos[i].z, wallPos[i].onTop));
-		}
-
-		const type = "gravityChanger";
-		const typeNameBottom = "jumperBottom";
-		const typeNameTop = "jumperTop";
-		const jumperPos = [
-			{ x: -1.5, y: 0.2, z: this.mapLength / 4, type: type, typeName: typeNameBottom, onTop: false},
-			{ x: -1.5, y: 3.2, z: this.mapLength / 4, type: type, typeName: typeNameTop, onTop: true},
-			{ x: 1.5, y: 0.2, z: this.mapLength / 4, type: type, typeName: typeNameBottom, onTop: false},
-			{ x: 1.5, y: 3.2, z: this.mapLength / 4, type: type, typeName: typeNameTop, onTop: true},
-			{ x: -1.5, y: 0.2, z: -this.mapLength / 4, type: type, typeName: typeNameBottom, onTop: false},
-			{ x: -1.5, y: 3.2, z: -this.mapLength / 4, type: type, typeName: typeNameTop, onTop: true},
-			{ x: 1.5, y: 0.2, z: -this.mapLength / 4, type: type, typeName: typeNameBottom, onTop: false},
-			{ x: 1.5, y: 3.2, z: -this.mapLength / 4, type: type, typeName: typeNameTop, onTop: true}
-		];
-		for (let i = 0; i < jumperPos.length; i++)
-		{
-			if (Math.random() < 0.5)
-			{
-				this.#createGravityChanger(jumperPos[i].x, jumperPos[i].y, jumperPos[i].z, jumperPos[i].type + i, jumperPos[i].typeName, jumperPos[i].onTop);
-				if (i % 2 == 0)
-					i++;
-			}
-		}
-	};
-
 	update(ball)
 	{
 		for (let i = 0; this.arrObject && i < this.arrObject.length; i++)
@@ -1015,28 +977,6 @@ function drawScore(score)
 	contextTextScore.textAlign = "center";
 	contextTextScore.fillText(score.player + " - " + score.opponent, canvasTextScore.width / 2, canvasTextScore.height - canvasTextScore.height / 4);
 };
-
-function createTriangle(colorO) {
-	const shape = new THREE.Shape();
-	shape.moveTo(0, 1);
-	shape.lineTo(-1, -1);
-	shape.lineTo(1, -1);
-	shape.lineTo(0, 1);
-	const extrudeSettings = {
-		depth: 0.5,
-		bevelEnabled: false
-	};
-
-	const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-	const material = new THREE.MeshBasicMaterial({ color: colorO });
-	return new THREE.Mesh(geometry, material);
-}
-
-function createCylinder(colorO) {
-	const geometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
-	const material = new THREE.MeshBasicMaterial({ color: colorO });
-	return new THREE.Mesh(geometry, material);
-}
 
 function createStar(colorO) {
 	const shape = new THREE.Shape();

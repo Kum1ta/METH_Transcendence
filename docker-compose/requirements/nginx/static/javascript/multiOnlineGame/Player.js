@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/19 15:11:45 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/11/19 17:40:08 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ class Player
 		if (this.interval)
 			clearInterval(this.interval);
 		key = null;
-		document.addEventListener('touchstart', addKeyTouch);
-		document.addEventListener('touchend', removeKeyTouch);
+		document.removeEventListener('touchstart', addKeyTouch);
+		document.removeEventListener('touchend', removeKeyTouch);
 	}
 
 	reserCameraPlayer()
@@ -556,4 +556,4 @@ function removeKeyTouch(event)
 	}
 }
 
-export { Player, playerExist, goalAnimation};
+export { Player, playerExist, goalAnimation, isOnPointAnim};

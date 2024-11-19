@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Opponent.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hubourge <hubourge@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:34:49 by edbernar          #+#    #+#             */
-/*   Updated: 2024/10/01 15:28:00 by hubourge         ###   ########.fr       */
+/*   Updated: 2024/11/19 18:41:34 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+import { isInVrMode } from '/static/javascript/multiOnlineGame/multiOnlineGamePage.js';
 import { goalAnimation } from '/static/javascript/multiOnlineGame/Player.js'
 
 let opponentExist = false;
@@ -56,17 +57,38 @@ class Opponent
 		const thisClass		= this;
 		const speedFactor	= 0.5;
 
-		if (thisClass.animationFrame)
-			cancelAnimationFrame(thisClass.animationFrame);
-		const animate = () => {
-			this.object.position.x = lerp(this.object.position.x, content.pos, speedFactor);
-			if (Math.abs(this.object.position.x - content.pos) < 0.01)
-				this.object.position.x = content.pos;
-			else
-				thisClass.animationFrame = requestAnimationFrame(animate);
-		};
+		if (isInVrMode)
+		{
+			if (thisClass.animationFrame)
+				clearInterval(thisClass.animationFrame);
+			const animate = () => {
+				this.object.position.x = lerp(this.object.position.x, content.pos, speedFactor);
+				if (Math.abs(this.object.position.x - content.pos) < 0.01)
+				{
+					this.object.position.x = content.pos;
+					clearInterval(thisClass.animationFrame);
+					thisClass.animationFrame = null;
+				}
+			};
+	
+			thisClass.animationFrame = setInterval(animate, 5);
+		}
+		else
+		{
+			if (thisClass.animationFrame)
+				cancelAnimationFrame(thisClass.animationFrame);
+			const animate = () => {
+				this.object.position.x = lerp(this.object.position.x, content.pos, speedFactor);
+				if (Math.abs(this.object.position.x - content.pos) < 0.01)
+					this.object.position.x = content.pos;
+				else
+					thisClass.animationFrame = requestAnimationFrame(animate);
+			};
 
-		thisClass.animationFrame = requestAnimationFrame(animate);
+			thisClass.animationFrame = requestAnimationFrame(animate);
+		}
+		
+
 	
 		if (content.up && thisClass.object.position.y < thisClass.limits.up)
 		{

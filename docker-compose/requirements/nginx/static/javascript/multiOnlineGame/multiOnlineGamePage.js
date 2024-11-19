@@ -6,15 +6,15 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/19 15:49:51 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/19 18:25:40 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { availableSkins, lastSelectedGoal } from '/static/javascript/lobbyPage/3d.js';
+import { availableSkins } from '/static/javascript/lobbyPage/3d.js';
 import { VRButton } from "/static/javascript/three/examples/jsm/webxr/VRButton.js"
 import { Opponent } from '/static/javascript/multiOnlineGame/Opponent.js'
 import * as THREE from '/static/javascript/three/build/three.module.js'
-import { Player } from '/static/javascript/multiOnlineGame/Player.js'
+import { Player, isOnPointAnim } from '/static/javascript/multiOnlineGame/Player.js'
 import { pageRenderer, isMobile, isOnChrome } from '/static/javascript/main.js'
 import { Ball } from '/static/javascript/multiOnlineGame/Ball.js'
 import { Map } from '/static/javascript/multiOnlineGame/Map.js'
@@ -312,21 +312,49 @@ function vrMode()
 		document.body.append(newButton);
 }
 
+let xrReferenceSpace;
+
 function configButton()
 {
 	const	newButton = document.createElement('button');
 	const	cameraGroup	=	new THREE.Group();
+	let		interval	=	null;
 
 	cameraGroup.name = "vrHeadset";
 	newButton.innerText = "Vr mode";
 	newButton.setAttribute('id', 'newButtonVr');
 	newButton.addEventListener('click', () => {
 		VrButton.click();
-		scene.add(cameraGroup);
-		scene.remove(player.camera);
 		player.configureVrController();
-		cameraGroup.add(player.camera);
-		cameraGroup.position.set(0, 0.5, 7.5);
+		let interval2 = setInterval(() => {
+			const xrSession = renderer.xr.getSession();
+			if (!xrSession)
+				return ;
+			clearInterval(interval2);
+			interval2 = null;
+			xrSession.requestReferenceSpace('local').then((refSpace) => {
+				xrReferenceSpace = refSpace;
+			});
+		}, 16);
+		if (isOnPointAnim)
+		{
+			interval = setInterval(() => {
+				if (isOnPointAnim)
+					return ;
+				scene.add(cameraGroup);
+				scene.remove(player.camera);
+				cameraGroup.add(player.camera);
+				cameraGroup.position.set(0, 0.5, 7.5);
+				clearInterval(interval);
+			}, 10);
+		}
+		else
+		{
+			scene.add(cameraGroup);
+			scene.remove(player.camera);
+			cameraGroup.add(player.camera);
+			cameraGroup.position.set(0, 0.5, 7.5);
+		}
 		isInVrMode = true;
 	});
 	return (newButton);
