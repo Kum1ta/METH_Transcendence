@@ -9,7 +9,6 @@ class User(models.Model):
 	pfp = models.CharField(max_length=1024, default="/static/img/default_pfp.jpg")
 	banner = models.CharField(max_length=1024, default="/static/img/default_banner.jpg")
 	mail_verified = models.BooleanField(default=True)
-	print("A" * 1000)
 	github_link = models.CharField(max_length=1024, null=True, blank=True, default=None)
 	discord_username = models.CharField(max_length=1024, null=True, blank=True, default=None)
 	last_login = models.DateTimeField()

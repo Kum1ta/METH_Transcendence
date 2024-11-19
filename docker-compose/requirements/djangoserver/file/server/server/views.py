@@ -70,17 +70,17 @@ def profilPage(request):
 def verify(request):
 	req_token = request.GET.get('token', None)
 	if(req_token == None):
-		return(HttpResponse("token param missing"))
+		return(render(request, "invalidTokenPage.html", {}))
 	user_code = MailVerify.objects.filter(token=req_token)
 	if(not user_code.exists()):
-		return(HttpResponse("token not found (PS : il faudrais peut-être faire une page avec un petit peu css pour ça mais moi ça me va là) ( PSS: il faudrait peut-être faire une page aussi pour quand il manque le parametre token, flemme de mettre ce message dans sa réponse c'est genre 3 lignes au dessus, c'est trop loin) (PSSS: peut-être une page d'erreur générique qu'on peut remplir avec des variables pour les messages d'erreur"))
+		return(render(request, "invalidTokenPage.html", {}))
 	user_code = user_code[0]
 	if(user_code.uid.mail_verified):
-		return(HttpResponse("your mail is already verified, you can now login (PS: voir erreur token not found)"))
+		return(HttpResponse("your mail is already verified, you can now login"))
 	user_code.uid.mail_verified = True
 	user_code.uid.save()
 	user_code.delete()
-	return(HttpResponse("your mail has been verified ! (et pourquoi pas une page pour dire que l'email a été verifié, sinon je peut juste redirect vers la page principale)"))
+	return(render(request, "mailVerifiedPage.html", {}))
 
 def login42(request):
 	if(request.session.get("logged_in", False)):
@@ -96,18 +96,16 @@ def login42(request):
 		'code': code,
 		'redirect_uri': SERVER_URL+"/login42"
 	}
-	print("\033[31m",data)
 	response = requests.post('https://api.intra.42.fr/oauth/token', data=data)
 	if (response.status_code != 200):
-		print(response.json())
-		return HttpResponse("couln't get authorization token, likely invalid code")
+		return HttpResponse("couln't get authorization token, likely invalid code or secret expired")
 	response = response.json()
 	headers = {
 		'Authorization': f'Bearer {response["access_token"]}',
 	}
 	response = requests.get('https://api.intra.42.fr/v2/me', headers=headers)
 	if (response.status_code != 200):
-		return HttpResponse("couln't get user info... what, why ?")
+		return HttpResponse("couln't get user info... what, why ? Probably rate limited, try at the next hour")
 	response = response.json()
 	id42 = response['id']
 	login42 = response['login']

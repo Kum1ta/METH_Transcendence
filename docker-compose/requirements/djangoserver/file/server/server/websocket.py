@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 14:31:30 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 17:12:14 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/19 16:52:23 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,7 @@ functionRequest = [login, getPrivateListUser, getPrivateListMessage,
 from random import randint
 
 class WebsocketHandler(AsyncWebsocketConsumer):
-	debugMode = True
+	debugMode = False
 
 	# format : {id : socket, ...}
 	onlinePlayers = {}
@@ -82,12 +82,10 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 		if(uid not in self.onlinePlayers):
 			self.onlinePlayers[uid] = self
 			return(1)
-		print("\033[32monline : ", self.onlinePlayers)
 		return(0)
 
 	async def login(self, uid: int, username: str, pfp : str, elo : int) -> int:
 		if(await self.session_get("logged_in", False)):
-			print("already logged in")
 			return(0)
 		if(not self.add_to_online(uid)):
 			self.sendError("Already logged in", 9012)
@@ -130,10 +128,8 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 			"id":await self.session_get("id",0),
 			"haveUnredMessage":await getUnreadStatus(self.id)
 		}}))
-		print("new client")
 	
 	async def disconnect(self, close_code):
-		print("you can go, i am not mad, we never wanted you anyway")
 		self.online = False
 		if(not self.logged_in):
 			return ;
@@ -172,7 +168,6 @@ class WebsocketHandler(AsyncWebsocketConsumer):
 	@multimethod
 	def sync_send(self, data: Union[dict,str]):
 		if(not self.online):
-			print("cancel send, socket not online")
 			return
 		txt_data = None	
 		if(type(data) is dict):

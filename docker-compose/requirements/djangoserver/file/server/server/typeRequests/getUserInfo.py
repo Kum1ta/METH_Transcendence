@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 00:16:57 by edbernar          #+#    #+#              #
-#    Updated: 2024/11/18 16:10:54 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/19 16:59:00 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ def getHistory(user, games):
 		})	
 	return(res)
 
-def getStats(user, socket):
+def getStats(user):
 	try:
 		games = GameResults.objects.filter(Q(player1=user) | Q(player2=user))
 		nbGames = games.count()
@@ -71,9 +71,6 @@ def getStats(user, socket):
 		res["nbGames30Days"] = int(nbGames30Days)
 		res["history"] = history
 		return(res)
-	except Exception as e:
-		socket.sendError("invalid request", 9005, e)
-
 
 @sync_to_async
 def getUserInfo(socket, content):

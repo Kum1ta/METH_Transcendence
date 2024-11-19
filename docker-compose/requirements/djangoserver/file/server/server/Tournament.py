@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:17:07 by tomoron           #+#    #+#              #
-#    Updated: 2024/11/14 14:35:32 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/19 16:18:58 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -142,4 +142,3 @@ class Tournament:
 		for x in self.players:
 			x.socket.tournament = None
 		self.players = []
-		print("tournament done, winner is ", self.finalGame.winner.socket.username)

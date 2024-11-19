@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/19 18:29:36 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 16:35:59 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/19 16:18:45 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,6 @@ class Bot(Player):
 		if(GameSettings.BotMovement):
 			asyncio.create_task(self.updateLoop())
 			asyncio.create_task(self.goToObjectiveLoop())
-		print("I am a bot, boop boop beep boop")
 
 	def isTournamentReady(self):
 		return(True);
@@ -76,10 +75,7 @@ class Bot(Player):
 		leftLimit = GameSettings.mapLimits["left"] + (GameSettings.playerLength / 2)
 		rightLimit = GameSettings.mapLimits["right"] - (GameSettings.playerLength / 2)
 		if(self.objective["pos"] < leftLimit or self.objective["pos"] > rightLimit):
-			print("objective out of bound , set objective to limit")
-			print("prev objective : ", self.objective["pos"])
 			self.objective["pos"] = leftLimit if self.objective["pos"] < 0 else rightLimit 
-			print("new objective : ", self.objective["pos"])
 	
 	def isEnd(self):
 		if(self.tournament != None):
@@ -102,13 +98,11 @@ class Bot(Player):
 				self.pos["up"] = self.objective["up"]
 
 				maxDistance = GameSettings.maxPlayerSpeed * (time.time() - lastUpdate)
-				print("maxDistance :", maxDistance)
 				travel = self.objective["pos"] - self.pos["pos"]
 				if(travel >= 0):
 					travel = min(self.objective["pos"] - self.pos["pos"], maxDistance)
 				else:
 					travel = max(self.objective["pos"] - self.pos["pos"], -maxDistance)
-				print("travel :", travel)
 				self.game.move(self.socket, self.pos["pos"] + travel, self.pos["up"])
 			lastUpdate = time.time()
 			await asyncio.sleep(1 / 20)

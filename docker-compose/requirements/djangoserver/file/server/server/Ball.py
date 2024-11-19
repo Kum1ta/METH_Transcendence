@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/06 03:24:10 by tomoron           #+#    #+#              #
-#    Updated: 2024/10/22 14:53:55 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/19 16:38:30 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ class Ball:
 		self.speed = GameSettings.startSpeed
 		self.vel[0] = self.speed * (random.randint(-50, 50) / 100)
 		self.vel[1] = self.speed - abs(self.vel[0])
-		if(inv == 2):
+		if(inv):
 			self.vel[1] = -self.vel[1]
 
 	def default(self):

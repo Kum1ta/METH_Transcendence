@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/22 01:37:00 by tomoron           #+#    #+#              #
-#    Updated: 2024/11/14 13:59:35 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/19 16:51:38 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,6 @@ class TournamentGame:
 	async def startGame(self):
 		l = None
 		r = None
-		print("start new game")
 		if(isinstance(self.left,TournamentGame)):
 			l = self.left.winner
 			r = self.right.winner
@@ -35,11 +34,9 @@ class TournamentGame:
 			r = self.right
 		nbLoop = 0
 		while (not l.isTournamentReady() or not r.isTournamentReady()) and nbLoop < GameSettings.maxTimePlayerWait * 10:
-			print("waiting for player")
 			nbLoop += 1
 			await asyncio.sleep(0.1)
 		if(not l.socket.tournament == self.tournament  or not r.socket.tournament == self.tournament):
-			print("player is not online, opponent is winner")
 			self.winner = l if l.socket.online else r
 			return;
 		await asyncio.sleep(3)
@@ -73,7 +70,6 @@ class TournamentGame:
 					await self.startGame()
 			else:
 				if(self.game.winner != None):
-					print("game ended, winner is", self.game.pWinner.socket.username)
 					p1Id = self.tournament.playerFromSocket(self.game.p1.socket)
 					p2Id = self.tournament.playerFromSocket(self.game.p2.socket)
 					self.tournament.addHistory(p1Id, p2Id, self.game.winner == 1)

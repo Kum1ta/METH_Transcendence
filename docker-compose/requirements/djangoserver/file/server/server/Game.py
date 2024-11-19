@@ -6,7 +6,7 @@
 #    By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 16:21:18 by tomoron           #+#    #+#              #
-#    Updated: 2024/11/15 17:08:23 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/19 16:38:26 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,6 @@ class Game:
 		self.tournamentCode = tournamentCode
 		p1.setGame(self)
 		p2.setGame(self)
-		print("game created with ", p1.socket.username, "vs", p2.socket.username)
 	
 	def lookForRankedGame(self, socket):
 		for x in Game.rankedWaitingForPlayer:
@@ -90,9 +89,6 @@ class Game:
 			else:
 				Game.waitingForPlayer.join(socket, skinId, goalId)
 				Game.waitingForPlayer = None
-
-	def __del__(self):
-		print("game destroy")
 
 	def initAttributes(self):
 		self.p1 = None
@@ -147,7 +143,6 @@ class Game:
 	def join(self, socket, skin = 0, goal = 0):
 		try:
 			if(self.p1 == None):
-				print("game created, set as player 1")
 				self.p1 = Player(socket)
 				self.p1.setGame(self)
 				self.p1.skin = skin
@@ -156,13 +151,11 @@ class Game:
 				if(self.opponentLock != None and self.opponentLock != socket.id):
 					socket.sendError("You are not invited to this game", 9103)
 					return
-				print("joined game, set as player 2")
 				self.p2 = Player(socket)
 				self.p2.setGame(self)
 				self.p2.skin = skin
 				self.p2.goal = goal
 			if(self.p2 != None and self.p1 != None):
-				print("both players here, send opponent to both players")
 				self.p1.socket.sync_send({"type":"game", "content":{"action":1,"id":self.p2.socket.id,"username":self.p2.socket.username, "skin":self.p2.skin, "goal":self.p2.goal, 'pfpOpponent':self.p2.socket.pfp, 'pfpSelf':self.p1.socket.pfp}})
 				self.p2.socket.sync_send({"type":"game", "content":{"action":1,"id":self.p1.socket.id,"username":self.p1.socket.username, "skin":self.p1.skin, "goal":self.p1.goal, 'pfpOpponent':self.p1.socket.pfp, 'pfpSelf':self.p2.socket.pfp}})
 		except Exception as e:
@@ -176,9 +169,7 @@ class Game:
 		else:
 			return(0)
 		if(self.p1.ready and self.p2.ready):
-			print("both players are ready, starting game")
 			self.genObstacles()
-			print("obstacles generated :", self.obstacles)
 			asyncio.create_task(self.gameLoop())
 		return(1)
 
@@ -228,7 +219,6 @@ class Game:
 			opponent.sync_send({"type":"game","content":{"action":3, "pos":-pos, "up":up, "is_opponent":True}})
 
 	def sendNewBallInfo(self, reset = False):
-		print("send new ball info")
 		if(reset):
 			self.gameTime = 0
 		if(self.p1.socket):
@@ -247,17 +237,13 @@ class Game:
 	def checkGameEndGoal(self):
 		if(self.score[0] < GameSettings.maxScore and self.score[1] < GameSettings.maxScore):
 			return(False)
-		print("someone won the game")
 		winner = 1 if self.score[0] == GameSettings.maxScore else 2
-		print("player", winner,"won the game")
 		self.endGame(winner)
 		return(True)
 
 	async def scoreGoal(self, player):
 		self.lastWin = player
-		print("a player suffured from a major skill issue")
 		self.score[player-1] += 1
-		print("new score :", self.score)
 		self.p1.socket.sync_send({"type":"game","content":{"action":6, "is_opponent": player == 2}})
 		self.p2.socket.sync_send({"type":"game","content":{"action":6, "is_opponent": player == 1}})
 		self.prepareGame(True);
@@ -293,7 +279,6 @@ class Game:
 				await asyncio.sleep(3)
 				self.prepareGame()
 				continue
-			print("sleep time : " , sleep_time)
 			if((time.time() - self.gameStart) - self.gameTime < sleep_time):
 				await asyncio.sleep(sleep_time - ((time.time() - self.gameStart) - self.gameTime))
 			self.gameTime += sleep_time
@@ -302,7 +287,6 @@ class Game:
 				await self.scoreGoal(goal)
 			else:
 				self.sendNewBallInfo()
-		print("game end")
 		if(self.p1.socket.game == self):
 			self.p1.setGame(None)
 		if(self.p2.socket.game == self):
@@ -324,7 +308,6 @@ class Game:
 	def updateElo(self):
 		try:
 			if(self.winner == None):
-				print("unkown winner, setting to 1")
 				self.winner = 1
 			if(self.left != None):
 				self.score[self.left - 1] = 0
@@ -356,9 +339,7 @@ class Game:
 	def saveResults(self):
 		try:
 			if(self.winner == None):
-				print("unkown winner, setting to 1")
 				self.winner = 1
-			print("saving results")
 			p1DbUser = User.objects.get(id=self.p1.socket.id)
 			p2DbUser = User.objects.get(id=self.p2.socket.id)
 			results = GameResults.objects.create(
@@ -370,7 +351,6 @@ class Game:
 				forfeit = self.left != None
 			)
 			results.save()
-			print("results saved")
 		except Exception as e:
 			self.p1.socket.sendError("Couldn't save last game results", 9104, e)
 			self.p2.socket.sendError("Couldn't save last game results", 9104, e)
