@@ -8,7 +8,7 @@ class User(models.Model):
 	id42 = models.DecimalField(max_digits=15, decimal_places=0, null=True, unique=True)
 	pfp = models.CharField(max_length=1024, default="/static/img/default_pfp.jpg")
 	banner = models.CharField(max_length=1024, default="/static/img/default_banner.jpg")
-	mail_verified = models.BooleanField(default=True)
+	mail_verified = models.BooleanField(default=False)
 	github_link = models.CharField(max_length=1024, null=True, blank=True, default=None)
 	discord_username = models.CharField(max_length=1024, null=True, blank=True, default=None)
 	last_login = models.DateTimeField()
