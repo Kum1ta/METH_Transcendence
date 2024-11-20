@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:40:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/16 22:49:27 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/20 22:47:11 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ class Login
 		window.removeEventListener('click', closeClickOutsiteGameMode);
 		loginButton.removeEventListener('click', showMenu);
 		loginBackButton.removeEventListener('click', changeWindowLoginBack);
+		dispose3d();
 	}
 }
 
