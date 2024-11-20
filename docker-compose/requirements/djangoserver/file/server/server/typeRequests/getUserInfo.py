@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 00:16:57 by edbernar          #+#    #+#              #
-#    Updated: 2024/11/20 13:57:49 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/20 14:39:07 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,10 +24,16 @@ def getHistory(user, games):
 		opponent = None
 		if(x.player1 == user):
 			player = {"score":int(x.p1Score)}
-			opponent = {"score":int(x.p2Score), "username":x.player2.username, "pfp":x.player2.pfp}
+			if(x.player2 == None):
+				opponent = {"score":int(x.p2Score), "username": "[deleted]", "pfp": "/static/img/default_pfp.jpg"}
+			else:
+				opponent = {"score":int(x.p2Score), "username":x.player2.username, "pfp":x.player2.pfp}
 		else:
 			player = {"score":int(x.p2Score)}
-			opponent = {"score":int(x.p1Score), "username":x.player1.username, "pfp":x.player1.pfp}
+			if(x.player1 == None):
+				opponent = {"score":int(x.p2Score), "username": "[deleted]", "pfp": "/static/img/default_pfp.jpg"}
+			else:
+				opponent = {"score":int(x.p1Score), "username":x.player1.username, "pfp":x.player1.pfp}
 		res.append({
 			"id":x.id,
 			"p1":player,
