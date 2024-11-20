@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:42:29 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/18 16:35:55 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/20 23:11:35 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,6 @@ class TournamentPage
 
 	static end(content)
 	{
-		console.log("Tournament is over. The winner is : ", playerList['player' + playerNb[content.winnerId]]);
 		newInfo(`The winner is : ${playerList['player' + playerNb[content.winnerId]].username}`);
 		timeout = setTimeout(() => {
 			pageRenderer.changePage("lobbyPage", false);

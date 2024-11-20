@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/11/20 23:00:52 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/20 23:11:22 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -585,7 +585,6 @@ class Map
 			return (0);
 		}
 
-		console.log(path);
 		// Fill the videoList with the videos
 		for (let i = startIndex; i < (nbVideos + startIndex); i++)
 		{
@@ -594,7 +593,6 @@ class Map
 				startIndex++;
 				continue ;
 			}
-			console.log(path[i].name);
 			let videoTmp = null;
 			videoTmp = new Video(path[i].src).video;
 			videoTmp.addEventListener('loadeddata', () => {

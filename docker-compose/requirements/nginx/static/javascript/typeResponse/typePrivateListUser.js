@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 01:56:15 by edbernar          #+#    #+#             */
-/*   Updated: 2024/09/29 03:36:44 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/20 23:11:44 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ function typePrivateListUser(list) {
 		if (element.haveUnread)
 			userListUnread.push(element.id);
 	});
-	console.log(userListUnread);
 	userListAvailable = true;
 	if (userListResolve)
 	{

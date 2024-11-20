@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:08:46 by madegryc          #+#    #+#             */
-/*   Updated: 2024/11/18 16:34:25 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/20 23:09:43 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,11 @@ function startTournmament()
 	const	code	=	document.getElementById('tournamentCode').value;
 	let		nbBot	=	document.getElementById('nbBot').value;
 
+	if (isMobile)
+	{
+		CN.new("Error", "Tournament not yet available on mobile");
+		return;
+	}
 	if (code != '')
 		sendRequest("tournament", {action: 0, code: code, skin: lastSelected ? lastSelected.id : 0, goal: goalSelector ? goalSelector.selected : 0});
 	else

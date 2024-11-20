@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:17:24 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/18 16:44:34 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/20 23:13:54 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,14 @@ function launchSocket()
 			if (response.code == 9101)
 				return ;
 			if (response.code >= 9014 && response.code <= 9025)
-			{
-				console.log(response);
 				CN.new("Error", response.content);
-			}
 			else
 			{
 				try {
 					errorFunction[errorCode.indexOf(response.code)]();
 				} catch ( error )
 				{
-					console.warn(response);
+					// Do nothing
 				}
 			}
 		}
@@ -87,8 +84,7 @@ function launchSocket()
 				functionResponse[typeResponse.indexOf(response.type)](response.content);
 			} catch (error)
 			{
-				console.error(error);
-				console.warn(response);
+				// Do nothing
 			}
 		}
 	};
@@ -107,7 +103,8 @@ function launchSocket()
 	};
 }
 
-function	sendRequest(type, content) {
+function	sendRequest(type, content)
+{
 	let coc = null;
 
 	if (status === 0)
@@ -115,14 +112,20 @@ function	sendRequest(type, content) {
 		console.warn('Not connected');
 		return ;
 	}
-	if (content instanceof Object)
-		coc = JSON.stringify(content);
-	else
-		coc = content;
-	socket.send(JSON.stringify({
-		type: type,
-		content: content
-	}));
+	try {
+		if (content instanceof Object)
+			coc = JSON.stringify(content);
+		else
+			coc = content;
+		socket.send(JSON.stringify({
+			type: type,
+			content: content
+		}));
+	}
+	catch (error)
+	{
+		// Do nothing
+	}
 }
 
 export { socket, sendRequest, launchSocket, status };
