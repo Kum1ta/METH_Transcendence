@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/11/20 14:37:03 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/20 23:00:52 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,10 +136,10 @@ class Map
 		this.putScoreboard(0xCCCCFF);
 		path = [
 			{name: 'goal', 			onChoice: true, src: files.goalVideoPub},
-			{name: 'easteregg',		onChoice: true, src: files.easterEggVideoPub},
-			{name: 'outstanding', 	onChoice: true, src: files.outstandingVideoPub},
-			{name: 'ping', 			onChoice: false, src: files.pingVideoPub},
+			{name: 'easteregg',		onChoice: false, src: files.easterEggVideoPub},
 			{name: 'catch', 		onChoice: false, src: files.catchVideoPub},
+			{name: 'ping', 			onChoice: false, src: files.pingVideoPub},
+			{name: 'outstanding', 	onChoice: false, src: files.outstandingVideoPub},
 			{name: 'fortnite', 		onChoice: false, src: files.fortniteVideoPub},
 		];
 	};
@@ -585,6 +585,7 @@ class Map
 			return (0);
 		}
 
+		console.log(path);
 		// Fill the videoList with the videos
 		for (let i = startIndex; i < (nbVideos + startIndex); i++)
 		{
@@ -593,6 +594,7 @@ class Map
 				startIndex++;
 				continue ;
 			}
+			console.log(path[i].name);
 			let videoTmp = null;
 			videoTmp = new Video(path[i].src).video;
 			videoTmp.addEventListener('loadeddata', () => {
