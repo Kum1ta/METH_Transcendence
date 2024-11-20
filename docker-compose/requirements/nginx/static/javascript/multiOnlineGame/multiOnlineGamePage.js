@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:53:53 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/19 18:25:40 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/20 14:57:08 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ let 	lastFpsDisplayed	= 0;
 let		lastFpsArr			= [60];
 let		VrButton			= null;
 let		isInVrMode			= false;
+let		disablePublicity	= false;
 
 const	observer = new MutationObserver((mutationsList) => {
 	mutationsList.forEach((mutation) => {
@@ -107,10 +108,9 @@ class MultiOnlineGamePage
 			if (e.key == 'c')
 				debug = !debug;
 		})
-
 		renderer.setAnimationLoop(loop)
 		sendRequest('game', {action: 1});
-		if (!isMobile && isOnChrome)
+		if (!isMobile && isOnChrome && !disablePublicity)
 			map.putVideoOnCanvas(2, 3);
 		let lastPosition = player.object.position.x;
 		let lastUp = player.isUp;
@@ -129,6 +129,7 @@ class MultiOnlineGamePage
 				lastPingTime = Date.now();
 			}
 		}, 800);
+		document.addEventListener('keyup', tooglePublicity);
 	}
 
 	static dispose()
@@ -141,6 +142,7 @@ class MultiOnlineGamePage
 		map.putVideoOnCanvas(0, null);
 		VrButton = null;
 		window.removeEventListener('resize', windowUpdater);
+		document.removeEventListener('keyup', tooglePublicity);
 		if (interval)
 			clearInterval(interval);
 		interval = null;
@@ -270,6 +272,25 @@ function windowUpdater()
 	player.camera.updateProjectionMatrix();
 };
 
+let tooglePublicityTimeout = null;
+
+function tooglePublicity(event)
+{
+	if (tooglePublicityTimeout)
+		clearTimeout(tooglePublicityTimeout);
+	tooglePublicityTimeout = setTimeout(() => {
+		if (event.key === 'p')
+		{
+			disablePublicity = !disablePublicity;
+			if (disablePublicity)
+				map.putVideoOnCanvas(0, null);
+			else
+				map.putVideoOnCanvas(2, 3);
+			tooglePublicityTimeout = null;
+		}
+	}, 500);
+}
+
 function loop()
 {
 	showFps();
@@ -279,7 +300,6 @@ function loop()
 	map.update(ball);
 	renderer.render(scene, player.camera);
 }
-
 
 function showFps()
 {
@@ -313,6 +333,8 @@ function vrMode()
 }
 
 let xrReferenceSpace;
+
+
 
 function configButton()
 {
@@ -361,4 +383,4 @@ function configButton()
 }
 
 
-export { MultiOnlineGamePage, player, opponent, ball, map, scene, renderer, isInVrMode, createBarPlayer };
+export { MultiOnlineGamePage, player, opponent, ball, map, scene, renderer, isInVrMode, createBarPlayer, disablePublicity };

@@ -6,13 +6,13 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/20 14:08:04 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/20 14:43:02 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { fetchProfile, MotionController } from '/static/javascript/three/examples/jsm/libs/motion-controllers.module.js'
 import { XRControllerModelFactory } from '/static/javascript/three/examples/jsm/webxr/XRControllerModelFactory.js'
-import { scene, renderer, isInVrMode, ball } from '/static/javascript/multiOnlineGame/multiOnlineGamePage.js'
+import { scene, renderer, isInVrMode, ball, disablePublicity } from '/static/javascript/multiOnlineGame/multiOnlineGamePage.js'
 import { lastSelectedGoal, availableGoals } from '/static/javascript/lobbyPage/3d.js';
 import * as THREE from '/static/javascript/three/build/three.module.js'
 import { layoutSelected } from '/static/javascript/lobbyPage/main.js'
@@ -120,7 +120,7 @@ class Player
 		this.mapVar.putVideoOnCanvas(3, 'goal');
 		setTimeout(() => {
 			this.mapVar.putVideoOnCanvas(0, null);
-			if (!isMobile && isOnChrome)
+			if (!isMobile && isOnChrome && !disablePublicity)
 				this.mapVar.putVideoOnCanvas(2, 3);
 		}, 4000);
 
