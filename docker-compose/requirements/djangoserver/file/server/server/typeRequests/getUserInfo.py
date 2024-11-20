@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 00:16:57 by edbernar          #+#    #+#              #
-#    Updated: 2024/11/19 17:17:24 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/20 13:57:49 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,7 +84,7 @@ def getUserInfo(socket, content):
 			socket.sync_send({"type":"user_info", "content": None})
 			return
 		user = user[0]
-		stats = getStats(user, socket)
+		stats = getStats(user)
 		online = True if user.id in socket.onlinePlayers else False
 		socket.sync_send({"type":"user_info", "content":{
 			'username': user.username,
