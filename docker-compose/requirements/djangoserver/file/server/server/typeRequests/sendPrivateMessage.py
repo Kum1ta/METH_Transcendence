@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/04 13:44:11 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/14 18:32:14 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/20 14:20:37 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,12 +17,6 @@ import json
 
 @sync_to_async
 def sendPrivateMessage(socket, content):
-	# |Tom| Requete pour vérifier si l'user existe 
-	# Si user existe pas, faire ça : socket.sendError("User not found", 9008)
-	# Sinon l'ajouter à la base de données
-	# |Eddy| Si user existe, envoyer le message privé aux deux personnes concernées
-	# sachant que le receveur doit être connecté. Dans le cas contraire, uniquement
-	# l'envoyeur recevra le message.
 
 	try:
 		dest = User.objects.filter(id=content["to"])
@@ -30,7 +24,7 @@ def sendPrivateMessage(socket, content):
 			socket.sendError("User not found", 9008)
 			return
 		user = User.objects.filter(id=socket.id)
-		if(int(content["to"]) == user[0].id):
+		if(int(content["to"]) == user[0].id or len(content["content"]) == 0 or len(content["content"] > 2000)):
 			socket.sendError("Invalid message sent", 9009)
 		new_msg = Message.objects.create(sender=user[0], to=dest[0], content=content["content"])
 		new_msg.save()
