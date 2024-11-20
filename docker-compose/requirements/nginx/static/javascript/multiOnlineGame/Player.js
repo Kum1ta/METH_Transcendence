@@ -6,7 +6,7 @@
 /*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 00:30:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/19 17:40:08 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/20 14:08:04 by edbernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,7 +306,8 @@ class Player
 					{
 						clearInterval(this.interval);
 						this.object.position.y = this.limits.up;
-						this.camera.position.y = 2.34;
+						if (!isOnPointAnim)
+							this.camera.position.y = 2.34;
 						this.interval = null;
 					}
 				}, 5);
@@ -325,7 +326,8 @@ class Player
 						clearInterval(this.interval);
 						this.interval = null;
 						this.object.position.y = this.limits.down;
-						this.camera.position.y = 1;
+						if (!isOnPointAnim)
+							this.camera.position.y = 1;
 					}
 				}, 5);
 			}
