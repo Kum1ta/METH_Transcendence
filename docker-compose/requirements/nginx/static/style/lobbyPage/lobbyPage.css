@@ -625,10 +625,9 @@ input:checked + .slider:before {
 	.search-container input {
 		min-width: 200px;
 	}
-	.search-input {
+	#searchInputUser {
 		margin-inline: 50px;
 	}
-
 	.search-input input {
 		left: 50%;
 		transform: translate(-50%);
