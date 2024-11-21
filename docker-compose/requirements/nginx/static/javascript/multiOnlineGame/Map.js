@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.js                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 14:52:55 by hubourge          #+#    #+#             */
-/*   Updated: 2024/11/20 23:11:22 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/21 13:35:55 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,11 @@ let sourceImageRight			= null;
 let path = [];
 
 const colorList = [
-    0xFFB3BA, 0xFFDFBA, 0xFFFFBA, 0xBAFFC9, 0xBAE1FF, // Pastel pink, peach, yellow, green, blue
-    0xFFD1DC, 0xFF9AA2, 0xFFB7B2, 0xFFDAC1, 0xE2F0CB, // More pastel pinks, greens
-    0xB5EAD7, 0xC7CEEA, 0xE0BBE4, 0xFFDFD3, 0xF3FFE3, // Soft purple, beige, mint
-    0xFFB3B3, 0xFFC1E3, 0xFDDDE6, 0xD4C0E2, 0xFFC2D1, // Soft reds, pinks, purples
-    0xA9E5BB, 0xFFF2CC, 0xFFC3A0, 0xFFB7CE, 0xFFFFCB, // Pastel greens, peaches, yellows
-    0x9EADBA, 0xE4BAD4, 0xFFCECE, 0xD4E157, 0xC1E7E3, // Gentle blues, violets, greens
-    0xFFEDCC, 0xC6D6E7, 0xFDDDEC, 0xC4DFDF, 0xD3FBD8, // Very soft pastels, blues, peaches
-    0xFCF7DE, 0xDBFFD6, 0xD4E2D4, 0xFFD6E0, 0xFFEDDF, // Soft beige, mint, light rose
-    0xF5F0E1, 0xB1E1FF, 0xFAD4C0, 0xFFC9DE, 0xBFD7EA, // Soft tan, peach, blue, light pink
-    0xFFFAE3, 0xE7D3D3, 0xFDE3A7, 0xCDE0C9, 0xF4D9E3  // Soft light peach, pale pink, green, lavender
+    0xA682FF, 0x715AFF, 0x5887FF, 0x55C1FF, 0x102E4A,
+    0x5BBA6F, 0x3FA34D, 0x2A9134, 0x137547, 0x054A29,
+    0xEFCA08, 0xF49F0A, 0xF08700, 0x339989, 0x2B2C28, 
+    0x2F2963, 0x454372, 0x56E39F, 0x59C9A5, 0xFFECD1,
+    0xF8F32B, 0x8D99AE, 0xF65BE3, 0xF679E5, 0xEBC3DB,
 ];
 
 let spacingImages = [
