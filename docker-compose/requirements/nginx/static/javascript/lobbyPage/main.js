@@ -143,13 +143,19 @@ function searchUser(event)
 
 function ajustSearchUserList()
 {
-	const	searchInputUser	= document.getElementById('searchInputUser');
-	const	pos				= searchInputUser.getBoundingClientRect();
-	const	searchResult	= document.getElementById('searchResult');
+	try {
+		const	searchInputUser	= document.getElementById('searchInputUser');
+		const	pos				= searchInputUser.getBoundingClientRect();
+		const	searchResult	= document.getElementById('searchResult');
+	
+		searchResult.style.width = pos.width + 'px';
+		searchResult.style.top = pos.top + pos.height + 'px';
+		searchResult.style.left = pos.left + 'px';
+	}
+	catch {
+		// Do nothing
+	}
 
-	searchResult.style.width = pos.width + 'px';
-	searchResult.style.top = pos.top + pos.height + 'px';
-	searchResult.style.left = pos.left + 'px';
 }
 
 function goBackHome()
@@ -380,12 +386,16 @@ function selectGameModeFour(event, disableScroll = false)
 
 function movePopMenuLoginButton()
 {
-	const	loginButton			= document.getElementById('loginButton');
-	const	pos					= loginButton.getBoundingClientRect();
-	const	popMenuLoginButton 	= document.getElementById('popMenuLoginButton');
+	try {
+		const	loginButton			= document.getElementById('loginButton');
+		const	pos					= loginButton.getBoundingClientRect();
+		const	popMenuLoginButton 	= document.getElementById('popMenuLoginButton');
 
-	popMenuLoginButton.style.left = pos.left + "px";
-	popMenuLoginButton.style.top = pos.top + pos.height + "px";
+		popMenuLoginButton.style.left = pos.left + "px";
+		popMenuLoginButton.style.top = pos.top + pos.height + "px";
+	} catch {
+		// Do nothing
+	}
 }
 
 function showMenu()
