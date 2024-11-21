@@ -141,7 +141,7 @@ class Screen
 					video.removeAttribute('src');
 					video.load();
 				}
-			catch {
+			} catch {
 				// Do nothing
 			}
 			if (texture)
