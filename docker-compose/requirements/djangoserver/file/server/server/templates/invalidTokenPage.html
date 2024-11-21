@@ -1,9 +1,58 @@
 <html>
 	<head>
-		<title>error</title>
+		<title>METH - Error</title>
+		<link rel='stylesheet' type='text/css' href='/static/style/global/global.css'>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+		<style type="text/css">
+			body {
+				border: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #020202;
+				user-select: none;
+				font-family: "Poppins", sans-serif;
+				font-weight: 500;
+				font-style: normal;
+				scroll-behavior: smooth;
+			}
+			#topBar {
+				margin-block: 25px;
+				padding: 0;
+				padding-inline: 50px;
+				display: flex;
+				gap: 2rem;
+				align-items: center;
+				position: absolute;
+				inset-inline: 0;
+				top: 0;
+				z-index: 500;
+			}
+			#topBar h1 {
+				padding: 0;
+  				padding-top: 4px;
+				font-size: 35px;
+				color: white;
+				font-family: 'Poppins';
+				font-style: italic;
+				font-weight: bold;
+			}
+		</style>
 	</head>
-
 	<body>
-		couldn't verify the email, the token is invalid.
+		<div id="topBar">
+			<h1>METH</h1>
+		</div>
+		<div style='color: white; position: absolute; left: 50%; top: 50%; text-align: center; transform: translate(-50%, -50%); font-size: 5vh;' id="content">
+			<p>Couldn't verify the email, the token is invalid.</p>
+			<p style="font-size: 4vh;">Redirection in few seconds...</p>
+		</div>
 	</body>
+	<script>
+		setTimeout(() => {
+			window.location.href = "/";
+		}, 2000);
+	</script>
 </html>
