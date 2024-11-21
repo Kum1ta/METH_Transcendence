@@ -133,13 +133,16 @@ class Screen
 			const canvas	= this.canvasVideo;
 			const video		= canvas.video;
 			const texture	= this.screen.material.map;
-	
-			if (video)
-			{
-				video.pause();
-				video.src = '';
-				video.removeAttribute('src');
-				video.load();
+			try {
+				if (video)
+				{
+					video.pause();
+					video.src = '';
+					video.removeAttribute('src');
+					video.load();
+				}
+			catch {
+				// Do nothing
 			}
 			if (texture)
 				texture.dispose();
