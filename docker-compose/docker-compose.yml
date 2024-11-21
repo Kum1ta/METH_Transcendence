@@ -59,12 +59,12 @@ services:
       - postgres:/var/lib/postgresql/13/main
     restart: always 
   
-  adminer: 
-    container_name: adminer 
-    image: adminer:latest
-    restart: always
-    networks:
-      - transcendence 
+    #  adminer: 
+    #    container_name: adminer 
+    #    image: adminer:latest
+    #    restart: always
+    #    networks:
+    #      - transcendence 
 
 volumes:
   postgres:
