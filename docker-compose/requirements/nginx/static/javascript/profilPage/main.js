@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: madegryc <madegryc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:08:31 by edbernar          #+#    #+#             */
-/*   Updated: 2024/11/18 23:53:19 by edbernar         ###   ########.fr       */
+/*   Updated: 2024/11/21 13:18:52 by madegryc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,10 +272,12 @@ function buttonDashboard(userInfo)
 		}
 		else if (actualPage == 1)
 		{
-			const	winrate = Math.round((userInfo.nbWin / (userInfo.nbWin + userInfo.nbLoss)) * 100);
+			let	winrate = Math.round((userInfo.nbWin / (userInfo.nbWin + userInfo.nbLoss)) * 100);
 
+			if (isNaN(winrate))
+				winrate = 'Never played';
 			contentStats.innerHTML = `
-			<p class="dashboard-line">Winrate<span>${winrate}%</span></p>
+			<p class="dashboard-line">Winrate<span>${winrate == 'Never played' ? winrate : winrate + '%'}</span></p>
 			<p class="dashboard-line">Opponent give up rate<span>${userInfo.forfeitRate}%</span></p>
 			<p class="dashboard-line">Average goal number<span>${userInfo.avgGoals}</span></p>
 			<p class="dashboard-line">Number of parties (last 30 days)<span>${userInfo.nbGames30Days}</span></p>

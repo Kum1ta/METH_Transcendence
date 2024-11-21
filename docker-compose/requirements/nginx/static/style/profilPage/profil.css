@@ -267,13 +267,17 @@
 }
 
 #profil .dashboard .button-dashboard {
-    background-color: #aeaeae;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-size: 1rem;
+    color: #020202;
+    font-size: 2.2rem;
+    margin: 0;
+    margin-inline: 30px;
     cursor: pointer;
+    background-color: white;
+    transform: 0.3s ease;
+}
+
+#profil .dashboard .button-dashboard:hover {
+    transform: scale(1.1);
 }
 
 #profil .dashboard .button-dashboard:focus {
