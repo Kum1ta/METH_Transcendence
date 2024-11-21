@@ -9,6 +9,7 @@ RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/ngin
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY static /var/www/static 
+RUN chmod -R 777 /var/www/static
 
 STOPSIGNAL SIGKILL
 
