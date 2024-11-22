@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/09 14:31:30 by tomoron           #+#    #+#              #
-#    Updated: 2024/11/19 16:52:23 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/22 22:23:43 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,7 @@ functionRequest = [login, getPrivateListUser, getPrivateListMessage,
 from random import randint
 
 class WebsocketHandler(AsyncWebsocketConsumer):
-	debugMode = False
+	debugMode = True
 
 	# format : {id : socket, ...}
 	onlinePlayers = {}

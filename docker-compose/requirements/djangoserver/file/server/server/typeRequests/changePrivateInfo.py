@@ -6,7 +6,7 @@
 #    By: edbernar <edbernar@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/25 23:28:49 by edbernar          #+#    #+#              #
-#    Updated: 2024/09/27 16:00:05 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/22 23:00:54 by edbernar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ import hashlib
 import json
 
 def changePassword(socket, user, old, new):
-	if(user.id42 == None):
+	if(user.id42 != None):
 		socket.sendError("You can't set or change this field if you have a 42 account", 9031)
 		return(False)
 	if (old == None):
