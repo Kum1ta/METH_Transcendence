@@ -1,68 +1,68 @@
 # **ft_transcendence** - METH PROJECT
 
-**Un projet web complet combinant les technologies modernes et des fonctionnalités innovantes.**  
+<div align="center">
+    <h4>A complete web project combining modern technologies and innovative features.</h2>
+    <img src="https://github.com/user-attachments/assets/25c2523f-751c-4b55-971f-e238258f4c1a" alt="meth_home">
+    <p style="font-size=2px">Home page</p>
+    <p>Welcome to METH's GitHub page! Come and try our game on PC, smartphone, and even VR, blending the old with the modern.</p>
+</div>
 
-## **Table des matières**  
+
+## **Table of Contents**  
 1. [Introduction](#introduction)  
-2. [Technologies utilisées](#technologies-utilisées)
-3. [Accès](#accès)
+2. [Technologies Used](#technologies-used)  
+3. [Access](#access)  
 4. [Installation](#installation)  
-5. [Module majeur & mineur](#module-majeur-&-mineur)
-6. [Autheurs](#autheurs)
+5. [Major & Minor Modules](#major-and-minor-modules)  
+6. [Authors](#authors)  
 
 ---
 
 ## **Introduction**  
-**ft_transcendence** est un projet réalisé dans le cadre du cursus de l'École 42. Il s'agit d'une application web complète, combinant un front-end moderne avec une architecture back-end robuste, permettant aux utilisateurs de jouer a Pong, pour le plaisir, en local, en ligne, en ranked.
-
-
----
-
-## **Technologies utilisées**  
-- **Front-end** : HTML, CSS, JS (Vanilla), ThreeJS
-- **Back-end** : Python (Django), WebSockets
-- **Jeu** : JS, ThreeJS
-- **Base de données** : PostgreSQL  
-- **Authentification** : Création de compte par mail et confirmation et authentification par 42.
-- **Autres** : Docker pour la containerisation. 
+**ft_transcendence** is a project developed as part of the 42 school curriculum. It is a complete web application, combining a modern front-end with a robust back-end architecture, enabling users to play Pong for fun, locally, online, or in ranked mode.
 
 ---
 
-## **Accès**
+## **Technologies Used**  
+- **Front-end**: HTML, CSS, JS (Vanilla), ThreeJS  
+- **Back-end**: Python (Django), WebSockets  
+- **Game**: JS, ThreeJS  
+- **Database**: PostgreSQL  
+- **Authentication**: Account creation via email confirmation and 42 authentication.  
+- **Others**: Docker for containerization.  
 
-Nous avons la chance qu'un des membres de notre équipe puisse héberger le site sur son serveur.
-Vous pouvez donc accéder à notre site avec toutes les fonctionnalités depuis :
+---
+
+## **Access**  
+
+We are fortunate to have a team member hosting the website on their server.  
+You can access the site with all its features at: 
 
 ```
 meth.tmoron.fr
 ```
 
-Si vous avez le moindre bug sur le site, veillez contacter un membre de l'équipe pour la corriger.
+If you encounter any bugs on the site, please contact a team member to resolve them.
 
 ---
 
-## **Installation**  
+## **Installation**
 
-### **Prérequis**  
+### **Prerequisites**  
 - Docker & Docker Compose  
-- PostgreSQL  
 
-### **Étapes d'installation**  
+### **Installation Steps**  
 
-1. Clonez le dépôt :  
+1. Clone the repository:  
    ```bash  
-   git clone https://github.com/METH_Transcendence/ft_transcendence.git  
-   cd ft_transcendence  
+   git clone https://github.com/Kum1ta/METH_Transcendence.git 
+   cd METH_Transcendence 
    ```  
 
-2. Installez les dépendances :  
-   ```bash  
-   npm install  
-   ```  
-
-3. Configurez les variables d'environnement :  
-   - Créez un fichier `.env` à la racine et renseignez les valeurs nécessaires :  
-     ```
+2. Configure environment variables :
+   - Create a `.env` file in the root directory and fill in the required values :
+     
+     ```bash
      DB_NAME=""
      DB_USERNAME=""
      DB_PASSWORD=""
@@ -76,32 +76,32 @@ Si vous avez le moindre bug sur le site, veillez contacter un membre de l'équip
      SERVER_URL="https://localhost:8000"
      ```  
 
-4. Lancez le projet :  
+3. Launch the project :
    ```bash  
    make
-   ```  
+   ``` 
 
-5. Accédez à l'application sur [http://localhost:3000](http://localhost:3000).  
+4. Access the application at [https://localhost:8000/](https://localhost:8000/)
 
 ---
 
-## **Module majeur & mineur**  
-- **Utiliser un framework backend**
-- **Utiliser une base de données backend**  
-- **Gestion utilisateur standard, authentification, utilisateurs en tournois**  
-- **Implementer une authentification à distance**  
-- **Joueur à distance**  
-- **Ajout d'un second jeu avec historique et matchmaking**  
-- **Option de personnalisation du jeu**  
-- **Live chat**  
-- **Implementer un adversaire contole par IA**  
-- **Panneaux d'affichage (Dashboard), statistiques des parties**
-- **RGPD friendly**  
-- **Utilisation de technique avancées 3D**  
-- **Supoort sur tous types d'appareils (PC/Telephone, VR, Manette)**  
-- **Responsive**  
+## **Major and Minor Modules**
+- **Use a backend framework**
+- **Use a backend database**
+- **Standard user management, authentication, and tournament users**
+- **Implement remote authentication**
+- **Remote multiplayer support**
+- **Add a second game with history and matchmaking**
+- **Game customization options**
+- **Live chat**
+- **Implement an AI-controlled opponent**
+- **Dashboards and game statistics**
+- **GDPR compliance**
+- **Advanced 3D techniques**
+- **Support for all devices (PC/Phone, VR, Gamepad)**
+- **Responsive design**
 
-## **Autheurs**  
+## **Authors**  
 
 - Mathis, madegryc [https://github.com/Misthaa] - Front-end/Design
 - Eddy, edbernar [https://github.com/Kum1ta] - Full Stack
