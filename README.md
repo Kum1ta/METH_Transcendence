@@ -2,7 +2,7 @@
 
 <div align="center">
     <h4>A complete web project combining modern technologies and innovative features.</h2>
-    ![Screencast-from-11-23-2024-06_03_47-PM](https://github.com/user-attachments/assets/afe3556d-3df3-4a85-b812-e3b1de040a39)
+    <img src="https://github.com/user-attachments/assets/afe3556d-3df3-4a85-b812-e3b1de040a39" alt="meth_home">
     <p style="font-size=2px">Home page</p>
     <p>Welcome to METH's GitHub page! Come and try our game on PC, smartphone, and even VR, blending the old with the modern.</p>
 </div>
