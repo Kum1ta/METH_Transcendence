@@ -60,7 +60,7 @@ If you encounter any bugs on the site, please contact a team member to resolve t
    ```  
 
 2. Configure environment variables :
-   - Create a `.env` file in the root directory and fill in the required values :
+   - Create a `.env` file in `docker-compose` folder and fill in the required values :
      
      ```bash
      DB_NAME=""
